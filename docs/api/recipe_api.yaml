@@ -1,0 +1,54 @@
+openapi: 3.1.0
+info:
+    title: Receptkezelő webalkalmazás Api
+    description: TODO
+    contact:
+        name: Máté Zsolt Sándor
+        email: mzsoltsandor@gmail.com
+    license:
+        name: MIT
+        url: https://opensource.org/licenses/MIT
+    version: v0.0.0-dev
+#servers: TODO
+tags:
+  - name: Alive
+    description: Service Alive Controller
+  - name: Recipes
+paths:
+    /alive/:
+      get:
+        tags:
+          - Alive
+        summary: Sends a report about the availability of services.
+        operationId: getServiceReport
+        responses:
+          200:
+            description: Report is sent back
+    /recipes/:
+      post:
+        tags:
+          - Recipes
+        summery: Creates a recipe
+        operationId: createRecipe
+        parameters:
+          -  
+components:
+  schemas:
+    createRecipeDTO:
+      title: createRecipeDTO
+      type: object
+      properties:
+        title:
+          type: string
+          description: The title of the new recipe
+        description:
+          type: string
+          description: Simple description of the recipe
+        steps:
+          type: array
+          description: List of steps to make the recipe
+          items:
+            tpye: string
+            description: Steps to make a recipe
+        
+

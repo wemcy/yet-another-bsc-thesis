@@ -1,0 +1,28 @@
+# This is an automatically generated file
+items:
+- name: Usecases
+  href: index.md
+- name: Use Case 1 User Registration
+  href: 001.md
+- name: Use Case 10 Reset Password
+  href: 010.md
+- name: Use Case 11 Add Comment to Recipe
+  href: 011.md
+- name: Use Case 12 Delete Comment on Recipe
+  href: 012.md
+- name: Use Case 2 Add New Recipe
+  href: 002.md
+- name: Use Case 3 Search Recipes
+  href: 003.md
+- name: Use Case 4 Rate and Comment on a Recipe
+  href: 004.md
+- name: Use Case 5 View Recipe Details
+  href: 005.md
+- name: Use Case 6 Edit Recipe
+  href: 006.md
+- name: Use Case 7 Delete Recipe
+  href: 007.md
+- name: Use Case 8 View User Profile
+  href: 008.md
+- name: Use Case 9 Update User Profile
+  href: 009.md
