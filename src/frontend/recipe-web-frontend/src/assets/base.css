@@ -1,1 +1,17 @@
 @import 'tailwindcss';
+@layer base {
+    :root {
+        --text: #1d070e;
+        --background: #f8e2e7;
+        --primary: #e0859c;
+        --secondary: #f2cfd8;
+        --accent: #c33256;
+    }
+    .dark {
+        --text: #f8e2e9;
+        --background: #1d070c;
+        --primary: #7a1f36;
+        --secondary: #300d16;
+        --accent: #cd3c60;
+    }
+}
