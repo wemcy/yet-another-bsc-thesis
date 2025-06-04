@@ -26,13 +26,16 @@
 
     <footer class="bg-gray-100 text-gray-700 py-6 px-4 mt-10">
         <div
-            class="max-w-6xl mx-auto flex lg:flex-cols items-start md:flex-row justify-between gap-6 text-center md:text-left"
+            class="max-w-6xl mx-auto flex flex-center sm:items-start sm:flex-row flex-col justify-between gap-6 sm:flex-left flex-center"
         >
-            <div class="flex flex-col items-center space-x-2 justify-center md:justify-start">
+            <div
+                role="banner"
+                class="flex flex-col items-center space-y-2 justify-center sm:justify-start"
+            >
                 <img src="../assets/logo.svg" alt="logo" class="w-24 h-24" />
                 <span class="text-lg font-semibold">ReceptApp</span>
             </div>
-            <nav class="flex flex-col items-start space-x-2 justify-center md:justify-start">
+            <nav aria-label="Account" class="flex flex-col sm:items-start items-center">
                 <p class="text-lg font-bold just">Account</p>
                 <ul class="mt-6">
                     <li><a class="mb-4" href="#">Create account</a></li>
@@ -41,7 +44,7 @@
                     <li><a class="mb-4" href="#">Android app</a></li>
                 </ul>
             </nav>
-            <nav class="flex flex-col items-start space-x-2 justify-center md:justify-start">
+            <nav aria-label="Company" class="flex flex-col sm:items-start items-center">
                 <p class="text-lg font-bold just">Company</p>
                 <ul class="mt-6">
                     <li><a class="mb-4" href="#">About RecipeApp</a></li>
@@ -51,7 +54,7 @@
                 </ul>
             </nav>
 
-            <nav class="flex flex-col items-start space-x-2 justify-center md:justify-start">
+            <nav aria-label="Resources" class="flex flex-col sm:items-start items-center">
                 <p class="text-lg font-bold just">Resources</p>
                 <ul class="mt-6">
                     <li><a class="mb-4" href="#">Recipe directory </a></li>
@@ -61,8 +64,8 @@
             </nav>
 
             <!-- Kapcsolat -->
-            <div class="text-m self-center">
-                <span>Elérhetőség: </span>
+            <div class="text-base self-center">
+                <span>Connect: </span>
                 <a href="mailto:info@receptapp.hu" class="hover:text-blue-600 block md:inline"
                     >info@receptapp.hu</a
                 >
