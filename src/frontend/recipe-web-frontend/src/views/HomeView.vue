@@ -1,4 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ProfileEdit from './ProfileView.vue'
+import RecipeView from './RecipeView.vue'
+</script>
 
 <template>
     <nav class="bg-white shadow-md px-6 py-4 flex justify-between items-center">
@@ -101,6 +104,22 @@
         </section>
     </main>
 
+    <RecipeView></RecipeView>
+    <main class="max-w-4xl mx-auto px-4 py-10 text-gray-800">
+        <!-- Profil fejléc -->
+        <section class="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-10">
+            <img
+                src="@/assets/profile.svg"
+                alt="Profilkép"
+                class="w-32 h-32 rounded-full object-cover"
+            />
+            <div class="text-center sm:text-left">
+                <h1 class="text-2xl font-bold">Kovács Anna</h1>
+                <p class="text-gray-600">anna.kovacs@example.com</p>
+            </div>
+        </section>
+    </main>
+    <ProfileEdit> </ProfileEdit>
     <footer class="bg-gray-100 text-gray-700 py-6 px-4 mt-10">
         <div
             class="max-w-6xl mx-auto flex sm:items-start sm:flex-row flex-col justify-between gap-6"
