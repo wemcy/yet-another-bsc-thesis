@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import CommentsSection from '@/components/comments/CommentsSection.vue'
+</script>
+
 <template>
     <main class="max-w-6xl mx-auto px-4 py-10 text-gray-800 grid md:grid-cols-3 gap-10">
         <!-- Bal oszlop -->
@@ -54,39 +58,6 @@
         </div>
     </main>
     <!-- Komment szekció -->
-    <section class="max-w-6xl mx-auto px-4 py-10 mt-10 border-t pt-6">
-        <h2 class="text-xl font-semibold mb-4">Hozzászólások</h2>
 
-        <!-- Egy komment -->
-        <div class="space-y-6">
-            <div class="border-b pb-4">
-                <p class="font-semibold">Kiss Péter</p>
-                <p class="text-gray-700">
-                    Nagyon jó recept, múlt héten is elkészítettem, mindenki imádta!
-                </p>
-                <p class="text-sm text-gray-400 mt-1">2024. 11. 08.</p>
-            </div>
-
-            <div class="border-b pb-4">
-                <p class="font-semibold">Nagy Eszter</p>
-                <p class="text-gray-700">Kicsit több sóval még finomabb lett 😄</p>
-                <p class="text-sm text-gray-400 mt-1">2024. 12. 01.</p>
-            </div>
-        </div>
-
-        <!-- Új hozzászólás -->
-        <form class="mt-6 space-y-4">
-            <textarea
-                rows="4"
-                placeholder="Írd meg a véleményed..."
-                class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            ></textarea>
-            <button
-                type="submit"
-                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
-            >
-                Hozzászólás küldése
-            </button>
-        </form>
-    </section>
+    <CommentsSection />
 </template>

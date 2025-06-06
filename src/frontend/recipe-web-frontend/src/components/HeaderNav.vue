@@ -18,9 +18,9 @@
         <ul class="flex space-x-6 text-gray-700">
             <li><router-link to="/" class="hover:text-blue-600">Receptek</router-link></li>
             <li>
-                <router-link to="/uj-recept" class="hover:text-blue-600">Új recept</router-link>
+                <router-link to="/new-recept" class="hover:text-blue-600">Új recept</router-link>
             </li>
-            <li><router-link to="/profil" class="hover:text-blue-600">Profil</router-link></li>
+            <li><router-link to="/profile" class="hover:text-blue-600">Profil</router-link></li>
         </ul>
     </nav>
 </template>
