@@ -41,10 +41,15 @@ const comments = ref<CommentItem[]>([
 ])
 
 function addComment(text: string) {
-    comments.value.push({
-        name: 'Vendég', // később: bejelentkezett felhasználóból
+    const newComment: CommentItem = {
+        name: 'Anonim',
         text,
-        date: new Date().toLocaleDateString('hu-HU'),
-    })
+        date: new Date().toLocaleDateString('hu-HU', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        }),
+    }
+    comments.value.push(newComment)
 }
 </script>
