@@ -3,6 +3,10 @@ import RecipeHighlight from '@/components/recipe/RecipeHighlight.vue'
 import ProfileEdit from './ProfileView.vue'
 import RecipeView from './RecipeView.vue'
 import RecipeCard from '@/components/recipe/RecipeCard.vue'
+import { useRecipeStore } from '@/stores/recipeStore'
+
+const recipeStore = useRecipeStore()
+const featured = recipeStore.recipes[0]
 </script>
 
 <template>
@@ -25,18 +29,21 @@ import RecipeCard from '@/components/recipe/RecipeCard.vue'
             />
         </section>
         <RecipeHighlight
-            title="Friss recept: Töltött paprika"
-            description="Egy klasszikus magyar kedvenc, ahogy nagymamánk készítette. Egyszerű, laktató, isteni!"
-            image="@/assets/recipe.jpg"
+            v-if="featured"
+            :title="featured.title"
+            :description="featured.description"
+            :image="featured.image"
         />
         <section class="max-w-6xl mx-auto px-4 py-12">
             <h2 class="text-2xl font-bold mb-6 text-center">Kiemelt receptek</h2>
             <div class="grid gap-6 md:grid-cols-3">
                 <!-- Receptkártya 1 -->
                 <RecipeCard
-                    title="Paprikás krumpli"
-                    image="@/assets/recipe.jpg"
-                    allergens="gluténmentes"
+                    v-for="recipe in recipeStore.recipes"
+                    :key="recipe.id"
+                    :title="recipe.title"
+                    :image="recipe.image"
+                    :allergens="recipe.allergens.join(', ')"
                 />
 
                 <!-- Receptkártya 2 -->

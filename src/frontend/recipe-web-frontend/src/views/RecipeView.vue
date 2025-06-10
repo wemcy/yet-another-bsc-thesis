@@ -5,47 +5,37 @@ import RecipeHeader from '@/components/recipe/RecipeHeader.vue'
 import InstructionsList from '@/components/recipe/InstuctionList.vue'
 import AllergenList from '@/components/recipe/AllergenList.vue'
 import RecipeRating from '@/components/recipe/RecipeRating.vue'
-import recipeImg from '@/assets/recipe.jpg'
+import { useRoute } from 'vue-router'
+import { useRecipeStore } from '@/stores/recipeStore'
 
-const ingredients = [
-    { name: 'Paprika', amount: 4, unit: 'db' },
-    { name: 'Darálthús', amount: 500, unit: 'g' },
-    { name: 'Rizs', amount: 100, unit: 'g' },
-]
-
-const steps = [
-    'A rizst előfőzzük enyhén sós vízben.',
-    'A darált húst fűszerezzük, összekeverjük a rizzsel.',
-    'A paprikákat megtöltjük, majd paradicsomszószban megfőzzük.',
-]
-
-const allergens = ['Glutén', 'Tej']
-const title = 'Töltött paprika'
-const description =
-    'Egy klasszikus magyar kedvenc, ahogy nagymamánk készítette. Egyszerű, laktató, isteni!'
-const picture = { src: recipeImg, alt: 'Töltött paprika' }
-const rating = 4
+const route = useRoute()
+const recipeStore = useRecipeStore()
+const recipe = recipeStore.getById(route.params.id as string)
 </script>
 
 <template>
-    <main class="max-w-6xl mx-auto px-4 py-10 text-gray-800 grid md:grid-cols-3 gap-10">
+    <CommentsSection />
+    <main
+        v-if="recipe"
+        class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-10 text-gray-800"
+    >
         <!-- Bal oszlop -->
         <div class="md:col-span-2 space-y-6">
-            <RecipeHeader :title="title" :description="description" />
-            <IngredientList :ingredients="ingredients" />
-            <InstructionsList :steps="steps" />
+            <RecipeHeader :title="recipe.title" :description="recipe.description" />
+            <IngredientList :ingredients="recipe.ingredients" />
+            <InstructionsList :steps="recipe.steps" />
         </div>
 
         <!-- Jobb oszlop -->
         <div class="space-y-6">
-            <RecipeRating :rating="rating" />
+            <RecipeRating :rating="recipe.rating" />
             <img
-                :src="picture.src"
-                :alt="picture.alt"
+                :src="recipe.image"
+                alt="Image of the recipe"
                 class="w-full h-64 object-cover rounded shadow"
             />
-            <AllergenList :allergens="allergens" />
+            <AllergenList :allergens="recipe.allergens" />
         </div>
     </main>
-    <CommentsSection />
+    <div v-else class="text-center py-20 text-gray-500">A recept nem található. 🫤</div>
 </template>
