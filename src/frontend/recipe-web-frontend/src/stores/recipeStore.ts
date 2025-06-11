@@ -19,7 +19,7 @@ export const useRecipeStore = defineStore('recipe', {
                     'Tölteni, főzni paradicsomszószban',
                 ],
                 allergens: ['Glutén'],
-                image: '/recipe.jpg',
+                image: new URL('@/assets/recipe.jpg', import.meta.url).href,
                 rating: 4.7,
             },
             {
@@ -37,7 +37,7 @@ export const useRecipeStore = defineStore('recipe', {
                     'Krumplit, kolbászt hozzáadni, megfőzni',
                 ],
                 allergens: [],
-                image: '/recipe.jpg',
+                image: new URL('@/assets/recipe.jpg', import.meta.url).href,
                 rating: 4.2,
             },
             {
@@ -55,7 +55,7 @@ export const useRecipeStore = defineStore('recipe', {
                     'Sütni 30 percig',
                 ],
                 allergens: ['Tej'],
-                image: '/recipe.jpg',
+                image: new URL('@/assets/recipe.jpg', import.meta.url).href,
                 rating: 4.6,
             },
             {
@@ -73,7 +73,7 @@ export const useRecipeStore = defineStore('recipe', {
                     'Lecsöpögtetni, tojással összesütni',
                 ],
                 allergens: ['Glutén', 'Tojás'],
-                image: '/recipe.jpg',
+                image: new URL('@/assets/recipe.jpg', import.meta.url).href,
                 rating: 4.5,
             },
             {
@@ -91,7 +91,7 @@ export const useRecipeStore = defineStore('recipe', {
                     'Főzni, fűszerezni',
                 ],
                 allergens: [],
-                image: '/recipe.jpg',
+                image: new URL('@/assets/recipe.jpg', import.meta.url).href,
                 rating: 4.0,
             },
             {
@@ -105,7 +105,7 @@ export const useRecipeStore = defineStore('recipe', {
                 ],
                 steps: ['Hagymát dinsztelni', 'Gombát pirítani', 'Tejföllel besűríteni'],
                 allergens: ['Tej'],
-                image: '/recipe.jpg',
+                image: new URL('@/assets/recipe.jpg', import.meta.url).href,
                 rating: 4.3,
             },
         ],

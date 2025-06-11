@@ -18,7 +18,7 @@
 
         <!-- Navigáció -->
         <ul class="flex space-x-6 text-gray-700">
-            <li><router-link to="/" class="hover:text-blue-600">Receptek</router-link></li>
+            <li><router-link to="/recipes" class="hover:text-blue-600">Receptek</router-link></li>
             <li>
                 <router-link to="/new-recipe" class="hover:text-blue-600">Új recept</router-link>
             </li>

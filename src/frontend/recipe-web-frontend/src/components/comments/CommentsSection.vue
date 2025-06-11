@@ -40,10 +40,10 @@ const comments = ref<CommentItem[]>([
     },
 ])
 
-function addComment(text: string) {
+function addComment({ name, message }: { name: string; message: string }) {
     const newComment: CommentItem = {
-        name: 'Anonim',
-        text,
+        name,
+        text: message,
         date: new Date().toLocaleDateString('hu-HU', {
             year: 'numeric',
             month: '2-digit',

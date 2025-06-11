@@ -28,21 +28,14 @@ const featured = computed(() => recipeStore.featuredRecipe)
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
         </section>
-        <RecipeHighlight
-            v-if="featured"
-            :title="featured.title"
-            :description="featured.description"
-            :image="featured.image"
-        />
+        <RecipeHighlight v-if="featured" :recipe="featured" />
         <section class="max-w-6xl mx-auto px-4 py-12">
             <h2 class="text-2xl font-bold mb-6 text-center">Kiemelt receptek</h2>
             <div class="grid gap-6 md:grid-cols-3">
                 <RecipeCard
                     v-for="recipe in recipeStore.recipes"
                     :key="recipe.id"
-                    :title="recipe.title"
-                    :image="recipe.image"
-                    :allergens="recipe.allergens.join(', ')"
+                    :recipe="recipe"
                 />
             </div>
         </section>
