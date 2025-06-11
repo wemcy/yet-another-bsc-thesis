@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import RecipeHighlight from '@/components/recipe/RecipeHighlight.vue'
+
 import RecipeCard from '@/components/recipe/RecipeCard.vue'
 import { useRecipeStore } from '@/stores/recipeStore'
+import { computed } from 'vue'
 
 const recipeStore = useRecipeStore()
-const featured = recipeStore.recipes[0]
+const featured = computed(() => recipeStore.featuredRecipe)
 </script>
 
 <template>
@@ -35,27 +37,12 @@ const featured = recipeStore.recipes[0]
         <section class="max-w-6xl mx-auto px-4 py-12">
             <h2 class="text-2xl font-bold mb-6 text-center">Kiemelt receptek</h2>
             <div class="grid gap-6 md:grid-cols-3">
-                <!-- Receptkártya 1 -->
                 <RecipeCard
                     v-for="recipe in recipeStore.recipes"
                     :key="recipe.id"
                     :title="recipe.title"
                     :image="recipe.image"
                     :allergens="recipe.allergens.join(', ')"
-                />
-
-                <!-- Receptkártya 2 -->
-                <RecipeCard
-                    title="Paprikás krumpli"
-                    image="@/assets/recipe.jpg"
-                    allergens="gluténmentes"
-                />
-
-                <!-- Receptkártya 3 -->
-                <RecipeCard
-                    title="Paprikás krumpli"
-                    image="@/assets/recipe.jpg"
-                    allergens="gluténmentes"
                 />
             </div>
         </section>

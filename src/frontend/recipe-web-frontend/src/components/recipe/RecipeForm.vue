@@ -88,6 +88,14 @@
                 </label>
             </div>
         </div>
+        <!-- Image upload -->
+        <div>
+            <label class="block font-semibold mb-2">Kép feltöltése</label>
+            <input type="file" accept="image/*" @change="handleImageChange" />
+            <div v-if="imageUrl" class="mt-2">
+                <img :src="imageUrl" alt="Preview" class="w-64 h-40 object-cover rounded shadow" />
+            </div>
+        </div>
 
         <!-- Submit -->
         <div class="text-right pt-4">
@@ -103,29 +111,30 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRecipeStore } from '@/stores/recipeStore'
+import { useRouter } from 'vue-router'
+import { allergenList } from '@/types/recipe/allergens.d'
 
+const recipeStore = useRecipeStore()
+const router = useRouter()
+
+const imageFile = ref<File | null>(null)
+const imageUrl = ref<string | null>(null)
+
+function handleImageChange(e: Event) {
+    const file = (e.target as HTMLInputElement)?.files?.[0]
+    if (file) {
+        imageFile.value = file
+        imageUrl.value = URL.createObjectURL(file)
+    }
+}
 const title = ref('')
 const description = ref('')
 const ingredients = ref([{ amount: '', unit: '', name: '' }])
 const steps = ref([''])
 const selectedAllergens = ref<string[]>([])
 
-const allergenOptions = [
-    'Glutén',
-    'Tej',
-    'Tojás',
-    'Hal',
-    'Földimogyoró',
-    'Szójabab',
-    'Diófélék',
-    'Zeller',
-    'Mustár',
-    'Szezámmag',
-    'Kén-dioxid',
-    'Csillagfürt',
-    'Puhatestűek',
-]
-
+const allergenOptions = allergenList
 function addIngredient() {
     ingredients.value.push({ amount: '', unit: '', name: '' })
 }
@@ -141,12 +150,17 @@ function removeStep(index: number) {
 }
 
 function submit() {
-    console.log({
+    const newRecipe = {
         title: title.value,
         description: description.value,
         ingredients: ingredients.value,
         steps: steps.value,
         allergens: selectedAllergens.value,
-    })
+        image: imageUrl.value || '', // vagy később file mentés backendre
+        rating: 0, // alapértékelés
+    }
+
+    recipeStore.addRecipe(newRecipe)
+    router.push({ name: 'Home' }) // vagy új recept oldalra navigálás
 }
 </script>
