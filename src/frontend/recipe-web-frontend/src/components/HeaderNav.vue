@@ -2,10 +2,12 @@
     <nav
         class="bg-white shadow-md px-6 py-4 flex flex-col md:flex-row items-center md:justify-between gap-4 md:gap-0"
     >
-        <!-- Logó -->
-        <div class="text-2xl font-bold text-gray-800">ReceptApp</div>
+        <!-- Logó / Főoldal link -->
+        <router-link to="/" class="text-2xl font-bold text-gray-800 hover:text-blue-600 transition">
+            ReceptApp
+        </router-link>
 
-        <!-- Kereső mező -->
+        <!-- Kereső -->
         <div class="w-full md:w-1/2">
             <input
                 type="text"
@@ -18,7 +20,7 @@
         <ul class="flex space-x-6 text-gray-700">
             <li><router-link to="/" class="hover:text-blue-600">Receptek</router-link></li>
             <li>
-                <router-link to="/new-recept" class="hover:text-blue-600">Új recept</router-link>
+                <router-link to="/new-recipe" class="hover:text-blue-600">Új recept</router-link>
             </li>
             <li><router-link to="/profile" class="hover:text-blue-600">Profil</router-link></li>
         </ul>

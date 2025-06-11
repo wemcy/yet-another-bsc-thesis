@@ -14,7 +14,6 @@ const recipe = recipeStore.getById(route.params.id as string)
 </script>
 
 <template>
-    <CommentsSection />
     <main
         v-if="recipe"
         class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-10 text-gray-800"
@@ -38,4 +37,5 @@ const recipe = recipeStore.getById(route.params.id as string)
         </div>
     </main>
     <div v-else class="text-center py-20 text-gray-500">A recept nem található. 🫤</div>
+    <CommentsSection v-if="recipe" />
 </template>

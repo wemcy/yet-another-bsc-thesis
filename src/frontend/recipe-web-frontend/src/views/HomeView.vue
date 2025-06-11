@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import RecipeHighlight from '@/components/recipe/RecipeHighlight.vue'
-import ProfileEdit from './ProfileView.vue'
-import RecipeView from './RecipeView.vue'
 import RecipeCard from '@/components/recipe/RecipeCard.vue'
 import { useRecipeStore } from '@/stores/recipeStore'
 
@@ -62,10 +60,4 @@ const featured = recipeStore.recipes[0]
             </div>
         </section>
     </main>
-
-    <RecipeView></RecipeView>
-    <main class="max-w-4xl mx-auto px-4 py-10 text-gray-800">
-        <!-- Profil fejléc -->
-    </main>
-    <ProfileEdit> </ProfileEdit>
 </template>

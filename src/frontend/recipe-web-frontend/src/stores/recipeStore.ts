@@ -1,3 +1,4 @@
+import type { Recipe } from '@/types/recipe/recipe'
 import { defineStore } from 'pinia'
 
 export const useRecipeStore = defineStore('recipe', {
@@ -27,5 +28,15 @@ export const useRecipeStore = defineStore('recipe', {
 
     getters: {
         getById: (state) => (id: string) => state.recipes.find((r) => r.id === id),
+    },
+
+    actions: {
+        addRecipe(recipe: Omit<Recipe, 'id'>) {
+            const newRecipe = {
+                id: Date.now().toString(),
+                ...recipe,
+            }
+            this.recipes.push(newRecipe)
+        },
     },
 })
