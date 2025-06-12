@@ -11,6 +11,11 @@ import { useRecipeStore } from '@/stores/recipeStore'
 const route = useRoute()
 const recipeStore = useRecipeStore()
 const recipe = recipeStore.getById(route.params.id as string)
+
+function updateRating(newRating: number) {
+    const id = route.params.id[0]
+    recipeStore.updateRating(id, newRating)
+}
 </script>
 
 <template>
@@ -27,7 +32,7 @@ const recipe = recipeStore.getById(route.params.id as string)
 
         <!-- Jobb oszlop -->
         <div class="space-y-6">
-            <RecipeRating :rating="recipe.rating" />
+            <RecipeRating :rating="recipe.rating" @rate="updateRating" />
             <img
                 :src="recipe.image"
                 alt="Image of the recipe"

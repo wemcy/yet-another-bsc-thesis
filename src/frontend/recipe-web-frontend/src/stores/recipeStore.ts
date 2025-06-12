@@ -124,5 +124,9 @@ export const useRecipeStore = defineStore('recipe', {
             }
             this.recipes.push(newRecipe)
         },
+        updateRating(id: string, rating: number) {
+            const recipe = this.recipes.find((r) => r.id === id)
+            if (recipe) recipe.rating = rating
+        },
     },
 })
