@@ -23,6 +23,10 @@
                 {{ errors.description }}
             </p>
         </div>
+        <div>
+            <label class="block font-semibold mb-2">Értékelés</label>
+            <div class="text-lg">{{ props.recipe.rating }} ⭐</div>
+        </div>
 
         <!-- Ingredients -->
         <div>
@@ -117,24 +121,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRecipeStore } from '@/stores/recipeStore'
 import { useRouter } from 'vue-router'
 import { allergenList } from '@/types/recipe/allergens.d'
+import type { Recipe } from '@/types/recipe/recipe'
 
+const props = defineProps<{ recipe: Recipe }>()
 const recipeStore = useRecipeStore()
 const router = useRouter()
 
 const imageFile = ref<File | null>(null)
 const imageUrl = ref<string | null>(null)
-
-function handleImageChange(e: Event) {
-    const file = (e.target as HTMLInputElement)?.files?.[0]
-    if (file) {
-        imageFile.value = file
-        imageUrl.value = URL.createObjectURL(file)
-    }
-}
 
 const title = ref('')
 const description = ref('')
@@ -144,6 +142,29 @@ const selectedAllergens = ref<string[]>([])
 const errors = ref<Record<string, string>>({})
 
 const allergenOptions = allergenList
+
+watch(
+    () => props.recipe,
+    (newRecipe: Recipe) => {
+        if (newRecipe) {
+            title.value = newRecipe.title
+            description.value = newRecipe.description
+            ingredients.value = [...newRecipe.ingredients]
+            steps.value = [...newRecipe.steps]
+            selectedAllergens.value = [...newRecipe.allergens]
+            imageUrl.value = newRecipe.image || null
+        }
+    },
+    { immediate: true },
+)
+
+function handleImageChange(e: Event) {
+    const file = (e.target as HTMLInputElement)?.files?.[0]
+    if (file) {
+        imageFile.value = file
+        imageUrl.value = URL.createObjectURL(file)
+    }
+}
 
 function addIngredient() {
     ingredients.value.push({ amount: '', unit: '', name: '' })
@@ -174,17 +195,18 @@ function validateForm() {
 function submit() {
     if (!validateForm()) return
 
-    const newRecipe = {
+    const updatedRecipe = {
+        ...props.recipe,
         title: title.value,
         description: description.value,
         ingredients: ingredients.value,
         steps: steps.value,
         allergens: selectedAllergens.value,
-        image: imageUrl.value || '',
-        rating: 0,
+        image: imageUrl.value || props.recipe.image,
+        // rating marad, ne változtasd!
     }
 
-    recipeStore.addRecipe(newRecipe)
+    recipeStore.updateRecipe(updatedRecipe)
     router.push({ name: 'Home' })
 }
 </script>

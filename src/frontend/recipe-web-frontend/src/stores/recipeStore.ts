@@ -128,5 +128,9 @@ export const useRecipeStore = defineStore('recipe', {
             const recipe = this.recipes.find((r) => r.id === id)
             if (recipe) recipe.rating = rating
         },
+        updateRecipe(recipe: Recipe) {
+            const idx = this.recipes.findIndex((r) => r.id === recipe.id)
+            if (idx !== -1) this.recipes[idx] = recipe
+        },
     },
 })
