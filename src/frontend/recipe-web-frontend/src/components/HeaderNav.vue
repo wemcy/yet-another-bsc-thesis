@@ -24,5 +24,30 @@
             </li>
             <li><router-link to="/profile" class="hover:text-blue-600">Profil</router-link></li>
         </ul>
+        <template v-if="!auth.currentUser">
+            <button
+                @click="dummyLogin"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            >
+                Dummy bejelentkezés
+            </button>
+        </template>
     </nav>
 </template>
+
+<script setup lang="ts">
+import { useAuthStore } from '@/stores/authStore'
+
+const auth = useAuthStore()
+
+const dummyUser = {
+    name: 'Teszt Elek',
+    email: 'teszt@valami.hu',
+    password: 'titok',
+    registered: '2023-11-01',
+}
+
+function dummyLogin() {
+    auth.login(dummyUser)
+}
+</script>

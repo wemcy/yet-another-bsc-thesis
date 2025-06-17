@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useAuthStore } from '@/stores/authStore'
+
+const auth = useAuthStore()
 
 const editing = ref(false)
-const profile = ref({
-    name: 'Kovács Anna',
-    email: 'anna.kovacs@example.com',
-    password: '',
-    registered: '2023-11-01',
-})
+
+// Profil adatokat a store-ból vesszük
+const profile = ref({ ...auth.currentUser })
 
 const original = ref({ ...profile.value })
 
@@ -22,32 +22,37 @@ function cancelEdit() {
 }
 
 function saveEdit() {
-    // Itt jöhetne majd backend hívás
+    // Store-on keresztül frissítünk
+    auth.updateUser({
+        name: profile.value.name,
+        email: profile.value.email,
+        // csak amit módosítasz!
+        // password: profile.value.password,
+    })
     editing.value = false
 }
 </script>
 
 <template>
     <div class="max-w-xl mx-auto bg-white shadow p-6 rounded-md mt-10">
-        <div class="flex justify-between items-start mb-6">
-            <div>
-                <label class="block font-semibold mb-1">Profil kép</label>
-                <div
-                    class="w-16 h-16 border rounded-full flex items-center justify-center text-gray-400"
-                >
-                    X
+        <div v-if="auth.currentUser" class="space-y-4">
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <label class="block font-semibold mb-1">Profil kép</label>
+                    <div
+                        class="w-16 h-16 border rounded-full flex items-center justify-center text-gray-400"
+                    >
+                        X
+                    </div>
                 </div>
+                <button
+                    v-if="!editing"
+                    @click="startEdit"
+                    class="border px-4 py-1 rounded hover:bg-gray-100"
+                >
+                    Szerkesztés
+                </button>
             </div>
-            <button
-                v-if="!editing"
-                @click="startEdit"
-                class="border px-4 py-1 rounded hover:bg-gray-100"
-            >
-                Szerkesztés
-            </button>
-        </div>
-
-        <div class="space-y-4">
             <div>
                 <label class="block font-semibold">Név</label>
                 <input
@@ -55,7 +60,7 @@ function saveEdit() {
                     v-model="profile.name"
                     class="border rounded px-3 py-1 w-full"
                 />
-                <p v-else>{{ profile.name }}</p>
+                <p v-else>{{ auth.currentUser.name }}</p>
             </div>
 
             <div>
@@ -65,7 +70,7 @@ function saveEdit() {
                     v-model="profile.email"
                     class="border rounded px-3 py-1 w-full"
                 />
-                <p v-else>{{ profile.email }}</p>
+                <p v-else>{{ auth.currentUser.email }}</p>
             </div>
 
             <div>
@@ -88,8 +93,11 @@ function saveEdit() {
 
             <div>
                 <label class="block font-semibold">Regisztráció dátuma</label>
-                <p>{{ profile.registered }}</p>
+                <p>{{ auth.currentUser.registered }}</p>
             </div>
+        </div>
+        <div v-else>
+            <p class="text-red-500">Nem vagy bejelentkezve.</p>
         </div>
 
         <div v-if="editing" class="flex justify-end gap-2 mt-6">

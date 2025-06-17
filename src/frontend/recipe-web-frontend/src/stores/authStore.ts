@@ -13,6 +13,11 @@ export const useAuthStore = defineStore('auth', {
         logout() {
             this.currentUser = null
         },
+        updateUser(updates: Partial<User>) {
+            if (this.currentUser) {
+                this.currentUser = { ...this.currentUser, ...updates }
+            }
+        },
     },
 
     getters: {
