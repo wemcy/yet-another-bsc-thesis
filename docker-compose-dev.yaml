@@ -1,4 +1,4 @@
 services:
-  app:
+  frontend:
     build:
       target: development
