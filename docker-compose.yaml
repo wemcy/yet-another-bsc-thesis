@@ -1,0 +1,9 @@
+services:
+  app:
+    image: ghcr.io/wencyfyre/recipe-app-frontend:latest
+    build:
+      context: ./src/frontend/recipe-web-frontend/
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "8080:80"
