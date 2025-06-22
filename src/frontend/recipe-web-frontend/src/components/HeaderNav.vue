@@ -16,31 +16,41 @@
             />
         </div>
 
-        <!-- Navigáció -->
-        <ul class="flex space-x-6 text-gray-700">
+        <ul class="flex justify-end space-x-6 text-gray-700">
             <li><router-link to="/recipes" class="hover:text-blue-600">Receptek</router-link></li>
             <li>
                 <router-link to="/new-recipe" class="hover:text-blue-600">Új recept</router-link>
             </li>
-            <li><router-link to="/profile" class="hover:text-blue-600">Profil</router-link></li>
         </ul>
-        <template v-if="!auth.currentUser">
-            <button
-                @click="dummyLogin"
-                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-            >
-                Dummy bejelentkezés
-            </button>
-        </template>
+
+        <!-- Jobb oldalon csak avatar -->
+        <div class="flex items-center">
+            <template v-if="auth.currentUser">
+                <router-link to="/profile" class="ml-4">
+                    <ProfileAvatar :src="auth.currentUser?.avatarUrl" size="md" />
+                </router-link>
+            </template>
+            <template v-else>
+                <button
+                    @click="dummyLogin"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                >
+                    Belépés
+                </button>
+            </template>
+        </div>
     </nav>
 </template>
 
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/authStore'
+import ProfileAvatar from '@/components/profile/ProfileAvatar.vue'
+import type { User } from '@/types/profile/user'
 
 const auth = useAuthStore()
 
-const dummyUser = {
+const dummyUser: User = {
+    id: 'dummy-user',
     name: 'Teszt Elek',
     email: 'teszt@valami.hu',
     password: 'titok',
