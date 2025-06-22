@@ -1,11 +1,12 @@
 <template>
     <div v-if="auth.currentUser">
         <form @submit.prevent="submit" class="mt-6 space-y-4">
+            <!-- Név csak kiírva, nem szerkeszthető -->
             <input
-                v-model="name"
+                :value="auth.currentUser.name"
                 type="text"
-                placeholder="Neved (opcionális)"
-                class="w-full border rounded-lg px-4 py-2"
+                class="w-full border rounded-lg px-4 py-2 bg-gray-100 text-gray-500 cursor-not-allowed"
+                disabled
             />
             <textarea
                 v-model="message"
@@ -31,21 +32,19 @@ import { useAuthStore } from '@/stores/authStore'
 const auth = useAuthStore()
 
 const emit = defineEmits<{
-    (e: 'submit', payload: { name: string; message: string }): void
+    (e: 'submit', payload: { name: string | undefined; message: string }): void
 }>()
 
-const name = ref('')
 const message = ref('')
 
 function submit() {
     if (!message.value.trim()) return
 
     emit('submit', {
-        name: name.value.trim() || 'Anonim',
+        name: auth.currentUser?.name,
         message: message.value.trim(),
     })
 
-    name.value = ''
     message.value = ''
 }
 </script>
