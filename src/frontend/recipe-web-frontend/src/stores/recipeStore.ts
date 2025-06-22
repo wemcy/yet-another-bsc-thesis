@@ -6,7 +6,7 @@ export const useRecipeStore = defineStore('recipe', {
         recipes: [
             {
                 id: '1',
-                authorId: '1',
+                authorId: 'dummy-user',
                 title: 'Töltött paprika',
                 description: 'Egy klasszikus magyar kedvenc darált hússal és paradicsomszósszal.',
                 ingredients: [

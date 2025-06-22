@@ -207,6 +207,6 @@ function submit() {
     }
 
     recipeStore.updateRecipe(updatedRecipe)
-    router.push({ name: 'Home' })
+    router.push({ name: 'Recipe', params: { id: props.recipe.id } })
 }
 </script>

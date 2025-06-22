@@ -32,14 +32,17 @@ const isOwnRecipe = computed(
     >
         <!-- Bal oszlop -->
         <div class="md:col-span-2 space-y-6">
+            <div v-if="isOwnRecipe" class="flex justify-center mb-2">
+                <router-link
+                    :to="`/edit/${recipe.id}`"
+                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition flex items-center gap-2"
+                >
+                    <span>✏️</span>
+                    <span>Szerkesztés</span>
+                </router-link>
+            </div>
             <RecipeHeader :title="recipe.title" :description="recipe.description" />
-            <router-link
-                v-if="isOwnRecipe"
-                :to="`/edit/${recipe.id}`"
-                class="ml-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-            >
-                ✏️ Szerkesztés
-            </router-link>
+
             <IngredientList :ingredients="recipe.ingredients" />
             <InstructionsList :steps="recipe.steps" />
         </div>
