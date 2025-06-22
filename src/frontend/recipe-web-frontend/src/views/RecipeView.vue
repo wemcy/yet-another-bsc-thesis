@@ -7,15 +7,22 @@ import AllergenList from '@/components/recipe/AllergenList.vue'
 import RecipeRating from '@/components/recipe/RecipeRating.vue'
 import { useRoute } from 'vue-router'
 import { useRecipeStore } from '@/stores/recipeStore'
+import { useAuthStore } from '@/stores/authStore'
+import { computed } from 'vue'
 
 const route = useRoute()
 const recipeStore = useRecipeStore()
+const auth = useAuthStore()
 const recipe = recipeStore.getById(route.params.id as string)
 
 function updateRating(newRating: number) {
     const id = route.params.id[0]
     recipeStore.updateRating(id, newRating)
 }
+
+const isOwnRecipe = computed(
+    () => recipe && auth.currentUser && recipe.authorId === auth.currentUser.id,
+)
 </script>
 
 <template>
@@ -26,6 +33,13 @@ function updateRating(newRating: number) {
         <!-- Bal oszlop -->
         <div class="md:col-span-2 space-y-6">
             <RecipeHeader :title="recipe.title" :description="recipe.description" />
+            <router-link
+                v-if="isOwnRecipe"
+                :to="`/edit/${recipe.id}`"
+                class="ml-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+            >
+                ✏️ Szerkesztés
+            </router-link>
             <IngredientList :ingredients="recipe.ingredients" />
             <InstructionsList :steps="recipe.steps" />
         </div>

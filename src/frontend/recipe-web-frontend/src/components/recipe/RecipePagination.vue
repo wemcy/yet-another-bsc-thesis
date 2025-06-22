@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Recipe } from '@/types/recipe/recipe'
 import { computed, ref, watch } from 'vue'
 
 const props = defineProps<{

@@ -6,6 +6,7 @@ export const useRecipeStore = defineStore('recipe', {
         recipes: [
             {
                 id: '1',
+                authorId: '1',
                 title: 'Töltött paprika',
                 description: 'Egy klasszikus magyar kedvenc darált hússal és paradicsomszósszal.',
                 ingredients: [
@@ -24,6 +25,7 @@ export const useRecipeStore = defineStore('recipe', {
             },
             {
                 id: '2',
+                authorId: '1',
                 title: 'Paprikás krumpli',
                 description: 'Egy gyors, egyszerű és laktató magyar étel kolbásszal.',
                 ingredients: [
@@ -42,6 +44,7 @@ export const useRecipeStore = defineStore('recipe', {
             },
             {
                 id: '3',
+                authorId: '1',
                 title: 'Rakott karfiol',
                 description: 'Sült karfiolos egytálétel tejföllel és sajttal rétegezve.',
                 ingredients: [
@@ -60,6 +63,7 @@ export const useRecipeStore = defineStore('recipe', {
             },
             {
                 id: '4',
+                authorId: '1',
                 title: 'Tojásos nokedli',
                 description: 'Puha nokedli tojással összesütve, friss salátával tálalva.',
                 ingredients: [
@@ -78,6 +82,7 @@ export const useRecipeStore = defineStore('recipe', {
             },
             {
                 id: '5',
+                authorId: '1',
                 title: 'Lecsó',
                 description: 'Zöldséges magyar klasszikus, kenyérrel vagy tojással tálalva.',
                 ingredients: [
@@ -96,6 +101,7 @@ export const useRecipeStore = defineStore('recipe', {
             },
             {
                 id: '6',
+                authorId: '1',
                 title: 'Tejfölös gombapaprikás',
                 description: 'Selymes, tejfölös gombaragu, galuskával a legjobb.',
                 ingredients: [
