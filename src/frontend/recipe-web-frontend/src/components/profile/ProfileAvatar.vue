@@ -1,6 +1,6 @@
 <template>
     <img
-        :src="src || defaultAvatar"
+        :src="errored ? defaultAvatar : src || defaultAvatar"
         :alt="alt"
         :class="['rounded-full border-2 border-blue-400 object-cover', sizeClass]"
         @error="onError"

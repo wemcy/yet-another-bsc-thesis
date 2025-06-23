@@ -94,18 +94,24 @@
 import { ref, watch } from 'vue'
 import ProfileAvatar from '@/components/profile/ProfileAvatar.vue'
 import type { User } from '@/types/profile/user'
+import type { ProfileError } from '@/types/profile/profile'
 
 const props = defineProps<{
     profile: User
     editing: boolean
-    errors?: { name?: string; email?: string; password?: string; passwordConfirm?: string }
+    errors?: ProfileError
     passwordConfirm?: string
     imageUrl?: string | null
 }>()
 
-const localProfile = ref({ ...props.profile })
+const localProfile = ref<User>({ ...props.profile })
 const emit = defineEmits<{
     (e: 'updatePasswordConfirm', value: string): void
+    (e: 'updateProfile', profile: User): void
+    (e: 'edit'): void
+    (e: 'cancel'): void
+    (e: 'save'): void
+    (e: 'imageChange', event: Event): void
 }>()
 
 watch(
