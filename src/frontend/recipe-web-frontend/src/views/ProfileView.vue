@@ -4,14 +4,24 @@ import ProfileHeader from '@/components/profile/ProfileHeader.vue'
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import { useRecipeStore } from '@/stores/recipeStore'
+import type { User } from '@/types/profile/user'
 
 const auth = useAuthStore()
 const recipes = useRecipeStore()
 
 const editing = ref(false)
-const profile = ref({ ...auth.currentUser })
+const profile = ref<User>(
+    auth.currentUser ?? {
+        id: '', // vagy egyéb safe default
+        name: '',
+        email: '',
+        avatarUrl: undefined,
+        registered: '',
+        // stb.
+    },
+)
 const imageFile = ref<File | null>(null)
-const imageUrl = ref(profile.value.avatarUrl ?? null)
+const imageUrl = ref<string | undefined>(profile.value.avatarUrl)
 const passwordConfirm = ref('')
 import { watch } from 'vue'
 
@@ -20,7 +30,7 @@ watch(
     (newUser) => {
         if (newUser) {
             profile.value = { ...newUser }
-            imageUrl.value = newUser.avatarUrl ?? null
+            imageUrl.value = newUser.avatarUrl ?? undefined
         }
     },
     { immediate: true },
@@ -73,7 +83,7 @@ function saveEdit() {
         name: profile.value.name,
         email: profile.value.email,
         avatarUrl: imageUrl.value,
-        // password: profile.value.password, // csak ha meg van adva!
+        ...(profile.value.password ? { password: profile.value.password } : {}),
     })
     editing.value = false
     passwordConfirm.value = ''

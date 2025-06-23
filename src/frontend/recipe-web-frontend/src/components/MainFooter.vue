@@ -1,3 +1,4 @@
+ChatGPT said: Persze, itt a magyarított verzió: vue Copy Edit
 <template>
     <footer class="bg-gray-100 text-gray-700 py-6 px-4 mt-10">
         <div
@@ -10,40 +11,38 @@
                 <img src="../assets/logo.svg" alt="ReceptApp logó" class="w-24 h-24" />
                 <span class="text-lg font-semibold">ReceptApp</span>
             </div>
-            <nav aria-label="Account" class="flex flex-col sm:items-start items-center">
-                <p class="text-lg font-bold just">Account</p>
+            <nav aria-label="Fiók" class="flex flex-col sm:items-start items-center">
+                <p class="text-lg font-bold">Fiók</p>
                 <ul class="mt-6">
-                    <li><a class="mb-4" href="#">Create account</a></li>
-                    <li><a class="mb-4" href="#">Sign in</a></li>
-                    <li><a class="mb-4" href="#">iOS app</a></li>
-                    <li><a class="mb-4" href="#">Android app</a></li>
+                    <li><a class="mb-4" href="#">Fiók létrehozása</a></li>
+                    <li><a class="mb-4" href="#">Bejelentkezés</a></li>
+                    <li><a class="mb-4" href="#">iOS alkalmazás</a></li>
+                    <li><a class="mb-4" href="#">Android alkalmazás</a></li>
                 </ul>
             </nav>
-            <nav aria-label="Company" class="flex flex-col sm:items-start items-center">
-                <p class="text-lg font-bold just">Company</p>
+            <nav aria-label="Cég" class="flex flex-col sm:items-start items-center">
+                <p class="text-lg font-bold">Cég</p>
                 <ul class="mt-6">
-                    <li><a class="mb-4" href="#">About RecipeApp</a></li>
-                    <li><a class="mb-4" href="#">For Business</a></li>
-                    <li><a class="mb-4" href="#">Cooking partners</a></li>
-                    <li><a class="mb-4" href="#">Careers</a></li>
+                    <li><a class="mb-4" href="#">A ReceptApp-ról</a></li>
+                    <li><a class="mb-4" href="#">Üzleti felhasználóknak</a></li>
+                    <li><a class="mb-4" href="#">Főzőpartnerek</a></li>
+                    <li><a class="mb-4" href="#">Karrier</a></li>
                 </ul>
             </nav>
-
-            <nav aria-label="Resources" class="flex flex-col sm:items-start items-center">
-                <p class="text-lg font-bold just">Resources</p>
+            <nav aria-label="Források" class="flex flex-col sm:items-start items-center">
+                <p class="text-lg font-bold">Források</p>
                 <ul class="mt-6">
-                    <li><a class="mb-4" href="#">Recipe directory </a></li>
-                    <li><a class="mb-4" href="#">Help center</a></li>
-                    <li><a class="mb-4" href="#">Privacy & terms</a></li>
+                    <li><a class="mb-4" href="#">Recept katalógus</a></li>
+                    <li><a class="mb-4" href="#">Súgóközpont</a></li>
+                    <li><a class="mb-4" href="#">Adatvédelem és felhasználási feltételek</a></li>
                 </ul>
             </nav>
-
             <!-- Kapcsolat -->
             <div class="text-base self-center flex flex-col sm:items-start items-center">
-                <span>Connect: </span>
-                <a href="mailto:info@receptapp.hu" class="hover:text-blue-600 block md:inline"
-                    >info@receptapp.hu</a
-                >
+                <span>Kapcsolat:</span>
+                <a href="mailto:info@receptapp.hu" class="hover:text-blue-600 block md:inline">
+                    info@receptapp.hu
+                </a>
             </div>
         </div>
     </footer>

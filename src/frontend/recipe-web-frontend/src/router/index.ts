@@ -23,7 +23,7 @@ const router = createRouter({
             path: '/edit/:id',
             name: 'EditRecipe',
             component: EditRecipeView,
-            props: true, // így átmegy az id propban
+            props: true,
         },
         { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFoundView },
     ],

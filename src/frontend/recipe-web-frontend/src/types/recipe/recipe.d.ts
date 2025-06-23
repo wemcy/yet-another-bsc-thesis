@@ -11,9 +11,13 @@ export type Recipe = {
     image: string
     rating: number
 }
-interface RecipeFormErrors {
+export interface RecipeFormErrors {
     title?: string
     description?: string
     ingredients?: string
     steps?: string
+}
+
+export interface RecipeState {
+    recipes: Recipe[]
 }
