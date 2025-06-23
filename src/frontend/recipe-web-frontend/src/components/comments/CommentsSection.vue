@@ -20,12 +20,7 @@
 import { ref } from 'vue'
 import Comment from './CommentPiece.vue'
 import CommentForm from './CommentForm.vue'
-
-type CommentItem = {
-    name: string
-    text: string
-    date: string
-}
+import type { CommentItem } from '@/types/comments'
 
 const comments = ref<CommentItem[]>([
     {

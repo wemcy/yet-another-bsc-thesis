@@ -29,10 +29,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
+import type { CommentPayload } from '@/types/comments'
 const auth = useAuthStore()
 
 const emit = defineEmits<{
-    (e: 'submit', payload: { name: string | undefined; message: string }): void
+    (event: 'submit', payload: CommentPayload): void
 }>()
 
 const message = ref('')
@@ -41,7 +42,7 @@ function submit() {
     if (!message.value.trim()) return
 
     emit('submit', {
-        name: auth.currentUser?.name,
+        name: auth.currentUser!.name,
         message: message.value.trim(),
     })
 
