@@ -25,7 +25,7 @@
         </div>
         <div>
             <label class="block font-semibold mb-2">Értékelés</label>
-            <div class="text-lg">{{ props.recipe.rating }} ⭐</div>
+            <div class="text-lg">{{ recipe.rating }} ⭐</div>
         </div>
 
         <!-- Ingredients -->
@@ -124,27 +124,27 @@
 import { ref, watch } from 'vue'
 import { useRecipeStore } from '@/stores/recipeStore'
 import { useRouter } from 'vue-router'
-import { allergenList } from '@/types/recipe/allergens.d'
-import type { Recipe } from '@/types/recipe/recipe'
-
-const props = defineProps<{ recipe: Recipe }>()
+import { Allergen, allergenList } from '@/types/recipe/allergens.d'
+import type { Recipe, RecipeFormErrors } from '@/types/recipe/recipe'
+import type { Ingredient } from '@/types/recipe/ingredient'
+const { recipe } = defineProps<{ recipe: Recipe }>()
 const recipeStore = useRecipeStore()
 const router = useRouter()
 
+const title = ref<string>('')
+const description = ref<string>('')
+const ingredients = ref<Ingredient[]>([{ amount: '', unit: '', name: '' }])
 const imageFile = ref<File | null>(null)
 const imageUrl = ref<string | null>(null)
 
-const title = ref('')
-const description = ref('')
-const ingredients = ref([{ amount: '', unit: '', name: '' }])
-const steps = ref([''])
-const selectedAllergens = ref<string[]>([])
-const errors = ref<Record<string, string>>({})
+const steps = ref<string[]>([''])
+const selectedAllergens = ref<Allergen[]>([])
+const errors = ref<RecipeFormErrors>({})
 
 const allergenOptions = allergenList
 
 watch(
-    () => props.recipe,
+    () => recipe,
     (newRecipe: Recipe) => {
         if (newRecipe) {
             title.value = newRecipe.title
@@ -195,18 +195,18 @@ function validateForm() {
 function submit() {
     if (!validateForm()) return
 
-    const updatedRecipe = {
-        ...props.recipe,
+    const updatedRecipe: Recipe = {
+        ...recipe, // ez már tartalmazza: id, authorId, rating, stb.
         title: title.value,
         description: description.value,
         ingredients: ingredients.value,
         steps: steps.value,
         allergens: selectedAllergens.value,
-        image: imageUrl.value || props.recipe.image,
-        // rating marad, ne változtasd!
+        image: imageUrl.value || recipe.image,
+        // rating marad, ha nem szerkeszted!
     }
 
     recipeStore.updateRecipe(updatedRecipe)
-    router.push({ name: 'Recipe', params: { id: props.recipe.id } })
+    router.push({ name: 'Recipe', params: { id: recipe.id } })
 }
 </script>

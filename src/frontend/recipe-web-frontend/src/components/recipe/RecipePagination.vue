@@ -11,7 +11,7 @@ const currentPage = ref(1)
 const perPage = computed(() => props.perPage || 8)
 const totalPages = computed(() => Math.ceil(props.items.length / perPage.value))
 
-const paginatedItems = computed(() =>
+const paginatedItems = computed<Recipe[]>(() =>
     props.items.slice((currentPage.value - 1) * perPage.value, currentPage.value * perPage.value),
 )
 
@@ -24,6 +24,9 @@ watch(
 )
 
 defineExpose({ currentPage, totalPages, paginatedItems })
+function setPage(n: number) {
+    currentPage.value = Math.min(Math.max(n, 1), totalPages.value)
+}
 </script>
 
 <template>
@@ -31,7 +34,7 @@ defineExpose({ currentPage, totalPages, paginatedItems })
         <slot :items="paginatedItems" />
         <div class="flex justify-center mt-8 space-x-2">
             <button
-                @click="currentPage--"
+                @click="setPage(currentPage - 1)"
                 :disabled="currentPage === 1"
                 class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
             >
@@ -42,12 +45,12 @@ defineExpose({ currentPage, totalPages, paginatedItems })
                 :key="n"
                 class="px-3 py-2 rounded"
                 :class="n === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-200'"
-                @click="currentPage = n"
+                @click="setPage(n)"
                 style="cursor: pointer"
                 >{{ n }}</span
             >
             <button
-                @click="currentPage++"
+                @click="setPage(currentPage + 1)"
                 :disabled="currentPage === totalPages"
                 class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
             >

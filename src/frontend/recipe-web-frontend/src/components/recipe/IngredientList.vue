@@ -10,11 +10,9 @@
 </template>
 
 <script setup lang="ts">
+import type { Ingredient } from '@/types/recipe/ingredient'
+
 defineProps<{
-    ingredients: {
-        name: string
-        amount: number | string
-        unit: string
-    }[]
+    ingredients: Ingredient[]
 }>()
 </script>

@@ -13,7 +13,5 @@
 import type { Recipe } from '@/types/recipe/recipe'
 import { defineProps } from 'vue'
 
-defineProps<{
-    recipe: Recipe
-}>()
+const { recipe } = defineProps<{ recipe: Recipe }>()
 </script>

@@ -120,9 +120,13 @@
 import { ref } from 'vue'
 import { useRecipeStore } from '@/stores/recipeStore'
 import { useRouter } from 'vue-router'
-import { allergenList } from '@/types/recipe/allergens.d'
+import { Allergen, allergenList } from '@/types/recipe/allergens.d'
+import type { Recipe, RecipeFormErrors } from '@/types/recipe/recipe'
+import type { Ingredient } from '@/types/recipe/ingredient'
+import { useAuthStore } from '@/stores/authStore'
 
 const recipeStore = useRecipeStore()
+const authStore = useAuthStore() // Assuming you have an auth store to get the authorId
 const router = useRouter()
 
 const imageFile = ref<File | null>(null)
@@ -136,12 +140,12 @@ function handleImageChange(e: Event) {
     }
 }
 
-const title = ref('')
-const description = ref('')
-const ingredients = ref([{ amount: '', unit: '', name: '' }])
-const steps = ref([''])
-const selectedAllergens = ref<string[]>([])
-const errors = ref<Record<string, string>>({})
+const title = ref<string>('')
+const description = ref<string>('')
+const ingredients = ref<Ingredient[]>([{ amount: '', unit: '', name: '' }])
+const steps = ref<string[]>([''])
+const selectedAllergens = ref<Allergen[]>([])
+const errors = ref<RecipeFormErrors>({})
 
 const allergenOptions = allergenList
 
@@ -159,8 +163,23 @@ function removeStep(index: number) {
     steps.value.splice(index, 1)
 }
 
+function resetForm() {
+    title.value = ''
+    description.value = ''
+    ingredients.value = [{ amount: '', unit: '', name: '' }]
+    steps.value = ['']
+    selectedAllergens.value = []
+    imageFile.value = null
+    imageUrl.value = null
+    errors.value = {}
+}
+
 function validateForm() {
     errors.value = {}
+    if (!authStore.currentUser) {
+        errors.value.title = 'Csak bejelentkezve lehet receptet feltölteni.'
+        return
+    }
     if (!title.value.trim()) errors.value.title = 'A cím megadása kötelező.'
     if (!description.value.trim()) errors.value.description = 'A leírás nem lehet üres.'
     if (!ingredients.value.some((i) => i.name.trim()))
@@ -174,7 +193,9 @@ function validateForm() {
 function submit() {
     if (!validateForm()) return
 
-    const newRecipe = {
+    const newRecipe: Recipe = {
+        id: Date.now().toString(),
+        authorId: authStore.currentUser!.id,
         title: title.value,
         description: description.value,
         ingredients: ingredients.value,
@@ -186,5 +207,6 @@ function submit() {
 
     recipeStore.addRecipe(newRecipe)
     router.push({ name: 'Home' })
+    resetForm()
 }
 </script>
