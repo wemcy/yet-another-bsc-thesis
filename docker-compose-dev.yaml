@@ -2,3 +2,11 @@ services:
   frontend:
     build:
       target: development
+  adminer:
+    image: adminer:latest
+    environment:
+      ADMINER_DEFAULT_SERVER: authentication_database
+    depends_on:
+      - authentication_database
+    ports:
+      - "8082:8080"

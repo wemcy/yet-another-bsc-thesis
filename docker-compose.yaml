@@ -1,20 +1,60 @@
 services:
+  proxy:
+    image: ghcr.io/wencyfyre/recipe-app-proxy:latest
+    ports:
+      - "9393:80"
+    build:
+      context: ./src/proxy/
+      dockerfile: Dockerfile
+    environment:
+      PUBLIC_HOST: localhost
+      PUBLIC_PORT: 9393
+      FRONTEND_HOST: frontend
+      FRONTEND_PORT: 80
+      BACKEND_HOST: backend
+      BACKEND_PORT: 80
+      KEYCLOAK_HOST: authentication
+      KEYCLOAK_PORT: 8080
+    depends_on:
+      - frontend
+      - backend
+      - authentication
   frontend:
     image: ghcr.io/wencyfyre/recipe-app-frontend:latest
     build:
       context: ./src/frontend/recipe-web-frontend/
       dockerfile: Dockerfile
       target: production
-    ports:
-      - "8080:80"
   authentication:
     image: ghcr.io/wencyfyre/recipe-app-authentication:latest
+    depends_on:
+      - authentication_database
     build:
       context: ./src/authentication/
       dockerfile: Dockerfile
-    ports:
-      - "8081:8080"
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
       KEYCLOAK_IMPORT: /opt/keycloak/data/import/dev-realm-config.json
+      KC_DB: postgres
+      KC_DB_URL_HOST: authentication_database
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      KC_DB_PORT: 5432
+  authentication_database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+      POSTGRES_DB: keycloak
+    volumes:
+      - authentication_db_data:/var/lib/postgresql/data
+  backend:
+    image: ghcr.io/wencyfyre/recipe-app-backend:latest
+    build:
+      context: ./src/backend
+      dockerfile: Dockerfile
+
+volumes:
+  authentication_db_data:
