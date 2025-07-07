@@ -36,13 +36,11 @@ services:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
       KEYCLOAK_IMPORT: /opt/keycloak/data/import/dev-realm-config.json
-      KC_HOSTNAME: http://localhost:9393
-      KC_HTTP_RELATIVE_PATH: /auth/
+      KC_HOSTNAME: http://localhost:9393/auth #TODO megcsinálni ezt a fost hogy a /auth ne itt legyen
+      KC_HTTP_RELATIVE_PATH: /auth
       KC_HTTP_ENABLED: true
       KC_PROXY_HEADERS: forwarded
-      KC_HOSTNAME_DEBUG: true
       KC_HOSTNAME_STRICT: false
-      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: false
 
       KC_LOG_LEVEL: DEBUG
       KC_DB: postgres
