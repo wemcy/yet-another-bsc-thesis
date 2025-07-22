@@ -42,7 +42,7 @@ services:
       KC_PROXY_HEADERS: forwarded
       KC_HOSTNAME_STRICT: false
 
-      KC_LOG_LEVEL: DEBUG
+      KC_LOG_LEVEL: INFO
       KC_DB: postgres
       KC_DB_URL_HOST: authentication_database
       KC_DB_URL_DATABASE: keycloak
