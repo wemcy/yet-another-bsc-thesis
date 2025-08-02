@@ -17,6 +17,9 @@ dependencies:
   pinia:
     specifier: ^3.0.1
     version: 3.0.2(typescript@5.8.3)(vue@3.5.14)
+  recipe-api-client:
+    specifier: link:..\recipe-api-client
+    version: link:../recipe-api-client
   tailwindcss:
     specifier: ^4.1.7
     version: 4.1.7

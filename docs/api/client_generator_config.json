@@ -1,0 +1,6 @@
+{
+    "additionalProperties": {
+        "importFileExtension": ".js",
+        "supportsES6": true
+    }
+}

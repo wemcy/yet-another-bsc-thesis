@@ -9,7 +9,6 @@
 ../src/WencyFyre.RecipeApp.Backend.Api/OpenApi/TypeExtensions.cs
 ../src/WencyFyre.RecipeApp.Backend.Api/WencyFyre.RecipeApp.Backend.Api.csproj
 ../src/WencyFyre.RecipeApp.Backend.Api/WencyFyre.RecipeApp.Backend.Api.nuspec
-.openapi-generator-ignore
 README.md
 WencyFyre.RecipeApp.Backend.Api.sln
 build.bat

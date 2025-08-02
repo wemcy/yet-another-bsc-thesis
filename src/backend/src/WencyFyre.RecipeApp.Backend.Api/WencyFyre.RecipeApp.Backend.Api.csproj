@@ -10,7 +10,7 @@
         <OutputType>Library</OutputType>
         <AssemblyName>WencyFyre.RecipeApp.Backend.Api</AssemblyName>
         <PackageId>WencyFyre.RecipeApp.Backend.Api</PackageId>
-        <UserSecretsId>fe76a5a6-72a1-4028-b3c7-b2cb06750221</UserSecretsId>
+        <UserSecretsId>7334ab29-a684-4376-86b7-8f63e49c7f74</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>

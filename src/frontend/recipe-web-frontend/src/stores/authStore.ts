@@ -17,6 +17,7 @@ export const useAuthStore = defineStore('auth', {
             if (this.currentUser) {
                 this.currentUser = { ...this.currentUser, ...updates }
             }
+
         },
     },
 

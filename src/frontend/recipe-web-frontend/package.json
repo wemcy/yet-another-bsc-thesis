@@ -19,6 +19,7 @@
     "@tailwindcss/vite": "^4.1.7",
     "keycloak-js": "^26.2.0",
     "pinia": "^3.0.1",
+    "recipe-api-client": "link:..\\recipe-api-client",
     "tailwindcss": "^4.1.7",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
