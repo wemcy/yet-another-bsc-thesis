@@ -13,4 +13,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WencyFyre.RecipeApp.Backend.Api\WencyFyre.RecipeApp.Backend.Api.csproj" />
+  </ItemGroup>
+
 </Project>
