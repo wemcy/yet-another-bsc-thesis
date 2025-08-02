@@ -1,0 +1,16 @@
+../src/WencyFyre.RecipeApp.Backend.Api/.gitignore
+../src/WencyFyre.RecipeApp.Backend.Api/Attributes/ValidateModelStateAttribute.cs
+../src/WencyFyre.RecipeApp.Backend.Api/Authentication/ApiAuthentication.cs
+../src/WencyFyre.RecipeApp.Backend.Api/Controllers/AliveApi.cs
+../src/WencyFyre.RecipeApp.Backend.Api/Controllers/RecipesApi.cs
+../src/WencyFyre.RecipeApp.Backend.Api/Converters/CustomEnumConverter.cs
+../src/WencyFyre.RecipeApp.Backend.Api/Formatters/InputFormatterStream.cs
+../src/WencyFyre.RecipeApp.Backend.Api/Models/CreateRecipeDTO.cs
+../src/WencyFyre.RecipeApp.Backend.Api/OpenApi/TypeExtensions.cs
+../src/WencyFyre.RecipeApp.Backend.Api/WencyFyre.RecipeApp.Backend.Api.csproj
+../src/WencyFyre.RecipeApp.Backend.Api/WencyFyre.RecipeApp.Backend.Api.nuspec
+.openapi-generator-ignore
+README.md
+WencyFyre.RecipeApp.Backend.Api.sln
+build.bat
+build.sh
