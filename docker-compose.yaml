@@ -3,9 +3,6 @@ services:
     image: ghcr.io/wemcy/recipe-app-proxy:latest
     ports:
       - "9393:80"
-    build:
-      context: ./src/proxy/
-      dockerfile: Dockerfile
     environment:
       PUBLIC_HOST: localhost
       PUBLIC_PORT: 9393
@@ -21,17 +18,11 @@ services:
       - authentication
   frontend:
     image: ghcr.io/wemcy/recipe-app-frontend:latest
-    build:
-      context: ./src/frontend/
-      dockerfile: Dockerfile
-      target: production
+
   authentication:
     image: ghcr.io/wemcy/recipe-app-authentication:latest
     depends_on:
       - authentication_database
-    build:
-      context: ./src/authentication/
-      dockerfile: Dockerfile
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
@@ -59,9 +50,7 @@ services:
       - authentication_db_data:/var/lib/postgresql/data
   backend:
     image: ghcr.io/wemcy/recipe-app-backend:latest
-    build:
-      context: ./src/backend
-      dockerfile: Dockerfile
+
 
 volumes:
   authentication_db_data:
