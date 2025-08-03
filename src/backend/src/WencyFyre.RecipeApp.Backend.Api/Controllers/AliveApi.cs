@@ -14,10 +14,10 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using WencyFyre.RecipeApp.Backend.Api.Attributes;
-using WencyFyre.RecipeApp.Backend.Api.Models;
+using Wemcy.RecipeApp.Backend.Api.Attributes;
+using Wemcy.RecipeApp.Backend.Api.Models;
 
-namespace WencyFyre.RecipeApp.Backend.Api.Controllers
+namespace Wemcy.RecipeApp.Backend.Api.Controllers
 { 
     /// <summary>
     /// 

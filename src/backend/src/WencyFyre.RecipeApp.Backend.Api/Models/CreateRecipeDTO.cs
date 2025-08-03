@@ -16,9 +16,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using WencyFyre.RecipeApp.Backend.Api.Converters;
+using Wemcy.RecipeApp.Backend.Api.Converters;
 
-namespace WencyFyre.RecipeApp.Backend.Api.Models
+namespace Wemcy.RecipeApp.Backend.Api.Models
 { 
     /// <summary>
     /// 

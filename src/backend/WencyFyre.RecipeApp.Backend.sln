@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WencyFyre.RecipeApp.Backend", "src\WencyFyre.RecipeApp.Backend\WencyFyre.RecipeApp.Backend.csproj", "{358C83D7-CF5A-4002-9EDC-849185A93DFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wemcy.RecipeApp.Backend", "src\Wemcy.RecipeApp.Backend\Wemcy.RecipeApp.Backend.csproj", "{358C83D7-CF5A-4002-9EDC-849185A93DFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WencyFyre.RecipeApp.Backend.Api", "src\WencyFyre.RecipeApp.Backend.Api\WencyFyre.RecipeApp.Backend.Api.csproj", "{B79E1A22-68FC-B8AE-2663-C476138C55A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wemcy.RecipeApp.Backend.Api", "src\Wemcy.RecipeApp.Backend.Api\Wemcy.RecipeApp.Backend.Api.csproj", "{B79E1A22-68FC-B8AE-2663-C476138C55A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

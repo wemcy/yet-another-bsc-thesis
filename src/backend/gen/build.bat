@@ -3,7 +3,7 @@
 
 @echo off
 
-dotnet restore ../src\WencyFyre.RecipeApp.Backend.Api
-dotnet build ../src\WencyFyre.RecipeApp.Backend.Api
-echo Now, run the following to start the project: dotnet run -p ../src\WencyFyre.RecipeApp.Backend.Api\WencyFyre.RecipeApp.Backend.Api.csproj --launch-profile web.
+dotnet restore ../src\Wemcy.RecipeApp.Backend.Api
+dotnet build ../src\Wemcy.RecipeApp.Backend.Api
+echo Now, run the following to start the project: dotnet run -p ../src\Wemcy.RecipeApp.Backend.Api\Wemcy.RecipeApp.Backend.Api.csproj --launch-profile web.
 echo.

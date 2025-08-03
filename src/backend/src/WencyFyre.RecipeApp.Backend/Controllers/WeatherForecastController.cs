@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace WencyFyre.RecipeApp.Backend.Controllers
+namespace Wemcy.RecipeApp.Backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]

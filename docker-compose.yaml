@@ -1,6 +1,6 @@
 services:
   proxy:
-    image: ghcr.io/wencyfyre/recipe-app-proxy:latest
+    image: ghcr.io/wemcy/recipe-app-proxy:latest
     ports:
       - "9393:80"
     build:
@@ -20,13 +20,13 @@ services:
       - backend
       - authentication
   frontend:
-    image: ghcr.io/wencyfyre/recipe-app-frontend:latest
+    image: ghcr.io/wemcy/recipe-app-frontend:latest
     build:
       context: ./src/frontend/
       dockerfile: Dockerfile
       target: production
   authentication:
-    image: ghcr.io/wencyfyre/recipe-app-authentication:latest
+    image: ghcr.io/wemcy/recipe-app-authentication:latest
     depends_on:
       - authentication_database
     build:
@@ -58,7 +58,7 @@ services:
     volumes:
       - authentication_db_data:/var/lib/postgresql/data
   backend:
-    image: ghcr.io/wencyfyre/recipe-app-backend:latest
+    image: ghcr.io/wemcy/recipe-app-backend:latest
     build:
       context: ./src/backend
       dockerfile: Dockerfile

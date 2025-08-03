@@ -13,7 +13,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Formatters;
 
-namespace WencyFyre.RecipeApp.Backend.Api.Formatters
+namespace Wemcy.RecipeApp.Backend.Api.Formatters
 {
     /// <inheritdoc />
     public class InputFormatterStream : InputFormatter

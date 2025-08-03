@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WencyFyre.RecipeApp.Backend.Api\WencyFyre.RecipeApp.Backend.Api.csproj" />
+    <ProjectReference Include="..\Wemcy.RecipeApp.Backend.Api\Wemcy.RecipeApp.Backend.Api.csproj" />
   </ItemGroup>
 
 </Project>

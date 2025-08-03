@@ -1,7 +1,7 @@
 {
     "additionalProperties": {
         "buildTarget": "library",
-        "packageName": "WencyFyre.RecipeApp.Backend.Api",
+        "packageName": "Wemcy.RecipeApp.Backend.Api",
         "useNullableReferenceTypes": true,
         "sourceFolder": "../src"
     }

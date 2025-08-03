@@ -1,4 +1,4 @@
-# WencyFyre.RecipeApp.Backend.Api - ASP.NET Core 8.0 Server
+# Wemcy.RecipeApp.Backend.Api - ASP.NET Core 8.0 Server
 
 TODO
 

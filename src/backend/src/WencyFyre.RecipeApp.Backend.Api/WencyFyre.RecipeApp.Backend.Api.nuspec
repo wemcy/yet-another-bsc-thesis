@@ -15,6 +15,6 @@
     <description>A library generated from a OpenAPI doc</description>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>No Copyright</copyright>
-    <tags>WencyFyre.RecipeApp.Backend.Api</tags>
+    <tags>Wemcy.RecipeApp.Backend.Api</tags>
   </metadata>
 </package>

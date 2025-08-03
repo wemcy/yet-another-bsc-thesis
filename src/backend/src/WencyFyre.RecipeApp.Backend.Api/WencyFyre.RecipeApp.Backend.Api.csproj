@@ -8,8 +8,8 @@
         <PreserveCompilationContext>true</PreserveCompilationContext>
         <Version>1.0.0</Version>
         <OutputType>Library</OutputType>
-        <AssemblyName>WencyFyre.RecipeApp.Backend.Api</AssemblyName>
-        <PackageId>WencyFyre.RecipeApp.Backend.Api</PackageId>
+        <AssemblyName>Wemcy.RecipeApp.Backend.Api</AssemblyName>
+        <PackageId>Wemcy.RecipeApp.Backend.Api</PackageId>
         <UserSecretsId>7334ab29-a684-4376-86b7-8f63e49c7f74</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..</DockerfileContext>

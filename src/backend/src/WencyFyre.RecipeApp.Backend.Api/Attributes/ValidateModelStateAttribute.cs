@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace WencyFyre.RecipeApp.Backend.Api.Attributes
+namespace Wemcy.RecipeApp.Backend.Api.Attributes
 {
     /// <summary>
     /// Model state validation attribute

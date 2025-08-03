@@ -1,4 +1,4 @@
-namespace WencyFyre.RecipeApp.Backend
+namespace Wemcy.RecipeApp.Backend
 {
     public class WeatherForecast
     {

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace WencyFyre.RecipeApp.Backend.Api.Authentication
+namespace Wemcy.RecipeApp.Backend.Api.Authentication
 {
     /// <summary>
     /// A requirement that an ApiKey must be present.
