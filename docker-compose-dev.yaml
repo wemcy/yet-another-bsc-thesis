@@ -10,3 +10,10 @@ services:
       - authentication_database
     ports:
       - "8082:8080"
+  backend:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    build:
+      args:
+        - BUILD_CONFIGURATION=Development
+
