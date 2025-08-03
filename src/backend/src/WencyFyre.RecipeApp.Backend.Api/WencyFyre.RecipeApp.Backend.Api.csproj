@@ -1,26 +1,29 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <Description>A library generated from a OpenAPI doc</Description>
-        <Copyright>No Copyright</Copyright>
-        <Authors>OpenAPI</Authors>
-        <TargetFramework>net8.0</TargetFramework>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <PreserveCompilationContext>true</PreserveCompilationContext>
-        <Version>1.0.0</Version>
-        <OutputType>Library</OutputType>
-        <AssemblyName>Wemcy.RecipeApp.Backend.Api</AssemblyName>
-        <PackageId>Wemcy.RecipeApp.Backend.Api</PackageId>
-        <UserSecretsId>7334ab29-a684-4376-86b7-8f63e49c7f74</UserSecretsId>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <DockerfileContext>..\..</DockerfileContext>
-    </PropertyGroup>
-    <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
-        <PackageReference Include="JsonSubTypes" Version="1.8.0" />
-    </ItemGroup>
-    <ItemGroup>
-        <!--<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />-->
-    </ItemGroup>
+  <PropertyGroup>
+    <Description>A library generated from a OpenAPI doc</Description>
+    <Copyright>No Copyright</Copyright>
+    <Authors>OpenAPI</Authors>
+    <TargetFramework>net8.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <Version>0.2.0</Version>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Wemcy.RecipeApp.Backend.Api</AssemblyName>
+    <PackageId>Wemcy.RecipeApp.Backend.Api</PackageId>
+    <UserSecretsId>7334ab29-a684-4376-86b7-8f63e49c7f74</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+    <AssemblyVersion>0.2.0.0</AssemblyVersion>
+    <FileVersion>0.2.0.0</FileVersion>
+    <InformationalVersion>0.2.0+Branch.main.Sha.30f9c7dc82f89124d99fcb6d8462cad7ee501eb2</InformationalVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
+    <PackageReference Include="JsonSubTypes" Version="1.8.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <!--<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />-->
+  </ItemGroup>
 </Project>
