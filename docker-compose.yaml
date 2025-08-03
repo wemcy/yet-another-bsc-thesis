@@ -1,6 +1,6 @@
 services:
   proxy:
-    image: ghcr.io/wemcy/recipe-app-proxy:latest
+    image: ghcr.io/wemcy/recipe-app-proxy
     ports:
       - "9393:80"
     environment:
@@ -17,10 +17,10 @@ services:
       - backend
       - authentication
   frontend:
-    image: ghcr.io/wemcy/recipe-app-frontend:latest
+    image: ghcr.io/wemcy/recipe-app-frontend
 
   authentication:
-    image: ghcr.io/wemcy/recipe-app-authentication:latest
+    image: ghcr.io/wemcy/recipe-app-authentication
     depends_on:
       - authentication_database
     environment:
@@ -49,7 +49,7 @@ services:
     volumes:
       - authentication_db_data:/var/lib/postgresql/data
   backend:
-    image: ghcr.io/wemcy/recipe-app-backend:latest
+    image: ghcr.io/wemcy/recipe-app-backend
 
 
 volumes:
