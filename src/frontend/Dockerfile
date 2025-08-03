@@ -18,8 +18,9 @@ ENTRYPOINT [ "pnpm", "run", "dev", "--port", "80", "--host"]
 
 FROM nginx:stable-alpine-slim AS production
 
-COPY --from=build recipe-web-frontend/app/dist /usr/share/nginx/html
-COPY config/nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=build app/recipe-web-frontend/dist /usr/share/nginx/html
+COPY recipe-web-frontend/config/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
