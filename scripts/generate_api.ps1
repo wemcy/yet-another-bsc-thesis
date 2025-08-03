@@ -4,6 +4,7 @@ $apiPath = Join-Path -Path $PSScriptRoot -ChildPath "..\docs\api\recipe_api.yaml
 $configPath = Join-Path -Path $PSScriptRoot -ChildPath "..\docs\api\server_generator_config.json"
 $outputPath = Join-Path -Path $PSScriptRoot -ChildPath "..\src\backend\gen"
 
+pnpm add openapi-generator-cli --global
 openapi-generator-cli generate -g aspnetcore -c $configPath -i $apiPath -o $outputPath
 
 # Frontend Client Generation Script
