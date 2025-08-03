@@ -5,6 +5,7 @@
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
+var pnpmCommand = IsRunningOnWindows() ? "pnpm.CMD" : "pnpm";
 
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
@@ -31,6 +32,7 @@ Task("Default")
 {
    Information("Hello Cake!");
    Information(GitVersion().FullSemVer);
+   StartProcess("pnpm.CMD", new ProcessSettings{ Arguments =$"recursive --no-bail exec -- pnpm version {GitVersion().FullSemVer}"  });
 });
 
 RunTarget(target);
