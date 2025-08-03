@@ -40,4 +40,4 @@ jobs:
         shell: pwsh
         run: ./build.ps1
       - name: Publish
-        run: docker compose push
+        run: docker compose --env-file gitversion.env -f docker-compose.yaml -f docker-compose-build.yaml push
