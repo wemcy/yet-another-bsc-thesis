@@ -39,10 +39,8 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.x.x
-      - name: Build every project
+      - name: Build and publish every project
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
-        run: ./build.ps1
-      - name: Publish
-        run: docker compose --env-file gitversion.env -f docker-compose.yaml -f docker-compose-build.yaml push
+        run: ./publish.ps1
