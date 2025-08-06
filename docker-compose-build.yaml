@@ -3,6 +3,9 @@ services:
     build:
       context: ./src/proxy/
       dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+        - linux/arm64
       tags:
         - ghcr.io/wemcy/recipe-app-proxy:${GitVersion_FullSemVer}
   frontend:
@@ -10,17 +13,26 @@ services:
       context: ./src/frontend/
       dockerfile: Dockerfile
       target: production
+      platforms:
+        - linux/amd64
+        - linux/arm64
       tags:
         - ghcr.io/wemcy/recipe-app-frontend:${GitVersion_FullSemVer}
   authentication:
     build:
       context: ./src/authentication/
       dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+        - linux/arm64
       tags:
         - ghcr.io/wemcy/recipe-app-authentication:${GitVersion_FullSemVer}
   backend:
     build:
       context: ./src/backend
       dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+        - linux/arm64
       tags:
         - ghcr.io/wemcy/recipe-app-backend:${GitVersion_FullSemVer}
