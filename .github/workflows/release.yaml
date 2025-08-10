@@ -42,5 +42,6 @@ jobs:
       - name: Build and publish every project
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUILDX_NO_DEFAULT_ATTESTATIONS: 1
         shell: pwsh
         run: ./publish.ps1
