@@ -1,59 +1,144 @@
 openapi: 3.0.3
 info:
-    title: Receptkezelő webalkalmazás Api
-    description: TODO
-    contact:
-        name: Máté Zsolt Sándor
-        email: mzsoltsandor@gmail.com
-    license:
-        name: MIT
-        url: https://opensource.org/licenses/MIT
-    version: v0.0.0-dev
-#servers: TODO
+  title: Receptkezelő webalkalmazás API
+  description: Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+  contact:
+    name: Máté Zsolt Sándor
+    email: mzsoltsandor@gmail.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: v0.1.0-dev
+servers:
+- url: http://localhost:9393/api
+  description: Local development
+- url: http://raspberrypi/api
+  description: Local network development
 tags:
-  - name: Alive
-    description: Service Alive Controller
-  - name: Recipes
+- name: Health
+  description: Service health / availability
+- name: Recipes
+  description: Recept műveletek
+- name: Rating
+  description: Értékelések
+- name: Comment
+  description: Kommentek a receptekhez
 paths:
-    /alive/:
-      get:
-        tags:
-          - Alive
-        summary: Sends a report about the availability of services.
-        operationId: getServiceReport
-        responses:
-          200:
-            description: Report is sent back
-    /recipes/:
-      post:
-        tags:
-          - Recipes
-        summary: Creates a recipe
-        operationId: createRecipe
-        responses:
-          201:
-            description: Recipe created successfully
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/createRecipeDTO'
+  "/alive/":
+    get:
+      tags:
+      - Health
+      summary: Állapotjelentés a szolgáltatásról
+      operationId: getServiceReport
+      responses:
+        '200':
+          description: Report is sent back
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/aliveReport"
+  "/recipes/":
+    get:
+      tags:
+      - Recipes
+      summary: Receptek listázása
+      operationId: listRecipes
+      responses:
+        '200':
+          description: Receptek
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/readRecipeDTO"
+    post:
+      tags:
+      - Recipes
+      summary: Új recept létrehozása
+      operationId: createRecipe
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/createRecipeDTO"
+      responses:
+        '201':
+          description: Recipe created successfully
+          headers:
+            Location:
+              description: Az új erőforrás URL-je
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/readRecipeDTO"
+
+
+
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
+    aliveReport:
+      type: object
+      properties:
+        status:
+          type: string
+          example: ok
+        services:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: database
+              healthy:
+                type: boolean
+                example: true
+              message:
+                type: string
+                nullable: true
     createRecipeDTO:
       title: createRecipeDTO
       type: object
+      required:
+      - title
       properties:
         title:
           type: string
           description: The title of the new recipe
+          minLength: 1
         description:
           type: string
           description: Simple description of the recipe
-        steps:
-          type: array
-          description: List of steps to make the recipe
-          items:
-            type: string
-            description: Steps to make a recipe
-        
-
+    readRecipeDTO:
+      type: object
+      required:
+      - id
+      - title
+      - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true

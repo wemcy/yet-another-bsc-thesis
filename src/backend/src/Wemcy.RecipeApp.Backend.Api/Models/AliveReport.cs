@@ -24,23 +24,20 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
     /// 
     /// </summary>
     [DataContract]
-    public class CreateRecipeDTO : IEquatable<CreateRecipeDTO>
+    public class AliveReport : IEquatable<AliveReport>
     {
         /// <summary>
-        /// The title of the new recipe
+        /// Gets or Sets Status
         /// </summary>
-        /// <value>The title of the new recipe</value>
-        [Required]
-        [MinLength(1)]
-        [DataMember(Name="title", EmitDefaultValue=false)]
-        public string Title { get; set; }
+        /* <example>ok</example> */
+        [DataMember(Name="status", EmitDefaultValue=false)]
+        public string Status { get; set; }
 
         /// <summary>
-        /// Simple description of the recipe
+        /// Gets or Sets Services
         /// </summary>
-        /// <value>Simple description of the recipe</value>
-        [DataMember(Name="description", EmitDefaultValue=false)]
-        public string Description { get; set; }
+        [DataMember(Name="services", EmitDefaultValue=false)]
+        public List<AliveReportServicesInner> Services { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -49,9 +46,9 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class CreateRecipeDTO {\n");
-            sb.Append("  Title: ").Append(Title).Append("\n");
-            sb.Append("  Description: ").Append(Description).Append("\n");
+            sb.Append("class AliveReport {\n");
+            sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("  Services: ").Append(Services).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -74,29 +71,30 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((CreateRecipeDTO)obj);
+            return obj.GetType() == GetType() && Equals((AliveReport)obj);
         }
 
         /// <summary>
-        /// Returns true if CreateRecipeDTO instances are equal
+        /// Returns true if AliveReport instances are equal
         /// </summary>
-        /// <param name="other">Instance of CreateRecipeDTO to be compared</param>
+        /// <param name="other">Instance of AliveReport to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(CreateRecipeDTO other)
+        public bool Equals(AliveReport other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return 
                 (
-                    Title == other.Title ||
-                    Title != null &&
-                    Title.Equals(other.Title)
+                    Status == other.Status ||
+                    Status != null &&
+                    Status.Equals(other.Status)
                 ) && 
                 (
-                    Description == other.Description ||
-                    Description != null &&
-                    Description.Equals(other.Description)
+                    Services == other.Services ||
+                    Services != null &&
+                    other.Services != null &&
+                    Services.SequenceEqual(other.Services)
                 );
         }
 
@@ -110,10 +108,10 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Title != null)
-                    hashCode = hashCode * 59 + Title.GetHashCode();
-                    if (Description != null)
-                    hashCode = hashCode * 59 + Description.GetHashCode();
+                    if (Status != null)
+                    hashCode = hashCode * 59 + Status.GetHashCode();
+                    if (Services != null)
+                    hashCode = hashCode * 59 + Services.GetHashCode();
                 return hashCode;
             }
         }
@@ -121,12 +119,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(CreateRecipeDTO left, CreateRecipeDTO right)
+        public static bool operator ==(AliveReport left, AliveReport right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(CreateRecipeDTO left, CreateRecipeDTO right)
+        public static bool operator !=(AliveReport left, AliveReport right)
         {
             return !Equals(left, right);
         }

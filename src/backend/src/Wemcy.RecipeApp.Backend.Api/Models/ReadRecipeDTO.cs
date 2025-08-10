@@ -24,23 +24,40 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
     /// 
     /// </summary>
     [DataContract]
-    public class CreateRecipeDTO : IEquatable<CreateRecipeDTO>
+    public class ReadRecipeDTO : IEquatable<ReadRecipeDTO>
     {
         /// <summary>
-        /// The title of the new recipe
+        /// Gets or Sets Id
         /// </summary>
-        /// <value>The title of the new recipe</value>
         [Required]
-        [MinLength(1)]
+        [DataMember(Name="id", EmitDefaultValue=true)]
+        public Guid Id { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Title
+        /// </summary>
+        [Required]
         [DataMember(Name="title", EmitDefaultValue=false)]
         public string Title { get; set; }
 
         /// <summary>
-        /// Simple description of the recipe
+        /// Gets or Sets Description
         /// </summary>
-        /// <value>Simple description of the recipe</value>
-        [DataMember(Name="description", EmitDefaultValue=false)]
+        [DataMember(Name="description", EmitDefaultValue=true)]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or Sets CreatedAt
+        /// </summary>
+        [Required]
+        [DataMember(Name="createdAt", EmitDefaultValue=true)]
+        public DateTime CreatedAt { get; set; }
+
+        /// <summary>
+        /// Gets or Sets UpdatedAt
+        /// </summary>
+        [DataMember(Name="updatedAt", EmitDefaultValue=true)]
+        public DateTime? UpdatedAt { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -49,9 +66,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class CreateRecipeDTO {\n");
+            sb.Append("class ReadRecipeDTO {\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Title: ").Append(Title).Append("\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
+            sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
+            sb.Append("  UpdatedAt: ").Append(UpdatedAt).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -74,20 +94,25 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((CreateRecipeDTO)obj);
+            return obj.GetType() == GetType() && Equals((ReadRecipeDTO)obj);
         }
 
         /// <summary>
-        /// Returns true if CreateRecipeDTO instances are equal
+        /// Returns true if ReadRecipeDTO instances are equal
         /// </summary>
-        /// <param name="other">Instance of CreateRecipeDTO to be compared</param>
+        /// <param name="other">Instance of ReadRecipeDTO to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(CreateRecipeDTO other)
+        public bool Equals(ReadRecipeDTO other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return 
+                (
+                    Id == other.Id ||
+                    
+                    Id.Equals(other.Id)
+                ) && 
                 (
                     Title == other.Title ||
                     Title != null &&
@@ -97,6 +122,16 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     Description == other.Description ||
                     Description != null &&
                     Description.Equals(other.Description)
+                ) && 
+                (
+                    CreatedAt == other.CreatedAt ||
+                    
+                    CreatedAt.Equals(other.CreatedAt)
+                ) && 
+                (
+                    UpdatedAt == other.UpdatedAt ||
+                    UpdatedAt != null &&
+                    UpdatedAt.Equals(other.UpdatedAt)
                 );
         }
 
@@ -110,10 +145,16 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
+                    
+                    hashCode = hashCode * 59 + Id.GetHashCode();
                     if (Title != null)
                     hashCode = hashCode * 59 + Title.GetHashCode();
                     if (Description != null)
                     hashCode = hashCode * 59 + Description.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + CreatedAt.GetHashCode();
+                    if (UpdatedAt != null)
+                    hashCode = hashCode * 59 + UpdatedAt.GetHashCode();
                 return hashCode;
             }
         }
@@ -121,12 +162,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(CreateRecipeDTO left, CreateRecipeDTO right)
+        public static bool operator ==(ReadRecipeDTO left, ReadRecipeDTO right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(CreateRecipeDTO left, CreateRecipeDTO right)
+        public static bool operator !=(ReadRecipeDTO left, ReadRecipeDTO right)
         {
             return !Equals(left, right);
         }

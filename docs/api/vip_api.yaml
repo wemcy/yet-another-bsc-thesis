@@ -1,0 +1,820 @@
+openapi: 3.0.3
+info:
+  title: Receptkezelő webalkalmazás API
+  description: Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+  contact:
+    name: Máté Zsolt Sándor
+    email: mzsoltsandor@gmail.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: v0.1.0-dev
+servers:
+- url: http://localhost:9393/api
+  description: Local development
+- url: http://raspberrypi/api
+  description: Local network development
+tags:
+- name: Health
+  description: Service health / availability
+- name: Recipes
+  description: Recept műveletek
+- name: Rating
+  description: Értékelések
+- name: Comment
+  description: Kommentek a receptekhez
+paths:
+  "/alive/":
+    get:
+      tags:
+      - Health
+      summary: Állapotjelentés a szolgáltatásról
+      operationId: getServiceReport
+      responses:
+        '200':
+          description: Report is sent back
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/aliveReport"
+  "/recipes/":
+    get:
+      tags:
+      - Recipes
+      summary: Receptek listázása
+      operationId: listRecipes
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        description: Oldalszám (1-alapú)
+      - in: query
+        name: pageSize
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 12
+        description: Elemszám / oldal
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Keresés címben / leírásban
+      - in: query
+        name: allergens
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: false
+        description: Allergénkódok
+      - in: query
+        name: sort
+        schema:
+          type: string
+          enum:
+          - createdAt
+          - title
+          - rating
+          default: createdAt
+        description: Rendezési kulcs
+      - in: query
+        name: order
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+        description: Rendezési irány
+      responses:
+        '200':
+          description: Lapozott receptlista
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/pagedRecipeResult"
+    post:
+      tags:
+      - Recipes
+      summary: Új recept létrehozása
+      operationId: createRecipe
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/createRecipeDTO"
+      responses:
+        '201':
+          description: Recipe created successfully
+          headers:
+            Location:
+              description: Az új erőforrás URL-je
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/recipe"
+        '400':
+          description: Hibás kérés (validációs hiba)
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+        '401':
+          description: Nincs autentikáció
+        '409':
+          description: Ütközés (pl. duplikált cím)
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+  "/recipes/{id}/":
+    get:
+      tags:
+      - Recipes
+      summary: Recept lekérése azonosító alapján
+      operationId: getRecipeById
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Recept részletei
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/recipe"
+        '404':
+          description: Nem található
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+    put:
+      tags:
+      - Recipes
+      summary: Recept módosítása
+      operationId: updateRecipe
+      security:
+      - bearerAuth: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/updateRecipeDTO"
+      responses:
+        '200':
+          description: Sikeres módosítás
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/recipe"
+        '400':
+          description: Hibás kérés (validációs hiba)
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+        '401':
+          description: Nincs autentikáció
+        '403':
+          description: Jogosultság hiánya (nem a tulajdonos)
+        '404':
+          description: Nem található
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+    delete:
+      tags:
+      - Recipes
+      summary: Recept törlése
+      operationId: deleteRecipe
+      security:
+      - bearerAuth: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Sikeres törlés, nincs tartalom
+        '401':
+          description: Nincs autentikáció
+        '403':
+          description: Jogosultság hiánya (nem a tulajdonos)
+        '404':
+          description: Nem található
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+  paths: 
+  "/recipes/{id}/rating":
+    get:
+      tags:
+      - Recipes
+      - Rating
+      summary: Saját értékelés lekérése egy recepthez
+      operationId: getMyRating
+      security:
+      - bearerAuth: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: A felhasználó aktuális értékelése
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/myRating"
+        '204':
+          description: Nincs értékelés ehhez a recepthez (user még nem értékelt)
+        '401':
+          description: Nincs autentikáció
+        '404':
+          description: Recept nem található
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+    put:
+      tags:
+      - Recipes
+      - Rating
+      summary: Értékelés beállítása/frissítése (1–5)
+      operationId: setRating
+      security:
+      - bearerAuth: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/setRatingDTO"
+      responses:
+        '200':
+          description: Értékelés mentve
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/myRating"
+        '400':
+          description: Hibás érték (1–5)
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+        '401':
+          description: Nincs autentikáció
+        '404':
+          description: Recept nem található
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+    delete:
+      tags:
+      - Recipes
+      - Rating
+      summary: Saját értékelés törlése
+      operationId: deleteMyRating
+      security:
+      - bearerAuth: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Törölve
+        '401':
+          description: Nincs autentikáció
+        '404':
+          description: Recept vagy értékelés nem található
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+  "/recipes/{id}/comments":
+    get:
+      tags:
+      - Recipes
+      - Comment
+      summary: Kommentek listázása (lapozva)
+      operationId: listComments
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: page
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - in: query
+        name: pageSize
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+      responses:
+        '200':
+          description: Kommentek
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/pagedCommentResult"
+        '404':
+          description: Recept nem található
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+    post:
+      tags:
+      - Recipes
+      - Comment
+      summary: Új komment hozzáadása
+      operationId: addComment
+      security:
+      - bearerAuth: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/createCommentDTO"
+      responses:
+        '201':
+          description: Létrehozva
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/comment"
+        '400':
+          description: Hibás kérés
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+        '401':
+          description: Nincs autentikáció
+        '404':
+          description: Recept nem található
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+  "/recipes/{id}/comments/{commentId}":
+    patch:
+      tags:
+      - Recipes
+      - Comment
+      summary: Saját komment szerkesztése
+      operationId: updateComment
+      security:
+      - bearerAuth: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: path
+        name: commentId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/updateCommentDTO"
+      responses:
+        '200':
+          description: Frissített komment
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/comment"
+        '400':
+          description: Hibás kérés
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+        '401':
+          description: Nincs autentikáció
+        '403':
+          description: Nem a komment tulajdonosa
+        '404':
+          description: Recept vagy komment nem található
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+    delete:
+      tags:
+      - Recipes
+      - Comment
+      summary: Saját komment törlése
+      operationId: deleteComment
+      security:
+      - bearerAuth: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: path
+        name: commentId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Törölve
+        '401':
+          description: Nincs autentikáció
+        '403':
+          description: Nem a komment tulajdonosa
+        '404':
+          description: Recept vagy komment nem található
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/problemDetails"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    aliveReport:
+      type: object
+      properties:
+        status:
+          type: string
+          example: ok
+        services:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: database
+              healthy:
+                type: boolean
+                example: true
+              message:
+                type: string
+                nullable: true
+    createRecipeDTO:
+      title: createRecipeDTO
+      type: object
+      required:
+      - title
+      - steps
+      properties:
+        title:
+          type: string
+          description: The title of the new recipe
+          minLength: 1
+        description:
+          type: string
+          description: Simple description of the recipe
+        steps:
+          type: array
+          description: List of steps to make the recipe
+          minItems: 1
+          items:
+            type: string
+            description: Steps to make a recipe
+        ingredients:
+          type: array
+          items:
+            type: string
+          description: Hozzávalók listája (szabad szöveg)
+        allergens:
+          type: array
+          description: Allergének kódjai
+          items:
+            type: string
+            example: gluten
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: Opcionális képek URL-jei
+    updateRecipeDTO:
+      type: object
+      description: Recept részleges vagy teljes frissítése
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        steps:
+          type: array
+          items:
+            type: string
+        ingredients:
+          type: array
+          items:
+            type: string
+        allergens:
+          type: array
+          items:
+            type: string
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+    recipe:
+      type: object
+      required:
+      - id
+      - title
+      - steps
+      - createdAt
+      - createdBy
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        steps:
+          type: array
+          items:
+            type: string
+        ingredients:
+          type: array
+          items:
+            type: string
+        allergens:
+          type: array
+          items:
+            type: string
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+        rating:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 5
+          nullable: true
+        ratingCount:
+          type: integer
+          minimum: 0
+          example: 12
+        commentsCount:
+          type: integer
+          minimum: 0
+          example: 5
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdBy:
+          type: string
+          description: Felhasználó azonosító (Keycloak sub)
+    recipeSummary:
+      type: object
+      required:
+      - id
+      - title
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        rating:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 5
+          nullable: true
+        thumbnail:
+          type: string
+          format: uri
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+    pagedRecipeResult:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/recipeSummary"
+        page:
+          type: integer
+          example: 1
+        pageSize:
+          type: integer
+          example: 12
+        totalItems:
+          type: integer
+          example: 123
+        totalPages:
+          type: integer
+          example: 11
+    problemDetails:
+      type: object
+      description: RFC 7807 problem+json
+      properties:
+        type:
+          type: string
+          format: uri
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          format: uri
+          nullable: true
+    setRatingDTO:
+      type: object
+      required:
+      - value
+      properties:
+        value:
+          type: integer
+          minimum: 1
+          maximum: 5
+          example: 4
+    myRating:
+      type: object
+      required:
+      - recipeId
+      - userId
+      - value
+      - createdAt
+      properties:
+        recipeId:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          description: Keycloak sub
+        value:
+          type: integer
+          minimum: 1
+          maximum: 5
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+    createCommentDTO:
+      type: object
+      required:
+      - content
+      properties:
+        content:
+          type: string
+          minLength: 1
+          maxLength: 4000
+    updateCommentDTO:
+      type: object
+      properties:
+        content:
+          type: string
+          minLength: 1
+          maxLength: 4000
+    comment:
+      type: object
+      required:
+      - id
+      - recipeId
+      - authorId
+      - content
+      - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        recipeId:
+          type: string
+          format: uuid
+        authorId:
+          type: string
+          description: Keycloak sub
+        authorName:
+          type: string
+          nullable: true
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+    pagedCommentResult:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/comment"
+        page:
+          type: integer
+          example: 1
+        pageSize:
+          type: integer
+          example: 20
+        totalItems:
+          type: integer
+          example: 42
+        totalPages:
+          type: integer
+          example: 3

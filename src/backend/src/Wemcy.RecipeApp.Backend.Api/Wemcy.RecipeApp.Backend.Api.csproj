@@ -1,29 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <Description>A library generated from a OpenAPI doc</Description>
-    <Copyright>No Copyright</Copyright>
-    <Authors>OpenAPI</Authors>
-    <TargetFramework>net8.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PreserveCompilationContext>true</PreserveCompilationContext>
-    <Version>0.2.0</Version>
-    <OutputType>Library</OutputType>
-    <AssemblyName>Wemcy.RecipeApp.Backend.Api</AssemblyName>
-    <PackageId>Wemcy.RecipeApp.Backend.Api</PackageId>
-    <UserSecretsId>665cb7b4-e18f-4e96-8961-f8853c4b1a87</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
-    <AssemblyVersion>0.2.0.0</AssemblyVersion>
-    <FileVersion>0.2.0.0</FileVersion>
-    <InformationalVersion>0.2.0+Branch.main.Sha.1ff585132aa5f5a357fa563772a4ff465af1b1ff</InformationalVersion>
-  </PropertyGroup>
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
-    <PackageReference Include="JsonSubTypes" Version="1.8.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <!--<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />-->
-  </ItemGroup>
+    <PropertyGroup>
+        <Description>A library generated from a OpenAPI doc</Description>
+        <Copyright>No Copyright</Copyright>
+        <Authors>OpenAPI</Authors>
+        <TargetFramework>net8.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
+        <Version>1.0.0</Version>
+        <OutputType>Library</OutputType>
+        <AssemblyName>Wemcy.RecipeApp.Backend.Api</AssemblyName>
+        <PackageId>Wemcy.RecipeApp.Backend.Api</PackageId>
+        <UserSecretsId>f8add495-2fd9-49c5-83ed-9eb5597bf358</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>..\..</DockerfileContext>
+    </PropertyGroup>
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
+        <PackageReference Include="JsonSubTypes" Version="1.8.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <!--<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />-->
+    </ItemGroup>
 </Project>

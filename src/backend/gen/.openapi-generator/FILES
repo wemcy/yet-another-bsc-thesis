@@ -1,11 +1,14 @@
 ../src/Wemcy.RecipeApp.Backend.Api/.gitignore
 ../src/Wemcy.RecipeApp.Backend.Api/Attributes/ValidateModelStateAttribute.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Authentication/ApiAuthentication.cs
-../src/Wemcy.RecipeApp.Backend.Api/Controllers/AliveApi.cs
+../src/Wemcy.RecipeApp.Backend.Api/Controllers/HealthApi.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Controllers/RecipesApi.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Converters/CustomEnumConverter.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Formatters/InputFormatterStream.cs
+../src/Wemcy.RecipeApp.Backend.Api/Models/AliveReport.cs
+../src/Wemcy.RecipeApp.Backend.Api/Models/AliveReportServicesInner.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/CreateRecipeDTO.cs
+../src/Wemcy.RecipeApp.Backend.Api/Models/ReadRecipeDTO.cs
 ../src/Wemcy.RecipeApp.Backend.Api/OpenApi/TypeExtensions.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Wemcy.RecipeApp.Backend.Api.csproj
 ../src/Wemcy.RecipeApp.Backend.Api/Wemcy.RecipeApp.Backend.Api.nuspec
