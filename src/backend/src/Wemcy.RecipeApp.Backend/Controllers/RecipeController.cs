@@ -17,19 +17,22 @@ public class RecipeController : RecipesApiController
 
     public override IActionResult CreateRecipe([FromBody] CreateRecipeDTO createRecipeDTO)
     {
+        var currentTime = DateTime.UtcNow;
         var recipe = new Recipe() {
             Id = Guid.NewGuid(),
             Title = createRecipeDTO.Title,
-            Description = createRecipeDTO.Description
+            Description = createRecipeDTO.Description,
+            CreatedAt = currentTime,
+            UpdatedAt = currentTime,
         };
         _recipeService.SaveRecipe(recipe);
         return Ok(new ReadRecipeDTO()
         {
-            CreatedAt = DateTime.Now,
+            CreatedAt = recipe.CreatedAt,
             Id = recipe.Id,
             Description = recipe.Description,
             Title = recipe.Title,
-            UpdatedAt = DateTime.Now,
+            UpdatedAt = recipe.UpdatedAt
         });
     }
 
@@ -41,8 +44,8 @@ public class RecipeController : RecipesApiController
             Id = rec.Id,
             Title = rec.Title,
             Description = rec.Description,
-            UpdatedAt = DateTime.Now,
-            CreatedAt = DateTime.Now,
+            UpdatedAt = rec.UpdatedAt,
+            CreatedAt = rec.UpdatedAt
         }).ToList());
     }
 }
