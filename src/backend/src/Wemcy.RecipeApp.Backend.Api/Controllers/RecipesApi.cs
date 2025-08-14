@@ -31,8 +31,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <param name="createRecipeDTO"></param>
         /// <response code="201">Recipe created successfully</response>
         [HttpPost]
-        [Route("/api/recipes/")]
-        [Authorize]
+        [Route("/recipes/")]
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 201, type: typeof(ReadRecipeDTO))]
@@ -43,7 +42,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// </summary>
         /// <response code="200">Receptek</response>
         [HttpGet]
-        [Route("/api/recipes/")]
+        [Route("/recipes/")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<ReadRecipeDTO>))]
         public abstract IActionResult ListRecipes();

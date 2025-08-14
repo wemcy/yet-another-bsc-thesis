@@ -1,6 +1,6 @@
 {
   "name": "recipe-api-client",
-  "version": "0.2.0",
+  "version": "0.11.0-alpha.1",
   "description": "",
   "type": "module",
   "scripts": {

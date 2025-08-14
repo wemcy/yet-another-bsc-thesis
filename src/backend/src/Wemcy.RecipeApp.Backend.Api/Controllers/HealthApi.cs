@@ -30,7 +30,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// </summary>
         /// <response code="200">Report is sent back</response>
         [HttpGet]
-        [Route("/api/alive/")]
+        [Route("/alive/")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(AliveReport))]
         public abstract IActionResult GetServiceReport();

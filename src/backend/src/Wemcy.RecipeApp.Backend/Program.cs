@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.HttpOverrides;
+using Wemcy.RecipeApp.Backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.ForwardedHeaders =
         ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedPrefix;
 });
+builder.Services.AddSingleton<RecipeService, RecipeService>();
 
 var app = builder.Build();
 // app.UsePathBase("/api");

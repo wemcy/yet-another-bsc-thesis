@@ -5,10 +5,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>bb3208eb-e001-48ad-8d01-9ecea4523f1e</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <AssemblyVersion>0.2.0.0</AssemblyVersion>
-    <FileVersion>0.2.0.0</FileVersion>
-    <InformationalVersion>0.2.0+Branch.main.Sha.1ff585132aa5f5a357fa563772a4ff465af1b1ff</InformationalVersion>
-    <Version>0.2.0</Version>
+    <AssemblyVersion>0.11.0.0</AssemblyVersion>
+    <FileVersion>0.11.0.0</FileVersion>
+    <InformationalVersion>0.11.0-alpha.1+Branch.dev.Sha.fdbf2b600d065981caea82542ffe9532c241e53b</InformationalVersion>
+    <Version>0.11.0-alpha.1</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
