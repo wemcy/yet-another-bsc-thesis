@@ -3,14 +3,9 @@ using Wemcy.RecipeApp.Backend.Repository;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class RecipeService
+public class RecipeService(RecipeRepository recipeRepository)
 {
-    private readonly RecipeRepository recipeRepository;
-
-    public RecipeService(RecipeRepository recipeRepository)
-    {
-        this.recipeRepository = recipeRepository;
-    }
+    private readonly RecipeRepository recipeRepository = recipeRepository;
 
     public Recipe CreateRecipe(Recipe recipe)
     {
@@ -23,5 +18,10 @@ public class RecipeService
     public IEnumerable<Recipe> GetAllRecipe()
     {
         return this.recipeRepository.GetAllRecipe();
+    }
+
+    public Recipe? GetRecipeById(Guid id)
+    {
+        return this.recipeRepository.GetRecipeById(id);
     }
 }

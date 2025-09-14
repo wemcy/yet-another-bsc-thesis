@@ -38,6 +38,17 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         public abstract IActionResult CreateRecipe([FromBody]CreateRecipeDTO createRecipeDTO);
 
         /// <summary>
+        /// Recept lekérdezése ID alapján
+        /// </summary>
+        /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>
+        /// <response code="200">Receptek</response>
+        [HttpGet]
+        [Route("/recipes/{id}/")]
+        [ValidateModelState]
+        [ProducesResponseType(statusCode: 200, type: typeof(ReadRecipeDTO))]
+        public abstract IActionResult GetRecipeById([FromRoute (Name = "id")][Required]Guid id);
+
+        /// <summary>
         /// Receptek listázása
         /// </summary>
         /// <response code="200">Receptek</response>

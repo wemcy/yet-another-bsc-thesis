@@ -77,7 +77,27 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/readRecipeDTO"
-
+  "/recipes/{id}/":
+    get:
+      tags:
+      - Recipes
+      summary: Recept lekérdezése ID alapján
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          description: A lekérdezendő recept egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: getRecipeById
+      responses:
+        '200':
+          description: Receptek
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/readRecipeDTO"
 
 
 components:

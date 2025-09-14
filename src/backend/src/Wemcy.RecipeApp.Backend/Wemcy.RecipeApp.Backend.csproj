@@ -7,8 +7,8 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <AssemblyVersion>0.11.0.0</AssemblyVersion>
     <FileVersion>0.11.0.0</FileVersion>
-    <InformationalVersion>0.11.0-alpha.1+Branch.dev.Sha.fdbf2b600d065981caea82542ffe9532c241e53b</InformationalVersion>
-    <Version>0.11.0-alpha.1</Version>
+    <InformationalVersion>0.11.0-alpha.7+Branch.dev.Sha.566bb6aa7b60e8570d798d8d42cb44f5ac0c0736</InformationalVersion>
+    <Version>0.11.0-alpha.7</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.0.1" />

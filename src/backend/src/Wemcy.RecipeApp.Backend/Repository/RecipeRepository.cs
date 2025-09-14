@@ -4,13 +4,10 @@ using Wemcy.RecipeApp.Backend.Model;
 
 namespace Wemcy.RecipeApp.Backend.Repository
 {
-    public class RecipeRepository
+    public class RecipeRepository(DatabaseContext databaseContext)
     {
-        private DatabaseContext _dbContext;
-        public RecipeRepository(DatabaseContext databaseContext)
-        {
-            _dbContext = databaseContext;
-        }
+        private DatabaseContext _dbContext = databaseContext;
+
         public Recipe SaveRecipe(Recipe recipe)
         {
             var newRecipe = _dbContext.Recipes.Add(recipe);
@@ -21,6 +18,11 @@ namespace Wemcy.RecipeApp.Backend.Repository
         public IEnumerable<Recipe> GetAllRecipe()
         {
             return _dbContext.Recipes.AsNoTracking();
+        }
+
+        public Recipe? GetRecipeById(Guid id)
+        {
+            return _dbContext.Recipes.Find(id);
         }
     }
 }
