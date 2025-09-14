@@ -10,6 +10,7 @@ public class DatabaseContext : DbContext
     {
     }
 
+    //To not be able call this outside without context
     protected DatabaseContext()
     {
     }

@@ -1,23 +1,24 @@
 ﻿using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Repository;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
 public class RecipeService
 {
-    private readonly IDictionary<Guid, Recipe> recipies;
+    private readonly RecipeRepository recipeRepository;
 
-    public RecipeService()
+    public RecipeService(RecipeRepository recipeRepository)
     {
-        this.recipies = new Dictionary<Guid, Recipe>();
+        this.recipeRepository = recipeRepository;
     }
 
-    public void SaveRecipe(Recipe recipe)
+    public Recipe SaveRecipe(Recipe recipe)
     {
-        this.recipies.Add(recipe.Id, recipe);    
+        return this.recipeRepository.SaveRecipe(recipe);
     }
 
     public IEnumerable<Recipe> GetAllRecipe()
     {
-        return [.. this.recipies.Values];
+        return this.recipeRepository.GetAllRecipe();
     }
 }
