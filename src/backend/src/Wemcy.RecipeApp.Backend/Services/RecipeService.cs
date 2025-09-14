@@ -12,8 +12,11 @@ public class RecipeService
         this.recipeRepository = recipeRepository;
     }
 
-    public Recipe SaveRecipe(Recipe recipe)
+    public Recipe CreateRecipe(Recipe recipe)
     {
+        var currentTime = DateTime.Now;
+        recipe.CreatedAt = currentTime;
+        recipe.UpdatedAt = currentTime;
         return this.recipeRepository.SaveRecipe(recipe);
     }
 

@@ -20,11 +20,8 @@ public class RecipeController : RecipesApiController
 
     public override IActionResult CreateRecipe([FromBody] CreateRecipeDTO createRecipeDTO)
     {
-        var currentTime = DateTime.UtcNow;
         var recipe = _mapper.Map<Recipe>(createRecipeDTO);
-        recipe.CreatedAt =  currentTime;
-        recipe.UpdatedAt = currentTime;
-        _recipeService.SaveRecipe(recipe);
+        _recipeService.CreateRecipe(recipe);
         return Ok(_mapper.Map<ReadRecipeDTO>(recipe));
     }
 
