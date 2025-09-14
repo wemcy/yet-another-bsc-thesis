@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Wemcy.RecipeApp.Backend.Database;
@@ -12,6 +13,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper( config => { }, Assembly.GetExecutingAssembly() );
 builder.Services.AddDbContext<DatabaseContext>(option =>
 {
     option.UseInMemoryDatabase("TestDB");

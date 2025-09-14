@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Wemcy.RecipeApp.Backend.Api.Controllers;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Model;
@@ -9,43 +10,26 @@ namespace Wemcy.RecipeApp.Backend.Controllers;
 public class RecipeController : RecipesApiController
 {
     private readonly RecipeService _recipeService;
+    private readonly IMapper _mapper;
 
-    public RecipeController(RecipeService recipeService)
+    public RecipeController(RecipeService recipeService, IMapper mapper)
     {
         _recipeService = recipeService;
+        _mapper = mapper;
     }
 
     public override IActionResult CreateRecipe([FromBody] CreateRecipeDTO createRecipeDTO)
     {
         var currentTime = DateTime.UtcNow;
-        var recipe = new Recipe() {
-            Id = Guid.NewGuid(),
-            Title = createRecipeDTO.Title,
-            Description = createRecipeDTO.Description,
-            CreatedAt = currentTime,
-            UpdatedAt = currentTime,
-        };
+        var recipe = _mapper.Map<Recipe>(createRecipeDTO);
+        recipe.CreatedAt =  currentTime;
+        recipe.UpdatedAt = currentTime;
         _recipeService.SaveRecipe(recipe);
-        return Ok(new ReadRecipeDTO()
-        {
-            CreatedAt = recipe.CreatedAt,
-            Id = recipe.Id,
-            Description = recipe.Description,
-            Title = recipe.Title,
-            UpdatedAt = recipe.UpdatedAt
-        });
+        return Ok(_mapper.Map<ReadRecipeDTO>(recipe));
     }
 
     public override IActionResult ListRecipes()
     {
-        var recipes = _recipeService.GetAllRecipe();
-        return Ok(recipes.Select( rec => new ReadRecipeDTO
-        {
-            Id = rec.Id,
-            Title = rec.Title,
-            Description = rec.Description,
-            UpdatedAt = rec.UpdatedAt,
-            CreatedAt = rec.UpdatedAt
-        }).ToList());
+        return Ok(_mapper.ProjectTo<ReadRecipeDTO>(_recipeService.GetAllRecipe().AsQueryable()));
     }
 }
