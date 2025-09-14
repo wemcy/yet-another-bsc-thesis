@@ -7,6 +7,7 @@
 ../src/Wemcy.RecipeApp.Backend.Api/Formatters/InputFormatterStream.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/AliveReport.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/AliveReportServicesInner.cs
+../src/Wemcy.RecipeApp.Backend.Api/Models/Allergen.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/CreateRecipeDTO.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/ReadRecipeDTO.cs
 ../src/Wemcy.RecipeApp.Backend.Api/OpenApi/TypeExtensions.cs

@@ -140,6 +140,9 @@ components:
         description:
           type: string
           description: Simple description of the recipe
+        allergens:
+          $ref: '#/components/schemas/allergenList'
+
     readRecipeDTO:
       type: object
       required:
@@ -162,3 +165,34 @@ components:
           type: string
           format: date-time
           nullable: true
+        allergens:
+          $ref: '#/components/schemas/allergenList'
+
+    allergenList:
+      type: array
+      description: List of allergens present in the recipe
+      items:
+        $ref: '#/components/schemas/allergen'
+      nullable: false
+      uniqueItems: true
+      minItems: 0
+      maxItems: 14
+      example: [1, 3, 5]
+
+    allergen:
+      type: string
+      enum:
+        - GLUTEN
+        - CRUSTACEANS
+        - EGGS
+        - FISH
+        - PEANUTS
+        - SOYBEANS
+        - MILK
+        - NUTS
+        - CELERY
+        - MUSTARD
+        - SESAMESEEDS
+        - SULPHURDIOXIDE
+        - LUPIN
+        - MOLLUSCS

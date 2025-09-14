@@ -43,6 +43,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public string Description { get; set; }
 
         /// <summary>
+        /// List of allergens present in the recipe
+        /// </summary>
+        /// <value>List of allergens present in the recipe</value>
+        /* <example>[1,3,5]</example> */
+        [DataMember(Name="allergens", EmitDefaultValue=false)]
+        public List<Allergen> Allergens { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -52,6 +60,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             sb.Append("class CreateRecipeDTO {\n");
             sb.Append("  Title: ").Append(Title).Append("\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
+            sb.Append("  Allergens: ").Append(Allergens).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -97,6 +106,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     Description == other.Description ||
                     Description != null &&
                     Description.Equals(other.Description)
+                ) && 
+                (
+                    Allergens == other.Allergens ||
+                    Allergens != null &&
+                    other.Allergens != null &&
+                    Allergens.SequenceEqual(other.Allergens)
                 );
         }
 
@@ -114,6 +129,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     hashCode = hashCode * 59 + Title.GetHashCode();
                     if (Description != null)
                     hashCode = hashCode * 59 + Description.GetHashCode();
+                    if (Allergens != null)
+                    hashCode = hashCode * 59 + Allergens.GetHashCode();
                 return hashCode;
             }
         }

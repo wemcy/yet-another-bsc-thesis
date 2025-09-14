@@ -6,7 +6,7 @@ namespace Wemcy.RecipeApp.Backend.Repository
 {
     public class RecipeRepository(DatabaseContext databaseContext)
     {
-        private DatabaseContext _dbContext = databaseContext;
+        private readonly DatabaseContext _dbContext = databaseContext;
 
         public Recipe SaveRecipe(Recipe recipe)
         {
