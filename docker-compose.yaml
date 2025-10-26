@@ -50,7 +50,28 @@ services:
       - authentication_db_data:/var/lib/postgresql/data
   backend:
     image: ghcr.io/wemcy/recipe-app-backend
+    depends_on:
+      recipe_database:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__Default: "Host=recipe_database;Port=5432;Database=recipe-app;Username=admin;Password=admin"
+
+        
+  recipe_database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: recipe-app
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d recipe-app"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    # volumes:
+      # - recipe_db_data:/var/lib/postgresql/data
 
 
 volumes:
   authentication_db_data:
+  recipe_db_data:

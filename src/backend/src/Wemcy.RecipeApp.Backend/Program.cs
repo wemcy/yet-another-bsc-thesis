@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +16,10 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper( config => { }, Assembly.GetExecutingAssembly() );
-builder.Services.AddDbContext<DatabaseContext>(option =>
-{
-    option.UseInMemoryDatabase("TestDB");
-});
+
+var cs = builder.Configuration.GetConnectionString("Default");
+builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseNpgsql(cs));
+
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders =
@@ -28,6 +29,12 @@ builder.Services.AddScoped<RecipeService, RecipeService>().
                  AddScoped<RecipeRepository, RecipeRepository>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    db.Database.Migrate();
+}
 // app.UsePathBase("/api");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

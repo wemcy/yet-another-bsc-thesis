@@ -3,6 +3,7 @@
         "buildTarget": "library",
         "packageName": "Wemcy.RecipeApp.Backend.Api",
         "useNullableReferenceTypes": true,
-        "sourceFolder": "../src"
+        "sourceFolder": "../src",
+        "useDateTimeOffset": true
     }
 }

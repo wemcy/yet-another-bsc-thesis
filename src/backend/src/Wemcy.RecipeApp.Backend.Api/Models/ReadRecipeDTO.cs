@@ -51,13 +51,13 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         [Required]
         [DataMember(Name="createdAt", EmitDefaultValue=true)]
-        public DateTime CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>
         /// Gets or Sets UpdatedAt
         /// </summary>
         [DataMember(Name="updatedAt", EmitDefaultValue=true)]
-        public DateTime? UpdatedAt { get; set; }
+        public DateTimeOffset? UpdatedAt { get; set; }
 
         /// <summary>
         /// List of allergens present in the recipe

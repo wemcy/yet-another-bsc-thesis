@@ -9,13 +9,13 @@ public class RecipeService(RecipeRepository recipeRepository)
 
     public Recipe CreateRecipe(Recipe recipe)
     {
-        var currentTime = DateTime.Now;
+        var currentTime = DateTimeOffset.UtcNow;
         recipe.CreatedAt = currentTime;
         recipe.UpdatedAt = currentTime;
         return this.recipeRepository.SaveRecipe(recipe);
     }
 
-    public IEnumerable<Recipe> GetAllRecipe()
+    public IQueryable<Recipe> GetAllRecipe()
     {
         return this.recipeRepository.GetAllRecipe();
     }

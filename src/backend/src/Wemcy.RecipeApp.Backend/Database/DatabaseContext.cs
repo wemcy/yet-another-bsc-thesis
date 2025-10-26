@@ -7,6 +7,8 @@ namespace Wemcy.RecipeApp.Backend.Database;
 public class DatabaseContext : DbContext
 {
     public DbSet<Recipe> Recipes { get; set; }
+    public DbSet<Allergen> Allergens { get; set; }
+
     public DatabaseContext(DbContextOptions options) : base(options)
     {
 

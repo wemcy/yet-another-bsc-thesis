@@ -19,14 +19,15 @@ namespace Wemcy.RecipeApp.Backend.Repository
             return newRecipe.Entity;
         }
 
-        public IEnumerable<Recipe> GetAllRecipe()
+        public IQueryable<Recipe> GetAllRecipe()
         {
-            return _dbContext.Recipes.AsNoTracking().Include(x => x.Allergens);
+            var breakpoint = _dbContext.Recipes.AsNoTracking().Include(x => x.Allergens);
+            return breakpoint;
         }
 
         public Recipe? GetRecipeById(Guid id)
         {
-            return _dbContext.Recipes.Find(id);
+            return _dbContext.Recipes.Where(x=> x.Id == id).Include(x => x.Allergens).SingleOrDefault();
         }
     }
 }

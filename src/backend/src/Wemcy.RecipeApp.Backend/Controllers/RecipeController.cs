@@ -29,7 +29,8 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
 
     public override IActionResult ListRecipes()
     {
-        Console.WriteLine(JsonConvert.SerializeObject(_recipeService.GetAllRecipe()));
-        return Ok(_mapper.ProjectTo<ReadRecipeDTO>(_recipeService.GetAllRecipe().AsQueryable()));
+        var q = _recipeService.GetAllRecipe();
+        var dtos = q.Select(x => _mapper.Map<ReadRecipeDTO>(x)).ToList();
+        return Ok(dtos);
     }
 }
