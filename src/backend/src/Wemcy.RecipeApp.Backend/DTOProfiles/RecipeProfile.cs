@@ -11,19 +11,15 @@ namespace Wemcy.RecipeApp.Backend.DTOProfiles
             CreateMap<CreateRecipeDTO, Recipe>();
             CreateMap<Recipe, ReadRecipeDTO>();
             CreateMap<Api.Models.Allergen, AllergenType>().ReverseMap();
-            CreateMap<Api.Models.Allergen, Model.Allergen>().ConvertUsing((e, c, ctx) =>
+            CreateMap<Api.Models.Allergen, Model.Allergen>().ConvertUsing((src, _, ctx) =>
             {
-                var m = ctx.Mapper.Map<AllergenType>(c);
-                return new Model.Allergen() { Type = m };
+                var t = ctx.Mapper.Map<AllergenType>(src);
+                return new Model.Allergen { Type = t };
             });
-
-            CreateMap<Model.Allergen, Api.Models.Allergen>().ConvertUsing((e, c, ctx) =>
+            CreateMap<Model.Allergen, Api.Models.Allergen>().ConvertUsing((src, _, ctx) =>
             {
-                return ctx.Mapper.Map<Api.Models.Allergen>(e.Type);
- 
+                return ctx.Mapper.Map<Api.Models.Allergen>(src.Type);
             });
-
-
         }
     }
 }

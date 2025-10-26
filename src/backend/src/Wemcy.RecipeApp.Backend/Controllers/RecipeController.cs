@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Controllers;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Model;
@@ -28,6 +29,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
 
     public override IActionResult ListRecipes()
     {
+        Console.WriteLine(JsonConvert.SerializeObject(_recipeService.GetAllRecipe()));
         return Ok(_mapper.ProjectTo<ReadRecipeDTO>(_recipeService.GetAllRecipe().AsQueryable()));
     }
 }

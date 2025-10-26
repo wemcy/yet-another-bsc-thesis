@@ -10,6 +10,10 @@ namespace Wemcy.RecipeApp.Backend.Repository
 
         public Recipe SaveRecipe(Recipe recipe)
         {
+            foreach (var allergen in recipe.Allergens)
+            {
+                _dbContext.Attach(allergen);
+            }
             var newRecipe = _dbContext.Recipes.Add(recipe);
             _dbContext.SaveChanges();
             return newRecipe.Entity;
@@ -17,7 +21,7 @@ namespace Wemcy.RecipeApp.Backend.Repository
 
         public IEnumerable<Recipe> GetAllRecipe()
         {
-            return _dbContext.Recipes.AsNoTracking();
+            return _dbContext.Recipes.AsNoTracking().Include(x => x.Allergens);
         }
 
         public Recipe? GetRecipeById(Guid id)

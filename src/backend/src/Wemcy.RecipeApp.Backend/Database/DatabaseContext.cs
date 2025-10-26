@@ -40,6 +40,7 @@ public class DatabaseContext : DbContext
                 new Allergen { Type = AllergenType.Molluscs }
             ]);
         });
+        modelBuilder.Entity<Allergen>().HasMany(x => x.Recipes).WithMany(x => x.Allergens);
     }
 
     //To not be able call this outside without context

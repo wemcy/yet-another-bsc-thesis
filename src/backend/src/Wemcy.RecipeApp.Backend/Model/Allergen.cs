@@ -6,7 +6,7 @@ namespace Wemcy.RecipeApp.Backend.Model
     {
         [Key]
         public required AllergenType Type { get; set; }
-        public IEnumerable<Recipe> Recipes { get; set; }
+        public virtual IList<Recipe> Recipes { get; set; } = [];
     }
     public enum AllergenType
     {
