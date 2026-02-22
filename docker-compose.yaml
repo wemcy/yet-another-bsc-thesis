@@ -2,7 +2,7 @@ services:
   proxy:
     image: ghcr.io/wemcy/recipe-app-proxy
     ports:
-      - "9393:80"
+      - "9393:9393"
     environment:
       PUBLIC_HOST: localhost
       PUBLIC_PORT: 9393
@@ -56,7 +56,6 @@ services:
     environment:
       ConnectionStrings__Default: "Host=recipe_database;Port=5432;Database=recipe-app;Username=admin;Password=admin"
 
-        
   recipe_database:
     image: postgres:17-alpine
     environment:
