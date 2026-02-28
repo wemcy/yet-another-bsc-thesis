@@ -44,10 +44,18 @@ export const useRecipeStore = defineStore('recipe', {
             const idx = this.recipes.findIndex((r) => r.id === recipe.id)
             if (idx !== -1) this.recipes[idx] = recipe
         },
-        refreshRecipes() {
-            api.listRecipes().then((response) => {
+        async refreshRecipes() {
+            await api.listRecipes().then((response) => {
                 this.recipes = response.map((apiRecipe) => MapApiRecipeToRecipe(apiRecipe))
             })
+        },
+        async fetchRecipeById(id: string) {
+            const recipe = await api
+                .getRecipeById({ id })
+                .then((apiRecipe) => MapApiRecipeToRecipe(apiRecipe))
+            const idx = this.recipes.findIndex((r) => r.id === recipe.id)
+            if (idx !== -1) this.recipes[idx] = recipe
+            else this.recipes.push(recipe)
         },
     },
 })
