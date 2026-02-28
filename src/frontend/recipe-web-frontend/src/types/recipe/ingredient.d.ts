@@ -1,5 +1,5 @@
-export type Ingredient = {
+export interface Ingredient {
     name: string
-    amount: number | string
-    unit: string
+    quantity: number
+    unitOfMeasurement: string
 }

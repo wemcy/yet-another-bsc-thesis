@@ -10,11 +10,22 @@ http:
     type: json
     data: |-
       {
-        "title": "string",
-        "description": "string",
-        "allergens": [
-          "GLUTEN"
-        ]
+          "title": "string",
+          "description": "string",
+          "allergens": [
+            1
+          ],
+          "steps": [
+            "Alma",
+            "Körte"
+          ],
+          "ingredients": [
+            {
+              "name": "Szatyor",
+              "quantity": 1,
+              "unitofMeasurement": "fing"
+            }
+          ]
       }
   auth: inherit
 

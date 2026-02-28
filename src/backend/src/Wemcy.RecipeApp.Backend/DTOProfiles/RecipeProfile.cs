@@ -20,6 +20,11 @@ namespace Wemcy.RecipeApp.Backend.DTOProfiles
             {
                 return ctx.Mapper.Map<Api.Models.Allergen>(src.Type);
             });
+            CreateMap<Model.Ingredient, Api.Models.Ingredient>()
+                //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                //.ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
+                //.ForMember(dest => dest.UnitofMeasurement, opt => opt.MapFrom(src => src.UnitOfMesurement))
+                .ReverseMap();
         }
     }
 }

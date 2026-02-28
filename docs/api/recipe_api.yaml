@@ -147,6 +147,12 @@ components:
           description: List of steps to prepare the recipe
           items:
             type: string
+        ingredients:
+          type: array
+          description: List of ingredients needed for the recipe
+          items:
+            $ref: '#/components/schemas/ingredient'
+
 
     readRecipeDTO:
       type: object
@@ -177,6 +183,11 @@ components:
           description: List of steps to prepare the recipe
           items:
             type: string
+        ingredients:
+          type: array
+          description: List of ingredients needed for the recipe
+          items:
+            $ref: '#/components/schemas/ingredient'
 
     allergenList:
       type: array
@@ -188,7 +199,6 @@ components:
       minItems: 0
       maxItems: 14
       example: [1, 3, 5]
-
     allergen:
       type: string
       enum:
@@ -206,3 +216,22 @@ components:
         - SULPHURDIOXIDE
         - LUPIN
         - MOLLUSCS
+    ingredient:
+      type: object
+      required:
+        - name
+        - quantity
+        - unitOfMeasurement
+      properties:
+        name:
+          type: string
+          description: The name of the ingredient
+          nullable: false
+        quantity:
+          type: number
+          description: The quantity of the ingredient needed for the recipe
+          nullable: false
+        unitOfMeasurement:
+          type: string
+          description: The unit of measure for the ingredient quantity (e.g., grams, cups, tablespoons)
+          nullable: false

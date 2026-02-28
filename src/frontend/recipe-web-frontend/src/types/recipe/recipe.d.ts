@@ -1,4 +1,5 @@
 import type { AllergenEnum } from './allergens'
+import type { Ingredient } from './ingredient'
 
 export type Recipe = {
     id: string

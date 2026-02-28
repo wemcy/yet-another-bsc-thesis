@@ -6,8 +6,8 @@ public class Recipe : Entity
 {
     public required string Title { get; set; }
     public required string Description { get; set; }
-    public required List<string> Steps { get; set; }
-    //public List<Ingredient> ingreditents { get; set; }
+    public required IList<string> Steps { get; set; } = [];
+    public required IList<Ingredient> Ingredients { get; set; } = [];
     public virtual required IList<Allergen> Allergens { get; set; } = [];
 
 }

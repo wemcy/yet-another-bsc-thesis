@@ -8,7 +8,7 @@ export function MapApiRecipeToRecipe(apiRecipe: ReadRecipeDTO): Recipe {
         authorId: 'unknown', // TODO get author info from API
         title: apiRecipe.title,
         description: apiRecipe.description ?? '',
-        ingredients: [], // TODO map ingredients from API, currently missing in API spec
+        ingredients: apiRecipe.ingredients ?? [],
         steps: apiRecipe.steps ?? [],
         allergens: Array.from(apiRecipe.allergens ?? []).map((a) => MapApiAllergenToEnum(a)),
         image: 'empty', // TODO get image info from API, currently missing in API spec
@@ -21,6 +21,7 @@ export function MapRecipeToApiRecipe(recipe: Omit<Recipe, 'id'>): CreateRecipeDT
         title: recipe.title,
         description: recipe.description,
         steps: recipe.steps,
+        ingredients: recipe.ingredients,
         allergens: new Set(recipe.allergens.map((a) => MapEnumToApiAllergen(a))),
     }
 }
