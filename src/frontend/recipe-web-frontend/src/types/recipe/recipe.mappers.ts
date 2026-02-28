@@ -1,6 +1,6 @@
-import type { ReadRecipeDTO } from 'recipe-api-client'
+import type { CreateRecipeDTO, ReadRecipeDTO } from 'recipe-api-client'
 import type { Recipe } from './recipe'
-import { MapApiAllergenToEnum } from './allergen.mappers'
+import { MapApiAllergenToEnum, MapEnumToApiAllergen } from './allergen.mappers'
 
 export function MapApiRecipeToRecipe(apiRecipe: ReadRecipeDTO): Recipe {
     return {
@@ -9,9 +9,18 @@ export function MapApiRecipeToRecipe(apiRecipe: ReadRecipeDTO): Recipe {
         title: apiRecipe.title,
         description: apiRecipe.description ?? '',
         ingredients: [], // TODO map ingredients from API, currently missing in API spec
-        steps: [], // TODO map steps from API, currently missing in API spec
+        steps: apiRecipe.steps ?? [],
         allergens: Array.from(apiRecipe.allergens ?? []).map((a) => MapApiAllergenToEnum(a)),
         image: 'empty', // TODO get image info from API, currently missing in API spec
         rating: 5, // TODO get rating info from API, currently missing in API spec
+    }
+}
+
+export function MapRecipeToApiRecipe(recipe: Omit<Recipe, 'id'>): CreateRecipeDTO {
+    return {
+        title: recipe.title,
+        description: recipe.description,
+        steps: recipe.steps,
+        allergens: new Set(recipe.allergens.map((a) => MapEnumToApiAllergen(a))),
     }
 }

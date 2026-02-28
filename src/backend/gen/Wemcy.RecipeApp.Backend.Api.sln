@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wemcy.RecipeApp.Backend.Api", "../src\Wemcy.RecipeApp.Backend.Api\Wemcy.RecipeApp.Backend.Api.csproj", "{94E2F7BA-CA42-4382-8B31-0226F389BDE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wemcy.RecipeApp.Backend.Api", "../src\Wemcy.RecipeApp.Backend.Api\Wemcy.RecipeApp.Backend.Api.csproj", "{3F43113E-D477-4EFA-B78F-738320925536}"
 EndProject
 Global
     GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
         Release|Any CPU = Release|Any CPU
     EndGlobalSection
     GlobalSection(ProjectConfigurationPlatforms) = postSolution
-        {94E2F7BA-CA42-4382-8B31-0226F389BDE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-        {94E2F7BA-CA42-4382-8B31-0226F389BDE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-        {94E2F7BA-CA42-4382-8B31-0226F389BDE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-        {94E2F7BA-CA42-4382-8B31-0226F389BDE4}.Release|Any CPU.Build.0 = Release|Any CPU
+        {3F43113E-D477-4EFA-B78F-738320925536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {3F43113E-D477-4EFA-B78F-738320925536}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {3F43113E-D477-4EFA-B78F-738320925536}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {3F43113E-D477-4EFA-B78F-738320925536}.Release|Any CPU.Build.0 = Release|Any CPU
     EndGlobalSection
     GlobalSection(SolutionProperties) = preSolution
         HideSolutionNode = FALSE

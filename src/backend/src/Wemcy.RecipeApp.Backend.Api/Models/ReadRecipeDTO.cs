@@ -68,6 +68,13 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public List<Allergen> Allergens { get; set; }
 
         /// <summary>
+        /// List of steps to prepare the recipe
+        /// </summary>
+        /// <value>List of steps to prepare the recipe</value>
+        [DataMember(Name="steps", EmitDefaultValue=false)]
+        public List<string> Steps { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -81,6 +88,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  UpdatedAt: ").Append(UpdatedAt).Append("\n");
             sb.Append("  Allergens: ").Append(Allergens).Append("\n");
+            sb.Append("  Steps: ").Append(Steps).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -147,6 +155,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     Allergens != null &&
                     other.Allergens != null &&
                     Allergens.SequenceEqual(other.Allergens)
+                ) && 
+                (
+                    Steps == other.Steps ||
+                    Steps != null &&
+                    other.Steps != null &&
+                    Steps.SequenceEqual(other.Steps)
                 );
         }
 
@@ -172,6 +186,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     hashCode = hashCode * 59 + UpdatedAt.GetHashCode();
                     if (Allergens != null)
                     hashCode = hashCode * 59 + Allergens.GetHashCode();
+                    if (Steps != null)
+                    hashCode = hashCode * 59 + Steps.GetHashCode();
                 return hashCode;
             }
         }

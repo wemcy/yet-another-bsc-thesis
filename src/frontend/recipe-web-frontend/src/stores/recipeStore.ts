@@ -1,6 +1,5 @@
-import { MapEnumToApiAllergen } from '@/types/recipe/allergen.mappers'
 import type { Recipe, RecipeState } from '@/types/recipe/recipe'
-import { MapApiRecipeToRecipe } from '@/types/recipe/recipe.mappers'
+import { MapApiRecipeToRecipe, MapRecipeToApiRecipe } from '@/types/recipe/recipe.mappers'
 import { defineStore } from 'pinia'
 import { Configuration, RecipesApi } from 'recipe-api-client'
 
@@ -22,19 +21,7 @@ export const useRecipeStore = defineStore('recipe', {
 
     actions: {
         async addRecipe(recipe: Omit<Recipe, 'id'>) {
-            const newRecipe = {
-                id: Date.now().toString(),
-                ...recipe,
-            }
-
-            await api.createRecipe({
-                createRecipeDTO: {
-                    title: newRecipe.title,
-                    description: newRecipe.description,
-                    allergens: new Set(newRecipe.allergens.map((a) => MapEnumToApiAllergen(a))),
-                },
-            })
-            this.recipes.push(newRecipe)
+            await api.createRecipe({ createRecipeDTO: MapRecipeToApiRecipe(recipe) })
         },
         updateRating(id: string, rating: number) {
             const recipe = this.recipes.find((r) => r.id === id)

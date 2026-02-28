@@ -142,6 +142,11 @@ components:
           description: Simple description of the recipe
         allergens:
           $ref: '#/components/schemas/allergenList'
+        steps:
+          type: array
+          description: List of steps to prepare the recipe
+          items:
+            type: string
 
     readRecipeDTO:
       type: object
@@ -167,6 +172,11 @@ components:
           nullable: true
         allergens:
           $ref: '#/components/schemas/allergenList'
+        steps:
+          type: array
+          description: List of steps to prepare the recipe
+          items:
+            type: string
 
     allergenList:
       type: array
