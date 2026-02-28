@@ -1,36 +1,37 @@
-import type { Allergen } from 'recipe-api-client'
+import { Allergen } from 'recipe-api-client'
 import { AllergenEnum } from './allergens'
 
-export function MapApiAllergenToEnum(allergen: string): AllergenEnum | null {
+export function MapApiAllergenToEnum(allergen: Allergen): AllergenEnum {
     switch (allergen) {
-        case 'Glutén':
+        case Allergen.Gluten:
             return AllergenEnum.Gluten
-        case 'Tej':
+        case Allergen.Milk:
             return AllergenEnum.Milk
-        case 'Tojás':
+        case Allergen.Eggs:
             return AllergenEnum.Egg
-        case 'Hal':
+        case Allergen.Fish:
             return AllergenEnum.Fish
-        case 'Földimogyoró':
+        case Allergen.Peanuts:
             return AllergenEnum.Peanut
-        case 'Szójabab':
+        case Allergen.Soybeans:
             return AllergenEnum.Soy
-        case 'Diófélék':
+        case Allergen.Nuts:
             return AllergenEnum.TreeNuts
-        case 'Zeller':
+        case Allergen.Celery:
             return AllergenEnum.Celery
-        case 'Mustár':
+        case Allergen.Mustard:
             return AllergenEnum.Mustard
-        case 'Szezámmag':
+        case Allergen.Sesameseeds:
             return AllergenEnum.Sesame
-        case 'Kén-dioxid':
+        case Allergen.Sulphurdioxide:
             return AllergenEnum.SulphurDioxide
-        case 'Csillagfürt':
+        case Allergen.Lupin:
             return AllergenEnum.Lupin
-        case 'Puhatestűek':
+        case Allergen.Molluscs:
             return AllergenEnum.Molluscs
+        default:
+            throw new Error(`Unknown allergen: ${allergen}`)
     }
-    return null
 }
 
 export function MapEnumToApiAllergen(allergen: AllergenEnum): Allergen {
