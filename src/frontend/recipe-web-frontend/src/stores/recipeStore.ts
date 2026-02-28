@@ -1,7 +1,15 @@
-import { Allergen } from '@/types/recipe/allergens.d'
+import { MapEnumToApiAllergen } from '@/types/recipe/allergen.mappers'
+import { AllergenEnum } from '@/types/recipe/allergens'
 import type { Recipe, RecipeState } from '@/types/recipe/recipe'
 import { defineStore } from 'pinia'
+import { Configuration, RecipesApi } from 'recipe-api-client'
 
+const api = new RecipesApi(
+    new Configuration({
+        // TODO make this dynamic based on env vars
+        basePath: 'http://localhost:9393/api',
+    }),
+)
 export const useRecipeStore = defineStore('recipe', {
     state: (): RecipeState => ({
         recipes: [
@@ -20,7 +28,7 @@ export const useRecipeStore = defineStore('recipe', {
                     'Húst összekeverni rizzsel és fűszerekkel',
                     'Tölteni, főzni paradicsomszószban',
                 ],
-                allergens: [Allergen.Gluten, Allergen.Soy],
+                allergens: [AllergenEnum.Gluten, AllergenEnum.Soy],
                 image: new URL('@/assets/recipe.jpg', import.meta.url).href,
                 rating: 4.7,
             },
@@ -58,7 +66,7 @@ export const useRecipeStore = defineStore('recipe', {
                     'Rétegezni rizzsel, tejföllel, sajttal',
                     'Sütni 30 percig',
                 ],
-                allergens: [Allergen.Gluten, Allergen.Soy],
+                allergens: [AllergenEnum.Gluten, AllergenEnum.Soy],
 
                 image: new URL('@/assets/recipe.jpg', import.meta.url).href,
                 rating: 4.6,
@@ -78,7 +86,7 @@ export const useRecipeStore = defineStore('recipe', {
                     'Szaggatni forró vízbe',
                     'Lecsöpögtetni, tojással összesütni',
                 ],
-                allergens: [Allergen.Gluten, Allergen.Soy],
+                allergens: [AllergenEnum.Gluten, AllergenEnum.Soy],
 
                 image: new URL('@/assets/recipe.jpg', import.meta.url).href,
                 rating: 4.5,
@@ -113,7 +121,7 @@ export const useRecipeStore = defineStore('recipe', {
                     { name: 'vöröshagyma', amount: 1, unit: 'db' },
                 ],
                 steps: ['Hagymát dinsztelni', 'Gombát pirítani', 'Tejföllel besűríteni'],
-                allergens: [Allergen.Milk, Allergen.Soy],
+                allergens: [AllergenEnum.Milk, AllergenEnum.Soy],
 
                 image: new URL('@/assets/recipe.jpg', import.meta.url).href,
                 rating: 4.3,
@@ -127,11 +135,19 @@ export const useRecipeStore = defineStore('recipe', {
     },
 
     actions: {
-        addRecipe(recipe: Omit<Recipe, 'id'>) {
+        async addRecipe(recipe: Omit<Recipe, 'id'>) {
             const newRecipe = {
                 id: Date.now().toString(),
                 ...recipe,
             }
+
+            await api.createRecipe({
+                createRecipeDTO: {
+                    title: newRecipe.title,
+                    description: newRecipe.description,
+                    allergens: new Set(newRecipe.allergens.map((a) => MapEnumToApiAllergen(a))),
+                },
+            })
             this.recipes.push(newRecipe)
         },
         updateRating(id: string, rating: number) {

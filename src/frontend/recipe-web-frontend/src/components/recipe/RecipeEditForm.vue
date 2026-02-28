@@ -124,7 +124,7 @@
 import { ref, watch } from 'vue'
 import { useRecipeStore } from '@/stores/recipeStore'
 import { useRouter } from 'vue-router'
-import { Allergen, allergenList } from '@/types/recipe/allergens.d'
+import { AllergenEnum, allergenList } from '@/types/recipe/allergens'
 import type { Recipe, RecipeFormErrors } from '@/types/recipe/recipe'
 import type { Ingredient } from '@/types/recipe/ingredient'
 const { recipe } = defineProps<{ recipe: Recipe }>()
@@ -138,7 +138,7 @@ const imageFile = ref<File | null>(null)
 const imageUrl = ref<string | null>(null)
 
 const steps = ref<string[]>([''])
-const selectedAllergens = ref<Allergen[]>([])
+const selectedAllergens = ref<AllergenEnum[]>([])
 const errors = ref<RecipeFormErrors>({})
 
 const allergenOptions = allergenList

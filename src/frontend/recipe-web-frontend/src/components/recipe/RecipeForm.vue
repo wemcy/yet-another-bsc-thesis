@@ -120,7 +120,7 @@
 import { ref } from 'vue'
 import { useRecipeStore } from '@/stores/recipeStore'
 import { useRouter } from 'vue-router'
-import { Allergen, allergenList } from '@/types/recipe/allergens.d'
+import { AllergenEnum, allergenList } from '@/types/recipe/allergens'
 import type { Recipe, RecipeFormErrors } from '@/types/recipe/recipe'
 import type { Ingredient } from '@/types/recipe/ingredient'
 import { useAuthStore } from '@/stores/authStore'
@@ -144,7 +144,7 @@ const title = ref<string>('')
 const description = ref<string>('')
 const ingredients = ref<Ingredient[]>([{ amount: '', unit: '', name: '' }])
 const steps = ref<string[]>([''])
-const selectedAllergens = ref<Allergen[]>([])
+const selectedAllergens = ref<AllergenEnum[]>([])
 const errors = ref<RecipeFormErrors>({})
 
 const allergenOptions = allergenList
@@ -176,10 +176,11 @@ function resetForm() {
 
 function validateForm() {
     errors.value = {}
-    if (!authStore.currentUser) {
-        errors.value.title = 'Csak bejelentkezve lehet receptet feltölteni.'
-        return
-    }
+    // TODO remove this comment
+    // if (!authStore.currentUser) {
+    //     errors.value.title = 'Csak bejelentkezve lehet receptet feltölteni.'
+    //     return
+    // }
     if (!title.value.trim()) errors.value.title = 'A cím megadása kötelező.'
     if (!description.value.trim()) errors.value.description = 'A leírás nem lehet üres.'
     if (!ingredients.value.some((i) => i.name.trim()))
@@ -195,7 +196,7 @@ function submit() {
 
     const newRecipe: Recipe = {
         id: Date.now().toString(),
-        authorId: authStore.currentUser!.id,
+        authorId: authStore.getUserId,
         title: title.value,
         description: description.value,
         ingredients: ingredients.value,

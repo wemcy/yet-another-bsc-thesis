@@ -1,4 +1,4 @@
-import type { Allergen } from './allergens'
+import type { AllergenEnum } from './allergens'
 
 export type Recipe = {
     id: string
@@ -7,7 +7,7 @@ export type Recipe = {
     description: string
     ingredients: Ingredient[]
     steps: string[]
-    allergens: Allergen[]
+    allergens: AllergenEnum[]
     image: string
     rating: number
 }

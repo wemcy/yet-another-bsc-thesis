@@ -1,0 +1,25 @@
+info:
+  name: recipes creation
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://localhost:9393/api/recipes
+  body:
+    type: json
+    data: |-
+      {
+        "title": "string",
+        "description": "string",
+        "allergens": [
+          "GLUTEN"
+        ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
