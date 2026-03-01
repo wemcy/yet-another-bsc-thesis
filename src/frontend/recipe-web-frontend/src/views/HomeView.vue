@@ -10,9 +10,9 @@ const recipeStore = useRecipeStore()
 const featured = computed(() => recipeStore.featuredRecipe)
 const showcaseRecipes = computed(() => recipeStore.showcaseRecipes)
 
-onMounted(() => {
-    recipeStore.fetchShowcaseRecipes()
-    console.log('Showcase receptek betöltve:', showcaseRecipes.value)
+onMounted(async () => {
+    await recipeStore.fetchFeaturedRecipe()
+    await recipeStore.fetchShowcaseRecipes()
 })
 </script>
 

@@ -12,12 +12,13 @@ const api = new RecipesApi(
 export const useRecipeStore = defineStore('recipe', {
     state: (): RecipeState => ({
         recipes: [],
+        featuredRecipeId: null,
         showcaseRecipesIds: [],
     }),
 
     getters: {
         getById: (state) => (id: string) => state.recipes.find((r) => r.id === id),
-        featuredRecipe: (state) => state.recipes[0] || null,
+        featuredRecipe: (state) => state.recipes.find((r) => r.id === state.featuredRecipeId),
         showcaseRecipes: (state) =>
             state.recipes.filter((r) => state.showcaseRecipesIds.includes(r.id)),
     },
@@ -54,6 +55,13 @@ export const useRecipeStore = defineStore('recipe', {
                     const recipe = MapApiRecipeToRecipe(apiRecipe)
                     this.updateRecipe(recipe)
                 })
+            })
+        },
+        async fetchFeaturedRecipe() {
+            await api.getFeaturedRecipe().then((response) => {
+                this.featuredRecipeId = response.id
+                const recipe = MapApiRecipeToRecipe(response)
+                this.updateRecipe(recipe)
             })
         },
     },

@@ -22,4 +22,5 @@ export interface RecipeFormErrors {
 export interface RecipeState {
     recipes: Recipe[]
     showcaseRecipesIds: Recipe.id[]
+    featuredRecipeId: Recipe.id | null
 }

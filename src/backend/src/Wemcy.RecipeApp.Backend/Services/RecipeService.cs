@@ -25,8 +25,14 @@ public class RecipeService(RecipeRepository recipeRepository)
         return this.recipeRepository.GetRecipeById(id);
     }
 
-    public IEnumerable<object> GetShowcaseRecieps()
+    public IQueryable<Recipe> GetShowcaseRecieps()
     {
         return this.recipeRepository.GetAllRecipe().Take(6);
+    }
+
+    public Recipe? GetFeaturedRecipe()
+    {
+        // TODO: implement admin selected featured recipe
+        return this.recipeRepository.GetAllRecipe().FirstOrDefault();
     }
 }

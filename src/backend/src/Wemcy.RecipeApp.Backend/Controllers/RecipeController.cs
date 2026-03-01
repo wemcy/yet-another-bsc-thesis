@@ -27,6 +27,12 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
         return recipe == null ? NotFound() : Ok(_mapper.Map<ReadRecipeDTO>(recipe));
     }
 
+    public override IActionResult GetFeaturedRecipe()
+    {
+        var recipe = _recipeService.GetFeaturedRecipe();
+        return recipe == null ? NotFound() : Ok(_mapper.Map<ReadRecipeDTO>(recipe));
+    }
+
     public override IActionResult ListRecipes()
     {
         var q = _recipeService.GetAllRecipe();
@@ -40,4 +46,6 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
         var dtos = q.Select(x => _mapper.Map<ReadRecipeDTO>(x)).ToList();
         return Ok(dtos);
     }
+
+
 }

@@ -38,6 +38,16 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         public abstract IActionResult CreateRecipe([FromBody]CreateRecipeDTO createRecipeDTO);
 
         /// <summary>
+        /// Kiemelt recept listázása
+        /// </summary>
+        /// <response code="200">Receptek</response>
+        [HttpGet]
+        [Route("/recipes/featured")]
+        [ValidateModelState]
+        [ProducesResponseType(statusCode: 200, type: typeof(ReadRecipeDTO))]
+        public abstract IActionResult GetFeaturedRecipe();
+
+        /// <summary>
         /// Recept lekérdezése ID alapján
         /// </summary>
         /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>

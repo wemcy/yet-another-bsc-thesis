@@ -113,6 +113,19 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/readRecipeDTO"
+  "/recipes/featured":
+    get:
+      tags:
+      - Recipes
+      summary: Kiemelt recept listázása
+      operationId: getFeaturedRecipe
+      responses:
+        '200':
+          description: Receptek
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/readRecipeDTO"
 
 
 components:
