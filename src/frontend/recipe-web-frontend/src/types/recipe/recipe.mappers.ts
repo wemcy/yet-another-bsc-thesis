@@ -11,7 +11,7 @@ export function MapApiRecipeToRecipe(apiRecipe: ReadRecipeDTO): Recipe {
         ingredients: apiRecipe.ingredients ?? [],
         steps: apiRecipe.steps ?? [],
         allergens: Array.from(apiRecipe.allergens ?? []).map((a) => MapApiAllergenToEnum(a)),
-        image: 'empty', // TODO get image info from API, currently missing in API spec
+        image: `/api/recipes/${apiRecipe.id}/image`,
         rating: 5, // TODO get rating info from API, currently missing in API spec
     }
 }
