@@ -210,7 +210,7 @@ async function submit() {
     if (imageFile.value) {
         await recipeStore.updateImage(recipeId, imageFile.value)
     }
-    router.push({ name: 'recipe', params: { id: recipeId } })
+    router.push({ name: 'Recipe', params: { id: recipeId } })
     resetForm()
 }
 </script>

@@ -14,7 +14,7 @@
             return filestream;
         }
 
-        private string GetImagePath(Guid id)
+        private static string GetImagePath(Guid id)
         {
             return Path.Combine("/storage/recipe_images", $"{id}");
         }

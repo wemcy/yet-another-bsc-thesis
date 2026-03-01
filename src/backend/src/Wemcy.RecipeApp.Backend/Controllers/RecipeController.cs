@@ -58,4 +58,9 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
     {
         return new FileStreamResult( _recipeService.GetImageById(id),"image/jpeg");
     }
+
+    public override async Task<IActionResult> RateRecipe([FromRoute(Name = "id"), Required] Guid id, [FromBody] RateRecipeRequest rateRecipeRequest)
+    {
+        return _recipeService.RateRecipe(id, rateRecipeRequest.Rating) ? NoContent() : NotFound();
+    }
 }

@@ -98,6 +98,35 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/readRecipeDTO"
+  "/recipes/{id}/rate":
+    put:
+      tags:
+      - Recipes
+      summary: Recept értékelése ID alapján (1-5 csillag)
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          description: A lekérdezendő recept egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: rateRecipe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                  description: The rating value (1-5)
+      responses:
+        '204':
+          description: Recept értékelése sikeresen frissítve
   "/recipes/{id}/image":
     put:
       tags:

@@ -7,8 +7,8 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <AssemblyVersion>0.11.0.0</AssemblyVersion>
     <FileVersion>0.11.0.0</FileVersion>
-    <InformationalVersion>0.11.0-alpha.13+Branch.dev.Sha.61eb74e438ee6c3c4bc89de8602ab89f9a83cc87</InformationalVersion>
-    <Version>0.11.0-alpha.13</Version>
+    <InformationalVersion>0.11.0-alpha.23+Branch.dev.Sha.c23a5114f580bc914560a12f1388bffe7c231163</InformationalVersion>
+    <Version>0.11.0-alpha.23</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.0.1" />
@@ -19,6 +19,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.21" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.21" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

@@ -10,9 +10,6 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
 
     public Recipe CreateRecipe(Recipe recipe)
     {
-        var currentTime = DateTimeOffset.UtcNow;
-        recipe.CreatedAt = currentTime;
-        recipe.UpdatedAt = currentTime;
         return this.recipeRepository.CreateRecipe(recipe);
     }
 
@@ -45,10 +42,21 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         this.recipeRepository.SaveRecipe(recipe);
     }
 
-    internal Stream? GetImageById(Guid id)
+    public Stream? GetImageById(Guid id)
     {
         var image = this.recipeRepository.GetImageById(id) ?? throw new KeyNotFoundException($"Recipe with id {id} not found");
         if (image == null) return null;
         return  imageService.GetImageById(image.Id);
+    }
+
+    public bool RateRecipe(Guid id, int rating)
+    {
+        if(this.recipeRepository.GetRecipeById(id, out var recipe))
+        {
+            recipe.Rate(rating);
+            this.recipeRepository.Save();
+            return true;
+        }
+        return false;
     }
 }

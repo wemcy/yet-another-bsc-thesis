@@ -92,6 +92,18 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         public abstract Task<IActionResult> ListShowcaseRecipes();
 
         /// <summary>
+        /// Recept értékelése ID alapján (1-5 csillag)
+        /// </summary>
+        /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>
+        /// <param name="rateRecipeRequest"></param>
+        /// <response code="204">Recept értékelése sikeresen frissítve</response>
+        [HttpPut]
+        [Route("/recipes/{id}/rate")]
+        [Consumes("application/json")]
+        [ValidateModelState]
+        public abstract Task<IActionResult> RateRecipe([FromRoute (Name = "id")][Required]Guid id, [FromBody]RateRecipeRequest rateRecipeRequest);
+
+        /// <summary>
         /// Recept képének frissítése ID alapján
         /// </summary>
         /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>

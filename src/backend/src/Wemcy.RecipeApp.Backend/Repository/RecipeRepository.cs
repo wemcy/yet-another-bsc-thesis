@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Model;
 
@@ -46,7 +47,17 @@ namespace Wemcy.RecipeApp.Backend.Repository
             var recipe = _dbContext.Recipes.Where(x => x.Id == id).Include(x => x.Image).SingleOrDefault() ?? throw new KeyNotFoundException($"Recipe with id {id} not found");
             if (recipe.Image == null) throw new KeyNotFoundException($"Image for recipe with id {id} not found");
             return recipe.Image;
+        }
+        
+        public bool GetRecipeById(Guid id, [NotNullWhen(true)] out Recipe? recipe)
+        {
+            recipe = _dbContext.Recipes.Where(x => x.Id == id).SingleOrDefault();
+            return recipe != null;
+        }
 
+        public void Save()
+        {
+            _dbContext.SaveChanges();
         }
     }
 }
