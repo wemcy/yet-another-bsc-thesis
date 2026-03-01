@@ -175,6 +175,65 @@ paths:
               schema:
                 type: string
                 format: binary
+  "/recipes/{id}/comments":
+    get:
+      tags:
+      - Recipes
+      summary: Recept kommentjeinek lekérdezése ID alapján
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          description: A lekérdezendő recept egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: getRecipeComments
+      responses:
+        '200':
+          description: Receptek
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/comment"
+    post:
+      tags:
+      - Recipes
+      summary: Recept kommentelése ID alapján
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          description: A lekérdezendő recept egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: addRecipeComment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  description: The content of the comment to add.
+      responses:
+        '201':
+          description: Comment added successfully
+          headers:
+            Location:
+              description: Az új erőforrás URL-je
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/comment"
+
   "/recipes/showcase":
     get:
       tags:
@@ -265,6 +324,7 @@ components:
       - id
       - title
       - createdAt
+      - averageRating
       properties:
         id:
           type: string
@@ -293,6 +353,11 @@ components:
           description: List of ingredients needed for the recipe
           items:
             $ref: '#/components/schemas/ingredient'
+        averageRating:
+          type: number
+          format: double
+          description: The average rating of the recipe (1-5)
+          nullable: false
 
     allergenList:
       type: array
@@ -340,3 +405,16 @@ components:
           type: string
           description: The unit of measure for the ingredient quantity (e.g., grams, cups, tablespoons)
           nullable: false
+    comment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        author:
+          type: string

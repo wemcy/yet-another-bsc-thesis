@@ -1,4 +1,5 @@
-﻿using Wemcy.RecipeApp.Backend.Model;
+﻿using Wemcy.RecipeApp.Backend.Exceptions;
+using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Repository;
 
 namespace Wemcy.RecipeApp.Backend.Services;
@@ -18,9 +19,9 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         return this.recipeRepository.GetAllRecipe();
     }
 
-    public Recipe? GetRecipeById(Guid id)
+    public Recipe GetRecipeById(Guid id)
     {
-        return this.recipeRepository.GetRecipeByIdWithAllergens(id);
+        return this.recipeRepository.GetRecipeByIdWithAllergens(id) ?? throw new RecipeNotFoundException(id);
     }
 
     public IQueryable<Recipe> GetShowcaseRecieps()
@@ -36,27 +37,24 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
 
     public async Task UpdageImageById(Guid id, Stream imageStream, string name)
     {
-        var recipe = this.recipeRepository.GetRecipeById(id) ?? throw new KeyNotFoundException($"Recipe with id {id} not found");
+        var recipe = this.recipeRepository.GetRecipeById(id);
         var image = await imageService.CreateImage(imageStream, name);
         recipe.Image = image;
-        this.recipeRepository.SaveRecipe(recipe);
+        this.recipeRepository.Save();
+        
     }
 
-    public Stream? GetImageById(Guid id)
+    public Stream GetImageById(Guid id)
     {
-        var image = this.recipeRepository.GetImageById(id) ?? throw new KeyNotFoundException($"Recipe with id {id} not found");
-        if (image == null) return null;
-        return  imageService.GetImageById(image.Id);
+        var image = this.recipeRepository.GetImageById(id);
+        return imageService.GetImageById(image.Id);
+
     }
 
-    public bool RateRecipe(Guid id, int rating)
+    public void RateRecipe(Guid id, int rating)
     {
-        if(this.recipeRepository.GetRecipeById(id, out var recipe))
-        {
-            recipe.Rate(rating);
-            this.recipeRepository.Save();
-            return true;
-        }
-        return false;
+        var recipe = this.recipeRepository.GetRecipeById(id);
+        recipe.Rate(rating);
+        this.recipeRepository.Save();
     }
 }

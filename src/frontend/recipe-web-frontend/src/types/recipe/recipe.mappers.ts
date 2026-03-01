@@ -12,7 +12,7 @@ export function MapApiRecipeToRecipe(apiRecipe: ReadRecipeDTO): Recipe {
         steps: apiRecipe.steps ?? [],
         allergens: Array.from(apiRecipe.allergens ?? []).map((a) => MapApiAllergenToEnum(a)),
         image: `/api/recipes/${apiRecipe.id}/image`,
-        rating: 5, // TODO get rating info from API, currently missing in API spec
+        rating: apiRecipe.averageRating,
     }
 }
 

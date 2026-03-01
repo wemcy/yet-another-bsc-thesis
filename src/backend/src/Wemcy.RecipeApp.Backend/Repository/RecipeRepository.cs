@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Wemcy.RecipeApp.Backend.Database;
+using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
 
 namespace Wemcy.RecipeApp.Backend.Repository
@@ -33,28 +34,20 @@ namespace Wemcy.RecipeApp.Backend.Repository
             return breakpoint;
         }
 
-        public Recipe? GetRecipeByIdWithAllergens(Guid id)
+        public Recipe GetRecipeByIdWithAllergens(Guid id)
         {
-            return _dbContext.Recipes.Where(x => x.Id == id).Include(x => x.Allergens).SingleOrDefault();
+            return _dbContext.Recipes.Where(x => x.Id == id).Include(x => x.Allergens).SingleOrDefault() ?? throw new RecipeNotFoundException(id);
         }
-        public Recipe? GetRecipeById(Guid id)
+
+        public Recipe GetRecipeById(Guid id)
         {
-            return _dbContext.Recipes.Where(x => x.Id == id).SingleOrDefault();
+            return _dbContext.Recipes.Where(x => x.Id == id).SingleOrDefault() ?? throw new RecipeNotFoundException(id);
         }
 
         public Image GetImageById(Guid id)
         {
-            var recipe = _dbContext.Recipes.Where(x => x.Id == id).Include(x => x.Image).SingleOrDefault() ?? throw new KeyNotFoundException($"Recipe with id {id} not found");
-            if (recipe.Image == null) throw new KeyNotFoundException($"Image for recipe with id {id} not found");
-            return recipe.Image;
+            return GetRecipeById(id).Image ?? throw new ImageNotFoundException();
         }
-        
-        public bool GetRecipeById(Guid id, [NotNullWhen(true)] out Recipe? recipe)
-        {
-            recipe = _dbContext.Recipes.Where(x => x.Id == id).SingleOrDefault();
-            return recipe != null;
-        }
-
         public void Save()
         {
             _dbContext.SaveChanges();

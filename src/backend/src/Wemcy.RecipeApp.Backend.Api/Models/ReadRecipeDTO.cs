@@ -82,6 +82,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public List<Ingredient> Ingredients { get; set; }
 
         /// <summary>
+        /// The average rating of the recipe (1-5)
+        /// </summary>
+        /// <value>The average rating of the recipe (1-5)</value>
+        [Required]
+        [DataMember(Name="averageRating", EmitDefaultValue=true)]
+        public double AverageRating { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -97,6 +105,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             sb.Append("  Allergens: ").Append(Allergens).Append("\n");
             sb.Append("  Steps: ").Append(Steps).Append("\n");
             sb.Append("  Ingredients: ").Append(Ingredients).Append("\n");
+            sb.Append("  AverageRating: ").Append(AverageRating).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -175,6 +184,11 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     Ingredients != null &&
                     other.Ingredients != null &&
                     Ingredients.SequenceEqual(other.Ingredients)
+                ) && 
+                (
+                    AverageRating == other.AverageRating ||
+                    
+                    AverageRating.Equals(other.AverageRating)
                 );
         }
 
@@ -204,6 +218,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     hashCode = hashCode * 59 + Steps.GetHashCode();
                     if (Ingredients != null)
                     hashCode = hashCode * 59 + Ingredients.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + AverageRating.GetHashCode();
                 return hashCode;
             }
         }

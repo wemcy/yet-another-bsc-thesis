@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Controllers;
 using Wemcy.RecipeApp.Backend.Api.Models;
+using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Services;
 
 namespace Wemcy.RecipeApp.Backend.Controllers;
+[RecipeNotFoundHandler]
 
 public class RecipeController(RecipeService recipeService, IMapper mapper) : RecipesApiController
 {
@@ -24,13 +26,13 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
     public override async Task<IActionResult> GetRecipeById([FromRoute(Name = "id"), Required] Guid id)
     {
         var recipe = _recipeService.GetRecipeById(id);
-        return recipe == null ? NotFound() : Ok(_mapper.Map<ReadRecipeDTO>(recipe));
+        return Ok(_mapper.Map<ReadRecipeDTO>(recipe));
     }
 
     public override async Task<IActionResult> GetFeaturedRecipe()
     {
         var recipe = _recipeService.GetFeaturedRecipe();
-        return recipe == null ? NotFound() : Ok(_mapper.Map<ReadRecipeDTO>(recipe));
+        return Ok(_mapper.Map<ReadRecipeDTO>(recipe));
     }
 
     public override async Task<IActionResult> ListRecipes()
@@ -53,7 +55,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
         await _recipeService.UpdageImageById(id, image.OpenReadStream(), image.Name);
         return NoContent();
     }
-
+    [ImageNotFoundHandler]
     public override async Task<IActionResult> GetRecipeImage([FromRoute(Name = "id"), Required] Guid id)
     {
         return new FileStreamResult( _recipeService.GetImageById(id),"image/jpeg");
@@ -61,6 +63,17 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
 
     public override async Task<IActionResult> RateRecipe([FromRoute(Name = "id"), Required] Guid id, [FromBody] RateRecipeRequest rateRecipeRequest)
     {
-        return _recipeService.RateRecipe(id, rateRecipeRequest.Rating) ? NoContent() : NotFound();
+        _recipeService.RateRecipe(id, rateRecipeRequest.Rating);
+        return NoContent();
+    }
+
+    public override Task<IActionResult> AddRecipeComment([FromRoute(Name = "id"), Required] Guid id, [FromBody] AddRecipeCommentRequest addRecipeCommentRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override Task<IActionResult> GetRecipeComments([FromRoute(Name = "id"), Required] Guid id)
+    {
+        throw new NotImplementedException();
     }
 }

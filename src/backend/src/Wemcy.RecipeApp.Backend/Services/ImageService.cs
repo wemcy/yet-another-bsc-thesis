@@ -9,14 +9,10 @@ namespace Wemcy.RecipeApp.Backend.Services
         private readonly ImageStorageService imageStorageService = imageStorageService;
         public async Task<Image> CreateImage(Stream imageStream, string name)
         {
-            var currentTime = DateTimeOffset.UtcNow;
             var image = new Image
             {
-                Id = Guid.NewGuid(),
                 Name = name,
-                Extenstion = Path.GetExtension(name),
-                CreatedAt = currentTime,
-                UpdatedAt = currentTime,
+                Extenstion = Path.GetExtension(name)
             };
             await imageStorageService.SaveImage(image.Id, imageStream);
             return imageRepository.SaveImage(image);

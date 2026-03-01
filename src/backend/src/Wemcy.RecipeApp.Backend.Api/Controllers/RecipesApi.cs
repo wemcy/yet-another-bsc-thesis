@@ -28,6 +28,19 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
     public abstract class RecipesApiController : ControllerBase
     { 
         /// <summary>
+        /// Recept kommentelése ID alapján
+        /// </summary>
+        /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>
+        /// <param name="addRecipeCommentRequest"></param>
+        /// <response code="201">Comment added successfully</response>
+        [HttpPost]
+        [Route("/recipes/{id}/comments")]
+        [Consumes("application/json")]
+        [ValidateModelState]
+        [ProducesResponseType(statusCode: 201, type: typeof(Comment))]
+        public abstract Task<IActionResult> AddRecipeComment([FromRoute (Name = "id")][Required]Guid id, [FromBody]AddRecipeCommentRequest addRecipeCommentRequest);
+
+        /// <summary>
         /// Új recept létrehozása
         /// </summary>
         /// <param name="createRecipeDTO"></param>
@@ -59,6 +72,17 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(ReadRecipeDTO))]
         public abstract Task<IActionResult> GetRecipeById([FromRoute (Name = "id")][Required]Guid id);
+
+        /// <summary>
+        /// Recept kommentjeinek lekérdezése ID alapján
+        /// </summary>
+        /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>
+        /// <response code="200">Receptek</response>
+        [HttpGet]
+        [Route("/recipes/{id}/comments")]
+        [ValidateModelState]
+        [ProducesResponseType(statusCode: 200, type: typeof(List<Comment>))]
+        public abstract Task<IActionResult> GetRecipeComments([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
         /// Recept képének lekérdezése ID alapján
