@@ -11,6 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -35,7 +37,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 201, type: typeof(ReadRecipeDTO))]
-        public abstract IActionResult CreateRecipe([FromBody]CreateRecipeDTO createRecipeDTO);
+        public abstract Task<IActionResult> CreateRecipe([FromBody]CreateRecipeDTO createRecipeDTO);
 
         /// <summary>
         /// Kiemelt recept listázása
@@ -45,7 +47,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/recipes/featured")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(ReadRecipeDTO))]
-        public abstract IActionResult GetFeaturedRecipe();
+        public abstract Task<IActionResult> GetFeaturedRecipe();
 
         /// <summary>
         /// Recept lekérdezése ID alapján
@@ -56,7 +58,18 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/recipes/{id}/")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(ReadRecipeDTO))]
-        public abstract IActionResult GetRecipeById([FromRoute (Name = "id")][Required]Guid id);
+        public abstract Task<IActionResult> GetRecipeById([FromRoute (Name = "id")][Required]Guid id);
+
+        /// <summary>
+        /// Recept képének lekérdezése ID alapján
+        /// </summary>
+        /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>
+        /// <response code="200">Recept képe sikeresen lekérdezve</response>
+        [HttpGet]
+        [Route("/recipes/{id}/image")]
+        [ValidateModelState]
+        [ProducesResponseType(statusCode: 200, type: typeof(System.IO.Stream))]
+        public abstract Task<IActionResult> GetRecipeImage([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
         /// Receptek listázása
@@ -66,7 +79,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/recipes/")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<ReadRecipeDTO>))]
-        public abstract IActionResult ListRecipes();
+        public abstract Task<IActionResult> ListRecipes();
 
         /// <summary>
         /// Kiemelt receptek listázása
@@ -76,6 +89,18 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/recipes/showcase")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<ReadRecipeDTO>))]
-        public abstract IActionResult ListShowcaseRecipes();
+        public abstract Task<IActionResult> ListShowcaseRecipes();
+
+        /// <summary>
+        /// Recept képének frissítése ID alapján
+        /// </summary>
+        /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>
+        /// <param name="image">The image file to upload.</param>
+        /// <response code="204">Recept képe sikeresen frissítve</response>
+        [HttpPut]
+        [Route("/recipes/{id}/image")]
+        [Consumes("multipart/form-data")]
+        [ValidateModelState]
+        public abstract Task<IActionResult> UpdateRecipeImage([FromRoute (Name = "id")][Required]Guid id, IFormFile image);
     }
 }

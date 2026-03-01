@@ -8,6 +8,7 @@ public class DatabaseContext : DbContext
 {
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<Allergen> Allergens { get; set; }
+    public DbSet<Image> Images { get; set; }
 
     public DatabaseContext(DbContextOptions options) : base(options)
     {
@@ -43,6 +44,7 @@ public class DatabaseContext : DbContext
             ]);
         });
         modelBuilder.Entity<Allergen>().HasMany(x => x.Recipes).WithMany(x => x.Allergens);
+
     }
 
     //To not be able call this outside without context

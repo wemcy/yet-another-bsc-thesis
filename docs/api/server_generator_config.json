@@ -4,6 +4,8 @@
         "packageName": "Wemcy.RecipeApp.Backend.Api",
         "useNullableReferenceTypes": true,
         "sourceFolder": "../src",
-        "useDateTimeOffset": true
+        "useDateTimeOffset": true,
+        "operationIsAsync": true,
+        "operationResultTask": true
     }
 }

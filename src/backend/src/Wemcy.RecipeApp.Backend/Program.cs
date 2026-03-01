@@ -20,7 +20,10 @@ builder.Services.AddAutoMapper( config => { }, Assembly.GetExecutingAssembly() )
 var cs = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseNpgsql(cs));
 builder.Services.AddScoped<RecipeService, RecipeService>().
-                 AddScoped<RecipeRepository, RecipeRepository>();
+                 AddScoped<RecipeRepository, RecipeRepository>().
+                 AddScoped<ImageRepository, ImageRepository>().
+                 AddScoped<ImageService, ImageService>().
+                 AddScoped<ImageStorageService, ImageStorageService>();
 
 var app = builder.Build();
 

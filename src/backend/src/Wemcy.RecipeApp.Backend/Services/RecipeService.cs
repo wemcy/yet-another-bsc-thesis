@@ -3,16 +3,17 @@ using Wemcy.RecipeApp.Backend.Repository;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class RecipeService(RecipeRepository recipeRepository)
+public class RecipeService(RecipeRepository recipeRepository, ImageService imageService)
 {
     private readonly RecipeRepository recipeRepository = recipeRepository;
+    private readonly ImageService imageService = imageService;
 
     public Recipe CreateRecipe(Recipe recipe)
     {
         var currentTime = DateTimeOffset.UtcNow;
         recipe.CreatedAt = currentTime;
         recipe.UpdatedAt = currentTime;
-        return this.recipeRepository.SaveRecipe(recipe);
+        return this.recipeRepository.CreateRecipe(recipe);
     }
 
     public IQueryable<Recipe> GetAllRecipe()
@@ -22,7 +23,7 @@ public class RecipeService(RecipeRepository recipeRepository)
 
     public Recipe? GetRecipeById(Guid id)
     {
-        return this.recipeRepository.GetRecipeById(id);
+        return this.recipeRepository.GetRecipeByIdWithAllergens(id);
     }
 
     public IQueryable<Recipe> GetShowcaseRecieps()
@@ -34,5 +35,20 @@ public class RecipeService(RecipeRepository recipeRepository)
     {
         // TODO: implement admin selected featured recipe
         return this.recipeRepository.GetAllRecipe().FirstOrDefault();
+    }
+
+    public async Task UpdageImageById(Guid id, Stream imageStream, string name)
+    {
+        var recipe = this.recipeRepository.GetRecipeById(id) ?? throw new KeyNotFoundException($"Recipe with id {id} not found");
+        var image = await imageService.CreateImage(imageStream, name);
+        recipe.Image = image;
+        this.recipeRepository.SaveRecipe(recipe);
+    }
+
+    internal Stream? GetImageById(Guid id)
+    {
+        var image = this.recipeRepository.GetImageById(id) ?? throw new KeyNotFoundException($"Recipe with id {id} not found");
+        if (image == null) return null;
+        return  imageService.GetImageById(image.Id);
     }
 }

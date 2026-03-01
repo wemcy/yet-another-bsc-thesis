@@ -98,6 +98,54 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/readRecipeDTO"
+  "/recipes/{id}/image":
+    put:
+      tags:
+      - Recipes
+      summary: Recept képének frissítése ID alapján
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          description: A lekérdezendő recept egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: updateRecipeImage
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: The image file to upload.
+      responses:
+        '204':
+          description: Recept képe sikeresen frissítve
+    get:
+      tags:
+      - Recipes
+      summary: Recept képének lekérdezése ID alapján
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          description: A lekérdezendő recept egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: getRecipeImage
+      responses:
+        '200':
+          description: Recept képe sikeresen lekérdezve
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
   "/recipes/showcase":
     get:
       tags:

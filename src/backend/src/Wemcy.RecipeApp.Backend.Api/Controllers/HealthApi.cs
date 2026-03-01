@@ -11,6 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -33,6 +35,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/alive/")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(AliveReport))]
-        public abstract IActionResult GetServiceReport();
+        public abstract Task<IActionResult> GetServiceReport();
     }
 }
