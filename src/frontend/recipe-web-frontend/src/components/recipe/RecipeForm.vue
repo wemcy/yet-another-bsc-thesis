@@ -191,7 +191,7 @@ function validateForm() {
     return Object.keys(errors.value).length === 0
 }
 
-function submit() {
+async function submit() {
     if (!validateForm()) return
 
     const newRecipe: Recipe = {
@@ -206,8 +206,11 @@ function submit() {
         rating: 0,
     }
 
-    recipeStore.addRecipe(newRecipe)
-    router.push({ name: 'Home' })
+    const recipeId = await recipeStore.addRecipe(newRecipe)
+    if (imageFile.value) {
+        await recipeStore.updateImage(recipeId, imageFile.value)
+    }
+    router.push({ name: 'recipe', params: { id: recipeId } })
     resetForm()
 }
 </script>

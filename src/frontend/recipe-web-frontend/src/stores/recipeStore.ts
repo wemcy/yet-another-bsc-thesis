@@ -25,7 +25,10 @@ export const useRecipeStore = defineStore('recipe', {
 
     actions: {
         async addRecipe(recipe: Omit<Recipe, 'id'>) {
-            await api.createRecipe({ createRecipeDTO: MapRecipeToApiRecipe(recipe) })
+            const response = await api.createRecipe({
+                createRecipeDTO: MapRecipeToApiRecipe(recipe),
+            })
+            return response.id
         },
         updateRating(id: string, rating: number) {
             const recipe = this.recipes.find((r) => r.id === id)
@@ -63,6 +66,9 @@ export const useRecipeStore = defineStore('recipe', {
                 const recipe = MapApiRecipeToRecipe(response)
                 this.updateRecipe(recipe)
             })
+        },
+        async updateImage(id: string, image: File) {
+            await api.updateRecipeImage({ id, image })
         },
     },
 })
