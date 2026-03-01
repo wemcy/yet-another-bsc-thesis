@@ -1,4 +1,5 @@
-import type { Allergen } from './allergens'
+import type { AllergenEnum } from './allergens'
+import type { Ingredient } from './ingredient'
 
 export type Recipe = {
     id: string
@@ -7,9 +8,10 @@ export type Recipe = {
     description: string
     ingredients: Ingredient[]
     steps: string[]
-    allergens: Allergen[]
+    allergens: AllergenEnum[]
     image: string
     rating: number
+    comments: Comment[]
 }
 export interface RecipeFormErrors {
     title?: string
@@ -20,4 +22,18 @@ export interface RecipeFormErrors {
 
 export interface RecipeState {
     recipes: Recipe[]
+    showcaseRecipesIds: Recipe.id[]
+    featuredRecipeId: Recipe.id | null
+}
+
+export interface Comment {
+    id: string
+    authorId: string
+    content: string
+    createdAt: Date
+}
+
+export interface CommentPayload {
+    authorId: string
+    content: string
 }

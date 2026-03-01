@@ -33,13 +33,13 @@
             <label class="block font-semibold mb-2">Hozzávalók</label>
             <div v-for="(ingredient, index) in ingredients" :key="index" class="flex gap-2 mb-2">
                 <input
-                    v-model="ingredient.amount"
+                    v-model="ingredient.quantity"
                     type="number"
                     placeholder="Mennyiség"
                     class="w-1/4 border rounded px-2 py-1"
                 />
                 <input
-                    v-model="ingredient.unit"
+                    v-model="ingredient.unitOfMeasurement"
                     type="text"
                     placeholder="Egység"
                     class="w-1/4 border rounded px-2 py-1"
@@ -124,7 +124,7 @@
 import { ref, watch } from 'vue'
 import { useRecipeStore } from '@/stores/recipeStore'
 import { useRouter } from 'vue-router'
-import { Allergen, allergenList } from '@/types/recipe/allergens.d'
+import { AllergenEnum, allergenList } from '@/types/recipe/allergens'
 import type { Recipe, RecipeFormErrors } from '@/types/recipe/recipe'
 import type { Ingredient } from '@/types/recipe/ingredient'
 const { recipe } = defineProps<{ recipe: Recipe }>()
@@ -133,12 +133,12 @@ const router = useRouter()
 
 const title = ref<string>('')
 const description = ref<string>('')
-const ingredients = ref<Ingredient[]>([{ amount: '', unit: '', name: '' }])
+const ingredients = ref<Ingredient[]>([{ quantity: 0, unitOfMeasurement: '', name: '' }])
 const imageFile = ref<File | null>(null)
 const imageUrl = ref<string | null>(null)
 
 const steps = ref<string[]>([''])
-const selectedAllergens = ref<Allergen[]>([])
+const selectedAllergens = ref<AllergenEnum[]>([])
 const errors = ref<RecipeFormErrors>({})
 
 const allergenOptions = allergenList
@@ -167,7 +167,7 @@ function handleImageChange(e: Event) {
 }
 
 function addIngredient() {
-    ingredients.value.push({ amount: '', unit: '', name: '' })
+    ingredients.value.push({ quantity: 0, unitOfMeasurement: '', name: '' })
 }
 function removeIngredient(index: number) {
     ingredients.value.splice(index, 1)

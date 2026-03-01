@@ -2,8 +2,13 @@
 import { useRecipeStore } from '@/stores/recipeStore'
 import RecipePagination from '@/components/recipe/RecipePagination.vue'
 import RecipeCard from '@/components/recipe/RecipeCard.vue'
+import { onMounted } from 'vue'
 
 const recipeStore = useRecipeStore()
+
+onMounted(() => {
+    recipeStore.refreshRecipes()
+})
 </script>
 
 <template>

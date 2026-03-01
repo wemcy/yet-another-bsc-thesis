@@ -2,7 +2,7 @@ services:
   proxy:
     image: ghcr.io/wemcy/recipe-app-proxy
     ports:
-      - "9393:80"
+      - "9393:9393"
     environment:
       PUBLIC_HOST: localhost
       PUBLIC_PORT: 9393
@@ -50,7 +50,31 @@ services:
       - authentication_db_data:/var/lib/postgresql/data
   backend:
     image: ghcr.io/wemcy/recipe-app-backend
+    user: root
+    depends_on:
+      recipe_database:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__Default: "Host=recipe_database;Port=5432;Database=recipe-app;Username=admin;Password=admin"
+    volumes:
+      - recipe_images:/storage/recipe_images
+
+  recipe_database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: recipe-app
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d recipe-app"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    # volumes:
+      # - recipe_db_data:/var/lib/postgresql/data
 
 
 volumes:
   authentication_db_data:
+  recipe_db_data:
+  recipe_images:

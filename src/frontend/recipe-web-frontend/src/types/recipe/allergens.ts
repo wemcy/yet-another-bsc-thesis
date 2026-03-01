@@ -1,4 +1,4 @@
-export enum Allergen {
+export enum AllergenEnum {
     Gluten = 'Glutén',
     Milk = 'Tej',
     Egg = 'Tojás',

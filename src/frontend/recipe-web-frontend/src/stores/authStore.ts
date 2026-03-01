@@ -17,12 +17,12 @@ export const useAuthStore = defineStore('auth', {
             if (this.currentUser) {
                 this.currentUser = { ...this.currentUser, ...updates }
             }
-
         },
     },
 
     getters: {
         isLoggedIn: (state) => !!state.currentUser,
         userName: (state) => state.currentUser?.name || 'Vendég',
+        getUserId: (state) => state.currentUser?.id || '1',
     },
 })

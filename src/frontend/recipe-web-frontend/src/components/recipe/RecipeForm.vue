@@ -29,13 +29,13 @@
             <label class="block font-semibold mb-2">Hozzávalók</label>
             <div v-for="(ingredient, index) in ingredients" :key="index" class="flex gap-2 mb-2">
                 <input
-                    v-model="ingredient.amount"
+                    v-model="ingredient.quantity"
                     type="number"
                     placeholder="Mennyiség"
                     class="w-1/4 border rounded px-2 py-1"
                 />
                 <input
-                    v-model="ingredient.unit"
+                    v-model="ingredient.unitOfMeasurement"
                     type="text"
                     placeholder="Egység"
                     class="w-1/4 border rounded px-2 py-1"
@@ -120,7 +120,7 @@
 import { ref } from 'vue'
 import { useRecipeStore } from '@/stores/recipeStore'
 import { useRouter } from 'vue-router'
-import { Allergen, allergenList } from '@/types/recipe/allergens.d'
+import { AllergenEnum, allergenList } from '@/types/recipe/allergens'
 import type { Recipe, RecipeFormErrors } from '@/types/recipe/recipe'
 import type { Ingredient } from '@/types/recipe/ingredient'
 import { useAuthStore } from '@/stores/authStore'
@@ -142,15 +142,15 @@ function handleImageChange(e: Event) {
 
 const title = ref<string>('')
 const description = ref<string>('')
-const ingredients = ref<Ingredient[]>([{ amount: '', unit: '', name: '' }])
+const ingredients = ref<Ingredient[]>([{ quantity: 0, unitOfMeasurement: '', name: '' }])
 const steps = ref<string[]>([''])
-const selectedAllergens = ref<Allergen[]>([])
+const selectedAllergens = ref<AllergenEnum[]>([])
 const errors = ref<RecipeFormErrors>({})
 
 const allergenOptions = allergenList
 
 function addIngredient() {
-    ingredients.value.push({ amount: '', unit: '', name: '' })
+    ingredients.value.push({ quantity: 0, unitOfMeasurement: '', name: '' })
 }
 function removeIngredient(index: number) {
     ingredients.value.splice(index, 1)
@@ -166,7 +166,7 @@ function removeStep(index: number) {
 function resetForm() {
     title.value = ''
     description.value = ''
-    ingredients.value = [{ amount: '', unit: '', name: '' }]
+    ingredients.value = [{ quantity: 0, unitOfMeasurement: '', name: '' }]
     steps.value = ['']
     selectedAllergens.value = []
     imageFile.value = null
@@ -176,10 +176,11 @@ function resetForm() {
 
 function validateForm() {
     errors.value = {}
-    if (!authStore.currentUser) {
-        errors.value.title = 'Csak bejelentkezve lehet receptet feltölteni.'
-        return
-    }
+    // TODO remove this comment
+    // if (!authStore.currentUser) {
+    //     errors.value.title = 'Csak bejelentkezve lehet receptet feltölteni.'
+    //     return
+    // }
     if (!title.value.trim()) errors.value.title = 'A cím megadása kötelező.'
     if (!description.value.trim()) errors.value.description = 'A leírás nem lehet üres.'
     if (!ingredients.value.some((i) => i.name.trim()))
@@ -190,12 +191,12 @@ function validateForm() {
     return Object.keys(errors.value).length === 0
 }
 
-function submit() {
+async function submit() {
     if (!validateForm()) return
 
     const newRecipe: Recipe = {
         id: Date.now().toString(),
-        authorId: authStore.currentUser!.id,
+        authorId: authStore.getUserId,
         title: title.value,
         description: description.value,
         ingredients: ingredients.value,
@@ -203,10 +204,14 @@ function submit() {
         allergens: selectedAllergens.value,
         image: imageUrl.value || '',
         rating: 0,
+        comments: [],
     }
 
-    recipeStore.addRecipe(newRecipe)
-    router.push({ name: 'Home' })
+    const recipeId = await recipeStore.addRecipe(newRecipe)
+    if (imageFile.value) {
+        await recipeStore.updateImage(recipeId, imageFile.value)
+    }
+    router.push({ name: 'Recipe', params: { id: recipeId } })
     resetForm()
 }
 </script>

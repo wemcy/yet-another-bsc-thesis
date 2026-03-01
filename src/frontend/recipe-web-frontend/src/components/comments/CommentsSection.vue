@@ -6,45 +6,42 @@
             <Comment
                 v-for="(comment, index) in comments"
                 :key="index"
-                :name="comment.name"
-                :text="comment.text"
-                :date="comment.date"
+                :name="comment.authorId"
+                :content="comment.content"
+                :date="
+                    comment.createdAt.toLocaleDateString('hu-HU', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                    })
+                "
             />
         </div>
 
-        <CommentForm @submit="addComment" />
+        <!-- <CommentForm @submit="addComment" /> -->
     </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import Comment from './CommentPiece.vue'
-import CommentForm from './CommentForm.vue'
-import type { CommentItem } from '@/types/comments'
+import { useRecipeStore } from '@/stores/recipeStore'
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
 
-const comments = ref<CommentItem[]>([
-    {
-        name: 'Kiss Péter',
-        text: 'Nagyon jó recept, múlt héten is elkészítettem!',
-        date: '2024. 11. 08.',
-    },
-    {
-        name: 'Nagy Eszter',
-        text: 'Kicsit több sóval még finomabb lett 😄',
-        date: '2024. 12. 01.',
-    },
-])
+const route = useRoute()
+const recipeStore = useRecipeStore()
+const comments = computed(() => recipeStore.getCommentsByRecipeId(route.params.id as string))
 
-function addComment({ name, message }: { name: string; message: string }) {
-    const newComment: CommentItem = {
-        name,
-        text: message,
-        date: new Date().toLocaleDateString('hu-HU', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-        }),
-    }
-    comments.value.push(newComment)
-}
+// const comments = function addComment({ name, message }: { name: string; message: string }) {
+//     const newComment: CommentItem = {
+//         name,
+//         text: message,
+//         date: new Date().toLocaleDateString('hu-HU', {
+//             year: 'numeric',
+//             month: '2-digit',
+//             day: '2-digit',
+//         }),
+//     }
+//     comments.value.push(newComment)
+// }
 </script>

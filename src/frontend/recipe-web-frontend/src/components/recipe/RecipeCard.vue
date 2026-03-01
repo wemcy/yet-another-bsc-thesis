@@ -11,7 +11,6 @@
 </template>
 <script setup lang="ts">
 import type { Recipe } from '@/types/recipe/recipe'
-import { defineProps } from 'vue'
 
 const { recipe } = defineProps<{ recipe: Recipe }>()
 </script>

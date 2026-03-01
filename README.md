@@ -4,6 +4,12 @@
 Ez a projekt a szakdolgozatom keretében készülő **receptkezelő webalkalmazás**, amely lehetővé teszi a felhasználók számára receptek digitális rögzítését, böngészését és megosztását.  
 A rendszer célja, hogy a receptek könnyen kereshetők és szűrhetők legyenek, különös tekintettel az allergéninformációkra az **1169/2011/EU rendelet** szerint.
 
+
+Migration:
+```
+dotnet ef migrations add <megration-name>
+```
+
 ## ✨ Funkciók (tervezett)
 - Felhasználói regisztráció és bejelentkezés (**Keycloak** alapú autentikáció)
 - Új receptek létrehozása, szerkesztése, törlése
