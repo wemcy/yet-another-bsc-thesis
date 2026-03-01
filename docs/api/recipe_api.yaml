@@ -98,6 +98,21 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/readRecipeDTO"
+  "/recipes/showcase":
+    get:
+      tags:
+      - Recipes
+      summary: Kiemelt receptek listázása
+      operationId: listShowcaseRecipes
+      responses:
+        '200':
+          description: Receptek
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/readRecipeDTO"
 
 
 components:

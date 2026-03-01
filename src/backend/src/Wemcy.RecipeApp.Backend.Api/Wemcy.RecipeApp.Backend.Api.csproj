@@ -10,7 +10,7 @@
         <OutputType>Library</OutputType>
         <AssemblyName>Wemcy.RecipeApp.Backend.Api</AssemblyName>
         <PackageId>Wemcy.RecipeApp.Backend.Api</PackageId>
-        <UserSecretsId>fdb9f8f3-9751-4e38-9c9a-6b75e577b22c</UserSecretsId>
+        <UserSecretsId>29a82d72-eca4-421f-a44e-efaa20850b67</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>

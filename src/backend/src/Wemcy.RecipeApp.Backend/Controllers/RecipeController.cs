@@ -33,4 +33,11 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
         var dtos = q.Select(x => _mapper.Map<ReadRecipeDTO>(x)).ToList();
         return Ok(dtos);
     }
+
+    public override IActionResult ListShowcaseRecipes()
+    {
+        var q = _recipeService.GetShowcaseRecieps();
+        var dtos = q.Select(x => _mapper.Map<ReadRecipeDTO>(x)).ToList();
+        return Ok(dtos);
+    }
 }

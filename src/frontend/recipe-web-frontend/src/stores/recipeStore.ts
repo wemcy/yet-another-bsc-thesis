@@ -12,11 +12,14 @@ const api = new RecipesApi(
 export const useRecipeStore = defineStore('recipe', {
     state: (): RecipeState => ({
         recipes: [],
+        showcaseRecipesIds: [],
     }),
 
     getters: {
         getById: (state) => (id: string) => state.recipes.find((r) => r.id === id),
         featuredRecipe: (state) => state.recipes[0] || null,
+        showcaseRecipes: (state) =>
+            state.recipes.filter((r) => state.showcaseRecipesIds.includes(r.id)),
     },
 
     actions: {
@@ -30,7 +33,9 @@ export const useRecipeStore = defineStore('recipe', {
         updateRecipe(recipe: Recipe) {
             const idx = this.recipes.findIndex((r) => r.id === recipe.id)
             if (idx !== -1) this.recipes[idx] = recipe
+            else this.recipes.push(recipe)
         },
+
         async refreshRecipes() {
             await api.listRecipes().then((response) => {
                 this.recipes = response.map((apiRecipe) => MapApiRecipeToRecipe(apiRecipe))
@@ -40,9 +45,16 @@ export const useRecipeStore = defineStore('recipe', {
             const recipe = await api
                 .getRecipeById({ id })
                 .then((apiRecipe) => MapApiRecipeToRecipe(apiRecipe))
-            const idx = this.recipes.findIndex((r) => r.id === recipe.id)
-            if (idx !== -1) this.recipes[idx] = recipe
-            else this.recipes.push(recipe)
+            this.updateRecipe(recipe)
+        },
+        async fetchShowcaseRecipes() {
+            await api.listShowcaseRecipes().then((response) => {
+                this.showcaseRecipesIds = response.map((r) => r.id)
+                response.forEach((apiRecipe) => {
+                    const recipe = MapApiRecipeToRecipe(apiRecipe)
+                    this.updateRecipe(recipe)
+                })
+            })
         },
     },
 })

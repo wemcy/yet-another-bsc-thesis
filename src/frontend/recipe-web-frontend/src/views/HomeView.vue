@@ -4,9 +4,16 @@ import RecipeHighlight from '@/components/recipe/RecipeHighlight.vue'
 import RecipeCard from '@/components/recipe/RecipeCard.vue'
 import { useRecipeStore } from '@/stores/recipeStore'
 import { computed } from 'vue'
+import { onMounted } from 'vue'
 
 const recipeStore = useRecipeStore()
 const featured = computed(() => recipeStore.featuredRecipe)
+const showcaseRecipes = computed(() => recipeStore.showcaseRecipes)
+
+onMounted(() => {
+    recipeStore.fetchShowcaseRecipes()
+    console.log('Showcase receptek betöltve:', showcaseRecipes.value)
+})
 </script>
 
 <template>
@@ -33,11 +40,7 @@ const featured = computed(() => recipeStore.featuredRecipe)
         <section class="max-w-6xl mx-auto px-4 py-12">
             <h2 class="text-2xl font-bold mb-6 text-center">Kiemelt receptek</h2>
             <div class="grid gap-6 md:grid-cols-3">
-                <RecipeCard
-                    v-for="recipe in recipeStore.recipes"
-                    :key="recipe.id"
-                    :recipe="recipe"
-                />
+                <RecipeCard v-for="recipe in showcaseRecipes" :key="recipe.id" :recipe="recipe" />
             </div>
         </section>
     </main>

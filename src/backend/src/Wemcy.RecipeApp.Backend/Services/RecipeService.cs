@@ -24,4 +24,9 @@ public class RecipeService(RecipeRepository recipeRepository)
     {
         return this.recipeRepository.GetRecipeById(id);
     }
+
+    public IEnumerable<object> GetShowcaseRecieps()
+    {
+        return this.recipeRepository.GetAllRecipe().Take(6);
+    }
 }

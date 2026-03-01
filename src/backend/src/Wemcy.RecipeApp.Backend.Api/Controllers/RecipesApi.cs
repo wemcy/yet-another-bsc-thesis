@@ -57,5 +57,15 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<ReadRecipeDTO>))]
         public abstract IActionResult ListRecipes();
+
+        /// <summary>
+        /// Kiemelt receptek listázása
+        /// </summary>
+        /// <response code="200">Receptek</response>
+        [HttpGet]
+        [Route("/recipes/showcase")]
+        [ValidateModelState]
+        [ProducesResponseType(statusCode: 200, type: typeof(List<ReadRecipeDTO>))]
+        public abstract IActionResult ListShowcaseRecipes();
     }
 }
