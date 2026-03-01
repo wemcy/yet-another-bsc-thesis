@@ -21,6 +21,10 @@ export const useRecipeStore = defineStore('recipe', {
         featuredRecipe: (state) => state.recipes.find((r) => r.id === state.featuredRecipeId),
         showcaseRecipes: (state) =>
             state.recipes.filter((r) => state.showcaseRecipesIds.includes(r.id)),
+        getCommentsByRecipeId: (state) => (id: string) => {
+            const recipe = state.recipes.find((r) => r.id === id)
+            return recipe ? recipe.comments : []
+        },
     },
 
     actions: {

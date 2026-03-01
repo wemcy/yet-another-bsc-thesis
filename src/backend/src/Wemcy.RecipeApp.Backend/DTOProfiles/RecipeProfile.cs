@@ -25,6 +25,7 @@ namespace Wemcy.RecipeApp.Backend.DTOProfiles
                 //.ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
                 //.ForMember(dest => dest.UnitofMeasurement, opt => opt.MapFrom(src => src.UnitOfMesurement))
                 .ReverseMap();
+            CreateMap<Model.Comment, Api.Models.Comment>().ReverseMap();
         }
     }
 }

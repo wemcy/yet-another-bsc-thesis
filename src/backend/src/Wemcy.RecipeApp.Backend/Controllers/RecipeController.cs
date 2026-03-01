@@ -69,7 +69,8 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
 
     public override Task<IActionResult> AddRecipeComment([FromRoute(Name = "id"), Required] Guid id, [FromBody] AddRecipeCommentRequest addRecipeCommentRequest)
     {
-        throw new NotImplementedException();
+        _recipeService.AddComment(id,addRecipeCommentRequest.Content);
+        return Task.FromResult<IActionResult>(NoContent());
     }
 
     public override Task<IActionResult> GetRecipeComments([FromRoute(Name = "id"), Required] Guid id)

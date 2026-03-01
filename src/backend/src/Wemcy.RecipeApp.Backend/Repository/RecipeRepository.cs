@@ -30,7 +30,7 @@ namespace Wemcy.RecipeApp.Backend.Repository
 
         public IQueryable<Recipe> GetAllRecipe()
         {
-            var breakpoint = _dbContext.Recipes.AsNoTracking().Include(x => x.Allergens);
+            var breakpoint = _dbContext.Recipes.AsNoTracking().Include(x => x.Allergens).Include( x => x.Comments);
             return breakpoint;
         }
 

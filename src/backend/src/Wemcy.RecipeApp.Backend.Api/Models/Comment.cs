@@ -29,24 +29,28 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
+        [Required]
         [DataMember(Name="id", EmitDefaultValue=true)]
         public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Content
         /// </summary>
+        [Required]
         [DataMember(Name="content", EmitDefaultValue=false)]
         public string Content { get; set; }
 
         /// <summary>
         /// Gets or Sets CreatedAt
         /// </summary>
+        [Required]
         [DataMember(Name="createdAt", EmitDefaultValue=true)]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>
         /// Gets or Sets Author
         /// </summary>
+        [Required]
         [DataMember(Name="author", EmitDefaultValue=false)]
         public string Author { get; set; }
 

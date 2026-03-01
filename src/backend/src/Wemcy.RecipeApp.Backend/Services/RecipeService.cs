@@ -57,4 +57,11 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         recipe.Rate(rating);
         this.recipeRepository.Save();
     }
+
+    public void AddComment(Guid id, string content)
+    {
+        var recipe = this.recipeRepository.GetRecipeById(id);
+        recipe.Comments.Add(new Comment() { Content = content });
+        this.recipeRepository.Save();
+    }
 }

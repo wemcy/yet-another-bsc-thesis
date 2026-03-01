@@ -13,6 +13,12 @@ export function MapApiRecipeToRecipe(apiRecipe: ReadRecipeDTO): Recipe {
         allergens: Array.from(apiRecipe.allergens ?? []).map((a) => MapApiAllergenToEnum(a)),
         image: `/api/recipes/${apiRecipe.id}/image`,
         rating: apiRecipe.averageRating,
+        comments: apiRecipe.comments.map((c) => ({
+            id: c.id,
+            authorId: 'user',
+            content: c.content,
+            createdAt: new Date(c.createdAt),
+        })),
     }
 }
 

@@ -325,6 +325,7 @@ components:
       - title
       - createdAt
       - averageRating
+      - comments
       properties:
         id:
           type: string
@@ -358,6 +359,12 @@ components:
           format: double
           description: The average rating of the recipe (1-5)
           nullable: false
+        comments:
+          type: array
+          description: List of comments for the recipe
+          nullable: false
+          items:
+            $ref: '#/components/schemas/comment'
 
     allergenList:
       type: array
@@ -407,6 +414,11 @@ components:
           nullable: false
     comment:
       type: object
+      required:
+        - id
+        - content
+        - createdAt
+        - author
       properties:
         id:
           type: string
@@ -417,4 +429,4 @@ components:
           type: string
           format: date-time
         author:
-          type: string
+          type: string 
