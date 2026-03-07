@@ -35,7 +35,7 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         return (await this.recipeRepository.GetRecipesAsync(1)).FirstOrDefault();
     }
 
-    public async Task UpdageImageById(Guid id, Stream imageStream, string name)
+    public async Task UpdageImageByIdAsync(Guid id, Stream imageStream, string name)
     {
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
         var image = await imageService.CreateImage(imageStream, name);
@@ -44,24 +44,31 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         
     }
 
-    public async Task<Stream> GetImageById(Guid id)
+    public async Task<Stream> GetImageByIdAsync(Guid id)
     {
         var image = await this.recipeRepository.GetImageByIdAsync(id);
         return imageService.GetImageById(image.Id);
 
     }
 
-    public async Task RateRecipe(Guid id, int rating)
+    public async Task RateRecipeAsync(Guid id, int rating)
     {
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
         recipe.Rate(rating);
         await this.recipeRepository.SaveAsync();
     }
 
-    public async Task AddComment(Guid id, string content)
+    public async Task AddCommentAsync(Guid id, string content)
     {
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
         recipe.Comments.Add(new Comment() { Content = content });
+        await this.recipeRepository.SaveAsync();
+    }
+
+    public async Task DeleteRecipeByIdAsync(Guid id)
+    {
+        var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
+        this.recipeRepository.DeleteRecipe(recipe);
         await this.recipeRepository.SaveAsync();
     }
 }

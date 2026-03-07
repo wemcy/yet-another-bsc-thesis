@@ -86,17 +86,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         public abstract Task<IActionResult> GetRecipeById([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
-        /// Recept kommentjeinek lekérdezése ID alapján
-        /// </summary>
-        /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>
-        /// <response code="200">Receptek</response>
-        [HttpGet]
-        [Route("/recipes/{id}/comments")]
-        [ValidateModelState]
-        [ProducesResponseType(statusCode: 200, type: typeof(List<Comment>))]
-        public abstract Task<IActionResult> GetRecipeComments([FromRoute (Name = "id")][Required]Guid id);
-
-        /// <summary>
         /// Recept képének lekérdezése ID alapján
         /// </summary>
         /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>

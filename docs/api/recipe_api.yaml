@@ -197,28 +197,6 @@ paths:
                 type: string
                 format: binary
   "/recipes/{id}/comments":
-    get:
-      tags:
-      - Recipes
-      summary: Recept kommentjeinek lekérdezése ID alapján
-      parameters: 
-        - name: id
-          required: true
-          in: path
-          description: A lekérdezendő recept egyedi azonosítója (UUID)
-          schema:
-            type: string
-            format: uuid
-      operationId: getRecipeComments
-      responses:
-        '200':
-          description: Receptek
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/comment"
     post:
       tags:
       - Recipes

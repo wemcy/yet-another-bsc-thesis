@@ -49,34 +49,30 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
     public override async Task<IActionResult> UpdateRecipeImage([FromRoute(Name = "id"), Required] Guid id, IFormFile image)
     {
         // TODO 404
-        await recipeService.UpdageImageById(id, image.OpenReadStream(), image.Name);
+        await recipeService.UpdageImageByIdAsync(id, image.OpenReadStream(), image.Name);
         return NoContent();
     }
     [ImageNotFoundHandler]
     public override async Task<IActionResult> GetRecipeImage([FromRoute(Name = "id"), Required] Guid id)
     {
-        return new FileStreamResult( await recipeService.GetImageById(id),"image/jpeg");
+        return new FileStreamResult( await recipeService.GetImageByIdAsync(id),"image/jpeg");
     }
 
     public override async Task<IActionResult> RateRecipe([FromRoute(Name = "id"), Required] Guid id, [FromBody] RateRecipeRequest rateRecipeRequest)
     {
-        await recipeService.RateRecipe(id, rateRecipeRequest.Rating);
+        await recipeService.RateRecipeAsync(id, rateRecipeRequest.Rating);
         return NoContent();
     }
 
     public async override Task<IActionResult> AddRecipeComment([FromRoute(Name = "id"), Required] Guid id, [FromBody] AddRecipeCommentRequest addRecipeCommentRequest)
     {
-        await recipeService.AddComment(id,addRecipeCommentRequest.Content);
+        await recipeService.AddCommentAsync(id,addRecipeCommentRequest.Content);
         return NoContent();
     }
 
-    public override Task<IActionResult> GetRecipeComments([FromRoute(Name = "id"), Required] Guid id)
+    public override async Task<IActionResult> DeleteRecipeById([FromRoute(Name = "id"), Required] Guid id)
     {
-        throw new NotImplementedException();
-    }
-
-    public override Task<IActionResult> DeleteRecipeById([FromRoute(Name = "id"), Required] Guid id)
-    {
-        throw new NotImplementedException();
+        await recipeService.DeleteRecipeByIdAsync(id);
+        return NoContent();
     }
 }

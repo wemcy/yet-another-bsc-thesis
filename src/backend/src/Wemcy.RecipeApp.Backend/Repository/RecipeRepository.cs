@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Exceptions;
@@ -63,6 +64,11 @@ namespace Wemcy.RecipeApp.Backend.Repository
         public async Task SaveAsync()
         {
             await _dbContext.SaveChangesAsync();
+        }
+
+        public void DeleteRecipe(Recipe recipe)
+        {
+            _dbContext.Recipes.Remove(recipe);
         }
     }
 }
