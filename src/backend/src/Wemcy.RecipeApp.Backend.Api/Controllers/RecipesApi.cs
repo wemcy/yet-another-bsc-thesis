@@ -53,6 +53,18 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         public abstract Task<IActionResult> CreateRecipe([FromBody]CreateRecipeDTO createRecipeDTO);
 
         /// <summary>
+        /// Recept törlése ID alapján
+        /// </summary>
+        /// <param name="id">A törlendő recept egyedi azonosítója (UUID)</param>
+        /// <response code="204">Recept sikeresen törölve</response>
+        /// <response code="401">Nem jogosult a művelet végrehajtására</response>
+        /// <response code="404">Recept nem található</response>
+        [HttpDelete]
+        [Route("/recipes/{id}/")]
+        [ValidateModelState]
+        public abstract Task<IActionResult> DeleteRecipeById([FromRoute (Name = "id")][Required]Guid id);
+
+        /// <summary>
         /// Kiemelt recept listázása
         /// </summary>
         /// <response code="200">Receptek</response>

@@ -9,59 +9,59 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
     private readonly RecipeRepository recipeRepository = recipeRepository;
     private readonly ImageService imageService = imageService;
 
-    public Recipe CreateRecipe(Recipe recipe)
+    public async Task<Recipe> CreateRecipeAsync(Recipe recipe)
     {
-        return this.recipeRepository.CreateRecipe(recipe);
+        return await this.recipeRepository.CreateRecipeAsync(recipe);
     }
 
-    public IQueryable<Recipe> GetAllRecipe()
+    public async Task<IList<Recipe>> GetAllRecipe()
     {
-        return this.recipeRepository.GetAllRecipe();
+        return await this.recipeRepository.GetAllRecipeAsync();
     }
 
-    public Recipe GetRecipeById(Guid id)
+    public async Task<Recipe> GetRecipeByIdAsync(Guid id)
     {
-        return this.recipeRepository.GetRecipeByIdWithAllergens(id) ?? throw new RecipeNotFoundException(id);
+        return await this.recipeRepository.GetRecipeByIdWithAllergensAsync(id);
     }
 
-    public IQueryable<Recipe> GetShowcaseRecieps()
+    public async Task<IList<Recipe>> GetShowcaseRecieps()
     {
-        return this.recipeRepository.GetAllRecipe().Take(6);
+        return await this.recipeRepository.GetRecipesAsync(6);
     }
 
-    public Recipe? GetFeaturedRecipe()
+    public async Task<Recipe?> GetFeaturedRecipeAsync()
     {
         // TODO: implement admin selected featured recipe
-        return this.recipeRepository.GetAllRecipe().FirstOrDefault();
+        return (await this.recipeRepository.GetRecipesAsync(1)).FirstOrDefault();
     }
 
     public async Task UpdageImageById(Guid id, Stream imageStream, string name)
     {
-        var recipe = this.recipeRepository.GetRecipeById(id);
+        var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
         var image = await imageService.CreateImage(imageStream, name);
         recipe.Image = image;
-        this.recipeRepository.Save();
+        await this.recipeRepository.SaveAsync();
         
     }
 
-    public Stream GetImageById(Guid id)
+    public async Task<Stream> GetImageById(Guid id)
     {
-        var image = this.recipeRepository.GetImageById(id);
+        var image = await this.recipeRepository.GetImageByIdAsync(id);
         return imageService.GetImageById(image.Id);
 
     }
 
-    public void RateRecipe(Guid id, int rating)
+    public async Task RateRecipe(Guid id, int rating)
     {
-        var recipe = this.recipeRepository.GetRecipeById(id);
+        var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
         recipe.Rate(rating);
-        this.recipeRepository.Save();
+        await this.recipeRepository.SaveAsync();
     }
 
-    public void AddComment(Guid id, string content)
+    public async Task AddComment(Guid id, string content)
     {
-        var recipe = this.recipeRepository.GetRecipeById(id);
+        var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
         recipe.Comments.Add(new Comment() { Content = content });
-        this.recipeRepository.Save();
+        await this.recipeRepository.SaveAsync();
     }
 }

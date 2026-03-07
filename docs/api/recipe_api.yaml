@@ -98,6 +98,27 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/readRecipeDTO"
+    delete:
+      tags:
+      - Recipes
+      summary: Recept törlése ID alapján
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          description: A törlendő recept egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: deleteRecipeById
+      responses:
+        '204':
+          description: Recept sikeresen törölve
+        '401':
+          description: Nem jogosult a művelet végrehajtására
+        '404':
+          description: Recept nem található
+
   "/recipes/{id}/rate":
     put:
       tags:

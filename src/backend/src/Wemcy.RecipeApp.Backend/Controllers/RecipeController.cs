@@ -13,67 +13,69 @@ namespace Wemcy.RecipeApp.Backend.Controllers;
 
 public class RecipeController(RecipeService recipeService, IMapper mapper) : RecipesApiController
 {
-    private readonly RecipeService _recipeService = recipeService;
-    private readonly IMapper _mapper = mapper;
-
     public override async Task<IActionResult> CreateRecipe([FromBody] CreateRecipeDTO createRecipeDTO)
     {
-        var recipe = _mapper.Map<Recipe>(createRecipeDTO);
-        _recipeService.CreateRecipe(recipe);
-        return Ok(_mapper.Map<ReadRecipeDTO>(recipe));
+        var recipe = mapper.Map<Recipe>(createRecipeDTO);
+        await recipeService.CreateRecipeAsync(recipe);
+        return Ok(mapper.Map<ReadRecipeDTO>(recipe));
     }
 
     public override async Task<IActionResult> GetRecipeById([FromRoute(Name = "id"), Required] Guid id)
     {
-        var recipe = _recipeService.GetRecipeById(id);
-        return Ok(_mapper.Map<ReadRecipeDTO>(recipe));
+        var recipe = await recipeService.GetRecipeByIdAsync(id);
+        return Ok(mapper.Map<ReadRecipeDTO>(recipe));
     }
 
     public override async Task<IActionResult> GetFeaturedRecipe()
     {
-        var recipe = _recipeService.GetFeaturedRecipe();
-        return Ok(_mapper.Map<ReadRecipeDTO>(recipe));
+        var recipe = await recipeService.GetFeaturedRecipeAsync();
+        return Ok(mapper.Map<ReadRecipeDTO>(recipe));
     }
 
     public override async Task<IActionResult> ListRecipes()
     {
-        var q = _recipeService.GetAllRecipe();
-        var dtos = q.Select(x => _mapper.Map<ReadRecipeDTO>(x)).ToList();
+        var q = await recipeService.GetAllRecipe();
+        var dtos = q.Select(x => mapper.Map<ReadRecipeDTO>(x)).ToList();
         return Ok(dtos);
     }
 
     public override async Task<IActionResult> ListShowcaseRecipes()
     {
-        var q = _recipeService.GetShowcaseRecieps();
-        var dtos = q.Select(x => _mapper.Map<ReadRecipeDTO>(x)).ToList();
+        var q = await recipeService.GetShowcaseRecieps();
+        var dtos = q.Select(x => mapper.Map<ReadRecipeDTO>(x)).ToList();
         return Ok(dtos);
     }
 
     public override async Task<IActionResult> UpdateRecipeImage([FromRoute(Name = "id"), Required] Guid id, IFormFile image)
     {
         // TODO 404
-        await _recipeService.UpdageImageById(id, image.OpenReadStream(), image.Name);
+        await recipeService.UpdageImageById(id, image.OpenReadStream(), image.Name);
         return NoContent();
     }
     [ImageNotFoundHandler]
     public override async Task<IActionResult> GetRecipeImage([FromRoute(Name = "id"), Required] Guid id)
     {
-        return new FileStreamResult( _recipeService.GetImageById(id),"image/jpeg");
+        return new FileStreamResult( await recipeService.GetImageById(id),"image/jpeg");
     }
 
     public override async Task<IActionResult> RateRecipe([FromRoute(Name = "id"), Required] Guid id, [FromBody] RateRecipeRequest rateRecipeRequest)
     {
-        _recipeService.RateRecipe(id, rateRecipeRequest.Rating);
+        await recipeService.RateRecipe(id, rateRecipeRequest.Rating);
         return NoContent();
     }
 
-    public override Task<IActionResult> AddRecipeComment([FromRoute(Name = "id"), Required] Guid id, [FromBody] AddRecipeCommentRequest addRecipeCommentRequest)
+    public async override Task<IActionResult> AddRecipeComment([FromRoute(Name = "id"), Required] Guid id, [FromBody] AddRecipeCommentRequest addRecipeCommentRequest)
     {
-        _recipeService.AddComment(id,addRecipeCommentRequest.Content);
-        return Task.FromResult<IActionResult>(NoContent());
+        await recipeService.AddComment(id,addRecipeCommentRequest.Content);
+        return NoContent();
     }
 
     public override Task<IActionResult> GetRecipeComments([FromRoute(Name = "id"), Required] Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override Task<IActionResult> DeleteRecipeById([FromRoute(Name = "id"), Required] Guid id)
     {
         throw new NotImplementedException();
     }
