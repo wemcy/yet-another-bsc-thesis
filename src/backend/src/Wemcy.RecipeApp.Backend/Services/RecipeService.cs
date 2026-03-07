@@ -1,10 +1,12 @@
-﻿using Wemcy.RecipeApp.Backend.Exceptions;
+﻿using AutoMapper;
+using Wemcy.RecipeApp.Backend.Database;
+using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Repository;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class RecipeService(RecipeRepository recipeRepository, ImageService imageService)
+public class RecipeService(RecipeRepository recipeRepository, ImageService imageService, IMapper mapper)
 {
     private readonly RecipeRepository recipeRepository = recipeRepository;
     private readonly ImageService imageService = imageService;
@@ -70,5 +72,13 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
         this.recipeRepository.DeleteRecipe(recipe);
         await this.recipeRepository.SaveAsync();
+    }
+
+    public async Task<Recipe> UpdateRecipeAsync(Guid id, Api.Models.CreateRecipeDTO createRecipeDTO)
+    {
+        var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
+        mapper.Map(createRecipeDTO, recipe);
+        await this.recipeRepository.SaveAsync();
+        return recipe;
     }
 }

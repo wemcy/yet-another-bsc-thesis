@@ -118,6 +118,36 @@ paths:
           description: Nem jogosult a művelet végrehajtására
         '404':
           description: Recept nem található
+    put:
+      tags:
+      - Recipes
+      summary: Recept szerkesztése ID alapján
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          description: A szerkesztendő recept egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: updateRecipeById
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/createRecipeDTO"
+      responses:
+        '200':
+          description: Recept sikeresen frissítve
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/readRecipeDTO"
+        '401':
+          description: Nem jogosult a művelet végrehajtására
+        '404':
+          description: Recept nem található
 
   "/recipes/{id}/rate":
     put:

@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Controllers;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
+using Wemcy.RecipeApp.Backend.Database;
+using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Services;
 
@@ -74,5 +77,12 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
     {
         await recipeService.DeleteRecipeByIdAsync(id);
         return NoContent();
+    }
+
+    public override async Task<IActionResult> UpdateRecipeById([FromRoute(Name = "id"), Required] Guid id, [FromBody] CreateRecipeDTO createRecipeDTO)
+    {
+        var recipe = await recipeService.UpdateRecipeAsync(id, createRecipeDTO);
+        return Ok(mapper.Map<ReadRecipeDTO>(recipe));
+
     }
 }

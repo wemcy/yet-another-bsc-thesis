@@ -129,6 +129,20 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         public abstract Task<IActionResult> RateRecipe([FromRoute (Name = "id")][Required]Guid id, [FromBody]RateRecipeRequest rateRecipeRequest);
 
         /// <summary>
+        /// Recept szerkesztése ID alapján
+        /// </summary>
+        /// <param name="id">A szerkesztendő recept egyedi azonosítója (UUID)</param>
+        /// <param name="createRecipeDTO"></param>
+        /// <response code="204">Recept sikeresen frissítve</response>
+        /// <response code="401">Nem jogosult a művelet végrehajtására</response>
+        /// <response code="404">Recept nem található</response>
+        [HttpPut]
+        [Route("/recipes/{id}/")]
+        [Consumes("application/json")]
+        [ValidateModelState]
+        public abstract Task<IActionResult> UpdateRecipeById([FromRoute (Name = "id")][Required]Guid id, [FromBody]CreateRecipeDTO createRecipeDTO);
+
+        /// <summary>
         /// Recept képének frissítése ID alapján
         /// </summary>
         /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>

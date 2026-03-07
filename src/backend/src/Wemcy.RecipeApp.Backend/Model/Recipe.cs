@@ -8,11 +8,11 @@ public class Recipe : Entity
     public required string Description { get; set; }
     public required IList<string> Steps { get; set; } = [];
     public required IList<Ingredient> Ingredients { get; set; } = [];
+    public required double AverageRating { get; set; }
+    public required AllergenType Allergens { get; set; } = AllergenType.None;
     public virtual required Image? Image { get; set; } = null;
-    public virtual required IList<Allergen> Allergens { get; set; } = [];
     public virtual required IList<Rating> Ratings { get; set; } = [];
     public virtual required IList<Comment> Comments { get; set; } = [];
-    public required double AverageRating { get; set; }
 
     public void UpdateAverageRating()
     {

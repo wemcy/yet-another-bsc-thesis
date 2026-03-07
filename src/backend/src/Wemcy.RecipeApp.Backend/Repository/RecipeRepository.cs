@@ -14,10 +14,6 @@ namespace Wemcy.RecipeApp.Backend.Repository
 
         public async Task<Recipe> CreateRecipeAsync(Recipe recipe)
         {
-            foreach (var allergen in recipe.Allergens)
-            {
-                _dbContext.Attach(allergen);
-            }
             var newRecipe = _dbContext.Recipes.Add(recipe);
             await _dbContext.SaveChangesAsync();
             return newRecipe.Entity;
@@ -27,7 +23,6 @@ namespace Wemcy.RecipeApp.Backend.Repository
         {
             return await _dbContext.Recipes
                 .AsNoTracking()
-                .Include(x => x.Allergens)
                 .Include( x => x.Comments)
                 .ToListAsync();
         }
@@ -36,7 +31,6 @@ namespace Wemcy.RecipeApp.Backend.Repository
         {
             return await _dbContext.Recipes
                 .AsNoTracking()
-                .Include(x => x.Allergens)
                 .Include(x => x.Comments)
                 .Take(limit)
                 .ToListAsync();
@@ -46,7 +40,6 @@ namespace Wemcy.RecipeApp.Backend.Repository
         {
             return await _dbContext.Recipes
                 .Where(x => x.Id == id)
-                .Include(x => x.Allergens)
                 .SingleOrDefaultAsync() ?? throw new RecipeNotFoundException(id);
         }
 

@@ -2,27 +2,23 @@
 
 namespace Wemcy.RecipeApp.Backend.Model
 {
-    public class Allergen
-    {
-        [Key]
-        public required AllergenType Type { get; set; }
-        public virtual IList<Recipe> Recipes { get; set; } = [];
-    }
+    [Flags]
     public enum AllergenType
     {
-        Gluten = 1,
-        Crustaceans = 2,        // Rákfélék
-        Eggs = 3,
-        Fish = 4,
-        Peanuts = 5,
-        Soybeans = 6,
-        Milk = 7,
-        Nuts = 8,               // Diófélék
-        Celery = 9,
-        Mustard = 10,
-        SesameSeeds = 11,
-        SulphurDioxide = 12,
-        Lupin = 13,
-        Molluscs = 14
+        None = 0,
+        Gluten = 1 << 1,
+        Crustaceans = 1 << 2,        
+        Eggs = 1 << 3,
+        Fish = 1 << 4,
+        Peanuts = 1 << 5,
+        Soybeans = 1 << 6,
+        Milk = 1 << 7,
+        Nuts = 1 << 8,              
+        Celery = 1 << 9,
+        Mustard = 1 << 10,
+        SesameSeeds = 1 << 11,
+        SulphurDioxide = 1 << 12,
+        Lupin = 1 << 13,
+        Molluscs = 1 << 14
     }
 }
