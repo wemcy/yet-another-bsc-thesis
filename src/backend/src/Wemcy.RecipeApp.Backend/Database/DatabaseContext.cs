@@ -34,26 +34,17 @@ public class DatabaseContext : DbContext
 
     public override int SaveChanges()
     {
-        var entries = ChangeTracker.Entries<Entity>();
-        var now = DateTimeOffset.UtcNow;
-
-        foreach (var entry in entries)
-        {
-            if (entry.State == EntityState.Added)
-            {
-                entry.Entity.CreatedAt = now;
-                entry.Entity.UpdatedAt = now;
-            }
-            else if (entry.State == EntityState.Modified)
-            {
-                entry.Entity.UpdatedAt = now;
-            }
-        }
-
+        UpdateEntityTimestamps();
         return base.SaveChanges();
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        UpdateEntityTimestamps();
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void UpdateEntityTimestamps()
     {
         var entries = ChangeTracker.Entries<Entity>();
         var now = DateTimeOffset.UtcNow;
@@ -70,7 +61,5 @@ public class DatabaseContext : DbContext
                 entry.Entity.UpdatedAt = now;
             }
         }
-
-        return await base.SaveChangesAsync(cancellationToken);
     }
 }

@@ -12,8 +12,8 @@ using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Services;
 
 namespace Wemcy.RecipeApp.Backend.Controllers;
-[RecipeNotFoundHandler]
 
+[RecipeNotFoundHandler]
 public class RecipeController(RecipeService recipeService, IMapper mapper) : RecipesApiController
 {
     public override async Task<IActionResult> CreateRecipe([FromBody] CreateRecipeDTO createRecipeDTO)
