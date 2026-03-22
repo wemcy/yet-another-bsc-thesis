@@ -31,7 +31,9 @@ builder.Services.AddScoped<RecipeService, RecipeService>().
                  AddScoped<ImageService, ImageService>().
                  AddScoped<ImageStorageService, ImageStorageService>().
                  AddScoped<UserService, UserService>().
-                 AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>();
+                 AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>(); 
+
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
