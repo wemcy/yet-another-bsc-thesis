@@ -6,6 +6,7 @@ public class Recipe : Entity
 {
     public required string Title { get; set; }
     public required string Description { get; set; }
+    public required Guid UserId { get; set; }
     public required IList<string> Steps { get; set; } = [];
     public required IList<Ingredient> Ingredients { get; set; } = [];
     public required double AverageRating { get; set; }

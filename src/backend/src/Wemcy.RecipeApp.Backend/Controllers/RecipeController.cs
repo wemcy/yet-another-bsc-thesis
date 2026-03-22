@@ -52,7 +52,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
     public override async Task<IActionResult> UpdateRecipeImage([FromRoute(Name = "id"), Required] Guid id, IFormFile image)
     {
         // TODO 404
-        await recipeService.UpdageImageByIdAsync(id, image.OpenReadStream(), image.Name);
+        await recipeService.UpdateImageByIdAsync(id, image.OpenReadStream(), image.Name);
         return NoContent();
     }
     [ImageNotFoundHandler]

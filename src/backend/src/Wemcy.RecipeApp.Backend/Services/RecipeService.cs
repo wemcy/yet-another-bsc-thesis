@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Repository;
+using Wemcy.RecipeApp.Backend.Security;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class RecipeService(RecipeRepository recipeRepository, ImageService imageService, IMapper mapper)
+public class RecipeService(RecipeRepository recipeRepository, ImageService imageService, IMapper mapper, UserService userService, IAuthorizationService authorizationService)
 {
     private readonly RecipeRepository recipeRepository = recipeRepository;
     private readonly ImageService imageService = imageService;
@@ -37,7 +39,7 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         return (await this.recipeRepository.GetRecipesAsync(1)).FirstOrDefault();
     }
 
-    public async Task UpdageImageByIdAsync(Guid id, Stream imageStream, string name)
+    public async Task UpdateImageByIdAsync(Guid id, Stream imageStream, string name)
     {
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
         var image = await imageService.CreateImage(imageStream, name);
@@ -73,10 +75,11 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         this.recipeRepository.DeleteRecipe(recipe);
         await this.recipeRepository.SaveAsync();
     }
-
+    
     public async Task<Recipe> UpdateRecipeAsync(Guid id, Api.Models.CreateRecipeDTO createRecipeDTO)
     {
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
+        await authorizationService.AuthorizeAsync(userService.GetCurrentUser(), recipe, Operations.Update);
         mapper.Map(createRecipeDTO, recipe);
         await this.recipeRepository.SaveAsync();
         return recipe;

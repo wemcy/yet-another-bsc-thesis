@@ -1,9 +1,11 @@
 using System;
 using System.Reflection;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Repository;
+using Wemcy.RecipeApp.Backend.Security;
 using Wemcy.RecipeApp.Backend.Services;
 
 
@@ -22,11 +24,14 @@ builder.Services.AddDbContext<DatabaseContext>(opt => {
     opt.UseLazyLoadingProxies();
     opt.UseNpgsql(cs);
     });
+
 builder.Services.AddScoped<RecipeService, RecipeService>().
                  AddScoped<RecipeRepository, RecipeRepository>().
                  AddScoped<ImageRepository, ImageRepository>().
                  AddScoped<ImageService, ImageService>().
-                 AddScoped<ImageStorageService, ImageStorageService>();
+                 AddScoped<ImageStorageService, ImageStorageService>().
+                 AddScoped<UserService, UserService>().
+                 AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>();
 
 var app = builder.Build();
 
