@@ -77,6 +77,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/readRecipeDTO"
+      security:
+        - bearerAuth: []
   "/recipes/{id}/":
     get:
       tags:
@@ -118,6 +120,8 @@ paths:
           description: Nem jogosult a művelet végrehajtására
         '404':
           description: Recept nem található
+      security:
+        - bearerAuth: []
     put:
       tags:
       - Recipes
@@ -148,6 +152,8 @@ paths:
           description: Nem jogosult a művelet végrehajtására
         '404':
           description: Recept nem található
+      security:
+        - bearerAuth: []
 
   "/recipes/{id}/rate":
     put:
@@ -178,6 +184,8 @@ paths:
       responses:
         '204':
           description: Recept értékelése sikeresen frissítve
+      security:
+        - bearerAuth: []
   "/recipes/{id}/image":
     put:
       tags:
@@ -205,6 +213,8 @@ paths:
       responses:
         '204':
           description: Recept képe sikeresen frissítve
+      security:
+        - bearerAuth: []
     get:
       tags:
       - Recipes
@@ -262,7 +272,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/comment"
-
+      security:
+        - bearerAuth: []
   "/recipes/showcase":
     get:
       tags:
@@ -294,11 +305,11 @@ paths:
 
 
 components:
-  # securitySchemes:
-  #   bearerAuth:
-  #     type: http
-  #     scheme: bearer
-  #     bearerFormat: JWT
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
   schemas:
     aliveReport:
       type: object

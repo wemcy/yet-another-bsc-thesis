@@ -31,9 +31,16 @@ builder.Services.AddScoped<RecipeService, RecipeService>().
                  AddScoped<ImageService, ImageService>().
                  AddScoped<ImageStorageService, ImageStorageService>().
                  AddScoped<UserService, UserService>().
-                 AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>(); 
+                 AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>();
 
-builder.Services.AddHttpContextAccessor();
+builder.Services.AddAuthentication("Bearer").AddJwtBearer();
+builder.Services.AddHttpContextAccessor().AddCors(opt =>
+{
+    opt.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -72,7 +79,7 @@ else
 }
 
 //app.UseHttpsRedirection();
-
+app.UseCors();
 app.UseAuthorization();
 
 app.MapControllers();

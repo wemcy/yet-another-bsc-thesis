@@ -35,6 +35,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <response code="201">Comment added successfully</response>
         [HttpPost]
         [Route("/recipes/{id}/comments")]
+        [Authorize]
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 201, type: typeof(Comment))]
@@ -61,6 +62,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <response code="404">Recept nem található</response>
         [HttpDelete]
         [Route("/recipes/{id}/")]
+        [Authorize]
         [ValidateModelState]
         public abstract Task<IActionResult> DeleteRecipeById([FromRoute (Name = "id")][Required]Guid id);
 
@@ -124,6 +126,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <response code="204">Recept értékelése sikeresen frissítve</response>
         [HttpPut]
         [Route("/recipes/{id}/rate")]
+        [Authorize]
         [Consumes("application/json")]
         [ValidateModelState]
         public abstract Task<IActionResult> RateRecipe([FromRoute (Name = "id")][Required]Guid id, [FromBody]RateRecipeRequest rateRecipeRequest);
@@ -133,13 +136,15 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// </summary>
         /// <param name="id">A szerkesztendő recept egyedi azonosítója (UUID)</param>
         /// <param name="createRecipeDTO"></param>
-        /// <response code="204">Recept sikeresen frissítve</response>
+        /// <response code="200">Recept sikeresen frissítve</response>
         /// <response code="401">Nem jogosult a művelet végrehajtására</response>
         /// <response code="404">Recept nem található</response>
         [HttpPut]
         [Route("/recipes/{id}/")]
+        [Authorize]
         [Consumes("application/json")]
         [ValidateModelState]
+        [ProducesResponseType(statusCode: 200, type: typeof(ReadRecipeDTO))]
         public abstract Task<IActionResult> UpdateRecipeById([FromRoute (Name = "id")][Required]Guid id, [FromBody]CreateRecipeDTO createRecipeDTO);
 
         /// <summary>
@@ -150,6 +155,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <response code="204">Recept képe sikeresen frissítve</response>
         [HttpPut]
         [Route("/recipes/{id}/image")]
+        [Authorize]
         [Consumes("multipart/form-data")]
         [ValidateModelState]
         public abstract Task<IActionResult> UpdateRecipeImage([FromRoute (Name = "id")][Required]Guid id, IFormFile image);

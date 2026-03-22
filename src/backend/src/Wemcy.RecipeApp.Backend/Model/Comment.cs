@@ -2,7 +2,7 @@
 {
     public class Comment: Entity
     {
-        public virtual Recipe Recipe { get; set; }
+        public virtual Recipe Recipe { get; set; } = null!;
         public required string Content { get; set; }
         //TODO USER
     }
