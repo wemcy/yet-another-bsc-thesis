@@ -45,25 +45,12 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/authStore'
 import ProfileAvatar from '@/components/profile/ProfileAvatar.vue'
-import { useKeycloak } from '@josempgon/vue-keycloak'
+import { useRouter } from 'vue-router'
 
 const auth = useAuthStore()
-const { keycloak } = useKeycloak()
-// const dummyUser: User = {
-//     id: 'dummy-user',
-//     name: 'Teszt Elek',
-//     email: 'teszt@valami.hu',
-//     password: 'titok',
-//     registered: '2023-11-01',
-// }
+const router = useRouter()
 
 function dummyLogin() {
-    keycloak.value
-        ?.login({
-            redirectUri: window.location.origin,
-        })
-        .catch((error) => {
-            console.error('Keycloak login failed:', error)
-        })
+    router.push('/login')
 }
 </script>
