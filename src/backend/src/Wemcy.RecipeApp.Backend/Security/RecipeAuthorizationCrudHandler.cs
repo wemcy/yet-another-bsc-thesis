@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
+using System.Security.Claims;
 using Wemcy.RecipeApp.Backend.Model;
 
 namespace Wemcy.RecipeApp.Backend.Security;
@@ -8,11 +9,12 @@ public class RecipeAuthorizationCrudHandler : AuthorizationHandler<OperationAuth
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, OperationAuthorizationRequirement requirement, Recipe resource)
     {
-        if (Guid.Parse(context.User.Identity?.Name) == resource.UserId &&
-        requirement.Name == Operations.Update.Name)
-        {
+        var userIdValue = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userIdValue is null || !Guid.TryParse(userIdValue, out var userId))
+            return Task.CompletedTask;
+
+        if (userId == resource.UserId && requirement.Name == Operations.Update.Name)
             context.Succeed(requirement);
-        }
 
         return Task.CompletedTask;
     }

@@ -1,8 +1,11 @@
-using System;
 using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Repository;
 using Wemcy.RecipeApp.Backend.Security;
@@ -25,6 +28,15 @@ builder.Services.AddDbContext<DatabaseContext>(opt => {
     opt.UseNpgsql(cs);
     });
 
+builder.Services.AddIdentityCore<IdentityUser<Guid>>(options =>
+    {
+        options.Password.RequireDigit = true;
+        options.Password.RequiredLength = 6;
+        options.User.RequireUniqueEmail = true;
+    })
+    .AddRoles<IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<DatabaseContext>()
+    .AddDefaultTokenProviders();
 builder.Services.AddScoped<RecipeService, RecipeService>().
                  AddScoped<RecipeRepository, RecipeRepository>().
                  AddScoped<ImageRepository, ImageRepository>().
@@ -33,7 +45,20 @@ builder.Services.AddScoped<RecipeService, RecipeService>().
                  AddScoped<UserService, UserService>().
                  AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>();
 
-builder.Services.AddAuthentication("Bearer").AddJwtBearer();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+        };
+    });
 builder.Services.AddHttpContextAccessor().AddCors(opt =>
 {
     opt.AddDefaultPolicy(builder =>
@@ -80,6 +105,7 @@ else
 
 //app.UseHttpsRedirection();
 app.UseCors();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
