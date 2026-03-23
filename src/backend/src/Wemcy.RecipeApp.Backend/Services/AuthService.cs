@@ -1,18 +1,20 @@
 using Microsoft.AspNetCore.Identity;
 using Wemcy.RecipeApp.Backend.Exceptions;
+using Wemcy.RecipeApp.Backend.Model;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
 public class AuthService(
-    UserManager<IdentityUser<Guid>> userManager,
-    SignInManager<IdentityUser<Guid>> signInManager) : IAuthService
+    UserManager<AppUser> userManager,
+    SignInManager<AppUser> signInManager) : IAuthService
 {
-    public async Task<RegisterResult> RegisterAsync(string email, string password)
+    public async Task<RegisterResult> RegisterAsync(string email, string password, string? displayName)
     {
-        var user = new IdentityUser<Guid>
+        var user = new AppUser
         {
             UserName = email,
             Email = email,
+            DisplayName = string.IsNullOrWhiteSpace(displayName) ? email : displayName.Trim(),
         };
 
         var result = await userManager.CreateAsync(user, password);
@@ -28,7 +30,7 @@ public class AuthService(
         if (!result.Succeeded)
             throw new InvalidCredentialsException();
 
-        return new LoginResult(user.Id, user.Email!);
+        return new LoginResult(user.Id, user.Email!, user.DisplayName);
     }
 
     public async Task LogoutAsync()

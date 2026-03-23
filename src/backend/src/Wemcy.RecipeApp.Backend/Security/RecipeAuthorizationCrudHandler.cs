@@ -13,7 +13,10 @@ public class RecipeAuthorizationCrudHandler : AuthorizationHandler<OperationAuth
         if (userIdValue is null || !Guid.TryParse(userIdValue, out var userId))
             return Task.CompletedTask;
 
-        if (userId == resource.UserId && requirement.Name == Operations.Update.Name)
+        if (userId == resource.UserId &&
+            (requirement.Name == Operations.Create.Name ||
+             requirement.Name == Operations.Update.Name ||
+             requirement.Name == Operations.Delete.Name))
             context.Succeed(requirement);
 
         return Task.CompletedTask;

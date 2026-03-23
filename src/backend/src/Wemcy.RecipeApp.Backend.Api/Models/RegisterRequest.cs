@@ -44,6 +44,13 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public string Password { get; set; }
 
         /// <summary>
+        /// The user&#39;s display name
+        /// </summary>
+        /// <value>The user&#39;s display name</value>
+        [DataMember(Name="displayName", EmitDefaultValue=false)]
+        public string DisplayName { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -53,6 +60,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             sb.Append("class RegisterRequest {\n");
             sb.Append("  Email: ").Append(Email).Append("\n");
             sb.Append("  Password: ").Append(Password).Append("\n");
+            sb.Append("  DisplayName: ").Append(DisplayName).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -98,6 +106,11 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     Password == other.Password ||
                     Password != null &&
                     Password.Equals(other.Password)
+                ) && 
+                (
+                    DisplayName == other.DisplayName ||
+                    DisplayName != null &&
+                    DisplayName.Equals(other.DisplayName)
                 );
         }
 
@@ -115,6 +128,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     hashCode = hashCode * 59 + Email.GetHashCode();
                     if (Password != null)
                     hashCode = hashCode * 59 + Password.GetHashCode();
+                    if (DisplayName != null)
+                    hashCode = hashCode * 59 + DisplayName.GetHashCode();
                 return hashCode;
             }
         }

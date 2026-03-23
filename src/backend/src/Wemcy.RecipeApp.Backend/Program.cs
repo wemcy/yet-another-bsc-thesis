@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Repository;
 using Wemcy.RecipeApp.Backend.Security;
@@ -25,7 +26,7 @@ builder.Services.AddDbContext<DatabaseContext>(opt => {
     opt.UseNpgsql(cs);
     });
 
-builder.Services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>(options =>
+builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
     {
         options.Password.RequireDigit = true;
         options.Password.RequiredLength = 6;

@@ -13,6 +13,8 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
 
     public async Task<Recipe> CreateRecipeAsync(Recipe recipe)
     {
+        recipe.UserId = userService.GetCurrentUserId();
+        await EnsureAuthorizedAsync(recipe, Operations.Create);
         return await this.recipeRepository.CreateRecipeAsync(recipe);
     }
 
@@ -40,6 +42,7 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
     public async Task UpdateImageByIdAsync(Guid id, Stream imageStream, string name)
     {
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
+        await EnsureAuthorizedAsync(recipe, Operations.Update);
         var image = await imageService.CreateImage(imageStream, name);
         recipe.Image = image;
         await this.recipeRepository.SaveAsync();
@@ -70,6 +73,7 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
     public async Task DeleteRecipeByIdAsync(Guid id)
     {
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
+        await EnsureAuthorizedAsync(recipe, Operations.Delete);
         this.recipeRepository.DeleteRecipe(recipe);
         await this.recipeRepository.SaveAsync();
     }
@@ -77,9 +81,16 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
     public async Task<Recipe> UpdateRecipeAsync(Guid id, Api.Models.CreateRecipeDTO createRecipeDTO)
     {
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
-        await authorizationService.AuthorizeAsync(userService.GetCurrentUser(), recipe, Operations.Update);
+        await EnsureAuthorizedAsync(recipe, Operations.Update);
         mapper.Map(createRecipeDTO, recipe);
         await this.recipeRepository.SaveAsync();
         return recipe;
+    }
+
+    private async Task EnsureAuthorizedAsync(Recipe recipe, Microsoft.AspNetCore.Authorization.Infrastructure.OperationAuthorizationRequirement operation)
+    {
+        var result = await authorizationService.AuthorizeAsync(userService.GetCurrentUser(), recipe, operation);
+        if (!result.Succeeded)
+            throw new UnauthorizedAccessException("You are not allowed to modify this recipe.");
     }
 }

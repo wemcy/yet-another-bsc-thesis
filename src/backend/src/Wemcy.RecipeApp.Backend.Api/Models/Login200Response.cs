@@ -40,6 +40,13 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public string Email { get; set; }
 
         /// <summary>
+        /// A bejelentkezett felhasználó megjelenítendő neve
+        /// </summary>
+        /// <value>A bejelentkezett felhasználó megjelenítendő neve</value>
+        [DataMember(Name="displayName", EmitDefaultValue=false)]
+        public string DisplayName { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -49,6 +56,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             sb.Append("class Login200Response {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Email: ").Append(Email).Append("\n");
+            sb.Append("  DisplayName: ").Append(DisplayName).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -94,6 +102,11 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     Email == other.Email ||
                     Email != null &&
                     Email.Equals(other.Email)
+                ) && 
+                (
+                    DisplayName == other.DisplayName ||
+                    DisplayName != null &&
+                    DisplayName.Equals(other.DisplayName)
                 );
         }
 
@@ -111,6 +124,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     hashCode = hashCode * 59 + Id.GetHashCode();
                     if (Email != null)
                     hashCode = hashCode * 59 + Email.GetHashCode();
+                    if (DisplayName != null)
+                    hashCode = hashCode * 59 + DisplayName.GetHashCode();
                 return hashCode;
             }
         }

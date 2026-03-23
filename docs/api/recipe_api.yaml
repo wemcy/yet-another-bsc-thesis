@@ -86,6 +86,9 @@ paths:
                   email:
                     type: string
                     format: email
+                  displayName:
+                    type: string
+                    description: A bejelentkezett felhasználó megjelenítendő neve
         '401':
           description: Hibás email cím vagy jelszó
           content:
@@ -568,6 +571,9 @@ components:
           format: password
           minLength: 6
           description: Password (min 6 characters, at least one digit)
+        displayName:
+          type: string
+          description: The user's display name
     loginRequest:
       type: object
       required:

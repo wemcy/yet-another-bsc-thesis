@@ -5,7 +5,7 @@ using Wemcy.RecipeApp.Backend.Model;
 
 namespace Wemcy.RecipeApp.Backend.Database;
 
-public class DatabaseContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>
+public class DatabaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 {
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<Image> Images { get; set; }
