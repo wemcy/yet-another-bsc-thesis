@@ -27,11 +27,17 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
     public class Login200Response : IEquatable<Login200Response>
     {
         /// <summary>
-        /// Signed JWT Bearer token (8 hour expiry)
+        /// A bejelentkezett felhasználó azonosítója
         /// </summary>
-        /// <value>Signed JWT Bearer token (8 hour expiry)</value>
-        [DataMember(Name="token", EmitDefaultValue=false)]
-        public string Token { get; set; }
+        /// <value>A bejelentkezett felhasználó azonosítója</value>
+        [DataMember(Name="id", EmitDefaultValue=true)]
+        public Guid Id { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Email
+        /// </summary>
+        [DataMember(Name="email", EmitDefaultValue=false)]
+        public string Email { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -41,7 +47,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         {
             var sb = new StringBuilder();
             sb.Append("class Login200Response {\n");
-            sb.Append("  Token: ").Append(Token).Append("\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  Email: ").Append(Email).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -79,9 +86,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
 
             return 
                 (
-                    Token == other.Token ||
-                    Token != null &&
-                    Token.Equals(other.Token)
+                    Id == other.Id ||
+                    
+                    Id.Equals(other.Id)
+                ) && 
+                (
+                    Email == other.Email ||
+                    Email != null &&
+                    Email.Equals(other.Email)
                 );
         }
 
@@ -95,8 +107,10 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Token != null)
-                    hashCode = hashCode * 59 + Token.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + Id.GetHashCode();
+                    if (Email != null)
+                    hashCode = hashCode * 59 + Email.GetHashCode();
                 return hashCode;
             }
         }

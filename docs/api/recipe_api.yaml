@@ -73,15 +73,19 @@ paths:
               "$ref": "#/components/schemas/loginRequest"
       responses:
         '200':
-          description: Sikeres bejelentkezés, JWT token visszaadva
+          description: Sikeres bejelentkezés – munkamenet cookie beállítva
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  token:
+                  id:
                     type: string
-                    description: Signed JWT Bearer token (8 hour expiry)
+                    format: uuid
+                    description: A bejelentkezett felhasználó azonosítója
+                  email:
+                    type: string
+                    format: email
         '401':
           description: Hibás email cím vagy jelszó
           content:
@@ -92,6 +96,19 @@ paths:
                   message:
                     type: string
                     example: Invalid email or password
+  "/auth/logout":
+    post:
+      tags:
+      - Auth
+      summary: Kijelentkezés
+      operationId: logout
+      responses:
+        '204':
+          description: Sikeres kijelentkezés, cookie törlésre kerül
+        '401':
+          description: Nem volt aktív munkamenet
+      security:
+        - cookieAuth: []
   "/alive/":
     get:
       tags:
@@ -144,7 +161,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/readRecipeDTO"
       security:
-        - bearerAuth: []
+        - cookieAuth: []
   "/recipes/{id}/":
     get:
       tags:
@@ -187,7 +204,7 @@ paths:
         '404':
           description: Recept nem található
       security:
-        - bearerAuth: []
+        - cookieAuth: []
     put:
       tags:
       - Recipes
@@ -219,7 +236,7 @@ paths:
         '404':
           description: Recept nem található
       security:
-        - bearerAuth: []
+        - cookieAuth: []
 
   "/recipes/{id}/rate":
     put:
@@ -251,7 +268,7 @@ paths:
         '204':
           description: Recept értékelése sikeresen frissítve
       security:
-        - bearerAuth: []
+        - cookieAuth: []
   "/recipes/{id}/image":
     put:
       tags:
@@ -280,7 +297,7 @@ paths:
         '204':
           description: Recept képe sikeresen frissítve
       security:
-        - bearerAuth: []
+        - cookieAuth: []
     get:
       tags:
       - Recipes
@@ -339,7 +356,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/comment"
       security:
-        - bearerAuth: []
+        - cookieAuth: []
   "/recipes/showcase":
     get:
       tags:
@@ -372,10 +389,10 @@ paths:
 
 components:
   securitySchemes:
-    bearerAuth: # arbitrary name for the security scheme
-      type: http
-      scheme: bearer
-      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: .AspNetCore.Identity.Application
   schemas:
     aliveReport:
       type: object

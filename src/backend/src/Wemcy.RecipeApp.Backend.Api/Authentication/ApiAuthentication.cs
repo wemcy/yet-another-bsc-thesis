@@ -58,6 +58,15 @@ namespace Wemcy.RecipeApp.Backend.Api.Authentication
         private void SucceedRequirementIfApiKeyPresentAndValid(AuthorizationHandlerContext context, ApiKeyRequirement requirement)
         {
 
+            if (context.Resource is AuthorizationFilterContext authorizationFilterContext)
+            {
+                var apiKey = authorizationFilterContext.HttpContext.Request.Cookies[".AspNetCore.Identity.Application"] ?? null;
+                if (requirement.PolicyName == "cookieAuth" && apiKey != null && requirement.ApiKeys.Any(requiredApiKey => apiKey == requiredApiKey))
+                {
+                    context.Succeed(requirement);
+                }
+            }
+
         }
     }
 }

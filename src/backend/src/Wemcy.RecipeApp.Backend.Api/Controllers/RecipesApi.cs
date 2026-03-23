@@ -35,7 +35,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <response code="201">Comment added successfully</response>
         [HttpPost]
         [Route("/recipes/{id}/comments")]
-        [Authorize]
+        [Authorize(Policy = "cookieAuth")]
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 201, type: typeof(Comment))]
@@ -48,7 +48,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <response code="201">Recipe created successfully</response>
         [HttpPost]
         [Route("/recipes/")]
-        [Authorize]
+        [Authorize(Policy = "cookieAuth")]
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 201, type: typeof(ReadRecipeDTO))]
@@ -63,7 +63,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <response code="404">Recept nem található</response>
         [HttpDelete]
         [Route("/recipes/{id}/")]
-        [Authorize]
+        [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
         public abstract Task<IActionResult> DeleteRecipeById([FromRoute (Name = "id")][Required]Guid id);
 
@@ -127,7 +127,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <response code="204">Recept értékelése sikeresen frissítve</response>
         [HttpPut]
         [Route("/recipes/{id}/rate")]
-        [Authorize]
+        [Authorize(Policy = "cookieAuth")]
         [Consumes("application/json")]
         [ValidateModelState]
         public abstract Task<IActionResult> RateRecipe([FromRoute (Name = "id")][Required]Guid id, [FromBody]RateRecipeRequest rateRecipeRequest);
@@ -142,7 +142,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <response code="404">Recept nem található</response>
         [HttpPut]
         [Route("/recipes/{id}/")]
-        [Authorize]
+        [Authorize(Policy = "cookieAuth")]
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(ReadRecipeDTO))]
@@ -156,7 +156,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <response code="204">Recept képe sikeresen frissítve</response>
         [HttpPut]
         [Route("/recipes/{id}/image")]
-        [Authorize]
+        [Authorize(Policy = "cookieAuth")]
         [Consumes("multipart/form-data")]
         [ValidateModelState]
         public abstract Task<IActionResult> UpdateRecipeImage([FromRoute (Name = "id")][Required]Guid id, IFormFile image);

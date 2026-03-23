@@ -31,7 +31,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// Bejelentkezés
         /// </summary>
         /// <param name="loginRequest"></param>
-        /// <response code="200">Sikeres bejelentkezés, JWT token visszaadva</response>
+        /// <response code="200">Sikeres bejelentkezés – munkamenet cookie beállítva</response>
         /// <response code="401">Hibás email cím vagy jelszó</response>
         [HttpPost]
         [Route("/auth/login")]
@@ -40,6 +40,17 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ProducesResponseType(statusCode: 200, type: typeof(Login200Response))]
         [ProducesResponseType(statusCode: 401, type: typeof(Login401Response))]
         public abstract Task<IActionResult> Login([FromBody]LoginRequest loginRequest);
+
+        /// <summary>
+        /// Kijelentkezés
+        /// </summary>
+        /// <response code="204">Sikeres kijelentkezés, cookie törlésre kerül</response>
+        /// <response code="401">Nem volt aktív munkamenet</response>
+        [HttpPost]
+        [Route("/auth/logout")]
+        [Authorize(Policy = "cookieAuth")]
+        [ValidateModelState]
+        public abstract Task<IActionResult> Logout();
 
         /// <summary>
         /// Felhasználó regisztráció
