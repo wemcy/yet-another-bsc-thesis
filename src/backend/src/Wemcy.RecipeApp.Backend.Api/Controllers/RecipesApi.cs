@@ -48,6 +48,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <response code="201">Recipe created successfully</response>
         [HttpPost]
         [Route("/recipes/")]
+        [Authorize]
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 201, type: typeof(ReadRecipeDTO))]

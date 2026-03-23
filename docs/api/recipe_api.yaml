@@ -25,7 +25,73 @@ tags:
   description: Értékelések
 - name: Comment
   description: Kommentek a receptekhez
+- name: Auth
+  description: Felhasználói autentikáció
 paths:
+  "/auth/register":
+    post:
+      tags:
+      - Auth
+      summary: Felhasználó regisztráció
+      operationId: register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/registerRequest"
+      responses:
+        '200':
+          description: Sikeres regisztráció
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User registered successfully
+        '400':
+          description: Érvénytelen kérés (pl. az email már foglalt, gyenge jelszó)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/identityError"
+  "/auth/login":
+    post:
+      tags:
+      - Auth
+      summary: Bejelentkezés
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/loginRequest"
+      responses:
+        '200':
+          description: Sikeres bejelentkezés, JWT token visszaadva
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: Signed JWT Bearer token (8 hour expiry)
+        '401':
+          description: Hibás email cím vagy jelszó
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid email or password
   "/alive/":
     get:
       tags:
@@ -469,4 +535,40 @@ components:
           type: string
           format: date-time
         author:
-          type: string 
+          type: string
+    registerRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: The user's email address (used as username)
+        password:
+          type: string
+          format: password
+          minLength: 6
+          description: Password (min 6 characters, at least one digit)
+    loginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+    identityError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code (e.g. DuplicateEmail)
+        description:
+          type: string
+          description: Human-readable error description 

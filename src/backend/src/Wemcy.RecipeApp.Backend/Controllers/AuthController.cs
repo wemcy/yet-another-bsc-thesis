@@ -4,36 +4,35 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Wemcy.RecipeApp.Backend.Api.Controllers;
 
 namespace Wemcy.RecipeApp.Backend.Controllers;
 
-[ApiController]
-[Route("auth")]
 public class AuthController(
     UserManager<IdentityUser<Guid>> userManager,
-    IConfiguration configuration) : ControllerBase
+    IConfiguration configuration) : AuthApiController
 {
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    private readonly UserManager<IdentityUser<Guid>> userManager = userManager;
+    private readonly IConfiguration configuration = configuration;
+
+    public async override Task<IActionResult> Register([FromBody] Api.Models.RegisterRequest registerRequest)
     {
         var user = new IdentityUser<Guid>
         {
-            UserName = request.Email,
-            Email = request.Email,
+            UserName = registerRequest.Email,
+            Email = registerRequest.Email,
         };
 
-        var result = await userManager.CreateAsync(user, request.Password);
+        var result = await userManager.CreateAsync(user, registerRequest.Password);
         if (!result.Succeeded)
             return BadRequest(result.Errors);
 
         return Ok(new { message = "User registered successfully" });
     }
-
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    public async override Task<IActionResult> Login([FromBody] Api.Models.LoginRequest loginRequest)
     {
-        var user = await userManager.FindByEmailAsync(request.Email);
-        if (user is null || !await userManager.CheckPasswordAsync(user, request.Password))
+        var user = await userManager.FindByEmailAsync(loginRequest.Email);
+        if (user is null || !await userManager.CheckPasswordAsync(user, loginRequest.Password))
             return Unauthorized(new { message = "Invalid email or password" });
 
         var token = GenerateJwtToken(user);
@@ -64,6 +63,3 @@ public class AuthController(
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
-
-public record RegisterRequest(string Email, string Password);
-public record LoginRequest(string Email, string Password);

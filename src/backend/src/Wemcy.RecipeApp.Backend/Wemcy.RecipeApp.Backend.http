@@ -1,6 +1,0 @@
-@Wemcy.RecipeApp.Backend_HostAddress = http://localhost:5008
-
-GET {{Wemcy.RecipeApp.Backend_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
