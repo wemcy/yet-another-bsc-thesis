@@ -33,6 +33,15 @@ public class AuthService(
         return new LoginResult(user.Id, user.Email!, user.DisplayName);
     }
 
+    public async Task MakeUserAdminAsync(string email)
+    {
+        var user = await userManager.FindByEmailAsync(email)
+            ?? throw new UserNotFoundException(email);
+
+        if (!await userManager.IsInRoleAsync(user, Security.Roles.Admin))
+            await userManager.AddToRoleAsync(user, Security.Roles.Admin);
+    }
+
     public async Task LogoutAsync()
     {
         await signInManager.SignOutAsync();

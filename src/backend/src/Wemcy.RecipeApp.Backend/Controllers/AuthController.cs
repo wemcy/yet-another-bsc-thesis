@@ -1,13 +1,16 @@
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Wemcy.RecipeApp.Backend.Api.Controllers;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
+using Wemcy.RecipeApp.Backend.Security;
 using Wemcy.RecipeApp.Backend.Services;
 
 namespace Wemcy.RecipeApp.Backend.Controllers;
 
 [InvalidCredentialsHandler]
+[UserNotFoundHandler]
 public class AuthController(IAuthService authService) : AuthApiController
 {
     public async override Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
@@ -37,4 +40,19 @@ public class AuthController(IAuthService authService) : AuthApiController
         await authService.LogoutAsync();
         return NoContent();
     }
+
+    [HttpPost("/auth/admin/promote")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> PromoteToAdmin([FromBody] PromoteToAdminRequest request)
+    {
+        await authService.MakeUserAdminAsync(request.Email);
+        return NoContent();
+    }
+}
+
+public class PromoteToAdminRequest
+{
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; } = string.Empty;
 }

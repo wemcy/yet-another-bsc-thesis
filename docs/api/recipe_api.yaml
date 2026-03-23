@@ -452,10 +452,14 @@ components:
       - createdAt
       - averageRating
       - comments
+      - creatorDisplayName
       properties:
         id:
           type: string
           format: uuid
+        creatorDisplayName:
+          type: string
+          description: The display name of the recipe's author
         title:
           type: string
         description:

@@ -34,6 +34,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public Guid Id { get; set; }
 
         /// <summary>
+        /// The display name of the recipe&#39;s author
+        /// </summary>
+        /// <value>The display name of the recipe&#39;s author</value>
+        [Required]
+        [DataMember(Name="creatorDisplayName", EmitDefaultValue=false)]
+        public string CreatorDisplayName { get; set; }
+
+        /// <summary>
         /// Gets or Sets Title
         /// </summary>
         [Required]
@@ -106,6 +114,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             var sb = new StringBuilder();
             sb.Append("class ReadRecipeDTO {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  CreatorDisplayName: ").Append(CreatorDisplayName).Append("\n");
             sb.Append("  Title: ").Append(Title).Append("\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
@@ -155,6 +164,11 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     Id == other.Id ||
                     
                     Id.Equals(other.Id)
+                ) && 
+                (
+                    CreatorDisplayName == other.CreatorDisplayName ||
+                    CreatorDisplayName != null &&
+                    CreatorDisplayName.Equals(other.CreatorDisplayName)
                 ) && 
                 (
                     Title == other.Title ||
@@ -219,6 +233,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                 // Suitable nullity checks etc, of course :)
                     
                     hashCode = hashCode * 59 + Id.GetHashCode();
+                    if (CreatorDisplayName != null)
+                    hashCode = hashCode * 59 + CreatorDisplayName.GetHashCode();
                     if (Title != null)
                     hashCode = hashCode * 59 + Title.GetHashCode();
                     if (Description != null)

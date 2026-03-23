@@ -14,6 +14,7 @@ public class Recipe : Entity
     public virtual required Image? Image { get; set; } = null;
     public virtual required IList<Rating> Ratings { get; set; } = [];
     public virtual required IList<Comment> Comments { get; set; } = [];
+    public string CreatorDisplayName => User.DisplayName;
 
     public void UpdateAverageRating()
     {

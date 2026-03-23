@@ -41,3 +41,16 @@ public class InvalidCredentialsHandler : ExceptionFilterAttribute
         }
     }
 }
+
+public class UserNotFoundHandler : ExceptionFilterAttribute
+{
+    public override void OnException(ExceptionContext context)
+    {
+        if (context.Exception is UserNotFoundException)
+        {
+            context.HttpContext.Response.StatusCode = 404; // Not Found
+            context.Result = new Microsoft.AspNetCore.Mvc.JsonResult(new { error = context.Exception.Message });
+            context.ExceptionHandled = true;
+        }
+    }
+}

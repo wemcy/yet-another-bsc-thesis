@@ -10,5 +10,7 @@ public interface IAuthService
     Task<RegisterResult> RegisterAsync(string email, string password, string? displayName);
     /// <exception cref="Wemcy.RecipeApp.Backend.Exceptions.InvalidCredentialsException">Thrown when the email or password is invalid.</exception>
     Task<LoginResult> LoginAsync(string email, string password);
+    /// <exception cref="Wemcy.RecipeApp.Backend.Exceptions.UserNotFoundException">Thrown when no user exists with the provided email.</exception>
+    Task MakeUserAdminAsync(string email);
     Task LogoutAsync();
 }

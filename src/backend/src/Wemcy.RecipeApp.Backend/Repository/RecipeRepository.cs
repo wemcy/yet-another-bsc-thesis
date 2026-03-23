@@ -24,6 +24,7 @@ public class RecipeRepository(DatabaseContext databaseContext)
         return await _dbContext.Recipes
             .AsNoTracking()
             .Include( x => x.Comments)
+            .Include( x => x.User)
             .ToListAsync();
     }
 
@@ -32,6 +33,7 @@ public class RecipeRepository(DatabaseContext databaseContext)
         return await _dbContext.Recipes
             .AsNoTracking()
             .Include(x => x.Comments)
+            .Include( x => x.User)
             .Take(limit)
             .ToListAsync();
     }

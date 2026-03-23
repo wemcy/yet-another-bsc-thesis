@@ -9,6 +9,16 @@ public class RecipeAuthorizationCrudHandler : AuthorizationHandler<OperationAuth
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, OperationAuthorizationRequirement requirement, Recipe resource)
     {
+        // Admin users can manage every recipe.
+        if (context.User.IsInRole(Roles.Admin) &&
+            (requirement.Name == Operations.Create.Name ||
+             requirement.Name == Operations.Update.Name ||
+             requirement.Name == Operations.Delete.Name))
+        {
+            context.Succeed(requirement);
+            return Task.CompletedTask;
+        }
+
         var userIdValue = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (userIdValue is null || !Guid.TryParse(userIdValue, out var userId))
             return Task.CompletedTask;
