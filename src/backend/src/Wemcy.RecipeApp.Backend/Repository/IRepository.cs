@@ -1,6 +1,5 @@
-﻿namespace Wemcy.RecipeApp.Backend.Repository
+﻿namespace Wemcy.RecipeApp.Backend.Repository;
+
+public interface IRepository
 {
-    public interface IRepository
-    {
-    }
 }

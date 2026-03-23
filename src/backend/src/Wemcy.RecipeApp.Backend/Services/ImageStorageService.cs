@@ -1,22 +1,21 @@
-﻿namespace Wemcy.RecipeApp.Backend.Services
+﻿namespace Wemcy.RecipeApp.Backend.Services;
+
+public class ImageStorageService
 {
-    public class ImageStorageService
+    public async Task SaveImage(Guid id, Stream imageData)
     {
-        public async Task SaveImage(Guid id, Stream imageData)
-        {
-            using var filestream = File.OpenWrite(GetImagePath(id));
-            await imageData.CopyToAsync(filestream);
-        }
+        using var filestream = File.OpenWrite(GetImagePath(id));
+        await imageData.CopyToAsync(filestream);
+    }
 
-        public Stream LoadImage(Guid id)
-        {
-            var filestream = File.OpenRead(GetImagePath(id));
-            return filestream;
-        }
+    public Stream LoadImage(Guid id)
+    {
+        var filestream = File.OpenRead(GetImagePath(id));
+        return filestream;
+    }
 
-        private static string GetImagePath(Guid id)
-        {
-            return Path.Combine("/storage/recipe_images", $"{id}");
-        }
+    private static string GetImagePath(Guid id)
+    {
+        return Path.Combine("/storage/recipe_images", $"{id}");
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace Wemcy.RecipeApp.Backend.Model
+﻿namespace Wemcy.RecipeApp.Backend.Model;
+
+public class Comment: Entity
 {
-    public class Comment: Entity
-    {
-        public virtual Recipe Recipe { get; set; } = null!;
-        public required string Content { get; set; }
-        //TODO USER
-    }
+    public virtual Recipe Recipe { get; set; } = null!;
+    public required string Content { get; set; }
+    //TODO USER
 }
