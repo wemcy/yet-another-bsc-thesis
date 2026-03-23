@@ -29,8 +29,8 @@ builder.Services.AddDbContext<DatabaseContext>(opt => {
 
 builder.Services
     .AddAppIdentity()
-    .AddAppIdentityCookieConfig()
-    .AddAppIdentityAuthorizationPolicy();
+    .ConfigureCookies()
+    .AddCookieAuthorizationPolicy();
 
 builder.Services.AddScoped<RecipeService, RecipeService>().
                  AddScoped<RecipeRepository, RecipeRepository>().
