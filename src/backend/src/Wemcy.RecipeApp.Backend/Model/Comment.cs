@@ -4,5 +4,5 @@ public class Comment: Entity
 {
     public virtual Recipe Recipe { get; set; } = null!;
     public required string Content { get; set; }
-    //TODO USER
+    public virtual required AppUser User { get; set; } = null!;
 }

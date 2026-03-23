@@ -6,7 +6,7 @@ public class Recipe : Entity
 {
     public required string Title { get; set; }
     public required string Description { get; set; }
-    public required Guid UserId { get; set; }
+    public virtual required AppUser User { get; set; } = null!;
     public required IList<string> Steps { get; set; } = [];
     public required IList<Ingredient> Ingredients { get; set; } = [];
     public required double AverageRating { get; set; }
@@ -20,9 +20,9 @@ public class Recipe : Entity
         AverageRating = Ratings.Count > 0 ? Ratings.Average(r => r.Value) : 0;
     }
 
-    public void Rate(int rating)
+    public void Rate(int rating, AppUser user)
     {
-        Ratings.Add(new Rating() { Value = rating });
+        Ratings.Add(new Rating() { Value = rating, User = user });
         UpdateAverageRating();
     }
 }

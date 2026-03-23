@@ -13,7 +13,7 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
 
     public async Task<Recipe> CreateRecipeAsync(Recipe recipe)
     {
-        recipe.UserId = userService.GetCurrentUserId();
+        recipe.User = await userService.GetCurrentUserEntityAsync();
         await EnsureAuthorizedAsync(recipe, Operations.Create);
         return await this.recipeRepository.CreateRecipeAsync(recipe);
     }
@@ -58,15 +58,17 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
 
     public async Task RateRecipeAsync(Guid id, int rating)
     {
+        var currentUser = await userService.GetCurrentUserEntityAsync();
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
-        recipe.Rate(rating);
+        recipe.Rate(rating, currentUser);
         await this.recipeRepository.SaveAsync();
     }
 
     public async Task AddCommentAsync(Guid id, string content)
     {
+        var currentUser = await userService.GetCurrentUserEntityAsync();
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
-        recipe.Comments.Add(new Comment() { Content = content });
+        recipe.Comments.Add(new Comment() { Content = content, User = currentUser });
         await this.recipeRepository.SaveAsync();
     }
 
