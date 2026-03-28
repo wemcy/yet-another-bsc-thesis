@@ -59,13 +59,18 @@ public class ProfileController(IAuthService authService, ProfileService profileS
         }
     }
 
-    public override Task<IActionResult> UpdateOwnProfile([FromForm(Name = "displayName")] string displayName, [FromForm(Name = "password"), MinLength(6)] string password, IFormFile profileImage)
+    public override async Task<IActionResult> UpdateOwnProfile([FromForm(Name = "displayName")] string displayName, [FromForm(Name = "password"), MinLength(6)] string password, IFormFile profileImage)
     {
-        throw new NotImplementedException();
+        if (User.Identity.TryGetUserId(out var userId))
+        {
+            return await this.UpdateProfileById(userId, displayName, password, profileImage);
+        }
+        throw new UserNotFoundException();
     }
 
-    public override Task<IActionResult> UpdateProfileById([FromRoute(Name = "id"), Required] Guid id, [FromForm(Name = "displayName")] string displayName, [FromForm(Name = "password"), MinLength(6)] string password, IFormFile profileImage)
+    public override async Task<IActionResult> UpdateProfileById([FromRoute(Name = "id"), Required] Guid id, [FromForm(Name = "displayName")] string? displayName, [FromForm(Name = "password"), MinLength(6)] string? password, IFormFile? profileImage)
     {
-        throw new NotImplementedException();
+        await profileService.UpdateProfileByIdAsync(id, profileImage?.OpenReadStream(),profileImage?.Name, password, displayName);
+        return NoContent();
     }
 }

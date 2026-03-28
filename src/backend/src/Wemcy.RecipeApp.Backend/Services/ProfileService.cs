@@ -27,17 +27,33 @@ namespace Wemcy.RecipeApp.Backend.Services
             await userManager.SetEmailAsync(user, newEmail);
         }
 
-        public async Task UpdatePasswordAsync(Guid id, string currentPassword, string newPassword)
-        {
-            var user = await GetProfileById(id);
-            await userManager.ChangePasswordAsync(user, currentPassword, newPassword);
-        }
 
-        internal async Task<Stream> GetProfileImageById(Guid id)
+        public async Task<Stream> GetProfileImageById(Guid id)
         {
             var user = await this.GetProfileById(id);
             var image = user.Image ?? throw new ImageNotFoundException("User does not have profile picture");
             return imageService.GetImageById(image.Id);
+        }
+        public async Task UpdateProfileByIdAsync(Guid id, Stream? imageStream, string? name, string? password, string? displayName)
+        {
+            var user = await GetProfileById(id);
+            if (imageStream is not null && name is not null)
+            {
+                var image = await imageService.CreateImage(imageStream, name);
+                user.Image = image;
+            }
+            if (displayName is not null)
+            {
+                user.DisplayName = displayName;
+            }
+            if (password is not null)
+            {
+                var token = await userManager.GeneratePasswordResetTokenAsync(user);
+                await userManager.ResetPasswordAsync(user, token, password);
+            }
+            // TODO email
+            await userManager.UpdateAsync(user);
+           
         }
     }
 }
