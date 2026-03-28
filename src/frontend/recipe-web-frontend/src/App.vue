@@ -5,11 +5,13 @@ import MainFooter from './components/MainFooter.vue'
 </script>
 
 <template>
-    <HeaderNav></HeaderNav>
-    <div>
-        <router-view />
+    <div class="min-h-screen bg-gradient-to-br from-sky-100 via-white to-cyan-100 flex flex-col">
+        <HeaderNav></HeaderNav>
+        <div class="flex-1">
+            <router-view />
+        </div>
+        <MainFooter></MainFooter>
     </div>
-    <MainFooter></MainFooter>
 </template>
 
 <style scoped></style>

@@ -37,7 +37,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/auth/login")]
         [Consumes("application/json")]
         [ValidateModelState]
-        [ProducesResponseType(statusCode: 200, type: typeof(Login200Response))]
+        [ProducesResponseType(statusCode: 200, type: typeof(LoginResponse))]
         [ProducesResponseType(statusCode: 401, type: typeof(Login401Response))]
         public abstract Task<IActionResult> Login([FromBody]LoginRequest loginRequest);
 
@@ -62,7 +62,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/auth/register")]
         [Consumes("application/json")]
         [ValidateModelState]
-        [ProducesResponseType(statusCode: 200, type: typeof(Register200Response))]
+        [ProducesResponseType(statusCode: 200, type: typeof(LoginResponse))]
         [ProducesResponseType(statusCode: 400, type: typeof(List<IdentityError>))]
         public abstract Task<IActionResult> Register([FromBody]RegisterRequest registerRequest);
     }

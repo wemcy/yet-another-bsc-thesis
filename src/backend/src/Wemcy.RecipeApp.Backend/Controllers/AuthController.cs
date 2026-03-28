@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using Wemcy.RecipeApp.Backend.Api.Controllers;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
@@ -13,22 +14,24 @@ namespace Wemcy.RecipeApp.Backend.Controllers;
 [UserNotFoundHandler]
 public class AuthController(IAuthService authService) : AuthApiController
 {
-    public async override Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
+    public async override Task<IActionResult> Register([FromBody] Api.Models.RegisterRequest registerRequest)
     {
         var result = await authService.RegisterAsync(registerRequest.Email, registerRequest.Password, registerRequest.DisplayName);
         if (!result.Succeeded)
             return BadRequest(result.Errors);
-
-        return Ok(new Register200Response
+        var user = await authService.LoginAsync(registerRequest.Email, registerRequest.Password);
+        return Ok(new LoginResponse
         {
-            Message = "User registered successfully",
+            Id = user.UserId,
+            Email = user.Email,
+            DisplayName = user.DisplayName,
         });
     }
 
-    public async override Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+    public async override Task<IActionResult> Login([FromBody] Api.Models.LoginRequest loginRequest)
     {
         var result = await authService.LoginAsync(loginRequest.Email, loginRequest.Password);
-        return Ok(new Login200Response
+        return Ok(new LoginResponse
         {
             Id = result.UserId,
             Email = result.Email,

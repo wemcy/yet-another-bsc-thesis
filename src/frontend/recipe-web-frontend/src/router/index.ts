@@ -6,6 +6,7 @@ import NotFoundView from '@/views/NotFoundView.vue'
 import NewRecipeView from '@/views/NewRecipeView.vue'
 import AllRecipesView from '@/views/AllRecipesView.vue'
 import EditRecipeView from '@/views/EditRecipeView.vue'
+import LoginView from '@/views/LoginView.vue'
 
 const initRouter = () => {
     return createRouter({
@@ -26,6 +27,7 @@ const initRouter = () => {
                 component: EditRecipeView,
                 props: true,
             },
+            { path: '/login', name: 'Login', component: LoginView },
             { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFoundView },
         ],
     })

@@ -46,11 +46,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: User registered successfully
+                "$ref": "#/components/schemas/loginResponse"
         '400':
           description: Érvénytelen kérés (pl. az email már foglalt, gyenge jelszó)
           content:
@@ -77,18 +73,8 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    format: uuid
-                    description: A bejelentkezett felhasználó azonosítója
-                  email:
-                    type: string
-                    format: email
-                  displayName:
-                    type: string
-                    description: A bejelentkezett felhasználó megjelenítendő neve
+                "$ref": "#/components/schemas/loginResponse"
+
         '401':
           description: Hibás email cím vagy jelszó
           content:
@@ -599,3 +585,20 @@ components:
         description:
           type: string
           description: Human-readable error description 
+    loginResponse:
+      type: object
+      required:
+        - id
+        - email
+        - displayName
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: A bejelentkezett felhasználó azonosítója
+        email:
+          type: string
+          format: email
+        displayName:
+          type: string
+          description: A bejelentkezett felhasználó megjelenítendő neve

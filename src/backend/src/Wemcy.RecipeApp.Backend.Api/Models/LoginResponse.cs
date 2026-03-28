@@ -24,14 +24,30 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
     /// 
     /// </summary>
     [DataContract]
-    public class Register200Response : IEquatable<Register200Response>
+    public class LoginResponse : IEquatable<LoginResponse>
     {
         /// <summary>
-        /// Gets or Sets Message
+        /// A bejelentkezett felhasználó azonosítója
         /// </summary>
-        /* <example>User registered successfully</example> */
-        [DataMember(Name="message", EmitDefaultValue=false)]
-        public string Message { get; set; }
+        /// <value>A bejelentkezett felhasználó azonosítója</value>
+        [Required]
+        [DataMember(Name="id", EmitDefaultValue=true)]
+        public Guid Id { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Email
+        /// </summary>
+        [Required]
+        [DataMember(Name="email", EmitDefaultValue=false)]
+        public string Email { get; set; }
+
+        /// <summary>
+        /// A bejelentkezett felhasználó megjelenítendő neve
+        /// </summary>
+        /// <value>A bejelentkezett felhasználó megjelenítendő neve</value>
+        [Required]
+        [DataMember(Name="displayName", EmitDefaultValue=false)]
+        public string DisplayName { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -40,8 +56,10 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Register200Response {\n");
-            sb.Append("  Message: ").Append(Message).Append("\n");
+            sb.Append("class LoginResponse {\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  Email: ").Append(Email).Append("\n");
+            sb.Append("  DisplayName: ").Append(DisplayName).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -64,24 +82,34 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Register200Response)obj);
+            return obj.GetType() == GetType() && Equals((LoginResponse)obj);
         }
 
         /// <summary>
-        /// Returns true if Register200Response instances are equal
+        /// Returns true if LoginResponse instances are equal
         /// </summary>
-        /// <param name="other">Instance of Register200Response to be compared</param>
+        /// <param name="other">Instance of LoginResponse to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(Register200Response other)
+        public bool Equals(LoginResponse other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return 
                 (
-                    Message == other.Message ||
-                    Message != null &&
-                    Message.Equals(other.Message)
+                    Id == other.Id ||
+                    
+                    Id.Equals(other.Id)
+                ) && 
+                (
+                    Email == other.Email ||
+                    Email != null &&
+                    Email.Equals(other.Email)
+                ) && 
+                (
+                    DisplayName == other.DisplayName ||
+                    DisplayName != null &&
+                    DisplayName.Equals(other.DisplayName)
                 );
         }
 
@@ -95,8 +123,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Message != null)
-                    hashCode = hashCode * 59 + Message.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + Id.GetHashCode();
+                    if (Email != null)
+                    hashCode = hashCode * 59 + Email.GetHashCode();
+                    if (DisplayName != null)
+                    hashCode = hashCode * 59 + DisplayName.GetHashCode();
                 return hashCode;
             }
         }
@@ -104,12 +136,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(Register200Response left, Register200Response right)
+        public static bool operator ==(LoginResponse left, LoginResponse right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(Register200Response left, Register200Response right)
+        public static bool operator !=(LoginResponse left, LoginResponse right)
         {
             return !Equals(left, right);
         }
