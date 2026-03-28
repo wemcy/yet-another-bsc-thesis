@@ -14,6 +14,7 @@ namespace Wemcy.RecipeApp.Backend.Controllers;
 
 [InvalidCredentialsHandler]
 [UserNotFoundHandler]
+[ImageNotFoundHandler]
 public class ProfileController(IAuthService authService, ProfileService profileService, IMapper mapper) : ProfileApiController
 {
     public override Task<IActionResult> DeleteProfileById([FromRoute(Name = "id"), Required] Guid id)
@@ -31,9 +32,13 @@ public class ProfileController(IAuthService authService, ProfileService profileS
 
     }
 
-    public override Task<IActionResult> GetOwnProfileImage()
+    public override async Task<IActionResult> GetOwnProfileImage()
     {
-        throw new NotImplementedException();
+        if (User.Identity.TryGetUserId(out var userId))
+        {
+            return await this.GetProfileImageById(userId);
+        }
+        throw new UserNotFoundException();
     }
 
     public async override Task<IActionResult> GetProfileById([FromRoute(Name = "id"), Required] Guid id)
@@ -42,9 +47,16 @@ public class ProfileController(IAuthService authService, ProfileService profileS
         return Ok(mapper.Map<ProfileResponse>(profile));
     }
 
-    public override Task<IActionResult> GetProfileImageById([FromRoute(Name = "id"), Required] Guid id)
+    public override async Task<IActionResult> GetProfileImageById([FromRoute(Name = "id"), Required] Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return new FileStreamResult(await profileService.GetProfileImageById(id), "image/jpeg");
+        }
+        catch (ImageNotFoundException)
+        {
+            return File(DefaultImages.DefaultProfileSvg, "image/svg+xml");
+        }
     }
 
     public override Task<IActionResult> UpdateOwnProfile([FromForm(Name = "displayName")] string displayName, [FromForm(Name = "password"), MinLength(6)] string password, IFormFile profileImage)

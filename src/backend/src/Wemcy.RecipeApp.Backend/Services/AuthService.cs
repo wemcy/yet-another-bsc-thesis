@@ -15,6 +15,7 @@ public class AuthService(
             UserName = email,
             Email = email,
             DisplayName = string.IsNullOrWhiteSpace(displayName) ? email : displayName.Trim(),
+            Image = null,
         };
 
         var result = await userManager.CreateAsync(user, password);

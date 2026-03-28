@@ -5,7 +5,7 @@ using Wemcy.RecipeApp.Backend.Model;
 
 namespace Wemcy.RecipeApp.Backend.Services
 {
-    public class ProfileService(UserManager<AppUser> userManager)
+    public class ProfileService(UserManager<AppUser> userManager, ImageService imageService)
     {
         // TODO Make these atomic transactions to prevent partial updates
         public async Task<AppUser> GetProfileById(Guid id)
@@ -31,6 +31,13 @@ namespace Wemcy.RecipeApp.Backend.Services
         {
             var user = await GetProfileById(id);
             await userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        }
+
+        internal async Task<Stream> GetProfileImageById(Guid id)
+        {
+            var user = await this.GetProfileById(id);
+            var image = user.Image ?? throw new ImageNotFoundException("User does not have profile picture");
+            return imageService.GetImageById(image.Id);
         }
     }
 }

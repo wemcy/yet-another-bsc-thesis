@@ -16,6 +16,7 @@ using Wemcy.RecipeApp.Backend.Services;
 namespace Wemcy.RecipeApp.Backend.Controllers;
 
 [RecipeNotFoundHandler]
+[ImageNotFoundHandler]
 public class RecipeController(RecipeService recipeService, IMapper mapper) : RecipesApiController
 {
     public override async Task<IActionResult> CreateRecipe([FromBody] CreateRecipeDTO createRecipeDTO)
@@ -53,11 +54,10 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
 
     public override async Task<IActionResult> UpdateRecipeImage([FromRoute(Name = "id"), Required] Guid id, IFormFile image)
     {
-        // TODO 404
         await recipeService.UpdateImageByIdAsync(id, image.OpenReadStream(), image.Name);
         return NoContent();
     }
-    [ImageNotFoundHandler]
+  
     public override async Task<IActionResult> GetRecipeImage([FromRoute(Name = "id"), Required] Guid id)
     {
         try
@@ -66,7 +66,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
         }
         catch (ImageNotFoundException)
         {
-            return File(RecipeControllerHelpers.DefaultImageSvg, "image/svg+xml");
+            return File(DefaultImages.DefaultImageSvg, "image/svg+xml");
         }
 
     }

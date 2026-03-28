@@ -30,6 +30,7 @@ public static class ApplicationInitializationExtensions
                 Email = defaultAdminEmail,
                 EmailConfirmed = true,
                 DisplayName = defaultAdminDisplayName,
+                Image = null,
             };
 
             var createResult = await userManager.CreateAsync(defaultAdmin, defaultAdminPassword);
