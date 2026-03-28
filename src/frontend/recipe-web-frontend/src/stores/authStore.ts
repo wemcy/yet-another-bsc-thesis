@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import type { User } from '../types/profile/user'
 import { AuthApi, Configuration, type LoginResponse } from 'recipe-api-client'
+import { toErrorMessage } from '../utils/identityErrors'
 
 const authApi = new AuthApi(
     new Configuration({
@@ -8,11 +9,6 @@ const authApi = new AuthApi(
         basePath: 'http://localhost:9393/api',
     }),
 )
-
-function toErrorMessage(error: unknown): string {
-    if (error instanceof Error) return error.message
-    return 'Varatlan hiba tortent.'
-}
 
 function mapResponseToUser(response: LoginResponse): User {
     return {
@@ -48,7 +44,7 @@ export const useAuthStore = defineStore('auth', {
                 return this.currentUser
             } catch (error) {
                 this.currentUser = null
-                this.authError = toErrorMessage(error)
+                this.authError = await toErrorMessage(error)
                 throw error
             } finally {
                 this.authLoading = false
@@ -66,7 +62,7 @@ export const useAuthStore = defineStore('auth', {
                 this.currentUser = mapResponseToUser(response)
                 return this.currentUser
             } catch (error) {
-                this.authError = toErrorMessage(error)
+                this.authError = await toErrorMessage(error)
                 throw error
             } finally {
                 this.authLoading = false

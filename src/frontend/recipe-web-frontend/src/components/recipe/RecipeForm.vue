@@ -181,11 +181,10 @@ function resetForm() {
 
 function validateForm() {
     errors.value = {}
-    // TODO remove this comment
-    // if (!authStore.currentUser) {
-    //     errors.value.title = 'Csak bejelentkezve lehet receptet feltölteni.'
-    //     return
-    // }
+    if (!authStore.currentUser) {
+        errors.value.title = 'Csak bejelentkezve lehet receptet feltölteni.'
+        return
+    }
     if (!title.value.trim()) errors.value.title = 'A cím megadása kötelező.'
     if (!description.value.trim()) errors.value.description = 'A leírás nem lehet üres.'
     if (!ingredients.value.some((i) => i.name.trim()))

@@ -1,4 +1,6 @@
-﻿namespace Wemcy.RecipeApp.Backend.Services;
+﻿using Wemcy.RecipeApp.Backend.Exceptions;
+
+namespace Wemcy.RecipeApp.Backend.Services;
 
 public class ImageStorageService
 {
@@ -10,8 +12,15 @@ public class ImageStorageService
 
     public Stream LoadImage(Guid id)
     {
-        var filestream = File.OpenRead(GetImagePath(id));
-        return filestream;
+       try
+        {
+            var filestream = File.OpenRead(GetImagePath(id));
+            return filestream;
+        }
+        catch (FileNotFoundException)
+        {
+            throw new ImageNotFoundException(); //TODO : Add image ID to exception message, and other details if needed
+        }
     }
 
     private static string GetImagePath(Guid id)

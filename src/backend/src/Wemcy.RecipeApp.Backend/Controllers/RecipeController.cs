@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
 using Wemcy.RecipeApp.Backend.Api.Controllers;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
@@ -58,7 +60,15 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
     [ImageNotFoundHandler]
     public override async Task<IActionResult> GetRecipeImage([FromRoute(Name = "id"), Required] Guid id)
     {
-        return new FileStreamResult( await recipeService.GetImageByIdAsync(id),"image/jpeg");
+        try
+        {
+            return new FileStreamResult(await recipeService.GetImageByIdAsync(id), "image/jpeg");
+        }
+        catch (ImageNotFoundException)
+        {
+            return File(RecipeControllerHelpers.DefaultImageSvg, "image/svg+xml");
+        }
+
     }
 
     public override async Task<IActionResult> RateRecipe([FromRoute(Name = "id"), Required] Guid id, [FromBody] RateRecipeRequest rateRecipeRequest)
@@ -69,7 +79,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
 
     public async override Task<IActionResult> AddRecipeComment([FromRoute(Name = "id"), Required] Guid id, [FromBody] AddRecipeCommentRequest addRecipeCommentRequest)
     {
-        await recipeService.AddCommentAsync(id,addRecipeCommentRequest.Content);
+        await recipeService.AddCommentAsync(id, addRecipeCommentRequest.Content);
         return NoContent();
     }
 

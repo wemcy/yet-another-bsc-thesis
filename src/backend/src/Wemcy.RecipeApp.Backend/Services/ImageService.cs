@@ -11,6 +11,7 @@ public class ImageService(ImageStorageService imageStorageService, ImageReposito
     {
         var image = new Image
         {
+            Id = Guid.NewGuid(),
             Name = name,
             Extenstion = Path.GetExtension(name)
         };
