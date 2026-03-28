@@ -11,7 +11,7 @@ public class ProfileService(UserManager<AppUser> userManager, ImageService image
     public async Task<AppUser> GetProfileById(Guid id)
     {
         return await userManager.FindByIdAsync(id.ToString())
-            ?? throw new UserNotFoundException("User not found.");
+            ?? throw new UserNotFoundException(id);
     }
 
     public async Task UpdateDisplayNameAsync(Guid id, string displayName)
@@ -54,5 +54,12 @@ public class ProfileService(UserManager<AppUser> userManager, ImageService image
         // TODO email
         await userManager.UpdateAsync(user);
        
+    }
+
+    internal async Task DeleteProfileByIdAsync(Guid id)
+    {
+        var user = await this.GetProfileById(id);
+        await userManager.UpdateSecurityStampAsync(user);
+        await userManager.DeleteAsync(user);
     }
 }

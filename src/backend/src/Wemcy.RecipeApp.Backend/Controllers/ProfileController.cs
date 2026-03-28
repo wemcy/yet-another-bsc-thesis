@@ -15,11 +15,12 @@ namespace Wemcy.RecipeApp.Backend.Controllers;
 [InvalidCredentialsHandler]
 [UserNotFoundHandler]
 [ImageNotFoundHandler]
-public class ProfileController(IAuthService authService, ProfileService profileService, IMapper mapper) : ProfileApiController
+public class ProfileController(ProfileService profileService, IMapper mapper) : ProfileApiController
 {
-    public override Task<IActionResult> DeleteProfileById([FromRoute(Name = "id"), Required] Guid id)
+    public override async Task<IActionResult> DeleteProfileById([FromRoute(Name = "id"), Required] Guid id)
     {
-        throw new NotImplementedException();
+        await profileService.DeleteProfileByIdAsync(id);
+        return NoContent();
     }
 
     public override async Task<IActionResult> GetOwnProfile()
@@ -59,7 +60,7 @@ public class ProfileController(IAuthService authService, ProfileService profileS
         }
     }
 
-    public override async Task<IActionResult> UpdateOwnProfile([FromForm(Name = "displayName")] string displayName, [FromForm(Name = "password"), MinLength(6)] string password, IFormFile profileImage)
+    public override async Task<IActionResult> UpdateOwnProfile([FromForm(Name = "displayName")] string? displayName, [FromForm(Name = "password"), MinLength(6)] string? password, IFormFile? profileImage)
     {
         if (User.Identity.TryGetUserId(out var userId))
         {
