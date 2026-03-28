@@ -3,6 +3,7 @@
 ../src/Wemcy.RecipeApp.Backend.Api/Authentication/ApiAuthentication.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Controllers/AuthApi.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Controllers/HealthApi.cs
+../src/Wemcy.RecipeApp.Backend.Api/Controllers/ProfileApi.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Controllers/RecipesApi.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Converters/CustomEnumConverter.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Formatters/InputFormatterStream.cs
@@ -17,6 +18,7 @@
 ../src/Wemcy.RecipeApp.Backend.Api/Models/Login401Response.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/LoginRequest.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/LoginResponse.cs
+../src/Wemcy.RecipeApp.Backend.Api/Models/ProfileResponse.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/RateRecipeRequest.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/ReadRecipeDTO.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/RegisterRequest.cs

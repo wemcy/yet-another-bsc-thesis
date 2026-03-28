@@ -36,12 +36,14 @@ public class DatabaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Gu
     public override int SaveChanges()
     {
         UpdateEntityTimestamps();
+        UpdateUserTimestamps();
         return base.SaveChanges();
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         UpdateEntityTimestamps();
+        UpdateUserTimestamps();
         return await base.SaveChangesAsync(cancellationToken);
     }
 
@@ -60,6 +62,19 @@ public class DatabaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Gu
             else if (entry.State == EntityState.Modified)
             {
                 entry.Entity.UpdatedAt = now;
+            }
+        }
+    }
+
+    private void UpdateUserTimestamps()
+    {
+        var entries = ChangeTracker.Entries<AppUser>();
+        var now = DateTimeOffset.UtcNow;
+        foreach (var entry in entries)
+        {
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.RegisteredAt = now;
             }
         }
     }

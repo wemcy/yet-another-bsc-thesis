@@ -98,6 +98,165 @@ paths:
           description: Nem volt aktív munkamenet
       security:
         - cookieAuth: []
+  "/profile/me":
+    get:
+      tags:
+      - Profile
+      summary: Bejelentkezett felhasználó adatainak lekérdezése
+      operationId: getOwnProfile
+      responses:
+        '200':
+          description: Sikeres lekérdezés
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/profileResponse"
+        '401':
+          description: Nem volt aktív munkamenet
+      security:
+        - cookieAuth: []
+    put:
+      tags:
+      - Profile
+      summary: Bejelentkezett felhasználó adatainak frissítése
+      operationId: updateOwnProfile
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              "$ref": "#/components/schemas/updateProfileRequest"
+      responses:
+        '204':
+          description: Sikeres frissítés
+        '401':
+          description: Nem volt aktív munkamenet
+      security:
+        - cookieAuth: []
+  "/profile/me/image":
+    get:
+      tags:
+      - Profile
+      summary: Bejelentkezett felhasználó profilképének lekérdezése
+      operationId: getOwnProfileImage
+      responses:
+        '200':
+          description: Profilkép sikeresen lekérdezve
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: Nem volt aktív munkamenet
+      security:
+        - cookieAuth: []
+  "/profile/{id}/image":
+    get:
+      tags:
+      - Profile
+      summary: Felhasználó profilképének lekérdezése ID alapján
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: A lekérdezendő felhasználó egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: getProfileImageById
+      responses:
+        '200':
+          description: Profilkép sikeresen lekérdezve
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Profilkép vagy felhasználó nem található
+  "/profile/{id}":
+    get:
+      tags:
+      - Profile
+      summary: Felhasználó adatainak lekérdezése ID alapján
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: A lekérdezendő felhasználó egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: getProfileById
+      responses:
+        '200':
+          description: Felhasználó adatai sikeresen lekérdezve
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/profileResponse"
+        '401':
+          description: Nem volt aktív munkamenet
+        '404':
+          description: Felhasználó nem található
+      security:
+        - cookieAuth: []
+    put:
+      tags:
+      - Profile
+      summary: Felhasználó adatainak frissítése ID alapján
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: A frissítendő felhasználó egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: updateProfileById
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              "$ref": "#/components/schemas/updateProfileRequest"
+      responses:
+        '204':
+          description: Felhasználó adatai sikeresen frissítve
+        '401':
+          description: Nem volt aktív munkamenet
+        '403':
+          description: Nem a felhasználó tulajdonosa
+        '404':
+          description: Felhasználó nem található
+      security: 
+        - cookieAuth: []
+    delete:
+      tags:
+      - Profile
+      summary: Felhasználó törlése ID alapján
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: A törlendő felhasználó egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: deleteProfileById
+      responses:
+        '204':
+          description: Felhasználó sikeresen törölve
+        '401':
+          description: Nem volt aktív munkamenet
+        '403':
+          description: Nem a felhasználó tulajdonosa
+        '404':
+          description: Felhasználó nem található
+      security:
+        - cookieAuth: []
+
   "/alive/":
     get:
       tags:
@@ -602,3 +761,40 @@ components:
         displayName:
           type: string
           description: A bejelentkezett felhasználó megjelenítendő neve
+    profileResponse:
+      type: object
+      required:
+        - id
+        - email
+        - displayName
+        - registeredAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: A bejelentkezett felhasználó azonosítója
+        email:
+          type: string
+          format: email
+        displayName:
+          type: string
+          description: A bejelentkezett felhasználó megjelenítendő neve
+        registeredAt:
+          type: string
+          format: date-time
+          description: A bejelentkezett felhasználó regisztrációjának időpontja
+    updateProfileRequest:
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: The user's display name
+        password:
+          type: string
+          format: password
+          minLength: 6
+          description: Password 
+        profileImage:
+          type: string
+          format: binary
+          description: The profile image file to upload.

@@ -21,6 +21,7 @@ namespace Wemcy.RecipeApp.Backend.DTOProfiles
             CreateMap<Model.Ingredient, Api.Models.Ingredient>()
                 .ReverseMap();
             CreateMap<Model.Comment, Api.Models.Comment>().ReverseMap();
+            CreateMap<Model.AppUser, Api.Models.ProfileResponse>();
         }
         private static AllergenType MapAllergens(Allergen allergen)
         {
