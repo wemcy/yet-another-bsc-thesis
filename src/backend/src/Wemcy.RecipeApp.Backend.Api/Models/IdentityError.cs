@@ -31,14 +31,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>Machine-readable error code (e.g. DuplicateEmail)</value>
         [DataMember(Name="code", EmitDefaultValue=false)]
-        public string Code { get; set; }
+        public string? Code { get; set; }
 
         /// <summary>
         /// Human-readable error description
         /// </summary>
         /// <value>Human-readable error description</value>
         [DataMember(Name="description", EmitDefaultValue=false)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

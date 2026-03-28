@@ -31,7 +31,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>The content of the comment to add.</value>
         [DataMember(Name="content", EmitDefaultValue=false)]
-        public string Content { get; set; }
+        public string? Content { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

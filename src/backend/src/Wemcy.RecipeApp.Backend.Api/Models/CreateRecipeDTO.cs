@@ -40,7 +40,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>Simple description of the recipe</value>
         [DataMember(Name="description", EmitDefaultValue=false)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>
         /// List of allergens present in the recipe

@@ -31,20 +31,20 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /* <example>database</example> */
         [DataMember(Name="name", EmitDefaultValue=false)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Gets or Sets Healthy
         /// </summary>
         /* <example>true</example> */
         [DataMember(Name="healthy", EmitDefaultValue=true)]
-        public bool Healthy { get; set; }
+        public bool? Healthy { get; set; }
 
         /// <summary>
         /// Gets or Sets Message
         /// </summary>
         [DataMember(Name="message", EmitDefaultValue=true)]
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

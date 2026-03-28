@@ -31,7 +31,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /* <example>Invalid email or password</example> */
         [DataMember(Name="message", EmitDefaultValue=false)]
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

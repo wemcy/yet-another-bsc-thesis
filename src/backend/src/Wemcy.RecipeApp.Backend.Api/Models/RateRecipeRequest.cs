@@ -30,6 +30,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// The rating value (1-5)
         /// </summary>
         /// <value>The rating value (1-5)</value>
+        [Required]
         [Range(1, 5)]
         [DataMember(Name="rating", EmitDefaultValue=true)]
         public int Rating { get; set; }

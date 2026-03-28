@@ -31,7 +31,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /* <example>ok</example> */
         [DataMember(Name="status", EmitDefaultValue=false)]
-        public string Status { get; set; }
+        public string? Status { get; set; }
 
         /// <summary>
         /// Gets or Sets Services

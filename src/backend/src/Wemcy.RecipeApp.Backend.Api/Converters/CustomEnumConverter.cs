@@ -26,7 +26,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Converters
         /// <param name="context"></param>
         /// <param name="sourceType"></param>
         /// <returns></returns>
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
         {
             return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
         }
@@ -38,7 +38,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Converters
         /// <param name="culture"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
         {
             var s = value as string;
             if (string.IsNullOrEmpty(s))

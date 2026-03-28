@@ -104,7 +104,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Authorize(Policy = "cookieAuth")]
         [Consumes("multipart/form-data")]
         [ValidateModelState]
-        public abstract Task<IActionResult> UpdateOwnProfile([FromForm (Name = "displayName")]string displayName, [FromForm (Name = "password")] [MinLength(6)]string password, IFormFile profileImage);
+        public abstract Task<IActionResult> UpdateOwnProfile([FromForm (Name = "displayName")]string? displayName, [FromForm (Name = "password")] [MinLength(6)]string? password, IFormFile profileImage);
 
         /// <summary>
         /// Felhasználó adatainak frissítése ID alapján
@@ -122,6 +122,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Authorize(Policy = "cookieAuth")]
         [Consumes("multipart/form-data")]
         [ValidateModelState]
-        public abstract Task<IActionResult> UpdateProfileById([FromRoute (Name = "id")][Required]Guid id, [FromForm (Name = "displayName")]string displayName, [FromForm (Name = "password")] [MinLength(6)]string password, IFormFile profileImage);
+        public abstract Task<IActionResult> UpdateProfileById([FromRoute (Name = "id")][Required]Guid id, [FromForm (Name = "displayName")]string? displayName, [FromForm (Name = "password")] [MinLength(6)]string? password, IFormFile profileImage);
     }
 }

@@ -7,10 +7,11 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PreserveCompilationContext>true</PreserveCompilationContext>
         <Version>1.0.0</Version>
+        <Nullable>annotations</Nullable>
         <OutputType>Library</OutputType>
         <AssemblyName>Wemcy.RecipeApp.Backend.Api</AssemblyName>
         <PackageId>Wemcy.RecipeApp.Backend.Api</PackageId>
-        <UserSecretsId>8272bfe3-acca-44bc-bb1e-31cafad469d2</UserSecretsId>
+        <UserSecretsId>0e6cd4e6-da5a-4b07-85b9-8475e24510b6</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>

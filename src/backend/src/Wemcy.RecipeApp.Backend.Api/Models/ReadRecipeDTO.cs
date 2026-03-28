@@ -52,7 +52,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// Gets or Sets Description
         /// </summary>
         [DataMember(Name="description", EmitDefaultValue=true)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>
         /// Gets or Sets CreatedAt

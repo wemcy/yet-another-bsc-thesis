@@ -48,7 +48,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>The user&#39;s display name</value>
         [DataMember(Name="displayName", EmitDefaultValue=false)]
-        public string DisplayName { get; set; }
+        public string? DisplayName { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

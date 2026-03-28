@@ -121,7 +121,7 @@ paths:
       summary: Bejelentkezett felhasználó adatainak frissítése
       operationId: updateOwnProfile
       requestBody:
-        required: true
+        required: false
         content:
           multipart/form-data:
             schema:
@@ -216,7 +216,7 @@ paths:
             format: uuid
       operationId: updateProfileById
       requestBody:
-        required: true
+        required: false
         content:
           multipart/form-data:
             schema:
@@ -406,6 +406,8 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - rating
               properties:
                 rating:
                   type: integer
@@ -487,6 +489,8 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - content
               properties:
                 content:
                   type: string
@@ -788,13 +792,16 @@ components:
       properties:
         displayName:
           type: string
+          nullable: true
           description: The user's display name
         password:
           type: string
           format: password
           minLength: 6
+          nullable: true
           description: Password 
         profileImage:
           type: string
           format: binary
+          nullable: true
           description: The profile image file to upload.
