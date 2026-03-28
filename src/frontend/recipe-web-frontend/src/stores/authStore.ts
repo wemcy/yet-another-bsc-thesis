@@ -1,21 +1,34 @@
 import { defineStore } from 'pinia'
 import type { User } from '../types/profile/user'
-import { AuthApi, Configuration, type LoginResponse } from 'recipe-api-client'
+import {
+    AuthApi,
+    ProfileApi,
+    Configuration,
+    type LoginResponse,
+    type ProfileResponse,
+} from 'recipe-api-client'
 import { toErrorMessage } from '../utils/identityErrors'
 
-const authApi = new AuthApi(
-    new Configuration({
-        // Keep auth calls on the same API gateway host/port used by the rest of the app.
-        basePath: 'http://localhost:9393/api',
-    }),
-)
+const config = new Configuration({ basePath: 'http://localhost:9393/api', credentials: 'include' })
+const authApi = new AuthApi(config)
+const profileApi = new ProfileApi(config)
 
-function mapResponseToUser(response: LoginResponse): User {
+function mapLoginToUser(response: LoginResponse): User {
     return {
         id: response.id,
         name: response.displayName,
         email: response.email,
         avatarUrl: undefined,
+    }
+}
+
+function mapProfileToUser(response: ProfileResponse, avatarUrl?: string): User {
+    return {
+        id: response.id,
+        name: response.displayName,
+        email: response.email,
+        registered: response.registeredAt.toISOString().slice(0, 10),
+        avatarUrl,
     }
 }
 
@@ -40,7 +53,7 @@ export const useAuthStore = defineStore('auth', {
                     loginRequest: { email, password },
                 })
 
-                this.currentUser = mapResponseToUser(response)
+                this.currentUser = mapLoginToUser(response)
                 return this.currentUser
             } catch (error) {
                 this.currentUser = null
@@ -59,7 +72,7 @@ export const useAuthStore = defineStore('auth', {
                     registerRequest: { email, password, displayName: name },
                 })
 
-                this.currentUser = mapResponseToUser(response)
+                this.currentUser = mapLoginToUser(response)
                 return this.currentUser
             } catch (error) {
                 this.authError = await toErrorMessage(error)
@@ -75,6 +88,51 @@ export const useAuthStore = defineStore('auth', {
         updateUser(updates: Partial<User>) {
             if (this.currentUser) {
                 this.currentUser = { ...this.currentUser, ...updates }
+            }
+        },
+        async fetchOwnProfile() {
+            this.authLoading = true
+            this.authError = null
+
+            try {
+                const [profileResult, imageResult] = await Promise.allSettled([
+                    profileApi.getOwnProfile(),
+                    profileApi.getOwnProfileImage(),
+                ])
+
+                if (profileResult.status === 'fulfilled') {
+                    const avatarUrl =
+                        imageResult.status === 'fulfilled'
+                            ? URL.createObjectURL(imageResult.value)
+                            : this.currentUser?.avatarUrl
+                    this.currentUser = mapProfileToUser(profileResult.value, avatarUrl)
+                } else {
+                    this.authError = await toErrorMessage(profileResult.reason)
+                }
+            } finally {
+                this.authLoading = false
+            }
+        },
+        async updateOwnProfile(params: {
+            name?: string
+            password?: string | null
+            imageFile?: File | null
+        }) {
+            this.authLoading = true
+            this.authError = null
+
+            try {
+                await profileApi.updateOwnProfile({
+                    displayName: params.name ?? null,
+                    password: params.password || null,
+                    profileImage: params.imageFile ?? null,
+                })
+                await this.fetchOwnProfile()
+            } catch (error) {
+                this.authError = await toErrorMessage(error)
+                throw error
+            } finally {
+                this.authLoading = false
             }
         },
     },

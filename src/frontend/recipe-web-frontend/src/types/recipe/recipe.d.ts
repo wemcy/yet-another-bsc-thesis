@@ -24,6 +24,7 @@ export interface RecipeState {
     recipes: Recipe[]
     showcaseRecipesIds: Recipe.id[]
     featuredRecipeId: Recipe.id | null
+    ownRecipeIds: Recipe.id[]
 }
 
 export interface Comment {

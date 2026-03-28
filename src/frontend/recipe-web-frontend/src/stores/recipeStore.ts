@@ -7,6 +7,7 @@ const api = new RecipesApi(
     new Configuration({
         // TODO make this dynamic based on env vars
         basePath: 'http://localhost:9393/api',
+        credentials: 'include',
     }),
 )
 export const useRecipeStore = defineStore('recipe', {
@@ -14,6 +15,7 @@ export const useRecipeStore = defineStore('recipe', {
         recipes: [],
         featuredRecipeId: null,
         showcaseRecipesIds: [],
+        ownRecipeIds: [] as string[],
     }),
 
     getters: {
@@ -25,6 +27,7 @@ export const useRecipeStore = defineStore('recipe', {
             const recipe = state.recipes.find((r) => r.id === id)
             return recipe ? recipe.comments : []
         },
+        ownRecipes: (state) => state.recipes.filter((r) => state.ownRecipeIds.includes(r.id)),
     },
 
     actions: {
@@ -73,6 +76,12 @@ export const useRecipeStore = defineStore('recipe', {
         },
         async updateImage(id: string, image: File) {
             await api.updateRecipeImage({ id, image })
+        },
+        async fetchOwnRecipes(authorId: string) {
+            const response = await api.getRecipesByAuthorId({ id: authorId })
+            const mapped = response.map((r) => MapApiRecipeToRecipe(r))
+            mapped.forEach((r) => this.updateRecipe(r))
+            this.ownRecipeIds = mapped.map((r) => r.id)
         },
     },
 })

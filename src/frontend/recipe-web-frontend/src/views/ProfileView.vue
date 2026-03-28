@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import OwnRecipes from '@/components/recipe/OwnRecipes.vue'
 import ProfileHeader from '@/components/profile/ProfileHeader.vue'
-import { ref } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import { useRecipeStore } from '@/stores/recipeStore'
 import type { User } from '@/types/profile/user'
@@ -12,18 +12,16 @@ const recipes = useRecipeStore()
 const editing = ref(false)
 const profile = ref<User>(
     auth.currentUser ?? {
-        id: '', // vagy egyéb safe default
+        id: '',
         name: '',
         email: '',
         avatarUrl: undefined,
         registered: '',
-        // stb.
     },
 )
 const imageFile = ref<File | null>(null)
 const imageUrl = ref<string | undefined>(profile.value.avatarUrl)
 const passwordConfirm = ref('')
-import { watch } from 'vue'
 
 watch(
     () => auth.currentUser,
@@ -35,10 +33,18 @@ watch(
     },
     { immediate: true },
 )
+
 const original = ref({ ...profile.value })
 const errors = ref<{ name?: string; email?: string; password?: string; passwordConfirm?: string }>(
     {},
 )
+
+onMounted(async () => {
+    await auth.fetchOwnProfile()
+    if (auth.currentUser) {
+        recipes.fetchOwnRecipes(auth.currentUser.id)
+    }
+})
 
 function validateProfile() {
     errors.value = {}
@@ -67,26 +73,30 @@ function cancelEdit() {
     errors.value = {}
     passwordConfirm.value = ''
 }
+
 function handleImageChange(e: Event) {
     const file = (e.target as HTMLInputElement)?.files?.[0]
     if (file) {
         imageFile.value = file
-        // helyileg csak a böngészőben, base64 vagy object url
         imageUrl.value = URL.createObjectURL(file)
-        // mentésnél majd ezt tároljuk az authStore-ban
     }
 }
-function saveEdit() {
+
+async function saveEdit() {
     if (!validateProfile()) return
 
-    auth.updateUser({
-        name: profile.value.name,
-        email: profile.value.email,
-        avatarUrl: imageUrl.value,
-        ...(profile.value.password ? { password: profile.value.password } : {}),
-    })
-    editing.value = false
-    passwordConfirm.value = ''
+    try {
+        await auth.updateOwnProfile({
+            name: profile.value.name,
+            password: profile.value.password || null,
+            imageFile: imageFile.value,
+        })
+        editing.value = false
+        passwordConfirm.value = ''
+        imageFile.value = null
+    } catch {
+        // profileStore.profileError is already set
+    }
 }
 </script>
 
@@ -105,6 +115,12 @@ function saveEdit() {
             @updateProfile="(v) => (profile = v)"
             @updatePasswordConfirm="(v) => (passwordConfirm = v)"
         />
-        <OwnRecipes :recipes="recipes.recipes" class="mt-8" />
+        <p
+            v-if="auth.authError"
+            class="mt-4 text-sm rounded-lg border border-red-200 bg-red-50 text-red-700 px-3 py-2"
+        >
+            {{ auth.authError }}
+        </p>
+        <OwnRecipes :recipes="recipes.ownRecipes" class="mt-8" />
     </main>
 </template>
