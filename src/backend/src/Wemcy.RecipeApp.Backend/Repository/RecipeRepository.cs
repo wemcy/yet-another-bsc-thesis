@@ -65,4 +65,9 @@ public class RecipeRepository(DatabaseContext databaseContext)
     {
         _dbContext.Recipes.Remove(recipe);
     }
+
+    internal async Task<IList<Recipe>> GetAllRecipeByAuthorIdAsync(Guid id)
+    {
+        return await _dbContext.Recipes.Where(x => x.User.Id == id).AsNoTracking().Include(x => x.User).Include(x => x.Comments).ToListAsync();
+    }
 }

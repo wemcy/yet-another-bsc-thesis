@@ -95,4 +95,9 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         if (!result.Succeeded)
             throw new UnauthorizedAccessException("You are not allowed to modify this recipe.");
     }
+
+    internal async Task<IEnumerable<object>> GetAllRecipeByAuthorId(Guid id)
+    {
+        return await this.recipeRepository.GetAllRecipeByAuthorIdAsync(id);
+    }
 }

@@ -256,7 +256,29 @@ paths:
           description: Felhasználó nem található
       security:
         - cookieAuth: []
-
+  "/profile/{id}/recipes":
+    get:
+      tags:
+      - Recipes
+      summary: Felhasználó receptek listázása ID alapján
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: A lekérdezendő felhasználó egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: getRecipesByAuthorId
+      responses:
+        '200':
+          description: Receptek
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/readRecipeDTO"  
   "/alive/":
     get:
       tags:
@@ -385,7 +407,6 @@ paths:
           description: Recept nem található
       security:
         - cookieAuth: []
-
   "/recipes/{id}/rate":
     put:
       tags:

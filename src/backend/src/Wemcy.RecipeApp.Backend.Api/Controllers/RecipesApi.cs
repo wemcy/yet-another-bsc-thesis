@@ -100,6 +100,17 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         public abstract Task<IActionResult> GetRecipeImage([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
+        /// Felhasználó receptek listázása ID alapján
+        /// </summary>
+        /// <param name="id">A lekérdezendő felhasználó egyedi azonosítója (UUID)</param>
+        /// <response code="200">Receptek</response>
+        [HttpGet]
+        [Route("/profile/{id}/recipes")]
+        [ValidateModelState]
+        [ProducesResponseType(statusCode: 200, type: typeof(List<ReadRecipeDTO>))]
+        public abstract Task<IActionResult> GetRecipesByAuthorId([FromRoute (Name = "id")][Required]Guid id);
+
+        /// <summary>
         /// Receptek listázása
         /// </summary>
         /// <response code="200">Receptek</response>

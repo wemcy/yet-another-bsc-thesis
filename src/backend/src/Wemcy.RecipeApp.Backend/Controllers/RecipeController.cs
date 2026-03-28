@@ -95,4 +95,12 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
         return Ok(mapper.Map<ReadRecipeDTO>(recipe));
 
     }
+
+    public override async Task<IActionResult> GetRecipesByAuthorId([FromRoute(Name = "id"), Required] Guid id)
+    {
+        var q = await recipeService.GetAllRecipeByAuthorId(id);
+        var dtos = q.Select(x => mapper.Map<ReadRecipeDTO>(x)).ToList();
+        return Ok(dtos);
+    }
 }
+    
