@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Repository;
 using Wemcy.RecipeApp.Backend.Security;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class RecipeService(RecipeRepository recipeRepository, ImageService imageService, IMapper mapper, UserService userService, IAuthorizationService authorizationService)
+public class RecipeService(RecipeRepository recipeRepository, ImageService imageService, IMapper mapper, UserService userService)
 {
     private readonly RecipeRepository recipeRepository = recipeRepository;
     private readonly ImageService imageService = imageService;
@@ -14,7 +13,7 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
     public async Task<Recipe> CreateRecipeAsync(Recipe recipe)
     {
         recipe.User = await userService.GetCurrentUserEntityAsync();
-        await EnsureAuthorizedAsync(recipe, Operations.Create);
+        await userService.EnsureAuthorizedAsync(recipe, Operations.Create);
         return await this.recipeRepository.CreateRecipeAsync(recipe);
     }
 
@@ -42,7 +41,7 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
     public async Task UpdateImageByIdAsync(Guid id, Stream imageStream, string name)
     {
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
-        await EnsureAuthorizedAsync(recipe, Operations.Update);
+        await userService.EnsureAuthorizedAsync(recipe, Operations.Update);
         var image = await imageService.CreateImage(imageStream, name);
         recipe.Image = image;
         await this.recipeRepository.SaveAsync();
@@ -75,7 +74,7 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
     public async Task DeleteRecipeByIdAsync(Guid id)
     {
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
-        await EnsureAuthorizedAsync(recipe, Operations.Delete);
+        await userService.EnsureAuthorizedAsync(recipe, Operations.Delete);
         this.recipeRepository.DeleteRecipe(recipe);
         await this.recipeRepository.SaveAsync();
     }
@@ -83,17 +82,10 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
     public async Task<Recipe> UpdateRecipeAsync(Guid id, Api.Models.CreateRecipeDTO createRecipeDTO)
     {
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
-        await EnsureAuthorizedAsync(recipe, Operations.Update);
+        await userService.EnsureAuthorizedAsync(recipe, Operations.Update);
         mapper.Map(createRecipeDTO, recipe);
         await this.recipeRepository.SaveAsync();
         return recipe;
-    }
-
-    private async Task EnsureAuthorizedAsync(Recipe recipe, Microsoft.AspNetCore.Authorization.Infrastructure.OperationAuthorizationRequirement operation)
-    {
-        var result = await authorizationService.AuthorizeAsync(userService.GetCurrentUser(), recipe, operation);
-        if (!result.Succeeded)
-            throw new UnauthorizedAccessException("You are not allowed to modify this recipe.");
     }
 
     internal async Task<IEnumerable<object>> GetAllRecipeByAuthorId(Guid id)

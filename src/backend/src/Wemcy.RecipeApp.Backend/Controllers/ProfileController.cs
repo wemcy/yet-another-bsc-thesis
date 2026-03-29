@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Wemcy.RecipeApp.Backend.Api.Controllers;
@@ -8,7 +7,6 @@ using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Extensions;
 using Wemcy.RecipeApp.Backend.Services;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Wemcy.RecipeApp.Backend.Controllers;
 

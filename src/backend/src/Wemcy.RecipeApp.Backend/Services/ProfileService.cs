@@ -1,32 +1,23 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Security;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class ProfileService(UserManager<AppUser> userManager, ImageService imageService)
+public class ProfileService(UserManager<AppUser> userManager, ImageService imageService, UserService userService)
 {
     // TODO Make these atomic transactions to prevent partial updates
     public async Task<AppUser> GetProfileById(Guid id)
     {
-        return await userManager.FindByIdAsync(id.ToString())
-            ?? throw new UserNotFoundException(id);
-    }
+        var user = await userManager.FindByIdAsync(id.ToString()) ?? throw new UserNotFoundException(id);
+        await userService.EnsureAuthorizedAsync( user, Operations.Read);
+        return user;
 
-    public async Task UpdateDisplayNameAsync(Guid id, string displayName)
-    {
-        var user = await GetProfileById(id);
-        user.DisplayName = displayName;
-        await userManager.UpdateAsync(user);
     }
-
-    public async Task UpdateEmailAsync(Guid id, string newEmail)
-    {
-        var user = await GetProfileById(id);
-        await userManager.SetEmailAsync(user, newEmail);
-    }
-
 
     public async Task<Stream> GetProfileImageById(Guid id)
     {
@@ -37,6 +28,7 @@ public class ProfileService(UserManager<AppUser> userManager, ImageService image
     public async Task UpdateProfileByIdAsync(Guid id,UserProfileUpdateRequest request)
     {
         var user = await GetProfileById(id);
+        await userService.EnsureAuthorizedAsync(user, Operations.Update);
         if (request.HasImageUpdate)
         {
             var image = await imageService.CreateImage(request.ImageStream, request.ImageName);
@@ -56,9 +48,10 @@ public class ProfileService(UserManager<AppUser> userManager, ImageService image
        
     }
 
-    internal async Task DeleteProfileByIdAsync(Guid id)
+    public async Task DeleteProfileByIdAsync(Guid id)
     {
         var user = await this.GetProfileById(id);
+        await userService.EnsureAuthorizedAsync(user, Operations.Delete);
         await userManager.UpdateSecurityStampAsync(user);
         await userManager.DeleteAsync(user);
     }

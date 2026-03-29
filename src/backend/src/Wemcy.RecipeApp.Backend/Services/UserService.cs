@@ -1,10 +1,12 @@
-﻿using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 using Wemcy.RecipeApp.Backend.Model;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<AppUser> userManager)
+public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<AppUser> userManager, IAuthorizationService authorizationService)
 {
     public ClaimsPrincipal GetCurrentUser() {
         return httpContextAccessor?.HttpContext?.User ?? throw new UnauthorizedAccessException();
@@ -23,5 +25,12 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<A
     {
         var user = await userManager.FindByIdAsync(GetCurrentUserId().ToString());
         return user ?? throw new UnauthorizedAccessException("Authenticated user no longer exists.");
+    }
+
+    public async Task EnsureAuthorizedAsync<T>(T resource, OperationAuthorizationRequirement operation)
+    {
+        var result = await authorizationService.AuthorizeAsync(GetCurrentUser(), resource, operation);
+        if (!result.Succeeded)
+            throw new UnauthorizedAccessException("You are not allowed to modify this resource.");
     }
 }

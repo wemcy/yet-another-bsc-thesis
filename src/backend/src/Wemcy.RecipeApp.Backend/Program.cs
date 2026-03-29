@@ -40,7 +40,8 @@ builder.Services.AddScoped<RecipeService, RecipeService>().
                  AddScoped<UserService, UserService>().
                  AddScoped<IAuthService, AuthService>().
                  AddScoped<ProfileService, ProfileService>().
-                 AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>();
+                 AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>().
+                 AddSingleton<IAuthorizationHandler, AppUserAuthorizationCrudHandler>();
 
 builder.Services.AddHttpContextAccessor().AddCors(opt =>
 {
