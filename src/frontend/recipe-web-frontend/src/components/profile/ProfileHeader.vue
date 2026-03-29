@@ -75,6 +75,13 @@
             >
                 Szerkesztés
             </button>
+            <button
+                v-if="!editing"
+                @click="$emit('requestDelete')"
+                class="border border-red-200 text-red-700 px-4 py-1 rounded hover:bg-red-50"
+            >
+                Profil törlése
+            </button>
             <template v-else>
                 <button @click="$emit('cancel')" class="border px-4 py-1 rounded hover:bg-gray-100">
                     Mégse
@@ -112,6 +119,7 @@ const emit = defineEmits<{
     (e: 'cancel'): void
     (e: 'save'): void
     (e: 'imageChange', event: Event): void
+    (e: 'requestDelete'): void
 }>()
 
 watch(

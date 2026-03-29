@@ -208,7 +208,6 @@ async function submit() {
         allergens: selectedAllergens.value,
         image: imageUrl.value || '',
         rating: 0,
-        comments: [],
     }
 
     const recipeId = await recipeStore.addRecipe(newRecipe)

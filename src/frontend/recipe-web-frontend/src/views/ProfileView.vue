@@ -5,9 +5,11 @@ import { ref, watch, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import { useRecipeStore } from '@/stores/recipeStore'
 import type { User } from '@/types/profile/user'
+import { useRouter } from 'vue-router'
 
 const auth = useAuthStore()
 const recipes = useRecipeStore()
+const router = useRouter()
 
 const editing = ref(false)
 const profile = ref<User>(
@@ -22,6 +24,7 @@ const profile = ref<User>(
 const imageFile = ref<File | null>(null)
 const imageUrl = ref<string | undefined>(profile.value.avatarUrl)
 const passwordConfirm = ref('')
+const deleteDialogOpen = ref(false)
 
 watch(
     () => auth.currentUser,
@@ -98,6 +101,25 @@ async function saveEdit() {
         // profileStore.profileError is already set
     }
 }
+
+function openDeleteDialog() {
+    if (editing.value || auth.authLoading) return
+    deleteDialogOpen.value = true
+}
+
+function closeDeleteDialog() {
+    deleteDialogOpen.value = false
+}
+
+async function confirmDeleteProfile() {
+    try {
+        await auth.deleteOwnProfile()
+        deleteDialogOpen.value = false
+        await router.push('/login')
+    } catch {
+        // auth.authError is already set
+    }
+}
 </script>
 
 <template>
@@ -114,6 +136,7 @@ async function saveEdit() {
             @imageChange="handleImageChange"
             @updateProfile="(v) => (profile = v)"
             @updatePasswordConfirm="(v) => (passwordConfirm = v)"
+            @requestDelete="openDeleteDialog"
         />
         <p
             v-if="auth.authError"
@@ -121,6 +144,35 @@ async function saveEdit() {
         >
             {{ auth.authError }}
         </p>
+
+        <div
+            v-if="deleteDialogOpen"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+        >
+            <div class="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                <h2 class="text-lg font-semibold text-gray-900">Profil törlése</h2>
+                <p class="mt-2 text-sm text-gray-600">
+                    Biztosan törölni szeretnéd a profilodat? Ez a művelet nem visszavonható.
+                </p>
+                <div class="mt-5 flex justify-end gap-2">
+                    <button
+                        @click="closeDeleteDialog"
+                        :disabled="auth.authLoading"
+                        class="rounded border px-4 py-2 hover:bg-gray-100 disabled:opacity-50"
+                    >
+                        Mégse
+                    </button>
+                    <button
+                        @click="confirmDeleteProfile"
+                        :disabled="auth.authLoading"
+                        class="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700 disabled:opacity-50"
+                    >
+                        {{ auth.authLoading ? 'Törlés...' : 'Igen, törlöm' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <OwnRecipes :recipes="recipes.ownRecipes" class="mt-8" />
     </main>
 </template>
