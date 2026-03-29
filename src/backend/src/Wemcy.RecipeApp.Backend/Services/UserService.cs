@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
 
 namespace Wemcy.RecipeApp.Backend.Services;
@@ -32,5 +33,10 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<A
         var result = await authorizationService.AuthorizeAsync(GetCurrentUser(), resource, operation);
         if (!result.Succeeded)
             throw new UnauthorizedAccessException("You are not allowed to modify this resource.");
+    }
+
+    public async Task<AppUser> GetUserByIdAsync(Guid id)
+    {
+        return await userManager.FindByIdAsync(id.ToString()) ?? throw new UserNotFoundException(id);
     }
 }

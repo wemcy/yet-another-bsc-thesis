@@ -13,6 +13,7 @@ namespace Wemcy.RecipeApp.Backend.Controllers;
 [InvalidCredentialsHandler]
 [UserNotFoundHandler]
 [ImageNotFoundHandler]
+[UnauthorizedHandler]
 public class ProfileController(ProfileService profileService, IMapper mapper) : ProfileApiController
 {
     public override async Task<IActionResult> DeleteProfileById([FromRoute(Name = "id"), Required] Guid id)

@@ -54,3 +54,17 @@ public class UserNotFoundHandler : ExceptionFilterAttribute
         }
     }
 }
+
+
+public class UnauthorizedHandler : ExceptionFilterAttribute
+{
+    public override void OnException(ExceptionContext context)
+    {
+        if (context.Exception is UnauthorizedAccessException)
+        {
+            context.HttpContext.Response.StatusCode = 403; // Not Found
+            context.Result = new Microsoft.AspNetCore.Mvc.JsonResult(new { error = context.Exception.Message });
+            context.ExceptionHandled = true;
+        }
+    }
+}

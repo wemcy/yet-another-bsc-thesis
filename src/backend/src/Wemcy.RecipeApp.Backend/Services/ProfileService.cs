@@ -13,7 +13,7 @@ public class ProfileService(UserManager<AppUser> userManager, ImageService image
     // TODO Make these atomic transactions to prevent partial updates
     public async Task<AppUser> GetProfileById(Guid id)
     {
-        var user = await userManager.FindByIdAsync(id.ToString()) ?? throw new UserNotFoundException(id);
+        var user = await userService.GetUserByIdAsync(id);
         await userService.EnsureAuthorizedAsync( user, Operations.Read);
         return user;
 
@@ -21,7 +21,7 @@ public class ProfileService(UserManager<AppUser> userManager, ImageService image
 
     public async Task<Stream> GetProfileImageById(Guid id)
     {
-        var user = await this.GetProfileById(id);
+        var user = await userService.GetUserByIdAsync(id);
         var image = user.Image ?? throw new ImageNotFoundException("User does not have profile picture");
         return imageService.GetImageById(image.Id);
     }
