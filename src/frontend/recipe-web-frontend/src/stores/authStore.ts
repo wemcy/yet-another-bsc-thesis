@@ -135,6 +135,25 @@ export const useAuthStore = defineStore('auth', {
                 this.authLoading = false
             }
         },
+        async deleteOwnProfile() {
+            if (!this.currentUser?.id) {
+                this.authError = 'Nem található bejelentkezett felhasználó.'
+                return
+            }
+
+            this.authLoading = true
+            this.authError = null
+
+            try {
+                await profileApi.deleteProfileById({ id: this.currentUser.id })
+                this.logout()
+            } catch (error) {
+                this.authError = await toErrorMessage(error)
+                throw error
+            } finally {
+                this.authLoading = false
+            }
+        },
     },
 
     getters: {

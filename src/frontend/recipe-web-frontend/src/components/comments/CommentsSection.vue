@@ -2,7 +2,7 @@
     <section class="max-w-6xl mx-auto px-4 py-10 mt-10 border-t pt-6">
         <h2 class="text-xl font-semibold mb-4">Hozzászólások</h2>
 
-        <div class="space-y-6">
+        <!-- <div class="space-y-6">
             <Comment
                 v-for="(comment, index) in comments"
                 :key="index"
@@ -16,7 +16,7 @@
                     })
                 "
             />
-        </div>
+        </div> -->
 
         <!-- <CommentForm @submit="addComment" /> -->
     </section>
