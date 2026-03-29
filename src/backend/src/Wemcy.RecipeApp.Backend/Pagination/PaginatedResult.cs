@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Wemcy.RecipeApp.Backend.Pagination;
 
-public class PaginatedResult<T> : IAsyncEnumerable<T>
+public class PaginatedResult<T> : IAsyncEnumerable<T>, IPaginatedResult
 {
     private readonly int _pageSize;
     private readonly int _totalCount;
@@ -21,7 +21,7 @@ public class PaginatedResult<T> : IAsyncEnumerable<T>
 
     public bool HasNextPage => PageNumber < PageCount - 1;
 
-    public bool HasPreviousPage => PageSize > 0;
+    public bool HasPreviousPage => _pageNumber > 0;
 
 
     private PaginatedResult(IAsyncEnumerable<T> items, int total, int pageSize, int pageNumber)
@@ -40,7 +40,7 @@ public class PaginatedResult<T> : IAsyncEnumerable<T>
             .Take(options.PageSize)
             .AsAsyncEnumerable();
 
-        return new PaginatedResult<T>(items, totalCount, options.PageNumber, options.PageSize);
+        return new PaginatedResult<T>(items, totalCount,  options.PageSize, options.PageNumber);
     }
 
     public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)

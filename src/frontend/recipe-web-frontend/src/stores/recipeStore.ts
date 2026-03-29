@@ -1,9 +1,9 @@
 import type { Recipe, RecipeState } from '@/types/recipe/recipe'
 import { MapApiRecipeToRecipe, MapRecipeToApiRecipe } from '@/types/recipe/recipe.mappers'
 import { defineStore } from 'pinia'
-import { Configuration, RecipesApi } from 'recipe-api-client'
+import { Configuration, RecipeApiClient } from 'recipe-api-client'
 
-const api = new RecipesApi(
+const api = new RecipeApiClient(
     new Configuration({
         // TODO make this dynamic based on env vars
         basePath: 'http://localhost:9393/api',
@@ -63,8 +63,11 @@ export const useRecipeStore = defineStore('recipe', {
         },
 
         async refreshRecipes() {
-            await api.listRecipes().then((response) => {
-                this.recipes = response.map((apiRecipe) => MapApiRecipeToRecipe(apiRecipe))
+            await api.listRecipesPaginated().then((response) => {
+                response.recipes.forEach((apiRecipe) => {
+                    const recipe = MapApiRecipeToRecipe(apiRecipe)
+                    this.updateRecipe(recipe)
+                })
             })
         },
         async fetchRecipeById(id: string) {

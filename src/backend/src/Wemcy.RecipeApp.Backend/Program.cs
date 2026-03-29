@@ -9,14 +9,17 @@ using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Repository;
 using Wemcy.RecipeApp.Backend.Security;
 using Wemcy.RecipeApp.Backend.Services;
+using Wemcy.RecipeApp.Backend.Pagination;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddNewtonsoftJson();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers(options =>
+{
+    options.AddPaginationFilter();
+}).AddNewtonsoftJson();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper( config => { }, Assembly.GetExecutingAssembly() );
@@ -42,6 +45,7 @@ builder.Services.AddScoped<RecipeService, RecipeService>().
                  AddScoped<ProfileService, ProfileService>().
                  AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>().
                  AddSingleton<IAuthorizationHandler, AppUserAuthorizationCrudHandler>();
+builder.Services.ConfigurePagination();
 
 builder.Services.AddHttpContextAccessor().AddCors(opt =>
 {

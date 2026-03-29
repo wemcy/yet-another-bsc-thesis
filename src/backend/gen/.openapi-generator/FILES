@@ -18,6 +18,7 @@
 ../src/Wemcy.RecipeApp.Backend.Api/Models/Login401Response.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/LoginRequest.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/LoginResponse.cs
+../src/Wemcy.RecipeApp.Backend.Api/Models/PaginationMetadata.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/ProfileResponse.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/RateRecipeRequest.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/ReadRecipeDTO.cs

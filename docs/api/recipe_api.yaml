@@ -307,6 +307,11 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/readRecipeDTO"
+          headers:
+            X-Pagination:
+              description: Pagination metadata in JSON format
+              schema:
+                "$ref": "#/components/schemas/paginationMetadata"
     post:
       tags:
       - Recipes
@@ -636,6 +641,28 @@ components:
           description: List of ingredients needed for the recipe
           items:
             $ref: '#/components/schemas/ingredient'
+
+    paginationMetadata:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          description: Total number of items available
+        pageNumber:
+          type: integer
+          description: Current page number (starting from 0)
+        currentPage:
+          type: integer
+          description: Current page number (starting from 0)
+        pageSize:
+          type: integer
+          description: Number of items per page
+        hasNextPage:
+          type: boolean
+          description: Indicates if there is a next page available
+        hasPreviousPage:
+          type: boolean
+          description: Indicates if there is a previous page available
 
 
     readRecipeDTO:
