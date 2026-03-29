@@ -19,7 +19,9 @@ namespace Wemcy.RecipeApp.Backend.DTOProfiles
             CreateMap<Recipe, ReadRecipeDTO>()
               .ForMember(dest => dest.Allergens, op => op.MapFrom( src => MappAllergenDTO(src.Allergens)));
             CreateMap<Model.Ingredient, Api.Models.Ingredient>()
-                .ReverseMap();
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => Convert.ToDecimal(src.Quantity)))
+                .ReverseMap()
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => Convert.ToDouble(src.Quantity)));
             CreateMap<Model.Comment, Api.Models.Comment>().ReverseMap();
             CreateMap<Model.AppUser, Api.Models.ProfileResponse>();
         }

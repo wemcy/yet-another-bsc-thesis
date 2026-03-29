@@ -36,9 +36,25 @@ export const useRecipeStore = defineStore('recipe', {
             })
             return response.id
         },
-        updateRating(id: string, rating: number) {
+        async updateRating(id: string, rating: number) {
             const recipe = this.recipes.find((r) => r.id === id)
+            const previousRating = recipe?.rating
+
             if (recipe) recipe.rating = rating
+
+            try {
+                await api.rateRecipe({
+                    id,
+                    rateRecipeRequest: { rating },
+                })
+            } catch (error) {
+                if (recipe && previousRating !== undefined) {
+                    recipe.rating = previousRating
+                }
+                throw error
+            }
+
+            await this.fetchRecipeById(id)
         },
         updateRecipe(recipe: Recipe) {
             const idx = this.recipes.findIndex((r) => r.id === recipe.id)

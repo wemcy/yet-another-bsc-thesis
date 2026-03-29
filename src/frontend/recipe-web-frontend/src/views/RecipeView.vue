@@ -10,15 +10,30 @@ import { useRecipeStore } from '@/stores/recipeStore'
 import { useAuthStore } from '@/stores/authStore'
 import { computed } from 'vue'
 import { onMounted } from 'vue'
+import { ref } from 'vue'
 
 const route = useRoute()
 const recipeStore = useRecipeStore()
 const auth = useAuthStore()
 const recipe = computed(() => recipeStore.getById(route.params.id as string))
+const isRatingSubmitting = ref(false)
 
-function updateRating(newRating: number) {
-    const id = route.params.id[0]
-    recipeStore.updateRating(id, newRating)
+async function updateRating(newRating: number) {
+    const idParam = route.params.id
+    const id = Array.isArray(idParam) ? idParam[0] : idParam
+
+    if (!id || isRatingSubmitting.value) {
+        return
+    }
+
+    isRatingSubmitting.value = true
+    try {
+        await recipeStore.updateRating(id, newRating)
+    } catch {
+        alert('Nem sikerult elmenteni az ertekelest. Probald ujra!')
+    } finally {
+        isRatingSubmitting.value = false
+    }
 }
 
 const isOwnRecipe = computed(
@@ -54,7 +69,11 @@ onMounted(() => {
 
         <!-- Jobb oszlop -->
         <div class="space-y-6">
-            <RecipeRating :rating="recipe.rating" @rate="updateRating" />
+            <RecipeRating
+                :rating="recipe.rating"
+                :is-submitting="isRatingSubmitting"
+                @rate="updateRating"
+            />
             <img
                 :src="recipe.image"
                 alt="Image of the recipe"
