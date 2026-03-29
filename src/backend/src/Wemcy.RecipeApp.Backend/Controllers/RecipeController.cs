@@ -43,7 +43,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
     public override async Task<IActionResult> ListRecipes()
     {
         var dtos = await recipeService.ListResipesAs<ReadRecipeDTO>(new PaginationOptions(0,1000));
-        return Ok(dtos.Items);
+        return Ok(dtos);
     }
 
     public override async Task<IActionResult> ListShowcaseRecipes()

@@ -38,7 +38,7 @@ public class PaginatedResult<T> : IAsyncEnumerable<T>
         var items = source
             .Skip(options.PageNumber * options.PageSize)
             .Take(options.PageSize)
-            .ToEnurable();
+            .AsAsyncEnumerable();
 
         return new PaginatedResult<T>(items, totalCount, options.PageNumber, options.PageSize);
     }
