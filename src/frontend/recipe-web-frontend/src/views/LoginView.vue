@@ -6,7 +6,7 @@
             >
                 <button
                     type="button"
-                    @click="mode = 'login'"
+                    @click="setMode('login')"
                     :class="[
                         'rounded-lg py-2 text-sm font-medium transition',
                         mode === 'login'
@@ -18,7 +18,7 @@
                 </button>
                 <button
                     type="button"
-                    @click="mode = 'register'"
+                    @click="setMode('register')"
                     :class="[
                         'rounded-lg py-2 text-sm font-medium transition',
                         mode === 'register'
@@ -53,7 +53,7 @@
                 >
                     {{ auth.authError }}
                 </p>
-                <p v-if="auth.authLoading" class="mt-3 text-xs text-slate-500">Feldolgozas...</p>
+                <p v-if="auth.authLoading" class="mt-3 text-xs text-slate-500">Feldolgozás...</p>
             </FormCard>
         </div>
     </main>
@@ -74,12 +74,19 @@ const feedback = ref('')
 const auth = useAuthStore()
 const router = useRouter()
 
+function setMode(nextMode: AuthMode) {
+    if (mode.value === nextMode) return
+    mode.value = nextMode
+    feedback.value = ''
+    auth.authError = null
+}
+
 async function handleLogin(payload: LoginPayload) {
     feedback.value = ''
 
     try {
         await auth.loginWithCredentials(payload.email, payload.password)
-        feedback.value = `Sikeres bejelentkezes: ${payload.email}`
+        feedback.value = `Sikeres bejelentkezés: ${payload.email}`
         await router.push('/profile')
     } catch {
         // Error details are normalized in authStore.authError
@@ -91,7 +98,7 @@ async function handleRegister(payload: RegisterPayload) {
 
     try {
         await auth.registerWithCredentials(payload.name, payload.email, payload.password)
-        feedback.value = `Sikeres regisztracio: ${payload.email}`
+        feedback.value = `Sikeres regisztráció: ${payload.email}`
         await router.push('/profile')
     } catch {
         // Error details are normalized in authStore.authError

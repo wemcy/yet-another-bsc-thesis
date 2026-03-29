@@ -24,6 +24,8 @@ const IDENTITY_ERROR_MESSAGES: Record<string, string> = {
     PasswordRequiresUpper: 'A jelszónak tartalmaznia kell legalább egy nagybetűt (A-Z).',
     UserAlreadyHasPassword: 'A felhasználónak már van jelszava.',
     UserLockoutNotEnabled: 'A fiókzárolás nem engedélyezett.',
+    InvalidCredentials: 'Érvénytelen e-mail cím vagy jelszó.',
+    InvalidEmailOrPassword: 'Érvénytelen e-mail cím vagy jelszó.',
 }
 
 function isIdentityErrorArray(body: unknown): body is IdentityError[] {
@@ -40,6 +42,9 @@ function translateIdentityErrors(errors: IdentityError[]): string {
 
 export async function toErrorMessage(error: unknown): Promise<string> {
     if (error instanceof ResponseError) {
+        if (error.response.status === 401) {
+            return 'Érvénytelen e-mail cím vagy jelszó.'
+        }
         try {
             const body = await error.response.clone().json()
             if (isIdentityErrorArray(body)) {

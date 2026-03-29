@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Repository;
 using Wemcy.RecipeApp.Backend.Security;
+using Comment = Wemcy.RecipeApp.Backend.Model.Comment;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
@@ -17,9 +20,9 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         return await this.recipeRepository.CreateRecipeAsync(recipe);
     }
 
-    public async Task<IList<Recipe>> GetAllRecipe()
+    public async Task<PaginatedResult<T>> ListResipesAs<T>(PaginationOptions options)
     {
-        return await this.recipeRepository.GetAllRecipeAsync();
+        return await recipeRepository.ListRecipesAs<T>(options);
     }
 
     public async Task<Recipe> GetRecipeByIdAsync(Guid id)

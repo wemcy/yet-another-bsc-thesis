@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Pagination;
 
 namespace Wemcy.RecipeApp.Backend.Repository;
 
-public class RecipeRepository(DatabaseContext databaseContext)
+public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
 {
     private readonly DatabaseContext _dbContext = databaseContext;
 
@@ -21,6 +24,8 @@ public class RecipeRepository(DatabaseContext databaseContext)
 
     public async Task<IList<Recipe>> GetAllRecipeAsync()
     {
+
+
         return await _dbContext.Recipes
             .AsNoTracking()
             .Include( x => x.Comments)
@@ -66,8 +71,13 @@ public class RecipeRepository(DatabaseContext databaseContext)
         _dbContext.Recipes.Remove(recipe);
     }
 
-    internal async Task<IList<Recipe>> GetAllRecipeByAuthorIdAsync(Guid id)
+    public async Task<IList<Recipe>> GetAllRecipeByAuthorIdAsync(Guid id)
     {
         return await _dbContext.Recipes.Where(x => x.User.Id == id).AsNoTracking().Include(x => x.User).Include(x => x.Comments).ToListAsync();
+    }
+
+    public async Task<PaginatedResult<T>> ListRecipesAs<T>(PaginationOptions options)
+    {
+        return await _dbContext.Recipes.AsNoTracking().ProjectTo<T>(mapper.ConfigurationProvider).ToPaginatedListAsync(options);
     }
 }

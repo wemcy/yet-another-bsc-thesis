@@ -11,6 +11,7 @@ using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Services;
 using Comment = Wemcy.RecipeApp.Backend.Api.Models.Comment;
 
@@ -41,9 +42,8 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
 
     public override async Task<IActionResult> ListRecipes()
     {
-        var q = await recipeService.GetAllRecipe();
-        var dtos = q.Select(x => mapper.Map<ReadRecipeDTO>(x)).ToList();
-        return Ok(dtos);
+        var dtos = await recipeService.ListResipesAs<ReadRecipeDTO>(new PaginationOptions(0,1000));
+        return Ok(dtos.Items);
     }
 
     public override async Task<IActionResult> ListShowcaseRecipes()
