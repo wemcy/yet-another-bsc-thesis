@@ -1,11 +1,12 @@
 {
-    "additionalProperties": {
-        "buildTarget": "library",
-        "packageName": "Wemcy.RecipeApp.Backend.Api",
-        "nullableReferenceTypes": true,
-        "sourceFolder": "../src",
-        "useDateTimeOffset": true,
-        "operationIsAsync": true,
-        "operationResultTask": true
-    }
+  "additionalProperties": {
+    "buildTarget": "library",
+    "packageName": "Wemcy.RecipeApp.Backend.Api",
+    "nullableReferenceTypes": true,
+    "sourceFolder": "../src",
+    "useDateTimeOffset": true,
+    "operationIsAsync": true,
+    "operationResultTask": true,
+    "targetFramework": "net10.0"
+  }
 }
