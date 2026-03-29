@@ -11,7 +11,6 @@ export type Recipe = {
     allergens: AllergenEnum[]
     image: string
     rating: number
-    comments: Comment[]
 }
 export interface RecipeFormErrors {
     title?: string

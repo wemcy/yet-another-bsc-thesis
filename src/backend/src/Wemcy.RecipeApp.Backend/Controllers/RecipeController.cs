@@ -12,6 +12,7 @@ using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Services;
+using Comment = Wemcy.RecipeApp.Backend.Api.Models.Comment;
 
 namespace Wemcy.RecipeApp.Backend.Controllers;
 
@@ -100,6 +101,13 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
     {
         var q = await recipeService.GetAllRecipeByAuthorId(id);
         var dtos = q.Select(x => mapper.Map<ReadRecipeDTO>(x)).ToList();
+        return Ok(dtos);
+    }
+
+    public override async Task<IActionResult> ListRecipeComments([FromRoute(Name = "id"), Required] Guid id)
+    {
+        var comments = await recipeService.GetCommentsByRecipeId(id);
+        var dtos = comments.Select(x => mapper.Map<Comment>(x)).ToList();
         return Ok(dtos);
     }
 }

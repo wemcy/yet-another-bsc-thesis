@@ -88,8 +88,14 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         return recipe;
     }
 
-    internal async Task<IEnumerable<object>> GetAllRecipeByAuthorId(Guid id)
+    internal async Task<IEnumerable<Recipe>> GetAllRecipeByAuthorId(Guid id)
     {
         return await this.recipeRepository.GetAllRecipeByAuthorIdAsync(id);
+    }
+
+    internal async Task<IEnumerable<Comment>> GetCommentsByRecipeId(Guid id)
+    {
+        var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
+        return recipe.Comments;
     }
 }

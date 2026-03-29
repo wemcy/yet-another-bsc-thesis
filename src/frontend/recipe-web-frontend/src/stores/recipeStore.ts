@@ -24,8 +24,7 @@ export const useRecipeStore = defineStore('recipe', {
         showcaseRecipes: (state) =>
             state.recipes.filter((r) => state.showcaseRecipesIds.includes(r.id)),
         getCommentsByRecipeId: (state) => (id: string) => {
-            const recipe = state.recipes.find((r) => r.id === id)
-            return recipe ? recipe.comments : []
+            return []
         },
         ownRecipes: (state) => state.recipes.filter((r) => state.ownRecipeIds.includes(r.id)),
     },

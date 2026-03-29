@@ -530,6 +530,30 @@ paths:
                 "$ref": "#/components/schemas/comment"
       security:
         - cookieAuth: []
+    get:
+      tags:
+      - Recipes
+      summary: Recept kommenteléseinek listázása ID alapján
+      parameters: 
+        - name: id
+          required: true
+          in: path
+          description: A lekérdezendő recept egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: listRecipeComments
+      responses:
+        200:
+          description: Comment added successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/comment"
+        404:
+          description: Recept nem található
   "/recipes/showcase":
     get:
       tags:
@@ -659,12 +683,6 @@ components:
           format: double
           description: The average rating of the recipe (1-5)
           nullable: false
-        comments:
-          type: array
-          description: List of comments for the recipe
-          nullable: false
-          items:
-            $ref: '#/components/schemas/comment'
 
     allergenList:
       type: array
