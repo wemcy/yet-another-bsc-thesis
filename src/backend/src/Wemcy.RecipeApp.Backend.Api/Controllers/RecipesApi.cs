@@ -103,24 +103,28 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// Felhasználó receptek listázása ID alapján
         /// </summary>
         /// <param name="id">A lekérdezendő felhasználó egyedi azonosítója (UUID)</param>
+        /// <param name="page">The page number to retrieve (starting from 0)</param>
+        /// <param name="pageSize">The number of items per page (default is 25)</param>
         /// <response code="200">Receptek</response>
         [HttpGet]
         [Route("/profile/{id}/recipes")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<ReadRecipeDTO>))]
-        public abstract Task<IActionResult> GetRecipesByAuthorId([FromRoute (Name = "id")][Required]Guid id);
+        public abstract Task<IActionResult> GetRecipesByAuthorId([FromRoute (Name = "id")][Required]Guid id, [FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize);
 
         /// <summary>
         /// Recept kommenteléseinek listázása ID alapján
         /// </summary>
         /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>
+        /// <param name="page">The page number to retrieve (starting from 0)</param>
+        /// <param name="pageSize">The number of items per page (default is 25)</param>
         /// <response code="200">Comment added successfully</response>
         /// <response code="404">Recept nem található</response>
         [HttpGet]
         [Route("/recipes/{id}/comments")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<Comment>))]
-        public abstract Task<IActionResult> ListRecipeComments([FromRoute (Name = "id")][Required]Guid id);
+        public abstract Task<IActionResult> ListRecipeComments([FromRoute (Name = "id")][Required]Guid id, [FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize);
 
         /// <summary>
         /// Receptek listázása

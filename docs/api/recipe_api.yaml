@@ -269,6 +269,21 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: page
+          in: query
+          description: The page number to retrieve (starting from 0)
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+        - name: pageSize
+          in: query
+          description: The number of items per page (default is 25)
+          required: false
+          schema:
+            type: integer
+            minimum: 25
+            maximum: 100
       operationId: getRecipesByAuthorId
       responses:
         '200':
@@ -278,7 +293,12 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/readRecipeDTO"  
+                  "$ref": "#/components/schemas/readRecipeDTO" 
+          headers:
+            X-Pagination:
+              description: Pagination metadata in JSON format
+              schema:
+                "$ref": "#/components/schemas/paginationMetadata"
   "/alive/":
     get:
       tags:
@@ -563,6 +583,21 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: page
+          in: query
+          description: The page number to retrieve (starting from 0)
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+        - name: pageSize
+          in: query
+          description: The number of items per page (default is 25)
+          required: false
+          schema:
+            type: integer
+            minimum: 25
+            maximum: 100
       operationId: listRecipeComments
       responses:
         200:
@@ -573,6 +608,11 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/comment"
+          headers:
+            X-Pagination:
+              description: Pagination metadata in JSON format
+              schema:
+                "$ref": "#/components/schemas/paginationMetadata"
         404:
           description: Recept nem található
   "/recipes/showcase":

@@ -71,13 +71,24 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
         _dbContext.Recipes.Remove(recipe);
     }
 
-    public async Task<IList<Recipe>> GetAllRecipeByAuthorIdAsync(Guid id)
+    public async Task<PaginatedResult<T>> GetAllRecipeByAuthorIdAs<T>(Guid id, PaginationOptions options)
     {
-        return await _dbContext.Recipes.Where(x => x.User.Id == id).AsNoTracking().Include(x => x.User).Include(x => x.Comments).ToListAsync();
+
+        return await _dbContext.Recipes
+            .Where(x => x.User.Id == id)
+            .OrderByDescending(x => x.UpdatedAt)
+            .AsNoTracking()
+            .ProjectTo<T>(mapper.ConfigurationProvider)
+            .ToPaginatedListAsync(options);
     }
 
     public async Task<PaginatedResult<T>> ListRecipesAs<T>(PaginationOptions options)
     {
-        return await _dbContext.Recipes.Include(x=>x.User).OrderByDescending(x => x.UpdatedAt).AsNoTracking().ProjectTo<T>(mapper.ConfigurationProvider).ToPaginatedListAsync(options);
+        return await _dbContext.Recipes
+            .Include(x=>x.User)
+            .OrderByDescending(x => x.UpdatedAt)
+            .AsNoTracking()
+            .ProjectTo<T>(mapper.ConfigurationProvider)
+            .ToPaginatedListAsync(options);
     }
 }
