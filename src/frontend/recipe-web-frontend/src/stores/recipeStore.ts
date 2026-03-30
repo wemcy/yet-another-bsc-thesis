@@ -63,7 +63,7 @@ export const useRecipeStore = defineStore('recipe', {
         },
 
         async refreshRecipes() {
-            await api.listRecipesPaginated().then((response) => {
+            await api.listRecipesPaginated({ page: 0, pageSize: 100 }).then((response) => {
                 response.recipes.forEach((apiRecipe) => {
                     const recipe = MapApiRecipeToRecipe(apiRecipe)
                     this.updateRecipe(recipe)

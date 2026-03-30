@@ -29,6 +29,8 @@ export function MapApiAllergenToEnum(allergen: Allergen): AllergenEnum {
             return AllergenEnum.Lupin
         case Allergen.Molluscs:
             return AllergenEnum.Molluscs
+        case Allergen.Crustaceans:
+            return AllergenEnum.Crustaceans
         default:
             throw new Error(`Unknown allergen: ${allergen}`)
     }
@@ -62,5 +64,7 @@ export function MapEnumToApiAllergen(allergen: AllergenEnum): Allergen {
             return 'LUPIN'
         case AllergenEnum.Molluscs:
             return 'MOLLUSCS'
+        case AllergenEnum.Crustaceans:
+            return 'CRUSTACEANS'
     }
 }

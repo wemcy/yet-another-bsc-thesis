@@ -40,9 +40,10 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
         return Ok(mapper.Map<ReadRecipeDTO>(recipe));
     }
 
-    public override async Task<IActionResult> ListRecipes()
+    public override async Task<IActionResult> ListRecipes([FromQuery(Name = "page"), Range(0, int.MaxValue)] int? page, [FromQuery(Name = "pageSize"), Range(25, 100)] int? pageSize)
     {
-        var dtos = await recipeService.ListResipesAs<ReadRecipeDTO>(new PaginationOptions(0,1000));
+
+        var dtos = await recipeService.ListResipesAs<ReadRecipeDTO>(new PaginationOptions(page, pageSize));
         return Ok(dtos);
     }
 

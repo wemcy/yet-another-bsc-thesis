@@ -1,4 +1,4 @@
-import { Configuration, PaginationMetadataFromJSONTyped, RecipesApi } from '../gen/index.js';
+import { Configuration, PaginationMetadataFromJSONTyped, RecipesApi, type ListRecipesRequest } from '../gen/index.js';
 
 export * from '../gen/index.js';
 
@@ -7,8 +7,8 @@ export class RecipeApiClient extends RecipesApi {
         super(configuration);
     }
 
-    async listRecipesPaginated() {
-        const response = await this.listRecipesRaw();
+    async listRecipesPaginated(listRecipesRequest :ListRecipesRequest) {
+        const response = await this.listRecipesRaw(listRecipesRequest);
         const paginationMetadataJSON = response.raw.headers.get('X-Pagination');
         const paginationMetadata = PaginationMetadataFromJSONTyped(paginationMetadataJSON ? JSON.parse(paginationMetadataJSON) : null, false);
         const recipes = await response.value();

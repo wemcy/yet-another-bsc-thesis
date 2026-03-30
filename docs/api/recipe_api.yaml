@@ -298,6 +298,22 @@ paths:
       - Recipes
       summary: Receptek listázása
       operationId: listRecipes
+      parameters:
+        - name: page
+          in: query
+          description: The page number to retrieve (starting from 0)
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+        - name: pageSize
+          in: query
+          description: The number of items per page (default is 25)
+          required: false
+          schema:
+            type: integer
+            minimum: 25
+            maximum: 100
       responses:
         '200':
           description: Receptek

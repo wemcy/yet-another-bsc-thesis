@@ -12,6 +12,7 @@ export enum AllergenEnum {
     SulphurDioxide = 'Kén-dioxid',
     Lupin = 'Csillagfürt',
     Molluscs = 'Puhatestűek',
+    Crustaceans = 'Rákfélék',
 }
 
 export const allergenList = [
@@ -28,6 +29,7 @@ export const allergenList = [
     'Kén-dioxid',
     'Csillagfürt',
     'Puhatestűek',
+    'Rákfélék',
 ] as const
 
 export type Allergen = (typeof allergenList)[number]

@@ -2,6 +2,8 @@
 
 public class PaginationOptions
 {
+    private const int DefaultPageSize = 25;
+    private const int DefaultPageNumber = 0;
     public int PageNumber { get; }
 
     public int PageSize { get; }
@@ -13,6 +15,10 @@ public class PaginationOptions
 
         this.PageNumber = pageNumber;
         this.PageSize = pageSize;
+    }
+
+    public PaginationOptions(int? pageNumber, int? pageSize) : this(pageNumber ?? DefaultPageNumber, pageSize ?? DefaultPageSize)
+    {
     }
 
     private static void ValidatePageSize(int pageSize)

@@ -78,6 +78,6 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
 
     public async Task<PaginatedResult<T>> ListRecipesAs<T>(PaginationOptions options)
     {
-        return await _dbContext.Recipes.Include(x=>x.User).AsNoTracking().ProjectTo<T>(mapper.ConfigurationProvider).ToPaginatedListAsync(options);
+        return await _dbContext.Recipes.Include(x=>x.User).OrderByDescending(x => x.UpdatedAt).AsNoTracking().ProjectTo<T>(mapper.ConfigurationProvider).ToPaginatedListAsync(options);
     }
 }
