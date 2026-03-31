@@ -22,7 +22,8 @@ namespace Wemcy.RecipeApp.Backend.DTOProfiles
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => Convert.ToDecimal(src.Quantity)))
                 .ReverseMap()
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => Convert.ToDouble(src.Quantity)));
-            CreateMap<Model.Comment, Api.Models.Comment>().ReverseMap();
+            CreateMap<Model.Comment, Api.Models.Comment>()
+                .ForMember(dest => dest.Author, op => op.MapFrom(src => src.User.DisplayName));
             CreateMap<Model.AppUser, Api.Models.ProfileResponse>();
         }
         private static AllergenType MapAllergens(Allergen allergen)

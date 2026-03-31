@@ -98,16 +98,15 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
 
     }
 
-    public override async Task<IActionResult> GetRecipesByAuthorId([FromRoute(Name = "id"), Required] Guid id, [FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize"), Range(25, 100)] int? pageSize)
+    public override async Task<IActionResult> GetRecipesByAuthorId([FromRoute(Name = "id"), Required] Guid id, [FromQuery(Name = "page"), Range(0, int.MaxValue)] int? page, [FromQuery(Name = "pageSize"), Range(25, 100)] int? pageSize)
     {
         var dtos = await recipeService.GetAllRecipeByAuthorIdAs<ReadRecipeDTO>(id,new PaginationOptions(page, pageSize));
         return Ok(dtos);
     }
 
-    public override async Task<IActionResult> ListRecipeComments([FromRoute(Name = "id"), Required] Guid id, [FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize"), Range(25, 100)] int? pageSize)
+    public override async Task<IActionResult> ListRecipeComments([FromRoute(Name = "id"), Required] Guid id, [FromQuery(Name = "page"), Range(0, int.MaxValue)] int? page, [FromQuery(Name = "pageSize"), Range(25, 100)] int? pageSize)
     {
-        var comments = await recipeService.GetCommentsByRecipeId(id);
-        var dtos = comments.Select(x => mapper.Map<Comment>(x)).ToList();
+        var dtos = await recipeService.GetCommentsByRecipeIdAs<Comment>(id, new PaginationOptions(page, pageSize));
         return Ok(dtos);
     }
 }

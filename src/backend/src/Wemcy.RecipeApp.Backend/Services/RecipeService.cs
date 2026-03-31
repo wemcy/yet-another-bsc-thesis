@@ -96,6 +96,11 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         return await this.recipeRepository.GetAllRecipeByAuthorIdAs<T>(id, options);
     }
 
+    internal async Task<PaginatedResult<T>> GetCommentsByRecipeIdAs<T>(Guid id, PaginationOptions options)
+    {
+        return await this.recipeRepository.GetCommentsByRecipeIdAs<T>(id, options);
+    }
+
     internal async Task<IEnumerable<Comment>> GetCommentsByRecipeId(Guid id)
     {
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);

@@ -75,7 +75,20 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
     {
 
         return await _dbContext.Recipes
+            .Include(x => x.User)
             .Where(x => x.User.Id == id)
+            .OrderByDescending(x => x.UpdatedAt)
+            .AsNoTracking()
+            .ProjectTo<T>(mapper.ConfigurationProvider)
+            .ToPaginatedListAsync(options);
+    }
+
+    public async Task<PaginatedResult<T>> GetCommentsByRecipeIdAs<T>(Guid id, PaginationOptions options)
+    {
+        var recipe = await GetRecipeByIdAsync(id);
+        return await _dbContext.Recipes
+            .Where(x => x.Id == id)
+            .SelectMany(x => x.Comments)
             .OrderByDescending(x => x.UpdatedAt)
             .AsNoTracking()
             .ProjectTo<T>(mapper.ConfigurationProvider)

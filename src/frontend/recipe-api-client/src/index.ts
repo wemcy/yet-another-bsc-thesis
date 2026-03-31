@@ -7,11 +7,11 @@ export class RecipeApiClient extends RecipesApi {
         super(configuration);
     }
 
-    AddPaginationMetadataToResponse<T>(response: Response, data: T) {
+    AddPaginationMetadataToResponse<T>(response: Response, responseBody: T) {
         const paginationMetadataJSON = response.headers.get('X-Pagination');
         const paginationMetadata = PaginationMetadataFromJSONTyped(paginationMetadataJSON ? JSON.parse(paginationMetadataJSON) : null, false);
         return {
-            data,
+            responseBody,
             paginationMetadata
         };
     }
