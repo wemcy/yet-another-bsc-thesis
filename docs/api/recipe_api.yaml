@@ -28,6 +28,28 @@ tags:
 - name: Auth
   description: Felhasználói autentikáció
 paths:
+  "/search":
+    get:
+      tags:
+      - Recipes
+      summary: Receptek keresése cím alapján
+      operationId: searchRecipes
+      parameters:
+        - name: title
+          in: query
+          description: The title or part of the title to search for
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Receptek a keresési feltételeknek megfelelően
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/searchRecipeDTO"
   "/auth/register":
     post:
       tags:
@@ -615,7 +637,7 @@ paths:
                 "$ref": "#/components/schemas/paginationMetadata"
         404:
           description: Recept nem található
-  "/recipe/{recipeId}/comments/{commentId}":
+  "/recipes/{recipeId}/comments/{commentId}":
     delete:
       tags:
       - Recipes
@@ -796,6 +818,18 @@ components:
           format: double
           description: The average rating of the recipe (1-5)
           nullable: false
+    searchRecipeDTO:
+      type: object
+      required:
+      - id
+      - title
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+
 
     allergenList:
       type: array

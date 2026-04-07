@@ -76,7 +76,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <response code="401">Nem jogosult a művelet végrehajtására</response>
         /// <response code="404">Recept vagy komment nem található</response>
         [HttpDelete]
-        [Route("/recipe/{recipeId}/comments/{commentId}")]
+        [Route("/recipes/{recipeId}/comments/{commentId}")]
         [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
         public abstract Task<IActionResult> DeleteRecipeComment([FromRoute (Name = "recipeId")][Required]Guid recipeId, [FromRoute (Name = "commentId")][Required]Guid commentId);
@@ -174,6 +174,17 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Consumes("application/json")]
         [ValidateModelState]
         public abstract Task<IActionResult> RateRecipe([FromRoute (Name = "id")][Required]Guid id, [FromBody]RateRecipeRequest rateRecipeRequest);
+
+        /// <summary>
+        /// Receptek keresése cím alapján
+        /// </summary>
+        /// <param name="title">The title or part of the title to search for</param>
+        /// <response code="200">Receptek a keresési feltételeknek megfelelően</response>
+        [HttpGet]
+        [Route("/search")]
+        [ValidateModelState]
+        [ProducesResponseType(statusCode: 200, type: typeof(List<SearchRecipeDTO>))]
+        public abstract Task<IActionResult> SearchRecipes([FromQuery (Name = "title")][Required()]string title);
 
         /// <summary>
         /// Recept szerkesztése ID alapján

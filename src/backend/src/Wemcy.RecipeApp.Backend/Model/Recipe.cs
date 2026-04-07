@@ -1,4 +1,5 @@
-﻿using Wemcy.RecipeApp.Backend.Api.Models;
+﻿using NpgsqlTypes;
+using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Exceptions;
 
 namespace Wemcy.RecipeApp.Backend.Model;
@@ -16,7 +17,7 @@ public class Recipe : Entity
     public virtual required IList<Rating> Ratings { get; set; } = [];
     public virtual required IList<Comment> Comments { get; set; } = [];
     public string CreatorDisplayName => User.DisplayName;
-
+    public NpgsqlTsVector TitleSearchVector { get; set; } = null!;
     public void UpdateAverageRating()
     {
         AverageRating = Ratings.Count > 0 ? Ratings.Average(r => r.Value) : 0;

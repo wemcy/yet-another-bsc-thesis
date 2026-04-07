@@ -110,4 +110,15 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
         var recipe = await GetRecipeByIdAsync(recipeId);
         recipe.Comments.Remove(recipe.Comments.FirstOrDefault(c => c.Id == commentId) ?? throw new CommentNotFoundExeption(commentId));
     }
+
+    public  IAsyncEnumerable<T> SearchRecipesByTitleAs<T>(string title)
+    {
+        return _dbContext.Recipes
+            .Where(x => x.TitleSearchVector.Matches(title))
+            .OrderByDescending(x => x.TitleSearchVector.Rank(EF.Functions.PlainToTsQuery(title)))
+            .AsNoTracking()
+            .Take(10)
+            .ProjectTo<T>(mapper.ConfigurationProvider)
+            .ToAsyncEnumerable();
+    }
 }

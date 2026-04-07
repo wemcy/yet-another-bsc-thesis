@@ -25,6 +25,7 @@ namespace Wemcy.RecipeApp.Backend.DTOProfiles
             CreateMap<Model.Comment, Api.Models.Comment>()
                 .ForMember(dest => dest.Author, op => op.MapFrom(src => src.User.DisplayName));
             CreateMap<Model.AppUser, Api.Models.ProfileResponse>();
+            CreateMap<Recipe, SearchRecipeDTO>();
         }
         private static AllergenType MapAllergens(Allergen allergen)
         {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Collections;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
@@ -111,5 +112,10 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         await userService.EnsureAuthorizedAsync(comment, Operations.Delete);
         recipe.Comments.Remove(comment);
         await this.recipeRepository.SaveAsync();
+    }
+
+    public IAsyncEnumerable<T> SearchRecipesByTitleAs<T>(string title)
+    {
+        return this.recipeRepository.SearchRecipesByTitleAs<T>(title);
     }
 }

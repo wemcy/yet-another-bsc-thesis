@@ -23,6 +23,7 @@
 ../src/Wemcy.RecipeApp.Backend.Api/Models/RateRecipeRequest.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/ReadRecipeDTO.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/RegisterRequest.cs
+../src/Wemcy.RecipeApp.Backend.Api/Models/SearchRecipeDTO.cs
 ../src/Wemcy.RecipeApp.Backend.Api/OpenApi/TypeExtensions.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Wemcy.RecipeApp.Backend.Api.nuspec
 README.md

@@ -115,5 +115,11 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
         await recipeService.DeleteCommentByIdAsync(recipeId, commentId);
         return NoContent();
     }
+
+    public override async Task<IActionResult> SearchRecipes([FromQuery(Name = "title"), Required] string title)
+    {
+        var recipes =  recipeService.SearchRecipesByTitleAs<SearchRecipeDTO>(title);
+        return Ok(recipes);
+    }
 }
     
