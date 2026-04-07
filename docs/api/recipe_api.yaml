@@ -615,6 +615,36 @@ paths:
                 "$ref": "#/components/schemas/paginationMetadata"
         404:
           description: Recept nem található
+  "/recipe/{recipeId}/comments/{commentId}":
+    delete:
+      tags:
+      - Recipes
+      summary: Recept kommentelése törlése ID alapján
+      parameters: 
+        - name: recipeId
+          required: true
+          in: path
+          description: A lekérdezendő recept egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+        - name: commentId
+          required: true
+          in: path
+          description: A törlendő komment egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: deleteRecipeComment
+      responses:
+        '204':
+          description: Recept kommentelése sikeresen törölve
+        '401':
+          description: Nem jogosult a művelet végrehajtására
+        '404':
+          description: Recept vagy komment nem található
+      security:
+        - cookieAuth: []
   "/recipes/showcase":
     get:
       tags:

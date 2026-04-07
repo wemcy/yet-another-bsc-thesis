@@ -11,8 +11,7 @@ using Wemcy.RecipeApp.Backend.Services;
 namespace Wemcy.RecipeApp.Backend.Controllers;
 
 [InvalidCredentialsHandler]
-[UserNotFoundHandler]
-[ImageNotFoundHandler]
+[EntityNotFoundHandler]
 [UnauthorizedHandler]
 public class ProfileController(ProfileService profileService, IMapper mapper) : ProfileApiController
 {

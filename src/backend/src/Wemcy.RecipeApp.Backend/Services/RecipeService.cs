@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Wemcy.RecipeApp.Backend.Api.Models;
+using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Repository;
@@ -91,19 +92,24 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         return recipe;
     }
 
-    internal async Task<PaginatedResult<T>> GetAllRecipeByAuthorIdAs<T>(Guid id, PaginationOptions options)
+    public async Task<PaginatedResult<T>> GetAllRecipeByAuthorIdAs<T>(Guid id, PaginationOptions options)
     {
         return await this.recipeRepository.GetAllRecipeByAuthorIdAs<T>(id, options);
     }
 
-    internal async Task<PaginatedResult<T>> GetCommentsByRecipeIdAs<T>(Guid id, PaginationOptions options)
+    public async Task<PaginatedResult<T>> GetCommentsByRecipeIdAs<T>(Guid id, PaginationOptions options)
     {
         return await this.recipeRepository.GetCommentsByRecipeIdAs<T>(id, options);
     }
 
-    internal async Task<IEnumerable<Comment>> GetCommentsByRecipeId(Guid id)
+
+    public async Task DeleteCommentByIdAsync(Guid recipeId, Guid commentId)
     {
-        var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
-        return recipe.Comments;
+        var recipe = await this.recipeRepository.GetRecipeByIdAsync(recipeId);
+        var comment = recipe.GetCommentById(commentId);
+        await userService.EnsureAuthorizedAsync(recipe, Operations.Update);
+        await userService.EnsureAuthorizedAsync(comment, Operations.Delete);
+        recipe.Comments.Remove(comment);
+        await this.recipeRepository.SaveAsync();
     }
 }

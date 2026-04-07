@@ -1,6 +1,6 @@
 ﻿namespace Wemcy.RecipeApp.Backend.Exceptions
 {
-    public class ImageNotFoundException : Exception
+    public class ImageNotFoundException : EntityNotFoundExeption
     {
         public ImageNotFoundException() : base("Image not found.")
         {

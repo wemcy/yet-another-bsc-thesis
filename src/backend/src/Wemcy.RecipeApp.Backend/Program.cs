@@ -44,6 +44,7 @@ builder.Services.AddScoped<RecipeService, RecipeService>().
                  AddScoped<IAuthService, AuthService>().
                  AddScoped<ProfileService, ProfileService>().
                  AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>().
+                 AddSingleton<IAuthorizationHandler, CommentAuthorizationCrudHandler>().
                  AddSingleton<IAuthorizationHandler, AppUserAuthorizationCrudHandler>();
 builder.Services.ConfigurePagination();
 

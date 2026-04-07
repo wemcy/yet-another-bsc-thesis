@@ -68,6 +68,20 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         public abstract Task<IActionResult> DeleteRecipeById([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
+        /// Recept kommentelése törlése ID alapján
+        /// </summary>
+        /// <param name="recipeId">A lekérdezendő recept egyedi azonosítója (UUID)</param>
+        /// <param name="commentId">A törlendő komment egyedi azonosítója (UUID)</param>
+        /// <response code="204">Recept kommentelése sikeresen törölve</response>
+        /// <response code="401">Nem jogosult a művelet végrehajtására</response>
+        /// <response code="404">Recept vagy komment nem található</response>
+        [HttpDelete]
+        [Route("/recipe/{recipeId}/comments/{commentId}")]
+        [Authorize(Policy = "cookieAuth")]
+        [ValidateModelState]
+        public abstract Task<IActionResult> DeleteRecipeComment([FromRoute (Name = "recipeId")][Required]Guid recipeId, [FromRoute (Name = "commentId")][Required]Guid commentId);
+
+        /// <summary>
         /// Kiemelt recept listázása
         /// </summary>
         /// <response code="200">Receptek</response>

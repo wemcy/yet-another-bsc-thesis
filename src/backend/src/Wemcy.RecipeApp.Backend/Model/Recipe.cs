@@ -1,4 +1,5 @@
 ﻿using Wemcy.RecipeApp.Backend.Api.Models;
+using Wemcy.RecipeApp.Backend.Exceptions;
 
 namespace Wemcy.RecipeApp.Backend.Model;
 
@@ -21,6 +22,15 @@ public class Recipe : Entity
         AverageRating = Ratings.Count > 0 ? Ratings.Average(r => r.Value) : 0;
     }
 
+    public Comment GetCommentById(Guid commentId)
+    {
+        var comment = Comments.SingleOrDefault(c => c.Id == commentId);
+        if (comment == null)
+        {
+            throw new CommentNotFoundExeption(commentId);
+        }
+        return comment;
+    }
     public void Rate(int rating, AppUser user)
     {
         Ratings.Add(new Rating() { Value = rating, User = user });

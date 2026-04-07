@@ -17,8 +17,8 @@ using Comment = Wemcy.RecipeApp.Backend.Api.Models.Comment;
 
 namespace Wemcy.RecipeApp.Backend.Controllers;
 
-[RecipeNotFoundHandler]
-[ImageNotFoundHandler]
+[EntityNotFoundHandler]
+[UnauthorizedHandler]
 public class RecipeController(RecipeService recipeService, IMapper mapper) : RecipesApiController
 {
     public override async Task<IActionResult> CreateRecipe([FromBody] CreateRecipeDTO createRecipeDTO)
@@ -108,6 +108,12 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
     {
         var dtos = await recipeService.GetCommentsByRecipeIdAs<Comment>(id, new PaginationOptions(page, pageSize));
         return Ok(dtos);
+    }
+
+    public override async Task<IActionResult> DeleteRecipeComment([FromRoute(Name = "recipeId"), Required] Guid recipeId, [FromRoute(Name = "commentId"), Required] Guid commentId)
+    {
+        await recipeService.DeleteCommentByIdAsync(recipeId, commentId);
+        return NoContent();
     }
 }
     

@@ -1,7 +1,6 @@
-﻿namespace Wemcy.RecipeApp.Backend.Exceptions
+﻿namespace Wemcy.RecipeApp.Backend.Exceptions;
+
+public class RecipeNotFoundException(Guid recipeId) : EntityNotFoundExeption("Recipe not found.")
 {
-    public class RecipeNotFoundException(Guid recipeId) : Exception("Recipe not found.")
-    {
-        public Guid RecipeId { get; } = recipeId;
-    }
+    public Guid RecipeId { get; } = recipeId;
 }

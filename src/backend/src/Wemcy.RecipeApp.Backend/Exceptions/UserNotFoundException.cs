@@ -1,6 +1,6 @@
 namespace Wemcy.RecipeApp.Backend.Exceptions;
 
-public class UserNotFoundException : Exception
+public class UserNotFoundException : EntityNotFoundExeption
 {
     public UserNotFoundException(string email) : base($"User with email '{email}' was not found.")
     {

@@ -104,4 +104,10 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
             .ProjectTo<T>(mapper.ConfigurationProvider)
             .ToPaginatedListAsync(options);
     }
+
+    public async Task DeleteCommentById(Guid recipeId, Guid commentId)
+    {
+        var recipe = await GetRecipeByIdAsync(recipeId);
+        recipe.Comments.Remove(recipe.Comments.FirstOrDefault(c => c.Id == commentId) ?? throw new CommentNotFoundExeption(commentId));
+    }
 }
