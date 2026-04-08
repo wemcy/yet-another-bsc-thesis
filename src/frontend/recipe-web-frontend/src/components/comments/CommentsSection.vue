@@ -2,46 +2,79 @@
     <section class="max-w-6xl mx-auto px-4 py-10 mt-10 border-t pt-6">
         <h2 class="text-xl font-semibold mb-4">Hozzászólások</h2>
 
-        <!-- <div class="space-y-6">
-            <Comment
-                v-for="(comment, index) in comments"
-                :key="index"
+        <CommentForm @submit="handleSubmitComment" />
+
+        <div v-if="isCommentsLoading" class="text-sm text-gray-500 py-2 mt-4">
+            Hozzászólások betöltése...
+        </div>
+        <div v-else-if="comments.length === 0" class="text-sm text-gray-500 py-2 mt-4">
+            Még nincs hozzászólás ehhez a recepthez.
+        </div>
+        <div v-else class="space-y-6 mt-4">
+            <CommentPiece
+                v-for="comment in comments"
+                :key="comment.id"
                 :name="comment.authorId"
                 :content="comment.content"
-                :date="
-                    comment.createdAt.toLocaleDateString('hu-HU', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                    })
-                "
+                :date="formatDate(comment.createdAt)"
             />
-        </div> -->
+        </div>
 
-        <!-- <CommentForm @submit="addComment" /> -->
+        <RecipePagination
+            :currentPage="pagination.pageNumber"
+            :totalPages="pagination.pageCount"
+            :hasNextPage="pagination.hasNextPage"
+            :hasPreviousPage="pagination.hasPreviousPage"
+            :disabled="isCommentsLoading"
+            @pageChange="loadPage"
+        />
     </section>
 </template>
 
 <script setup lang="ts">
-import Comment from './CommentPiece.vue'
+import CommentPiece from './CommentPiece.vue'
+import CommentForm from './CommentForm.vue'
+import RecipePagination from '@/components/recipe/RecipePagination.vue'
 import { useRecipeStore } from '@/stores/recipeStore'
 import { useRoute } from 'vue-router'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const route = useRoute()
 const recipeStore = useRecipeStore()
-const comments = computed(() => recipeStore.getCommentsByRecipeId(route.params.id as string))
+const recipeId = computed(() => {
+    const id = route.params.id
+    return Array.isArray(id) ? id[0] : id
+})
 
-// const comments = function addComment({ name, message }: { name: string; message: string }) {
-//     const newComment: CommentItem = {
-//         name,
-//         text: message,
-//         date: new Date().toLocaleDateString('hu-HU', {
-//             year: 'numeric',
-//             month: '2-digit',
-//             day: '2-digit',
-//         }),
-//     }
-//     comments.value.push(newComment)
-// }
+const comments = computed(() => recipeStore.getCommentsByRecipeId(recipeId.value ?? ''))
+const pagination = computed(() => recipeStore.getCommentsPaginationByRecipeId(recipeId.value ?? ''))
+const isCommentsLoading = computed(() =>
+    recipeStore.isCommentsLoadingByRecipeId(recipeId.value ?? ''),
+)
+const isCommentSubmitting = ref(false)
+
+async function loadPage(pageNumber: number) {
+    if (!recipeId.value) return
+    await recipeStore.fetchRecipeCommentsPage(recipeId.value, pageNumber, pagination.value.pageSize)
+}
+
+async function handleSubmitComment(payload: { content: string }) {
+    if (!recipeId.value || isCommentSubmitting.value) return
+
+    isCommentSubmitting.value = true
+    try {
+        await recipeStore.addRecipeComment(recipeId.value, payload.content)
+        await loadPage(pagination.value.pageNumber)
+    } finally {
+        isCommentSubmitting.value = false
+    }
+}
+
+function formatDate(value: Date): string {
+    return value.toLocaleDateString('hu-HU', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    })
+}
 </script>

@@ -24,6 +24,25 @@ export interface RecipeState {
     showcaseRecipesIds: Recipe.id[]
     featuredRecipeId: Recipe.id | null
     ownRecipeIds: Recipe.id[]
+    showcaseRecipesLoading: boolean
+    featuredRecipeLoading: boolean
+    commentsByRecipeId: Record<string, Comment[]>
+    commentsPaginationByRecipeId: Record<string, PaginationState>
+    commentsLoadingByRecipeId: Record<string, boolean>
+}
+
+export interface PaginationState {
+    pageNumber: number
+    pageSize: number
+    totalCount: number
+    pageCount: number
+    hasNextPage: boolean
+    hasPreviousPage: boolean
+}
+
+export interface PaginatedRecipes {
+    items: Recipe[]
+    pagination: PaginationState
 }
 
 export interface Comment {
@@ -36,4 +55,9 @@ export interface Comment {
 export interface CommentPayload {
     authorId: string
     content: string
+}
+
+export interface PaginatedComments {
+    items: Comment[]
+    pagination: PaginationState
 }

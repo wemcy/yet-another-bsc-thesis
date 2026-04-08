@@ -3,12 +3,12 @@ import OwnRecipes from '@/components/recipe/OwnRecipes.vue'
 import ProfileHeader from '@/components/profile/ProfileHeader.vue'
 import { ref, watch, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
-import { useRecipeStore } from '@/stores/recipeStore'
+import { useRecipePaginationStore } from '@/stores/recipePaginationStore'
 import type { User } from '@/types/profile/user'
 import { useRouter } from 'vue-router'
 
 const auth = useAuthStore()
-const recipes = useRecipeStore()
+const recipePagination = useRecipePaginationStore()
 const router = useRouter()
 
 const editing = ref(false)
@@ -25,6 +25,7 @@ const imageFile = ref<File | null>(null)
 const imageUrl = ref<string | undefined>(profile.value.avatarUrl)
 const passwordConfirm = ref('')
 const deleteDialogOpen = ref(false)
+const ownRecipesPageSize = 27
 
 watch(
     () => auth.currentUser,
@@ -45,9 +46,15 @@ const errors = ref<{ name?: string; email?: string; password?: string; passwordC
 onMounted(async () => {
     await auth.fetchOwnProfile()
     if (auth.currentUser) {
-        recipes.fetchOwnRecipes(auth.currentUser.id)
+        await loadOwnRecipesPage(0)
     }
 })
+
+async function loadOwnRecipesPage(pageNumber: number) {
+    if (!auth.currentUser) return
+
+    await recipePagination.loadOwnRecipesPage(auth.currentUser.id, pageNumber, ownRecipesPageSize)
+}
 
 function validateProfile() {
     errors.value = {}
@@ -173,6 +180,12 @@ async function confirmDeleteProfile() {
             </div>
         </div>
 
-        <OwnRecipes :recipes="recipes.ownRecipes" class="mt-8" />
+        <OwnRecipes
+            :recipes="recipePagination.ownRecipes"
+            :pagination="recipePagination.ownRecipesPagination"
+            :loading="recipePagination.ownRecipesLoading"
+            @pageChange="loadOwnRecipesPage"
+            class="mt-8"
+        />
     </main>
 </template>
