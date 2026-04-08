@@ -114,13 +114,16 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
     {
         var includeAllergenTypes = includeAllergens?.Any() ?? false ? mapper.Map<AllergenType?>(includeAllergens) : null;
         var excludeAllergenTypes = excludeAllergens?.Any() ?? false ? mapper.Map<AllergenType?>(excludeAllergens) : null;
-        var recipes = recipeService.SearchRecipesByTitleAs<SearchRecipeDTO>(new RecipeSearch(title), new RecipeFilter(includeAllergenTypes, includeAllergenTypes));
+        var recipes = recipeService.SearchRecipesByTitleAs<SearchRecipeDTO>(new RecipeSearch(title), new RecipeFilter(includeAllergenTypes, excludeAllergenTypes));
         return Ok(recipes);
     }
 
     public override async Task<IActionResult> ListRecipes([FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize"), Range(25, 100)] int? pageSize, [FromQuery(Name = "includeAllergens")] List<Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Allergen>? excludeAllergens)
     {
-        var dtos = await recipeService.ListResipesAs<ReadRecipeDTO>(new PaginationOptions(page, pageSize));
+        var includeAllergenTypes = includeAllergens?.Any() ?? false ? mapper.Map<AllergenType?>(includeAllergens) : null;
+        var excludeAllergenTypes = excludeAllergens?.Any() ?? false ? mapper.Map<AllergenType?>(excludeAllergens) : null;
+
+        var dtos = await recipeService.ListResipesAs<ReadRecipeDTO>(new PaginationOptions(page, pageSize), new RecipeFilter(includeAllergenTypes,excludeAllergenTypes));
         return Ok(dtos);
     }
 }

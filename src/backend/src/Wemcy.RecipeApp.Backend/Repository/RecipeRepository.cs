@@ -77,10 +77,10 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
     {
 
         return await _dbContext.Recipes
+            .AsNoTracking()
             .Include(x => x.User)
             .Where(x => x.User.Id == id)
             .OrderByDescending(x => x.UpdatedAt)
-            .AsNoTracking()
             .ProjectTo<T>(mapper.ConfigurationProvider)
             .ToPaginatedListAsync(options);
     }
@@ -89,20 +89,21 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
     {
         var recipe = await GetRecipeByIdAsync(id);
         return await _dbContext.Recipes
+            .AsNoTracking()
             .Where(x => x.Id == id)
             .SelectMany(x => x.Comments)
             .OrderByDescending(x => x.UpdatedAt)
-            .AsNoTracking()
             .ProjectTo<T>(mapper.ConfigurationProvider)
             .ToPaginatedListAsync(options);
     }
 
-    public async Task<PaginatedResult<T>> ListRecipesAs<T>(PaginationOptions options)
+    public async Task<PaginatedResult<T>> ListRecipesAs<T>(PaginationOptions options, RecipeFilter recipeFilter)
     {
         return await _dbContext.Recipes
+            .AsNoTracking()
+            .WithFilter(recipeFilter)
             .Include(x=>x.User)
             .OrderByDescending(x => x.UpdatedAt)
-            .AsNoTracking()
             .ProjectTo<T>(mapper.ConfigurationProvider)
             .ToPaginatedListAsync(options);
     }
@@ -116,9 +117,9 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
     public  IAsyncEnumerable<T> SearchRecipesByTitleAs<T>(RecipeSearch recipeSearch, RecipeFilter recipeFilter)
     {
         return _dbContext.Recipes
+            .AsNoTracking()
             .WithFilter(recipeSearch)
             .WithFilter(recipeFilter)
-            .AsNoTracking()
             .Take(10)
             .ProjectTo<T>(mapper.ConfigurationProvider)
             .ToAsyncEnumerable();

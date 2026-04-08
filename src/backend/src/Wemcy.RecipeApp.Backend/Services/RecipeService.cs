@@ -23,9 +23,9 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         return await this.recipeRepository.CreateRecipeAsync(recipe);
     }
 
-    public async Task<PaginatedResult<T>> ListResipesAs<T>(PaginationOptions options)
+    public async Task<PaginatedResult<T>> ListResipesAs<T>(PaginationOptions options, RecipeFilter recipeFilter)
     {
-        return await recipeRepository.ListRecipesAs<T>(options);
+        return await recipeRepository.ListRecipesAs<T>(options, recipeFilter);
     }
 
     public async Task<Recipe> GetRecipeByIdAsync(Guid id)
