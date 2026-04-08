@@ -3,19 +3,42 @@ import { useRecipePaginationStore } from '@/stores/recipePaginationStore'
 import RecipePagination from '@/components/recipe/RecipePagination.vue'
 import RecipeCard from '@/components/recipe/RecipeCard.vue'
 import RecipeCardSkeleton from '@/components/recipe/RecipeCardSkeleton.vue'
-import { computed, onMounted } from 'vue'
+import { computed, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const paginationStore = useRecipePaginationStore()
 const pageSize = 27
 const skeletonCards = computed(() => Array.from({ length: pageSize }, (_, i) => i))
+const route = useRoute()
+const router = useRouter()
+
+function getPageFromQuery() {
+    const value = route.query.page
+    const raw = typeof value === 'string' ? Number.parseInt(value, 10) : NaN
+    if (Number.isNaN(raw) || raw < 1) return 0
+    return raw - 1
+}
 
 async function loadPage(pageNumber: number) {
     await paginationStore.loadAllRecipesPage(pageNumber, pageSize)
 }
 
-onMounted(() => {
-    loadPage(0)
-})
+async function requestPage(pageNumber: number) {
+    await router.push({
+        query: {
+            ...route.query,
+            page: String(pageNumber + 1),
+        },
+    })
+}
+
+watch(
+    () => route.query.page,
+    async () => {
+        await loadPage(getPageFromQuery())
+    },
+    { immediate: true },
+)
 </script>
 
 <template>
@@ -46,7 +69,7 @@ onMounted(() => {
             :hasNextPage="paginationStore.allRecipesPagination.hasNextPage"
             :hasPreviousPage="paginationStore.allRecipesPagination.hasPreviousPage"
             :disabled="paginationStore.allRecipesLoading"
-            @pageChange="loadPage"
+            @pageChange="requestPage"
         />
     </main>
 </template>

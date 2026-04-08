@@ -23,12 +23,19 @@
             </li>
         </ul>
 
-        <!-- Jobb oldalon csak avatar -->
-        <div class="flex items-center">
+        <!-- Jobb oldalon profil és auth akciók -->
+        <div class="flex items-center gap-3">
             <template v-if="auth.currentUser">
-                <router-link to="/profile" class="ml-4">
+                <router-link to="/profile" class="flex items-center gap-2 text-sm text-gray-700">
                     <ProfileAvatar :src="auth.currentUser?.avatarUrl" size="md" />
+                    <span class="font-medium">{{ auth.currentUser.name }}</span>
                 </router-link>
+                <button
+                    @click="handleLogout"
+                    class="border border-gray-300 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
+                >
+                    Kilépés
+                </button>
             </template>
             <template v-else>
                 <button
@@ -51,6 +58,11 @@ const auth = useAuthStore()
 const router = useRouter()
 
 function dummyLogin() {
+    router.push('/login')
+}
+
+function handleLogout() {
+    auth.logout()
     router.push('/login')
 }
 </script>

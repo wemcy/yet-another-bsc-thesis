@@ -65,7 +65,7 @@ import LoginForm, { type LoginPayload } from '@/components/auth/LoginForm.vue'
 import RegisterForm, { type RegisterPayload } from '@/components/auth/RegisterForm.vue'
 import { useAuthStore } from '@/stores/authStore'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 type AuthMode = 'login' | 'register'
 
@@ -73,6 +73,16 @@ const mode = ref<AuthMode>('login')
 const feedback = ref('')
 const auth = useAuthStore()
 const router = useRouter()
+const route = useRoute()
+
+function getRedirectTarget() {
+    const redirect = route.query.redirect
+    if (typeof redirect === 'string' && redirect.startsWith('/')) {
+        return redirect
+    }
+
+    return '/profile'
+}
 
 function setMode(nextMode: AuthMode) {
     if (mode.value === nextMode) return
@@ -87,7 +97,7 @@ async function handleLogin(payload: LoginPayload) {
     try {
         await auth.loginWithCredentials(payload.email, payload.password)
         feedback.value = `Sikeres bejelentkezés: ${payload.email}`
-        await router.push('/profile')
+        await router.push(getRedirectTarget())
     } catch {
         // Error details are normalized in authStore.authError
     }
@@ -99,7 +109,7 @@ async function handleRegister(payload: RegisterPayload) {
     try {
         await auth.registerWithCredentials(payload.name, payload.email, payload.password)
         feedback.value = `Sikeres regisztráció: ${payload.email}`
-        await router.push('/profile')
+        await router.push(getRedirectTarget())
     } catch {
         // Error details are normalized in authStore.authError
     }

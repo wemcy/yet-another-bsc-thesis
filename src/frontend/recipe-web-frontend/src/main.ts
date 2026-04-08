@@ -8,7 +8,7 @@ import initRouter from './router'
 
 const app = createApp(App)
 
-app.use(initRouter())
 app.use(createPinia())
+app.use(initRouter())
 
 app.mount('#app')
