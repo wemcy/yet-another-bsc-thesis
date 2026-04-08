@@ -6,8 +6,10 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Exceptions;
+using Wemcy.RecipeApp.Backend.Extensions;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Pagination;
+using Wemcy.RecipeApp.Backend.Search;
 
 namespace Wemcy.RecipeApp.Backend.Repository;
 
@@ -111,11 +113,13 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
         recipe.Comments.Remove(recipe.Comments.FirstOrDefault(c => c.Id == commentId) ?? throw new CommentNotFoundExeption(commentId));
     }
 
-    public  IAsyncEnumerable<T> SearchRecipesByTitleAs<T>(string title)
+    public  IAsyncEnumerable<T> SearchRecipesByTitleAs<T>(RecipeSearch recipeSearch)
     {
         return _dbContext.Recipes
-            .Where(x => x.TitleSearchVector.Matches(title))
-            .OrderByDescending(x => x.TitleSearchVector.Rank(EF.Functions.PlainToTsQuery(title)))
+            .Where(x => x.TitleSearchVector.Matches(recipeSearch.Title))
+            .OrderByDescending(x => x.TitleSearchVector.Rank(EF.Functions.PlainToTsQuery(recipeSearch.Title)))
+            .ConditionalWhere( () => recipeSearch.HasIncludeFilter, x => (x.Allergens & recipeSearch.IncludeAllergens) != AllergenType.None)
+            .ConditionalWhere( () => recipeSearch.HasExcludeFilter, x => (x.Allergens & recipeSearch.ExcludeAllergens) == AllergenType.None)
             .AsNoTracking()
             .Take(10)
             .ProjectTo<T>(mapper.ConfigurationProvider)

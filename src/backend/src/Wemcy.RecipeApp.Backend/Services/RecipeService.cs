@@ -5,6 +5,7 @@ using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Repository;
+using Wemcy.RecipeApp.Backend.Search;
 using Wemcy.RecipeApp.Backend.Security;
 using Comment = Wemcy.RecipeApp.Backend.Model.Comment;
 
@@ -114,8 +115,8 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         await this.recipeRepository.SaveAsync();
     }
 
-    public IAsyncEnumerable<T> SearchRecipesByTitleAs<T>(string title)
+    public IAsyncEnumerable<T> SearchRecipesByTitleAs<T>(RecipeSearch recipeSearch)
     {
-        return this.recipeRepository.SearchRecipesByTitleAs<T>(title);
+        return this.recipeRepository.SearchRecipesByTitleAs<T>(recipeSearch);
     }
 }

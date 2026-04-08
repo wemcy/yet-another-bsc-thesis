@@ -71,7 +71,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// List of allergens present in the recipe
         /// </summary>
         /// <value>List of allergens present in the recipe</value>
-        /* <example>[1,3,5]</example> */
         [DataMember(Name="allergens", EmitDefaultValue=false)]
         public List<Allergen> Allergens { get; set; }
 

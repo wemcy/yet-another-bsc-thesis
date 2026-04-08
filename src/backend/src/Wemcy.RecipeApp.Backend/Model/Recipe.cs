@@ -26,11 +26,7 @@ public class Recipe : Entity
     public Comment GetCommentById(Guid commentId)
     {
         var comment = Comments.SingleOrDefault(c => c.Id == commentId);
-        if (comment == null)
-        {
-            throw new CommentNotFoundExeption(commentId);
-        }
-        return comment;
+        return comment ?? throw new CommentNotFoundExeption(commentId);
     }
     public void Rate(int rating, AppUser user)
     {

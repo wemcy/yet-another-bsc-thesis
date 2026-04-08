@@ -179,12 +179,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// Receptek keresése cím alapján
         /// </summary>
         /// <param name="title">The title or part of the title to search for</param>
+        /// <param name="includeAllergens">List of allergens to include (comma-separated, e.g. \&quot;GLUTEN,PEANUTS\&quot;)</param>
+        /// <param name="excludeAllergens">List of allergens to exclude (comma-separated, e.g. \&quot;GLUTEN,PEANUTS\&quot;)</param>
         /// <response code="200">Receptek a keresési feltételeknek megfelelően</response>
         [HttpGet]
         [Route("/search")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<SearchRecipeDTO>))]
-        public abstract Task<IActionResult> SearchRecipes([FromQuery (Name = "title")][Required()]string title);
+        public abstract Task<IActionResult> SearchRecipes([FromQuery (Name = "title")][Required()]string title, [FromQuery (Name = "includeAllergens")]List<Allergen>? includeAllergens, [FromQuery (Name = "excludeAllergens")]List<Allergen>? excludeAllergens);
 
         /// <summary>
         /// Recept szerkesztése ID alapján

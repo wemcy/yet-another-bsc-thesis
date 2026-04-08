@@ -9,15 +9,11 @@ namespace Wemcy.RecipeApp.Backend.DTOProfiles
         public RecipeProfile()
         {
             CreateMap<CreateRecipeDTO, Recipe>()
-                .ForMember( 
-                x => x.Allergens, 
-                op => op.MapFrom( 
-                    src => src.Allergens
-                    .Select( 
-                        a => MapAllergens(a))
-                    .Aggregate(AllergenType.None, (current, allergen) => current | allergen)));
+                .ForMember(
+                x => x.Allergens,
+                op => op.MapFrom(src => MapAllergensListToAllergen(src.Allergens)));
             CreateMap<Recipe, ReadRecipeDTO>()
-              .ForMember(dest => dest.Allergens, op => op.MapFrom( src => MappAllergenDTO(src.Allergens)));
+              .ForMember(dest => dest.Allergens, op => op.MapFrom(src => MappAllergenDTO(src.Allergens)));
             CreateMap<Model.Ingredient, Api.Models.Ingredient>()
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => Convert.ToDecimal(src.Quantity)))
                 .ReverseMap()
@@ -26,6 +22,9 @@ namespace Wemcy.RecipeApp.Backend.DTOProfiles
                 .ForMember(dest => dest.Author, op => op.MapFrom(src => src.User.DisplayName));
             CreateMap<Model.AppUser, Api.Models.ProfileResponse>();
             CreateMap<Recipe, SearchRecipeDTO>();
+            CreateMap<List<Allergen>?, AllergenType?>().ConvertUsing(src => MapAllergensListToAllergen(src));
+
+
         }
         private static AllergenType MapAllergens(Allergen allergen)
         {
@@ -72,6 +71,12 @@ namespace Wemcy.RecipeApp.Backend.DTOProfiles
                         _ => throw new ArgumentOutOfRangeException(nameof(allergen), $"Unexpected allergen value: {allergen}")
                     };
             })];
+        }
+
+        private static AllergenType? MapAllergensListToAllergen(List<Allergen>? src)
+        {
+            if (src is null) return null;
+            return src.Select(MapAllergens).Aggregate(AllergenType.None, (current, allergen) => current | allergen);
         }
     }
 }

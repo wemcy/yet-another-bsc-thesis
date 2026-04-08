@@ -12,6 +12,7 @@ using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Pagination;
+using Wemcy.RecipeApp.Backend.Search;
 using Wemcy.RecipeApp.Backend.Services;
 using Comment = Wemcy.RecipeApp.Backend.Api.Models.Comment;
 
@@ -116,9 +117,11 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
         return NoContent();
     }
 
-    public override async Task<IActionResult> SearchRecipes([FromQuery(Name = "title"), Required] string title)
+    public override async Task<IActionResult> SearchRecipes([FromQuery(Name = "title"), Required] string title, [FromQuery(Name = "includeAllergens")] List<Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Allergen>?  excludeAllergens)
     {
-        var recipes =  recipeService.SearchRecipesByTitleAs<SearchRecipeDTO>(title);
+        var includeAllergenTypes = includeAllergens?.Any() ?? false ? mapper.Map<AllergenType?>(includeAllergens) : null;
+        var excludeAllergenTypes = excludeAllergens?.Any() ?? false ? mapper.Map<AllergenType?>(excludeAllergens) : null;
+        var recipes = recipeService.SearchRecipesByTitleAs<SearchRecipeDTO>(new RecipeSearch(title, includeAllergenTypes, excludeAllergenTypes));
         return Ok(recipes);
     }
 }

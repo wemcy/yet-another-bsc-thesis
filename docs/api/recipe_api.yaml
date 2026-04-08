@@ -41,6 +41,18 @@ paths:
           required: true
           schema:
             type: string
+        - name: includeAllergens
+          in: query
+          description: List of allergens to include (comma-separated, e.g. "GLUTEN,PEANUTS")
+          required: false
+          schema:
+            "$ref": "#/components/schemas/allergenSearchList"
+        - name: excludeAllergens
+          in: query
+          description: List of allergens to exclude (comma-separated, e.g. "GLUTEN,PEANUTS")
+          required: false
+          schema:
+            "$ref": "#/components/schemas/allergenSearchList"
       responses:
         '200':
           description: Receptek a keresési feltételeknek megfelelően
@@ -840,7 +852,15 @@ components:
       uniqueItems: true
       minItems: 0
       maxItems: 14
-      example: [1, 3, 5]
+    allergenSearchList:
+      type: array
+      description: List of allergens to search for in the recipe
+      items:
+        $ref: '#/components/schemas/allergen'
+      nullable: true
+      uniqueItems: true
+      minItems: 0
+      maxItems: 14
     allergen:
       type: string
       enum:
@@ -858,6 +878,7 @@ components:
         - SULPHURDIOXIDE
         - LUPIN
         - MOLLUSCS
+    
     ingredient:
       type: object
       required:
