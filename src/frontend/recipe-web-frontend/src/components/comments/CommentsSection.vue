@@ -4,6 +4,13 @@
 
         <CommentForm @submit="handleSubmitComment" />
 
+        <p
+            v-if="commentSubmitError"
+            class="mt-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+        >
+            {{ commentSubmitError }}
+        </p>
+
         <div v-if="isCommentsLoading" class="text-sm text-gray-500 py-2 mt-4">
             Hozzászólások betöltése...
         </div>
@@ -36,6 +43,7 @@ import CommentPiece from './CommentPiece.vue'
 import CommentForm from './CommentForm.vue'
 import RecipePagination from '@/components/recipe/RecipePagination.vue'
 import { useRecipeStore } from '@/stores/recipeStore'
+import { toErrorMessage } from '@/utils/identityErrors'
 import { useRoute } from 'vue-router'
 import { computed, ref } from 'vue'
 
@@ -52,6 +60,7 @@ const isCommentsLoading = computed(() =>
     recipeStore.isCommentsLoadingByRecipeId(recipeId.value ?? ''),
 )
 const isCommentSubmitting = ref(false)
+const commentSubmitError = ref<string | null>(null)
 
 async function loadPage(pageNumber: number) {
     if (!recipeId.value) return
@@ -61,10 +70,13 @@ async function loadPage(pageNumber: number) {
 async function handleSubmitComment(payload: { content: string }) {
     if (!recipeId.value || isCommentSubmitting.value) return
 
+    commentSubmitError.value = null
     isCommentSubmitting.value = true
     try {
         await recipeStore.addRecipeComment(recipeId.value, payload.content)
         await loadPage(pagination.value.pageNumber)
+    } catch (error) {
+        commentSubmitError.value = await toErrorMessage(error)
     } finally {
         isCommentSubmitting.value = false
     }

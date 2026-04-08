@@ -8,9 +8,7 @@ import RecipeRating from '@/components/recipe/RecipeRating.vue'
 import { useRoute } from 'vue-router'
 import { useRecipeStore } from '@/stores/recipeStore'
 import { useAuthStore } from '@/stores/authStore'
-import { computed } from 'vue'
-import { onMounted } from 'vue'
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const route = useRoute()
 const recipeStore = useRecipeStore()
@@ -40,9 +38,13 @@ const isOwnRecipe = computed(
     () => recipe.value && auth.currentUser && recipe.value.authorId === auth.currentUser.id,
 )
 
-onMounted(() => {
-    recipeStore.fetchRecipeById(route.params.id as string)
-})
+watch(
+    () => route.params.id,
+    (id) => {
+        if (id) recipeStore.fetchRecipeById(id as string)
+    },
+    { immediate: true },
+)
 </script>
 
 <template>
