@@ -3,39 +3,63 @@ import { useRecipePaginationStore } from '@/stores/recipePaginationStore'
 import RecipePagination from '@/components/recipe/RecipePagination.vue'
 import RecipeCard from '@/components/recipe/RecipeCard.vue'
 import RecipeCardSkeleton from '@/components/recipe/RecipeCardSkeleton.vue'
-import { allergenList } from '@/types/recipe/allergens'
+import { MapApiAllergenToEnum, MapEnumToApiAllergen } from '@/types/recipe/allergen.mappers'
+import { AllergenEnum, allergenList } from '@/types/recipe/allergens'
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import type { Allergen as ApiAllergen } from 'recipe-api-client'
 
 const paginationStore = useRecipePaginationStore()
 const pageSize = 27
 const skeletonCards = computed(() => Array.from({ length: pageSize }, (_, i) => i))
+const uiAllergenList = allergenList as readonly AllergenEnum[]
 const route = useRoute()
 const router = useRouter()
-const includeAllergens = ref<string[]>([])
-const excludeAllergens = ref<string[]>([])
+const includeAllergens = ref<AllergenEnum[]>([])
+const excludeAllergens = ref<AllergenEnum[]>([])
+const appliedIncludeAllergens = ref<AllergenEnum[]>([])
+const appliedExcludeAllergens = ref<AllergenEnum[]>([])
 
-const validAllergens = new Set<string>(allergenList)
+const validApiAllergens = new Set<ApiAllergen>([
+    'GLUTEN',
+    'CRUSTACEANS',
+    'EGGS',
+    'FISH',
+    'PEANUTS',
+    'SOYBEANS',
+    'MILK',
+    'NUTS',
+    'CELERY',
+    'MUSTARD',
+    'SESAMESEEDS',
+    'SULPHURDIOXIDE',
+    'LUPIN',
+    'MOLLUSCS',
+])
 
-const filteredRecipes = computed(() =>
-    paginationStore.allRecipes.filter((recipe) => {
-        const recipeAllergens = recipe.allergens as unknown as string[]
-        const includesAll = includeAllergens.value.every((allergen) =>
-            recipeAllergens.includes(allergen),
-        )
-        const includesAnyExcluded = excludeAllergens.value.some((allergen) =>
-            recipeAllergens.includes(allergen),
-        )
-        return includesAll && !includesAnyExcluded
-    }),
+const hasPendingFilterChanges = computed(() => {
+    const includeChanged =
+        includeAllergens.value.length !== appliedIncludeAllergens.value.length ||
+        includeAllergens.value.some((item) => !appliedIncludeAllergens.value.includes(item))
+    const excludeChanged =
+        excludeAllergens.value.length !== appliedExcludeAllergens.value.length ||
+        excludeAllergens.value.some((item) => !appliedExcludeAllergens.value.includes(item))
+
+    return includeChanged || excludeChanged
+})
+
+const hasAppliedFilters = computed(
+    () => appliedIncludeAllergens.value.length > 0 || appliedExcludeAllergens.value.length > 0,
 )
 
-function parseAllergenQueryParam(param: unknown): string[] {
+function parseAllergenQueryParam(param: unknown): AllergenEnum[] {
     if (typeof param !== 'string' || param.trim() === '') return []
 
-    return [...new Set(param.split(',').map((value) => value.trim()))].filter((value) =>
-        validAllergens.has(value),
+    const uniqueApiValues = [...new Set(param.split(',').map((value) => value.trim()))].filter(
+        (value): value is ApiAllergen => validApiAllergens.has(value as ApiAllergen),
     )
+
+    return uniqueApiValues.map((value) => MapApiAllergenToEnum(value))
 }
 
 function getPageFromQuery() {
@@ -46,14 +70,31 @@ function getPageFromQuery() {
 }
 
 function syncFiltersFromQuery() {
-    includeAllergens.value = parseAllergenQueryParam(route.query.include)
-    excludeAllergens.value = parseAllergenQueryParam(route.query.exclude).filter(
-        (item) => !includeAllergens.value.includes(item),
+    const includeFromQuery = parseAllergenQueryParam(route.query.include)
+    const excludeFromQuery = parseAllergenQueryParam(route.query.exclude).filter(
+        (item) => !includeFromQuery.includes(item),
     )
+
+    includeAllergens.value = [...includeFromQuery]
+    excludeAllergens.value = [...excludeFromQuery]
+    appliedIncludeAllergens.value = includeFromQuery
+    appliedExcludeAllergens.value = excludeFromQuery
 }
 
 async function loadPage(pageNumber: number) {
-    await paginationStore.loadAllRecipesPage(pageNumber, pageSize)
+    const includeApiAllergens = appliedIncludeAllergens.value.map((item) =>
+        MapEnumToApiAllergen(item),
+    )
+    const excludeApiAllergens = appliedExcludeAllergens.value.map((item) =>
+        MapEnumToApiAllergen(item),
+    )
+
+    await paginationStore.loadAllRecipesPage(
+        pageNumber,
+        pageSize,
+        includeApiAllergens,
+        excludeApiAllergens,
+    )
 }
 
 async function requestPage(pageNumber: number) {
@@ -66,56 +107,52 @@ async function requestPage(pageNumber: number) {
 }
 
 async function updateAllergenQuery() {
+    const includeApiValues = appliedIncludeAllergens.value.map((item) => MapEnumToApiAllergen(item))
+    const excludeApiValues = appliedExcludeAllergens.value.map((item) => MapEnumToApiAllergen(item))
+
     await router.replace({
         query: {
             ...route.query,
-            include:
-                includeAllergens.value.length > 0 ? includeAllergens.value.join(',') : undefined,
-            exclude:
-                excludeAllergens.value.length > 0 ? excludeAllergens.value.join(',') : undefined,
+            page: '1',
+            include: includeApiValues.length > 0 ? includeApiValues.join(',') : undefined,
+            exclude: excludeApiValues.length > 0 ? excludeApiValues.join(',') : undefined,
         },
     })
 }
 
-async function toggleInclude(allergen: string) {
+async function toggleInclude(allergen: AllergenEnum) {
     if (includeAllergens.value.includes(allergen)) {
         includeAllergens.value = includeAllergens.value.filter((item) => item !== allergen)
     } else {
         includeAllergens.value = [...includeAllergens.value, allergen]
         excludeAllergens.value = excludeAllergens.value.filter((item) => item !== allergen)
     }
-
-    await updateAllergenQuery()
 }
 
-async function toggleExclude(allergen: string) {
+async function toggleExclude(allergen: AllergenEnum) {
     if (excludeAllergens.value.includes(allergen)) {
         excludeAllergens.value = excludeAllergens.value.filter((item) => item !== allergen)
     } else {
         excludeAllergens.value = [...excludeAllergens.value, allergen]
         includeAllergens.value = includeAllergens.value.filter((item) => item !== allergen)
     }
-
-    await updateAllergenQuery()
 }
 
 async function clearAllergenFilters() {
     includeAllergens.value = []
     excludeAllergens.value = []
+}
+
+async function applyFilters() {
+    appliedIncludeAllergens.value = [...includeAllergens.value]
+    appliedExcludeAllergens.value = [...excludeAllergens.value]
     await updateAllergenQuery()
 }
 
 watch(
-    () => [route.query.include, route.query.exclude],
-    () => {
-        syncFiltersFromQuery()
-    },
-    { immediate: true },
-)
-
-watch(
-    () => route.query.page,
+    () => [route.query.page, route.query.include, route.query.exclude],
     async () => {
+        syncFiltersFromQuery()
         await loadPage(getPageFromQuery())
     },
     { immediate: true },
@@ -144,7 +181,7 @@ watch(
                     <h3 class="text-sm font-medium text-gray-700 mb-2">Kötelezően tartalmazza</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <label
-                            v-for="allergen in allergenList"
+                            v-for="allergen in uiAllergenList"
                             :key="`include-${allergen}`"
                             class="flex items-center gap-2 text-sm"
                         >
@@ -163,7 +200,7 @@ watch(
                     <h3 class="text-sm font-medium text-gray-700 mb-2">Nem tartalmazhatja</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <label
-                            v-for="allergen in allergenList"
+                            v-for="allergen in uiAllergenList"
                             :key="`exclude-${allergen}`"
                             class="flex items-center gap-2 text-sm"
                         >
@@ -178,6 +215,17 @@ watch(
                     </div>
                 </div>
             </div>
+
+            <div class="mt-4 flex justify-end">
+                <button
+                    type="button"
+                    class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+                    :disabled="!hasPendingFilterChanges || paginationStore.allRecipesLoading"
+                    @click="applyFilters"
+                >
+                    Szűrő alkalmazása
+                </button>
+            </div>
         </section>
 
         <div
@@ -190,16 +238,18 @@ watch(
             v-else-if="paginationStore.allRecipes.length === 0"
             class="rounded-lg border border-dashed p-6 text-sm"
         >
-            Nincs megjeleníthető recept.
-        </div>
-        <div
-            v-else-if="filteredRecipes.length === 0"
-            class="rounded-lg border border-dashed p-6 text-sm"
-        >
-            Nincs találat a kiválasztott allergén szűrőkkel.
+            {{
+                hasAppliedFilters
+                    ? 'Nincs találat a kiválasztott allergén szűrőkkel.'
+                    : 'Nincs megjeleníthető recept.'
+            }}
         </div>
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <RecipeCard v-for="recipe in filteredRecipes" :key="recipe.id" :recipe="recipe" />
+            <RecipeCard
+                v-for="recipe in paginationStore.allRecipes"
+                :key="recipe.id"
+                :recipe="recipe"
+            />
         </div>
         <RecipePagination
             :currentPage="paginationStore.allRecipesPagination.pageNumber"

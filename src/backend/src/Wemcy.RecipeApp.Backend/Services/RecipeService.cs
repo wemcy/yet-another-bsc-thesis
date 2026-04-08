@@ -30,10 +30,11 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
 
     public async Task<Recipe> GetRecipeByIdAsync(Guid id)
     {
-        return await this.recipeRepository.GetRecipeByIdWithAllergensAsync(id);
+        return await this.recipeRepository.GetRecipeByIdAsync(id);
     }
 
     public async Task<IList<Recipe>> GetShowcaseRecieps()
+        // TODO: implement daily random recipes 
     {
         return await this.recipeRepository.GetRecipesAsync(6);
     }

@@ -1,9 +1,10 @@
-﻿using System.Collections;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System.Collections;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Extensions;
@@ -23,18 +24,7 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
         await _dbContext.SaveChangesAsync();
         return newRecipe.Entity;
     }
-
-    public async Task<IList<Recipe>> GetAllRecipeAsync()
-    {
-
-
-        return await _dbContext.Recipes
-            .AsNoTracking()
-            .Include( x => x.Comments)
-            .Include( x => x.User)
-            .ToListAsync();
-    }
-
+    // TODO this is deprecated
     public async Task<IList<Recipe>> GetRecipesAsync(int limit)
     {
         return await _dbContext.Recipes
@@ -43,13 +33,6 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
             .Include( x => x.User)
             .Take(limit)
             .ToListAsync();
-    }
-
-    public async Task<Recipe> GetRecipeByIdWithAllergensAsync(Guid id)
-    {
-        return await _dbContext.Recipes
-            .Where(x => x.Id == id)
-            .SingleOrDefaultAsync() ?? throw new RecipeNotFoundException(id);
     }
 
     public async Task<Recipe> GetRecipeByIdAsync(Guid id)
@@ -61,7 +44,8 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
 
     public async Task<Image> GetImageByIdAsync(Guid id)
     {
-        return (await GetRecipeByIdAsync(id)).Image ?? throw new ImageNotFoundException();
+        var recipe = await GetRecipeByIdAsync(id);
+        return recipe.Image ?? throw new ImageNotFoundException();
     }
     public async Task SaveAsync()
     {
@@ -97,7 +81,7 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
             .ToPaginatedListAsync(options);
     }
 
-    public async Task<PaginatedResult<T>> ListRecipesAs<T>(PaginationOptions options, RecipeFilter recipeFilter)
+    public async Task<PaginatedResult<T>> ListRecipesAs<T>(PaginationOptions options, IQueryFilter<Recipe> recipeFilter)
     {
         return await _dbContext.Recipes
             .AsNoTracking()
@@ -117,7 +101,7 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
     public  IAsyncEnumerable<T> SearchRecipesByTitleAs<T>(RecipeSearch recipeSearch, RecipeFilter recipeFilter)
     {
         return _dbContext.Recipes
-            .AsNoTracking()
+            .AsNoTracking() 
             .WithFilter(recipeSearch)
             .WithFilter(recipeFilter)
             .Take(10)

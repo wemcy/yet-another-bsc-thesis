@@ -3,6 +3,7 @@ import { MapApiRecipeToRecipe } from '@/types/recipe/recipe.mappers'
 import { recipeApiClient as api } from '@/utils/recipeApiClient'
 import { defineStore } from 'pinia'
 import { useRecipeStore } from './recipeStore'
+import type { Allergen } from 'recipe-api-client'
 
 const createDefaultPaginationState = (pageNumber: number, pageSize: number): PaginationState => ({
     pageNumber,
@@ -66,10 +67,22 @@ export const useRecipePaginationStore = defineStore('recipePagination', {
         ownRecipesLoading: false,
     }),
     actions: {
-        async loadAllRecipesPage(pageNumber: number, pageSize: number): Promise<PaginatedRecipes> {
+        async loadAllRecipesPage(
+            pageNumber: number,
+            pageSize: number,
+            includeAllergens: Allergen[] = [],
+            excludeAllergens: Allergen[] = [],
+        ): Promise<PaginatedRecipes> {
             this.allRecipesLoading = true
             try {
-                const response = await api.listRecipesRaw({ page: pageNumber, pageSize })
+                const response = await api.listRecipesRaw({
+                    page: pageNumber,
+                    pageSize,
+                    includeAllergens:
+                        includeAllergens.length > 0 ? new Set(includeAllergens) : null,
+                    excludeAllergens:
+                        excludeAllergens.length > 0 ? new Set(excludeAllergens) : null,
+                })
                 const body = await response.value()
                 const items = body.map((r) => MapApiRecipeToRecipe(r))
                 const pagination = parsePaginationState(
