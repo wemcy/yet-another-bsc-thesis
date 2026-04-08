@@ -290,6 +290,44 @@ paths:
           description: Felhasználó nem található
       security:
         - cookieAuth: []
+  "/profile/{id}/roles":
+    post:
+      tags:
+      - Profile
+      summary: Felhasználó szerepköreinek frissítése ID alapján
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: A frissítendő felhasználó egyedi azonosítója (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: addRoleToProfileById
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - role
+              properties:
+                role:
+                  "$ref": "#/components/schemas/rolesEnum"
+      responses:
+        '204':
+          description: Felhasználó szerepkörei sikeresen frissítve
+        '401':
+          description: Nem volt aktív munkamenet
+        '403':
+          description: Nem jogosult a művelet végrehajtására (csak adminok módosíthatják a szerepköröket)
+        '404':
+          description: Felhasználó nem található
+        '410':
+          description: Érvénytelen szerepkör megadva
+      security:
+        - cookieAuth: []
   "/profile/{id}/recipes":
     get:
       tags:
@@ -783,7 +821,11 @@ components:
         hasPreviousPage:
           type: boolean
           description: Indicates if there is a previous page available
-
+    rolesEnum:
+      type: string
+      enum:
+        - Admin
+      description: List of roles to assign to the user (e.g., ["User"] or ["Admin"])
 
     readRecipeDTO:
       type: object

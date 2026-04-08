@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Wemcy.RecipeApp.Backend.Api.Controllers;
@@ -6,6 +7,7 @@ using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Extensions;
+using Wemcy.RecipeApp.Backend.Security;
 using Wemcy.RecipeApp.Backend.Services;
 
 namespace Wemcy.RecipeApp.Backend.Controllers;
@@ -15,6 +17,13 @@ namespace Wemcy.RecipeApp.Backend.Controllers;
 [UnauthorizedHandler]
 public class ProfileController(ProfileService profileService, IMapper mapper) : ProfileApiController
 {
+    [Authorize(Roles = Roles.Admin)]
+    public override async Task<IActionResult> AddRoleToProfileById([FromRoute(Name = "id"), Required] Guid id, [FromBody] AddRoleToProfileByIdRequest addRoleToProfileByIdRequest)
+    {
+        await profileService.AddRoleToUserAsync(id, addRoleToProfileByIdRequest);
+        return NoContent();
+    }
+
     public override async Task<IActionResult> DeleteProfileById([FromRoute(Name = "id"), Required] Guid id)
     {
         await profileService.DeleteProfileByIdAsync(id);

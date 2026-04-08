@@ -28,6 +28,23 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
     public abstract class ProfileApiController : ControllerBase
     { 
         /// <summary>
+        /// Felhasználó szerepköreinek frissítése ID alapján
+        /// </summary>
+        /// <param name="id">A frissítendő felhasználó egyedi azonosítója (UUID)</param>
+        /// <param name="addRoleToProfileByIdRequest"></param>
+        /// <response code="204">Felhasználó szerepkörei sikeresen frissítve</response>
+        /// <response code="401">Nem volt aktív munkamenet</response>
+        /// <response code="403">Nem jogosult a művelet végrehajtására (csak adminok módosíthatják a szerepköröket)</response>
+        /// <response code="404">Felhasználó nem található</response>
+        /// <response code="410">Érvénytelen szerepkör megadva</response>
+        [HttpPost]
+        [Route("/profile/{id}/roles")]
+        [Authorize(Policy = "cookieAuth")]
+        [Consumes("application/json")]
+        [ValidateModelState]
+        public abstract Task<IActionResult> AddRoleToProfileById([FromRoute (Name = "id")][Required]Guid id, [FromBody]AddRoleToProfileByIdRequest addRoleToProfileByIdRequest);
+
+        /// <summary>
         /// Felhasználó törlése ID alapján
         /// </summary>
         /// <param name="id">A törlendő felhasználó egyedi azonosítója (UUID)</param>

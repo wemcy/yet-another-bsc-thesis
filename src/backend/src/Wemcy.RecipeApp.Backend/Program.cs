@@ -41,7 +41,7 @@ builder.Services.AddScoped<RecipeService, RecipeService>().
                  AddScoped<ImageService, ImageService>().
                  AddScoped<ImageStorageService, ImageStorageService>().
                  AddScoped<UserService, UserService>().
-                 AddScoped<IAuthService, AuthService>().
+                 AddScoped<AuthService, AuthService>().
                  AddScoped<ProfileService, ProfileService>().
                  AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>().
                  AddSingleton<IAuthorizationHandler, CommentAuthorizationCrudHandler>().

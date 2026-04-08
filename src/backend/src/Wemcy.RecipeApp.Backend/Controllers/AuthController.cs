@@ -14,7 +14,7 @@ namespace Wemcy.RecipeApp.Backend.Controllers;
 [EntityNotFoundHandler]
 [UnauthorizedHandler]
 
-public class AuthController(IAuthService authService) : AuthApiController
+public class AuthController(AuthService authService) : AuthApiController
 {
     public async override Task<IActionResult> Register([FromBody] Api.Models.RegisterRequest registerRequest)
     {
@@ -45,19 +45,4 @@ public class AuthController(IAuthService authService) : AuthApiController
         await authService.LogoutAsync();
         return NoContent();
     }
-
-    [HttpPost("/auth/admin/promote")]
-    [Authorize(Roles = Roles.Admin)]
-    public async Task<IActionResult> PromoteToAdmin([FromBody] PromoteToAdminRequest request)
-    {
-        await authService.MakeUserAdminAsync(request.Email);
-        return NoContent();
-    }
-}
-
-public class PromoteToAdminRequest
-{
-    [Required]
-    [EmailAddress]
-    public string Email { get; set; } = string.Empty;
 }

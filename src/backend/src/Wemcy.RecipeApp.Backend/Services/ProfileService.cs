@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Security;
@@ -54,5 +55,15 @@ public class ProfileService(UserManager<AppUser> userManager, ImageService image
         await userService.EnsureAuthorizedAsync(user, Operations.Delete);
         await userManager.UpdateSecurityStampAsync(user);
         await userManager.DeleteAsync(user);
+    }
+
+    internal async Task AddRoleToUserAsync(Guid id, AddRoleToProfileByIdRequest addRoleToProfileByIdRequest)
+    {
+        var user = await this.GetProfileById(id);
+        await userService.EnsureAuthorizedAsync(user, Operations.Update);
+        if (addRoleToProfileByIdRequest.Role != RolesEnum.AdminEnum)
+            throw new Exception(addRoleToProfileByIdRequest.Role.ToString()); // TODO better exception
+        if (!await userManager.IsInRoleAsync(user, Security.Roles.Admin))
+            await userManager.AddToRoleAsync(user, Security.Roles.Admin);
     }
 }
