@@ -19,11 +19,20 @@ export interface RecipeFormErrors {
     steps?: string
 }
 
+export interface NewRecipeDraft {
+    title: string
+    description: string
+    ingredients: Ingredient[]
+    steps: string[]
+    selectedAllergens: AllergenEnum[]
+}
+
 export interface RecipeState {
     recipes: Recipe[]
     showcaseRecipesIds: Recipe.id[]
     featuredRecipeId: Recipe.id | null
     ownRecipeIds: Recipe.id[]
+    newRecipeDraft: NewRecipeDraft
     showcaseRecipesLoading: boolean
     featuredRecipeLoading: boolean
     commentsByRecipeId: Record<string, Comment[]>

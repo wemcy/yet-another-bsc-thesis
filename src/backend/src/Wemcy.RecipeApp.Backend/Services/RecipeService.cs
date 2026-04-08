@@ -115,8 +115,8 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         await this.recipeRepository.SaveAsync();
     }
 
-    public IAsyncEnumerable<T> SearchRecipesByTitleAs<T>(RecipeSearch recipeSearch)
+    public IAsyncEnumerable<T> SearchRecipesByTitleAs<T>(RecipeSearch recipeSearch, RecipeFilter recipeFilter)
     {
-        return this.recipeRepository.SearchRecipesByTitleAs<T>(recipeSearch);
+        return this.recipeRepository.SearchRecipesByTitleAs<T>(recipeSearch, recipeFilter);
     }
 }

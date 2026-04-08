@@ -1,9 +1,27 @@
-import type { Comment, PaginatedComments, PaginationState, Recipe, RecipeState } from '@/types/recipe/recipe'
+import type {
+    Comment,
+    NewRecipeDraft,
+    PaginatedComments,
+    PaginationState,
+    Recipe,
+    RecipeState,
+} from '@/types/recipe/recipe'
 import { MapApiRecipeToRecipe, MapRecipeToApiRecipe } from '@/types/recipe/recipe.mappers'
 import { recipeApiClient as api } from '@/utils/recipeApiClient'
 import { defineStore } from 'pinia'
 
 const commentsPageSize = 25
+
+const createEmptyNewRecipeDraft = (): NewRecipeDraft => ({
+    title: '',
+    description: '',
+    ingredients: [{ quantity: 0, unitOfMeasurement: '', name: '' }],
+    steps: [''],
+    selectedAllergens: [],
+})
+
+const getNewRecipeDraftStorageKey = (userId?: string | null) =>
+    `new-recipe-draft:${userId ?? 'guest'}`
 
 const createDefaultPaginationState = (pageNumber: number, pageSize: number): PaginationState => ({
     pageNumber,
@@ -75,6 +93,7 @@ export const useRecipeStore = defineStore('recipe', {
         featuredRecipeId: null,
         showcaseRecipesIds: [],
         ownRecipeIds: [] as string[],
+        newRecipeDraft: createEmptyNewRecipeDraft(),
         showcaseRecipesLoading: false,
         featuredRecipeLoading: false,
         commentsByRecipeId: {},
@@ -89,13 +108,55 @@ export const useRecipeStore = defineStore('recipe', {
             state.recipes.filter((r) => state.showcaseRecipesIds.includes(r.id)),
         getCommentsByRecipeId: (state) => (id: string) => state.commentsByRecipeId[id] ?? [],
         getCommentsPaginationByRecipeId: (state) => (id: string) =>
-            state.commentsPaginationByRecipeId[id] ?? createDefaultPaginationState(0, commentsPageSize),
+            state.commentsPaginationByRecipeId[id] ??
+            createDefaultPaginationState(0, commentsPageSize),
         isCommentsLoadingByRecipeId: (state) => (id: string) =>
             state.commentsLoadingByRecipeId[id] ?? false,
         ownRecipes: (state) => state.recipes.filter((r) => state.ownRecipeIds.includes(r.id)),
     },
 
     actions: {
+        loadNewRecipeDraft(userId?: string | null) {
+            const storageKey = getNewRecipeDraftStorageKey(userId)
+            const rawDraft = localStorage.getItem(storageKey)
+
+            if (!rawDraft) {
+                this.newRecipeDraft = createEmptyNewRecipeDraft()
+                return this.newRecipeDraft
+            }
+
+            try {
+                const parsed = JSON.parse(rawDraft) as Partial<NewRecipeDraft>
+                this.newRecipeDraft = {
+                    title: typeof parsed.title === 'string' ? parsed.title : '',
+                    description: typeof parsed.description === 'string' ? parsed.description : '',
+                    ingredients:
+                        Array.isArray(parsed.ingredients) && parsed.ingredients.length > 0
+                            ? parsed.ingredients
+                            : [{ quantity: 0, unitOfMeasurement: '', name: '' }],
+                    steps:
+                        Array.isArray(parsed.steps) && parsed.steps.length > 0
+                            ? parsed.steps
+                            : [''],
+                    selectedAllergens: Array.isArray(parsed.selectedAllergens)
+                        ? parsed.selectedAllergens
+                        : [],
+                }
+            } catch {
+                this.newRecipeDraft = createEmptyNewRecipeDraft()
+                localStorage.removeItem(storageKey)
+            }
+
+            return this.newRecipeDraft
+        },
+        saveNewRecipeDraft(draft: NewRecipeDraft, userId?: string | null) {
+            this.newRecipeDraft = draft
+            localStorage.setItem(getNewRecipeDraftStorageKey(userId), JSON.stringify(draft))
+        },
+        clearNewRecipeDraft(userId?: string | null) {
+            this.newRecipeDraft = createEmptyNewRecipeDraft()
+            localStorage.removeItem(getNewRecipeDraftStorageKey(userId))
+        },
         async addRecipe(recipe: Omit<Recipe, 'id'>) {
             const response = await api.createRecipe({
                 createRecipeDTO: MapRecipeToApiRecipe(recipe),

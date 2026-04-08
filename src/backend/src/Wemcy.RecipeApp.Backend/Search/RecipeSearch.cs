@@ -1,24 +1,21 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Wemcy.RecipeApp.Backend.Api.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using Wemcy.RecipeApp.Backend.Model;
 
 namespace Wemcy.RecipeApp.Backend.Search;
 
-public class RecipeSearch(string title, AllergenType? includeAllergens, AllergenType? excludeAllergens)
+public class RecipeSearch(string title) : IQueryFilter<Recipe>
 {
     private readonly string title = title;
-    private readonly AllergenType? includeAllergens = includeAllergens;
-    private readonly AllergenType? excludeAllergens = excludeAllergens;
-
     public string Title => title;
 
-    public AllergenType? IncludeAllergens => includeAllergens;
+    public IQueryable<Recipe> ApplyFilters(IQueryable<Recipe> query)
+    {
+        var queryText = string.Join(" & ", Title
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Select(term => $"{term}:*"));
 
-    public AllergenType? ExcludeAllergens => excludeAllergens;
-
-    [MemberNotNullWhen(true, nameof(IncludeAllergens))]
-    public bool HasIncludeFilter => includeAllergens is not null;
-
-    [MemberNotNullWhen(true, nameof(ExcludeAllergens))]
-    public bool HasExcludeFilter => excludeAllergens is not null;
+        return query
+            .Where(x => x.TitleSearchVector.Matches(EF.Functions.ToTsQuery(queryText)))
+            .OrderByDescending(x => x.TitleSearchVector.Rank(EF.Functions.ToTsQuery(queryText)));
+    }
 }

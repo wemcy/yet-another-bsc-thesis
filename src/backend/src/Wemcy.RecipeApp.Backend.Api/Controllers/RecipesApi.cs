@@ -145,12 +145,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// </summary>
         /// <param name="page">The page number to retrieve (starting from 0)</param>
         /// <param name="pageSize">The number of items per page (default is 25)</param>
+        /// <param name="includeAllergens">List of allergens to include (comma-separated, e.g. \&quot;GLUTEN,PEANUTS\&quot;)</param>
+        /// <param name="excludeAllergens">List of allergens to exclude (comma-separated, e.g. \&quot;GLUTEN,PEANUTS\&quot;)</param>
         /// <response code="200">Receptek</response>
         [HttpGet]
         [Route("/recipes/")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<ReadRecipeDTO>))]
-        public abstract Task<IActionResult> ListRecipes([FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize);
+        public abstract Task<IActionResult> ListRecipes([FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize, [FromQuery (Name = "includeAllergens")]List<Allergen>? includeAllergens, [FromQuery (Name = "excludeAllergens")]List<Allergen>? excludeAllergens);
 
         /// <summary>
         /// Kiemelt receptek listázása

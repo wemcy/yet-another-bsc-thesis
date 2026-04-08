@@ -109,8 +109,15 @@
             </div>
         </div>
 
-        <!-- Submit -->
-        <div class="text-right pt-4">
+        <!-- Actions -->
+        <div class="pt-4 flex items-center justify-between gap-3">
+            <button
+                type="button"
+                @click="resetForm"
+                class="border border-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-100 transition"
+            >
+                Űrlap törlése
+            </button>
             <button
                 type="submit"
                 class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
@@ -122,7 +129,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRecipeStore } from '@/stores/recipeStore'
 import { useRouter } from 'vue-router'
 import { AllergenEnum, allergenList } from '@/types/recipe/allergens'
@@ -177,6 +184,7 @@ function resetForm() {
     imageFile.value = null
     imageUrl.value = null
     errors.value = {}
+    recipeStore.clearNewRecipeDraft(authStore.currentUser?.id)
 }
 
 function validateForm() {
@@ -217,4 +225,30 @@ async function submit() {
     router.push({ name: 'Recipe', params: { id: recipeId } })
     resetForm()
 }
+
+onMounted(() => {
+    const draft = recipeStore.loadNewRecipeDraft(authStore.currentUser?.id)
+    title.value = draft.title
+    description.value = draft.description
+    ingredients.value = draft.ingredients
+    steps.value = draft.steps
+    selectedAllergens.value = draft.selectedAllergens
+})
+
+watch(
+    [title, description, ingredients, steps, selectedAllergens],
+    () => {
+        recipeStore.saveNewRecipeDraft(
+            {
+                title: title.value,
+                description: description.value,
+                ingredients: ingredients.value,
+                steps: steps.value,
+                selectedAllergens: selectedAllergens.value,
+            },
+            authStore.currentUser?.id,
+        )
+    },
+    { deep: true },
+)
 </script>

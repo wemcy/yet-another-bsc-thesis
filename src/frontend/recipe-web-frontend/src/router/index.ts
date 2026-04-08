@@ -8,10 +8,15 @@ import AllRecipesView from '@/views/AllRecipesView.vue'
 import EditRecipeView from '@/views/EditRecipeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import { useAuthStore } from '@/stores/authStore'
+import { useRecipeStore } from '@/stores/recipeStore'
 
 const initRouter = () => {
     const router = createRouter({
         history: createWebHistory(import.meta.env.BASE_URL),
+        scrollBehavior(_to, _from, savedPosition) {
+            if (savedPosition) return savedPosition
+            return { top: 0 }
+        },
         routes: [
             { path: '/', name: 'Home', component: HomeView },
             {
@@ -21,7 +26,18 @@ const initRouter = () => {
                 meta: { requiresAuth: true },
             },
             { path: '/recipe/:id', name: 'Recipe', component: RecipeView },
-            { path: '/new-recipe', name: 'NewRecipe', component: NewRecipeView },
+            {
+                path: '/new-recipe',
+                name: 'NewRecipe',
+                component: NewRecipeView,
+                meta: { requiresAuth: true },
+                beforeEnter: () => {
+                    const auth = useAuthStore()
+                    const recipeStore = useRecipeStore()
+                    recipeStore.clearNewRecipeDraft(auth.currentUser?.id)
+                    return true
+                },
+            },
             {
                 path: '/recipes',
                 name: 'AllRecipes',

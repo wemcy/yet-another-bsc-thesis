@@ -406,6 +406,18 @@ paths:
             type: integer
             minimum: 25
             maximum: 100
+        - name: includeAllergens
+          in: query
+          description: List of allergens to include (comma-separated, e.g. "GLUTEN,PEANUTS")
+          required: false
+          schema:
+            "$ref": "#/components/schemas/allergenSearchList"
+        - name: excludeAllergens
+          in: query
+          description: List of allergens to exclude (comma-separated, e.g. "GLUTEN,PEANUTS")
+          required: false
+          schema:
+            "$ref": "#/components/schemas/allergenSearchList"
       responses:
         '200':
           description: Receptek
