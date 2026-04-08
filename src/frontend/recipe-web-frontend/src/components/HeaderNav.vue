@@ -9,11 +9,7 @@
 
         <!-- Kereső -->
         <div class="w-full md:w-1/2">
-            <input
-                type="text"
-                placeholder="Keresés..."
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
+            <RecipeSearchAutocomplete />
         </div>
 
         <ul class="flex justify-end space-x-6 text-gray-700">
@@ -52,6 +48,7 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/authStore'
 import ProfileAvatar from '@/components/profile/ProfileAvatar.vue'
+import RecipeSearchAutocomplete from '@/components/search/RecipeSearchAutocomplete.vue'
 import { useRouter } from 'vue-router'
 
 const auth = useAuthStore()

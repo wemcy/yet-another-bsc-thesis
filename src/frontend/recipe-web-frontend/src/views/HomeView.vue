@@ -31,14 +31,6 @@ onMounted(async () => {
                 Böngészés a receptek között
             </router-link>
         </section>
-
-        <section class="max-w-4xl mx-auto px-4 py-10">
-            <input
-                type="text"
-                placeholder="Keresés..."
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-        </section>
         <RecipeHighlightSkeleton v-if="recipeStore.featuredRecipeLoading" />
         <RecipeHighlight v-else-if="featured" :recipe="featured" />
         <section class="max-w-6xl mx-auto px-4 py-12">
