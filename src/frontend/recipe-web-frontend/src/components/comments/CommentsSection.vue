@@ -11,8 +11,8 @@
             {{ commentSubmitError }}
         </p>
 
-        <div v-if="isCommentsLoading" class="text-sm text-gray-500 py-2 mt-4">
-            Hozzászólások betöltése...
+        <div v-if="isCommentsLoading" class="space-y-6 mt-4">
+            <CommentPieceSkeleton v-for="n in 3" :key="n" />
         </div>
         <div v-else-if="comments.length === 0" class="text-sm text-gray-500 py-2 mt-4">
             Még nincs hozzászólás ehhez a recepthez.
@@ -40,6 +40,7 @@
 
 <script setup lang="ts">
 import CommentPiece from './CommentPiece.vue'
+import CommentPieceSkeleton from './CommentPieceSkeleton.vue'
 import CommentForm from './CommentForm.vue'
 import RecipePagination from '@/components/recipe/RecipePagination.vue'
 import { useRecipeStore } from '@/stores/recipeStore'
