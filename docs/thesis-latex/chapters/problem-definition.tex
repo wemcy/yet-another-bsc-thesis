@@ -1,9 +1,13 @@
-﻿\chapter{Problemafelvetes es projektkor}
+﻿\chapter{Felhasznaloi dokumentacio}
 \label{ch:problem-definition}
 
-\section{Kiindulo problema}
+\section{A megoldott problema rovid leirasa}
 
 A receptgyujtes es receptmegosztas sok esetben ad hoc modon tortenik: jegyzetekben, uzenetekben vagy nehezen keresheto dokumentumokban. Egy ilyen folyamat gyorsan atlathatatlanna valik, ha a felhasznalo egyszerre tobb receptet, kulonbozo kategoriakat, kepanyagokat, illetve kozossegi funkciokat szeretne kezelni. Tovabbi nehezseget jelent, hogy a receptadatokhoz gyakran kapcsolodnak olyan kiegeszito informaciok, mint az allergenek vagy a felhasznaloi ertekelesek.
+
+\section{Felhasznalt modszerek roviden}
+
+A rendszer bongeszobol elerheto, kliens--szerver alapu webalkalmazaskent valosul meg. A felhasznaloi felulet egy egyoldalas frontend alkalmazas, amely HTTP API-n keresztul kommunikal a backenddel. Az adatok tarolasa relacios adatbazisban tortenik, a funkciok pedig jol elhatarolt modulokban jelennek meg (profilkezeles, receptkezeles, kereses, kommenteles, ertekeles).
 
 \section{Celcsoport es hasznalati helyzetek}
 
@@ -18,6 +22,18 @@ A projekt elsodleges celcsoportjat azok a felhasznalok alkotjak, akik sajat vagy
 \end{itemize}
 
 Az allergenekhez kapcsolodo informaciok megjelenitese kulonos jelentosegu, mert az elelmiszerek jelolesere es a fogyasztok tajekoztatasara vonatkozo unios szabalyok erre kiemelt hangsulyt helyeznek \cite{eu1169}.
+
+\section{A program hasznalata}
+
+A rendszer hasznalata a gyakorlatban a kovetkezo fo lepesekre bonthato:
+
+\begin{enumerate}
+\item A felhasznalo regisztral, majd bejelentkezik a webes feluleten.
+\item Uj receptet hoz letre a szukseges adatokkal (nev, leiras, hozzavalok, lepesek, opcionális kep).
+\item A receptlista nezetben kulcsszavas kereses es szures segiti a megfelelo tartalom megtalalasat.
+\item A reszletes receptoldalon ertekelest adhat, kommentelhet, illetve ellenorizheti az allergenekre vonatkozo informaciokat.
+\item Sajat profiljaban kezeli a szemelyes adatait es a sajat tartalmakhoz kapcsolodo muveleteket.
+\end{enumerate}
 
 \section{Projektkor}
 
