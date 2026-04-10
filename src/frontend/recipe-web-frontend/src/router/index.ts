@@ -8,7 +8,6 @@ import AllRecipesView from '@/views/AllRecipesView.vue'
 import EditRecipeView from '@/views/EditRecipeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import { useAuthStore } from '@/stores/authStore'
-import { useRecipeStore } from '@/stores/recipeStore'
 
 const initRouter = () => {
     const router = createRouter({
@@ -31,12 +30,6 @@ const initRouter = () => {
                 name: 'NewRecipe',
                 component: NewRecipeView,
                 meta: { requiresAuth: true },
-                beforeEnter: () => {
-                    const auth = useAuthStore()
-                    const recipeStore = useRecipeStore()
-                    recipeStore.clearNewRecipeDraft(auth.currentUser?.id)
-                    return true
-                },
             },
             {
                 path: '/recipes',
