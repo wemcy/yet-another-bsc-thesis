@@ -28,9 +28,17 @@ public class Recipe : Entity
         var comment = Comments.SingleOrDefault(c => c.Id == commentId);
         return comment ?? throw new CommentNotFoundExeption(commentId);
     }
-    public void Rate(int rating, AppUser user)
+    public void Rate(int newRating, AppUser user)
     {
-        Ratings.Add(new Rating() { Value = rating, User = user });
+        var rating = Ratings.SingleOrDefault(r => r.User.Id == user.Id);
+        if (rating is null)
+        {
+            Ratings.Add(new Rating() { Value = newRating, User = user });
+        }
+        else
+        {
+            rating.Value = newRating;
+        }
         UpdateAverageRating();
     }
 }
