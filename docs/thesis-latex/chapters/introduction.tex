@@ -1,23 +1,14 @@
-﻿\chapter{Bevezetes}
-\label{ch:introduction}
+﻿\chapter{Bevezetés}\label{ch:introduction}
 
-Ez a szakdolgozat egy receptkezelo webalkalmazas tervezeset es megvalositasat mutatja be. A rendszer celja, hogy a felhasznalok egy korszeru webes feluleten tudjak rogzitni, keresni, ertekelni es megosztani receptjeiket, mikozben a megoldas kulon figyelmet fordit az allergeninformaciok kezelesere es a jol strukturalt API-alapu integraciora. Az alkalmazas technikai alapjat egy Vue alapokra epulo kliens, egy ASP.NET Core Web API szolgaltatas, valamint egy relacios adatbazis adja \cite{vue,aspnetcore,postgresql}.
+A szakdolgozatom célja egy könnyen kezelhető receptkezelő webes alkalmazás létrehozása. Az alkalmazás lehetővé teszi a felhasználók számára, hogy saját receptjeiket feltöltsék, megosszák másokkal, valamint értékeljék és kommentálják a meglévő recepteket. Emellett az alkalmazás támogatja a keresést és szűrést, különösen nagy hangsúlyt fektetve az allergén információk megjelenítésére, hogy az ételallergiával élő felhasználók is biztonságosan használhassák a platformot.
 
-\section{Motivacio}
+\section{Motiváció}
 
-A receptek digitális kezelese jellemzoen tobb kulonallo igenyt egyesit. Fontos a gyors kereses, a reszletes receptleiras, a felhasznaloi visszajelzesek tamogatasa, valamint az, hogy az etelallergiaval elo felhasznalok is atlathato informaciot kapjanak az osszetevokrol. Az alkalmazas egyetlen rendszerben kivanja osszefogni ezeket a funkcionalitasokat, tovabba alkalmas alapot szeretne adni a kesobbi bovitesekhez is.
+Családunkban több generáció házi, sokszor kézzel írt receptjeit használja. Ezek a receptek gyakran papíron vagy különböző digitális formátumokban vannak tárolva, melyek követése és megosztása nehézkes lehet. Ezek utólagos módosítása szintén nehézkesen, vagy nehezen követhető módon történik.
+A jelenlegi rendszerek gyakran nem nyújtanak megfelelő támogatást a receptek kezelésére, megosztására és értékelésére, különösen akkor, ha figyelembe vesszük az allergén információk fontosságát. Egy jól megtervezett alkalmazás nemcsak megkönnyítené a receptek megosztását és kezelését, hanem allergén információk megjelenítésével biztonságosabbá is tenné a főzést azok számára, akik ételallergiával élnek.
 
-\section{A dolgozat celja}
+\section{A dolgozat célja}
 
-A dolgozat ket fo celra epul:
+A dolgozat célja egy olyan könnyen kezelhető webes alkalmazás, amely segítségével a felhasználók egyszerűen feltölthetik, megoszthatják és szerkeszthetik saját receptjeiket. Az alkalmazásnak támogatnia kell a receptek keresését és szűrését, különösen az allergén információk alapján, hogy az ételallergiával élő felhasználók is biztonságosan használhassák a platformot. Ezen szűrők úgy legyenek kialakítva, hogy azok kövessék a már bevett gyakarolatokat a vendéglátási iparban, ahol a ételallergének jelölése kiemelt fontosságú\cite{eu1169}.
 
-\begin{itemize}
-	\item bemutatni a rendszerrel szemben megfogalmazott funkcionális es nem funkcionális kovetelmenyeket,
-	\item dokumentalni az alkalmazott architekturalis es implementacios donteseket ugy, hogy azok visszavezethatok legyenek a projektben megjeleno tenyleges megoldasokra.
-\end{itemize}
-
-Ennek megfeleloen a dolgozat nem csupan egy altalanos termekbemutato, hanem egy fejlesztesi dokumentacio is, amely lefedi a kovetelmenyeket, a rendszertervet, az implementacio fo reszeit, valamint a validacio es teszteles modszereit.
-
-\section{A dolgozat felépítese}
-
-A \ref{ch:problem-definition}. fejezet felhasznaloi dokumentaciokent mutatja be a problema rovid leirasat, az alkalmazott megkozelitest es a rendszer hasznalatat. A \ref{ch:architecture}. fejezet fejlesztoi dokumentaciokent foglalja ossze a specifikaciot, a rendszertervet es a technikai donteseket, ezen belul a \ref{ch:requirements}, \ref{ch:implementation} es \ref{ch:testing} jelolesu reszek a kovetelmenyeket, a megvalositast es a validaciot targyaljak. A \ref{ch:summary}. fejezet az eredmenyeket es a tovabbi lehetosegeket zárja le.
+Enek kívül egy olyan modern megoldásokat alkalmazó rendszer létrehozása, amely könnyen karbantartható és bővíthető, valamint megfelel a jelenlegi webes fejlesztési szabályoknak és bevett gyakorlatoknak. Emellett fontosnak tartom azt, hogy a rendszer könnyedén elindítható legyen helyi környezetben, és ami minimalizálja azon külső szoftvereket ami szükséges a rendszer futtatásához.

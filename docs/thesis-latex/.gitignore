@@ -1,0 +1,22 @@
+# LaTeX temporary/build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.log
+*.nlo
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+
+# Build output directory
+build/
+
+# Ignore generated PDF in source root
+elteikthesis_hu.pdf
