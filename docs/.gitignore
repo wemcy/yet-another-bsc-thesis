@@ -1,1 +1,12 @@
 _site
+thesis-latex/build/
+thesis-latex/*.aux
+thesis-latex/*.bbl
+thesis-latex/*.bcf
+thesis-latex/*.blg
+thesis-latex/*.log
+thesis-latex/*.lof
+thesis-latex/*.lot
+thesis-latex/*.out
+thesis-latex/*.run.xml
+thesis-latex/*.toc

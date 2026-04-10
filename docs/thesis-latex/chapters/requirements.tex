@@ -1,0 +1,45 @@
+﻿\chapter{Kovetelmenyek}
+\label{ch:requirements}
+
+\section{Funkcionalis kovetelmenyek}
+
+A repositoryban szereplo use case dokumentaciok alapjan a rendszer kovetelmenyei nehany jol elhatarolhato teruletre bonthatok. A dolgozat tovabbi reszeben ezekhez a csoportokhoz rendelhetoek az architekturalis es implementacios dontesek is.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ | m{0.28\textwidth} | m{0.62\textwidth} | }
+		\hline
+		\textbf{Terulet} & \textbf{Tartalom} \\
+		\hline \hline
+		Felhasznalo- es profilkezeles & Regisztracio, bejelentkezes, profil megjelenitese es modositasa. \\
+		\hline
+		Receptkezeles & Uj recept letrehozasa, szerkesztese, torlese, reszletes receptnezet. \\
+		\hline
+		Kereses es szures & Receptlista bongeszese, kulcsszavas kereses, allergenekhez es egyeb kriteriumokhoz kotheto szures. \\
+		\hline
+		Kozossegi funkciok & Receptek ertekelese, kommentek rogzitese es torlese. \\
+		\hline
+	\end{tabular}
+	\caption{A projekt fo funkcionalis teruletei}
+	\label{tab:functional-areas}
+\end{table}
+
+\section{Nem funkcionalis kovetelmenyek}
+
+A rendszerrel szemben a funkciokon tul a kovetkezo nem funkcionalis elvarasok is megjelennek:
+
+\begin{itemize}
+	\item atlathato es reszponziv felhasznaloi felulet,
+	\item jol dokumentalt, stabilan hasznalhato HTTP API,
+	\item olyan adatmodell, amely a recept-, komment- es felhasznaloi adatok kozotti kapcsolatokat konzisztensen kezeli,
+	\item tovabbfejlesztheto komponensfelosztas a frontend es a backend oldalon,
+	\item fejlesztoi munkat segito konteneres inditasi es build kornyezet \cite{docker}.
+\end{itemize}
+
+\section{Dokumentacios kovetelmenyek}
+
+Mivel a projekt szakdolgozati keretben keszul, maga a dokumentacio is kulon kovetelmenynek tekintheto. A dolgozatnak le kell vezetnie, hogy a rendszer milyen felhasznaloi igenyekre ad valaszt, hogyan illeszkednek egymashoz a fo komponensek, es mely implementacios dontesek tamasztjak ala a megfogalmazott celokat. Kiemelten fontos tovabba, hogy az OpenAPI specifikacio es a valos rendszerkozotti kapcsolat egyertelmuen kovetheto legyen \cite{openapi}.
+
+\section{A tovabbi kifejtes szerkezete}
+
+Erre a fejezetre erdemes majd visszaterni a dolgozat vegleges./docs/thesis-latex/build.ps1itese soran. Itt lehet egy tablazatban vagy felsorolasban tetelesen osszerendelni a use case-eket a megvalositott funkciokkal, hogy a kovetelmenyek teljesulese ellenorizhetoen bemutathato legyen.
