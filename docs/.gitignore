@@ -4,9 +4,17 @@ thesis-latex/*.aux
 thesis-latex/*.bbl
 thesis-latex/*.bcf
 thesis-latex/*.blg
+thesis-latex/*.fdb_latexmk
+thesis-latex/*.fls
+thesis-latex/*.idx
+thesis-latex/*.ilg
+thesis-latex/*.ind
 thesis-latex/*.log
 thesis-latex/*.lof
 thesis-latex/*.lot
+thesis-latex/*.nav
 thesis-latex/*.out
+thesis-latex/*.snm
+thesis-latex/*.synctex.gz
 thesis-latex/*.run.xml
 thesis-latex/*.toc
