@@ -108,4 +108,21 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
             .ProjectTo<T>(mapper.ConfigurationProvider)
             .ToAsyncEnumerable();
     }
+
+    public async Task<List<Guid>> GetRandomRecipesGuids(int count)
+    {
+        return await _dbContext.Recipes
+            .OrderBy(x => EF.Functions.Random())
+            .Take(count)
+            .Select(x => x.Id)
+            .ToListAsync();
+    }
+
+    public async Task<IList<Recipe>> GetRecipesByIdsAsync(Guid[] ids)
+    {
+        return await databaseContext.Recipes
+            .AsNoTracking()
+            .Where(r => ids.Contains(r.Id))
+            .ToListAsync();
+    }
 }

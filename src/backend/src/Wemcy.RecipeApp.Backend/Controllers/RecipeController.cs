@@ -20,7 +20,7 @@ namespace Wemcy.RecipeApp.Backend.Controllers;
 
 [EntityNotFoundHandler]
 [UnauthorizedHandler]
-public class RecipeController(RecipeService recipeService, IMapper mapper) : RecipesApiController
+public class RecipeController(RecipeService recipeService, IMapper mapper, ShowcaseRecipeService showcaseRecipeService) : RecipesApiController
 {
     public override async Task<IActionResult> CreateRecipe([FromBody] CreateRecipeDTO createRecipeDTO)
     {
@@ -37,13 +37,13 @@ public class RecipeController(RecipeService recipeService, IMapper mapper) : Rec
 
     public override async Task<IActionResult> GetFeaturedRecipe()
     {
-        var recipe = await recipeService.GetFeaturedRecipeAsync();
+        var recipe = showcaseRecipeService.GetFeaturedRecipeAsync();
         return Ok(mapper.Map<ReadRecipeDTO>(recipe));
     }
 
     public override async Task<IActionResult> ListShowcaseRecipes()
     {
-        var q = await recipeService.GetShowcaseRecieps();
+        var q = await showcaseRecipeService.GetShowcaseRecipes();
         var dtos = q.Select(x => mapper.Map<ReadRecipeDTO>(x)).ToList();
         return Ok(dtos);
     }

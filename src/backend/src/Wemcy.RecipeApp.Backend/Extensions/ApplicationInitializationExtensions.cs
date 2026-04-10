@@ -50,5 +50,6 @@ public static class ApplicationInitializationExtensions
                     $"Could not assign Admin role to default admin user: {string.Join(", ", roleResult.Errors.Select(e => e.Description))}");
             }
         }
+        // TODO Showcased recipes creation, and featured recipe when we first start up the appplication
     }
 }

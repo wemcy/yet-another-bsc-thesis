@@ -10,6 +10,7 @@ public class DatabaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Gu
 {
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<Image> Images { get; set; }
+    public RecipeShowcase RecipeShowcase => this.Find<RecipeShowcase>(RecipeShowcase.SingletonId) ?? throw new Exception("RecipeShowcase not found in database, this should never happen"); //TODO Exception
 
     public DatabaseContext(DbContextOptions options) : base(options)
     {
@@ -27,7 +28,19 @@ public class DatabaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Gu
                   .HasConversion<int>();
             entity.HasGeneratedTsVectorColumn(x=> x.TitleSearchVector, "english", x => x.Title).HasIndex( x => x.TitleSearchVector).HasMethod("GIN"); 
         });
+        modelBuilder.Entity<RecipeShowcase>(entity =>
+        {
+            entity.HasKey(r => r.Id);
+            entity.Property(r => r.Id)
+                  .ValueGeneratedNever();
+            entity.Property(r => r.ShowcaseRecipeIds)
+                  .HasColumnType("uuid[]");
+            entity.ToTable(t => t.HasCheckConstraint("CK_RecipeShowcase_Singleton", "\"Id\" = 1"));
+            entity.HasData(new RecipeShowcase { Id = RecipeShowcase.SingletonId });
+        });
     }
+
+
 
     //To not be able call this outside without context
     protected DatabaseContext()

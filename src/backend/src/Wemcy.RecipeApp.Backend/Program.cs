@@ -43,9 +43,11 @@ builder.Services.AddScoped<RecipeService, RecipeService>().
                  AddScoped<UserService, UserService>().
                  AddScoped<AuthService, AuthService>().
                  AddScoped<ProfileService, ProfileService>().
+                 AddScoped<ShowcaseRecipeService, ShowcaseRecipeService>().
                  AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>().
                  AddSingleton<IAuthorizationHandler, CommentAuthorizationCrudHandler>().
                  AddSingleton<IAuthorizationHandler, AppUserAuthorizationCrudHandler>();
+builder.Services.AddHostedService<ShowcaseRefreshService>();
 builder.Services.ConfigurePagination();
 
 builder.Services.AddHttpContextAccessor().AddCors(opt =>

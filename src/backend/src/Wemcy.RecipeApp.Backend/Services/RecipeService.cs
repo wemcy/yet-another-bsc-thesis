@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using Wemcy.RecipeApp.Backend.Api.Models;
+using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Pagination;
@@ -32,9 +34,8 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
     {
         return await this.recipeRepository.GetRecipeByIdAsync(id);
     }
-
     public async Task<IList<Recipe>> GetShowcaseRecieps()
-        // TODO: implement daily random recipes 
+    // TODO: implement daily random recipes 
     {
         return await this.recipeRepository.GetRecipesAsync(6);
     }
@@ -119,5 +120,15 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
     public IAsyncEnumerable<T> SearchRecipesByTitleAs<T>(RecipeSearch recipeSearch, RecipeFilter recipeFilter)
     {
         return this.recipeRepository.SearchRecipesByTitleAs<T>(recipeSearch, recipeFilter);
+    }
+
+    public async Task<List<Guid>> GetRandomRecipesGuids(int count)
+    {
+        return await this.recipeRepository.GetRandomRecipesGuids(count);
+    }
+
+    public async Task<IList<Recipe>> GetRecipesByIdsAsync(Guid[] ids)
+    {
+        return await this.recipeRepository.GetRecipesByIdsAsync(ids);
     }
 }
