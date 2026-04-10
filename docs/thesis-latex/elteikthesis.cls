@@ -384,7 +384,22 @@
 % For topic declaration page
 \RequirePackage{pdfpages}
 % ------------------------------
+% Témabejelentő
+\newcommand{\topicdeclaration}{
+	\thispagestyle{empty}
+	% \begin{center}
+		\vspace*{\fill}
 
+		\input{chapters/topic.tex}
+
+		\vspace*{\fill}
+	% \end{center}
+
+
+	\cleardoublepage
+	\setcounter{page}{1}
+}
+% ------------------------------
 % ------------------------------
 % Appendix
 \RequirePackage{appendix}

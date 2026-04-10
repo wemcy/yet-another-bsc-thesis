@@ -18,5 +18,6 @@
         "titleBar.inactiveBackground": "#1e68ef99",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "peacock.color": "#1e68ef"
+    "peacock.color": "#1e68ef",
+    "latex-workshop.latex.outDir": "%DIR%/build"
 }

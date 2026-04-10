@@ -1,44 +1,32 @@
-﻿\chapter{Felhasznaloi dokumentacio}
-\label{ch:problem-definition}
+﻿\chapter{Felhasználói dokumentáció}\label{ch:problem-definition}
 
-\section{A megoldott problema rovid leirasa}
+\section{Felhasznált módszerek röviden}
 
-A receptgyujtes es receptmegosztas sok esetben ad hoc modon tortenik: jegyzetekben, uzenetekben vagy nehezen keresheto dokumentumokban. Egy ilyen folyamat gyorsan atlathatatlanna valik, ha a felhasznalo egyszerre tobb receptet, kulonbozo kategoriakat, kepanyagokat, illetve kozossegi funkciokat szeretne kezelni. Tovabbi nehezseget jelent, hogy a receptadatokhoz gyakran kapcsolodnak olyan kiegeszito informaciok, mint az allergenek vagy a felhasznaloi ertekelesek.
+\todo{Megírnit hogyan epul fel az app roviden}
 
-\section{Felhasznalt modszerek roviden}
+\section{Rendszerkövetelmények}
 
-A rendszer bongeszobol elerheto, kliens--szerver alapu webalkalmazaskent valosul meg. A felhasznaloi felulet egy egyoldalas frontend alkalmazas, amely HTTP API-n keresztul kommunikal a backenddel. Az adatok tarolasa relacios adatbazisban tortenik, a funkciok pedig jol elhatarolt modulokban jelennek meg (profilkezeles, receptkezeles, kereses, kommenteles, ertekeles).
-
-\section{Celcsoport es hasznalati helyzetek}
-
-A projekt elsodleges celcsoportjat azok a felhasznalok alkotjak, akik sajat vagy megosztott receptgyujtemenyt szeretnenek kezelni webes feluleten. A rendszer fontosabb hasznalati helyzetei a kovetkezok:
-
+A szerver futattasához szüksegés egy olyan környezet, amin futtatható a Docker\footnote{\url{https://www.docker.com/}. Utolsó elérés: 2026.04.10.}. Emiatt az alabbi követelmények szükségesek:
 \begin{itemize}
-	\item uj felhasznalo regisztracioja es profilkezelese,
-	\item uj receptek rogzitese keppel es reszletes leirassal,
-	\item receptek keresese kulcsszavak es szurok alapjan,
-	\item receptek ertekelese es kommentelese,
-	\item allergeninformaciok figyelembe vetele a bongeszes es donteshozatal soran.
+	\item 64 bit-es Windows 11 vagy Linux operációs rendszer ami támogatja a Docker futtatását
+	\item Legalább 4 GB RAM, ajánlott 8 GB 
+	\item Legalább 10 GB szabad tárhely
+	\item Hálózati kapcsolat
 \end{itemize}
 
-Az allergenekhez kapcsolodo informaciok megjelenitese kulonos jelentosegu, mert az elelmiszerek jelolesere es a fogyasztok tajekoztatasara vonatkozo unios szabalyok erre kiemelt hangsulyt helyeznek \cite{eu1169}.
+Kliens oldalon egy modern webböngészőre van szükségünk, ami támogatja a HTML5-öt és a JavaScript-et:
+\begin{itemize}
+	\item Mozilla Firefox legfrissebb verziója
+	\item Google Chrome legfrissebb verziója
+	\item Microsoft Edge legfrissebb verziója
+	\item Apple Safari legfrissebb verziója
+\end{itemize}
 
-\section{A program hasznalata}
+\section{Telepítés}
+Az alkalmazást a korábban említett Docker\footnote{\url{https://docs.docker.com/desktop/}. Utolsó elérés: 2026.04.10.}, illetve Docker Compose\footnote{\url{https://docs.docker.com/compose/install/}. Utolsó elérés: 2026.04.10.} segítségével lehet telepíteni. Ennek köszönhetően egyetlen parancs kiadásával a teljes rendszer, különösebb beállítások nélkül elindítható.
 
-A rendszer hasznalata a gyakorlatban a kovetkezo fo lepesekre bonthato:
+\subsection{Telepítési útmutató}
+Miután a Docker és a Docker Compose telepítésre került, fájkezelőben a projekt mappájába kell navigálni. Azt itt található \texttt{docker-compose.yml} fájl segítségével indítható el a rendszert. Ez a fájl négy konténerből áll: egy PostgreSQL\footnote{\url{https://www.postgresql.org/}. Utolsó elérés: 2026.04.10.} adatbázisból, a backend REST API-ból, a frontend szerverből és egy Nginx fordított proxyból.
 
-\begin{enumerate}
-\item A felhasznalo regisztral, majd bejelentkezik a webes feluleten.
-\item Uj receptet hoz letre a szukseges adatokkal (nev, leiras, hozzavalok, lepesek, opcionális kep).
-\item A receptlista nezetben kulcsszavas kereses es szures segiti a megfelelo tartalom megtalalasat.
-\item A reszletes receptoldalon ertekelest adhat, kommentelhet, illetve ellenorizheti az allergenekre vonatkozo informaciokat.
-\item Sajat profiljaban kezeli a szemelyes adatait es a sajat tartalmakhoz kapcsolodo muveleteket.
-\end{enumerate}
+A rendszer konfigurációja egy environment fájlon keresztül történik, amelyben a működéshez szükséges környezeti változók adhatók meg. Az elérhető konfigurációs opciókat az \ref{tab:config}~táblázat tartalmazza.
 
-\section{Projektkor}
-
-A jelenlegi rendszer egy webbongeszon keresztul elerheto alkalmazaskent keszul. A dolgozat szempontjabol a projektkorbe a frontend, a backend API, az adatbazis-kapcsolat, a hitelesiteshez es jogosultsagkezeleshez kapcsolodo fo folyamatok, valamint a fejlesztoi es telepitesi tamogatas tartozik. Nem resze viszont a nagyvallalati uzemeltetes vagy a terheléses meres teljes koru kidolgozasa; ezek a jovo beli tovabblepesi lehetosegek koze sorolhatok.
-
-\section{Fejlesztoi kiindulasi anyagok}
-
-A dolgozat kesziteset a repositoryban mar meglevo projektanyagok tamogatjak. Ilyenek a use case leirasok, a wireframe-ek, az OpenAPI specifikacio, valamint maguk a forraskodok. Ez lehetove teszi, hogy a szoveges leirasok ne elmeleti altalanossagok maradjanak, hanem a rendszer aktualis allapotahoz kapcsolodjanak.
