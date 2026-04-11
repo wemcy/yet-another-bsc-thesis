@@ -7,10 +7,10 @@ namespace Wemcy.RecipeApp.Backend.Services;
 
 public class AuthService(
     SignInManager<User> signInManager,
-    UserService userSerivice) : IAuthService
+    IUserService userSerivice) : IAuthService
 {
     private readonly SignInManager<User> _signInManager = signInManager;
-    private readonly UserService _userSerivice = userSerivice;
+    private readonly IUserService _userSerivice = userSerivice;
     public async Task RegisterAsync(string email, string password, string? displayName)
     {
        await _userSerivice.CreateUserAsync(email, password, displayName);

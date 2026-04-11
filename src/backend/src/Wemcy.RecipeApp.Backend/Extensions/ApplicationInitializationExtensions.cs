@@ -10,7 +10,7 @@ public static class ApplicationInitializationExtensions
     public static async Task EnsureDefaultAdminAsync(this WebApplication app)
     {
         using var scope = app.Services.CreateScope();
-        var userService = scope.ServiceProvider.GetRequiredService<UserService>();
+        var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
         await userService.CreateAdminUser();
     }
 

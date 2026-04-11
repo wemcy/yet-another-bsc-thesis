@@ -14,9 +14,9 @@ using Recipe = Wemcy.RecipeApp.Backend.Model.Recipe;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class RecipeService(RecipeRepository recipeRepository, ImageService imageService, IMapper mapper, UserService userService)
+public class RecipeService(IRecipeRepository recipeRepository, ImageService imageService, IMapper mapper, IUserService userService)
 {
-    private readonly RecipeRepository recipeRepository = recipeRepository;
+    private readonly IRecipeRepository recipeRepository = recipeRepository;
     private readonly ImageService imageService = imageService;
 
     public async Task<Recipe> CreateRecipeAsync(Recipe recipe)

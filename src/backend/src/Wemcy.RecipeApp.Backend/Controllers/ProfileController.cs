@@ -12,20 +12,20 @@ namespace Wemcy.RecipeApp.Backend.Controllers;
 [InvalidCredentialsHandler]
 [EntityNotFoundHandler]
 [UnauthorizedHandler]
-public class ProfileController(ProfileService profileService, IMapper mapper) : ProfileApiController
+public class ProfileController( IMapper mapper, IUserService userService) : ProfileApiController
 {
 
     [Authorize(Roles = Roles.Admin)]
 
     public override async Task<IActionResult> AddUserRoleById([FromRoute(Name = "id"), Required] Guid id, [FromBody] AddUserRoleByIdRequest addUserRoleByIdRequest)
     {
-        await profileService.AddRoleToUserAsync(id, addUserRoleByIdRequest);
+        await userService.AddRoleToUserAsync(id, addUserRoleByIdRequest);
         return NoContent();
     }
 
     public override async Task<IActionResult> DeleteProfileById([FromRoute(Name = "id"), Required] Guid id)
     {
-        await profileService.DeleteProfileByIdAsync(id);
+        await userService.DeleteProfileByIdAsync(id);
         return NoContent();
     }
 
@@ -50,7 +50,7 @@ public class ProfileController(ProfileService profileService, IMapper mapper) : 
 
     public async override Task<IActionResult> GetProfileById([FromRoute(Name = "id"), Required] Guid id)
     {
-        var profile = await profileService.GetProfileById(id);
+        var profile = await userService.GetUserByIdAsync(id);
         return Ok(mapper.Map<Api.Models.Profile>(profile));
     }
 
@@ -58,7 +58,7 @@ public class ProfileController(ProfileService profileService, IMapper mapper) : 
     {
         try
         {
-            return new FileStreamResult(await profileService.GetProfileImageById(id), "image/jpeg");
+            return new FileStreamResult(await userService.GetProfileImageById(id), "image/jpeg");
         }
         catch (ImageNotFoundException)
         {
@@ -77,7 +77,7 @@ public class ProfileController(ProfileService profileService, IMapper mapper) : 
 
     public override async Task<IActionResult> UpdateProfileById([FromRoute(Name = "id"), Required] Guid id, [FromForm(Name = "displayName")] string? displayName, [FromForm(Name = "password"), MinLength(6)] string? password, IFormFile? profileImage, [FromForm(Name = "email")] string? email)
     {
-        await profileService.UpdateProfileByIdAsync(id, new UserProfileUpdateRequest()
+        await userService.UpdateProfileByIdAsync(id, new UserProfileUpdateRequest()
         {
             DisplayName = displayName,
             Password = password,

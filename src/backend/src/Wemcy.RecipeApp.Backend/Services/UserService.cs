@@ -1,18 +1,20 @@
 ﻿using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Security;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<User> userManager, IAuthorizationService authorizationService, RoleManager<IdentityRole<Guid>> roleManager)
+public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<User> userManager, ImageService imageService, IAuthorizationService authorizationService, RoleManager<IdentityRole<Guid>> roleManager) : IUserService
 {
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
     private readonly UserManager<User> _userManager = userManager;
     private readonly IAuthorizationService _authorizationService = authorizationService;
     private readonly RoleManager<IdentityRole<Guid>> _roleManager = roleManager;
+    private readonly ImageService _imageService = imageService;
 
     public ClaimsPrincipal GetCurrentUser()
     {
@@ -124,5 +126,55 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<U
     public async Task<User?> FindByEmailAsync(string email)
     {
         return await _userManager.FindByEmailAsync(email);
+    }
+    public async Task<Stream> GetProfileImageById(Guid id)
+    {
+        var user = await GetUserByIdAsync(id);
+        var image = user.Image ?? throw new ImageNotFoundException("User does not have profile picture");
+        return _imageService.GetImageById(image.Id);
+    }
+    public async Task UpdateProfileByIdAsync(Guid id, UserProfileUpdateRequest request)
+    {
+        var user = await GetUserByIdAsync(id);
+        await EnsureAuthorizedAsync(user, Operations.Update);
+        if (request.HasImageUpdate)
+        {
+            var image = await _imageService.CreateImage(request.ImageStream, request.ImageName);
+            user.Image = image;
+        }
+        if (request.HasDisplayNameUpdate)
+        {
+            user.DisplayName = request.DisplayName;
+        }
+        if (request.HasEmailUpdate)
+        {
+            var token = await _userManager.GenerateChangeEmailTokenAsync(user, request.Email);
+            await _userManager.ChangeEmailAsync(user, request.Email, token);
+            await _userManager.SetUserNameAsync(user, request.Email);
+        }
+        if (request.HasPasswordUpdate)
+        {
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            await _userManager.ResetPasswordAsync(user, token, request.Password);
+        }
+        await _userManager.UpdateAsync(user);
+    }
+
+    public async Task DeleteProfileByIdAsync(Guid id)
+    {
+        var user = await GetUserByIdAsync(id);
+        await EnsureAuthorizedAsync(user, Operations.Delete);
+        await _userManager.UpdateSecurityStampAsync(user);
+        await _userManager.DeleteAsync(user);
+    }
+
+    public async Task AddRoleToUserAsync(Guid id, AddUserRoleByIdRequest addUserRoleByIdRequest)
+    {
+        var user = await GetUserByIdAsync(id);
+        await EnsureAuthorizedAsync(user, Operations.Update);
+        if (addUserRoleByIdRequest.Role != UserRole.AdminEnum)
+            throw new UnknowRoleExeption(addUserRoleByIdRequest.Role.ToString()); // TODO better exception
+        if (!await _userManager.IsInRoleAsync(user, Security.Roles.Admin))
+            await _userManager.AddToRoleAsync(user, Security.Roles.Admin);
     }
 }
