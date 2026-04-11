@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Wemcy.RecipeApp.Backend.Model;
+namespace Wemcy.RecipeApp.Backend.Model.Entities;
 
 public class User : IdentityUser<Guid>
 {

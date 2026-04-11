@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Wemcy.RecipeApp.Backend.Database;
-using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Model.Entities;
 
 namespace Wemcy.RecipeApp.Backend.Extensions;
 

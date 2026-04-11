@@ -15,7 +15,7 @@ public class ShowcaseRefreshService(IServiceScopeFactory scopeFactory) : Backgro
 
             using var scope = scopeFactory.CreateScope();
             var service = scope.ServiceProvider.GetRequiredService<ShowcaseRecipeService>();
-            await service.UpdateShowcaseRecipes();
+            await service.UpdateShowcaseRecipesAsync();
         }
     }
 }

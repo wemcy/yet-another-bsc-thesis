@@ -18,7 +18,7 @@ public static class ApplicationInitializationExtensions
     {
         using var scope = app.Services.CreateScope();
         var showcaseRecipeService = scope.ServiceProvider.GetRequiredService<ShowcaseRecipeService>();
-        await showcaseRecipeService.CreateDeafaultShowcaseAndFeaturedRecipe();
+        await showcaseRecipeService.CreateDeafaultShowcaseAndFeaturedRecipeAsync();
     }
 
     public static async Task MigrateDatabase(this WebApplication app)

@@ -4,6 +4,7 @@ using System.Security.Claims;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Model.Entities;
 using Wemcy.RecipeApp.Backend.Security;
 
 namespace Wemcy.RecipeApp.Backend.Services;

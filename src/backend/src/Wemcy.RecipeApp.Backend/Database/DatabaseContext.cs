@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Model.Entities;
 using Wemcy.RecipeApp.Backend.Utils;
 
 

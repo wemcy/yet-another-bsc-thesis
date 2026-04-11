@@ -4,13 +4,12 @@ using System.Collections;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Exceptions;
-using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Repository;
 using Wemcy.RecipeApp.Backend.Search;
 using Wemcy.RecipeApp.Backend.Security;
-using Comment = Wemcy.RecipeApp.Backend.Model.Comment;
-using Recipe = Wemcy.RecipeApp.Backend.Model.Recipe;
+using Comment = Wemcy.RecipeApp.Backend.Model.Entities.Comment;
+using Recipe = Wemcy.RecipeApp.Backend.Model.Entities.Recipe;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 

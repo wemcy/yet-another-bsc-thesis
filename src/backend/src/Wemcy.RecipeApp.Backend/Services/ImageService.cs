@@ -1,4 +1,4 @@
-﻿using Wemcy.RecipeApp.Backend.Model;
+﻿using Wemcy.RecipeApp.Backend.Model.Entities;
 using Wemcy.RecipeApp.Backend.Repository;
 
 namespace Wemcy.RecipeApp.Backend.Services;

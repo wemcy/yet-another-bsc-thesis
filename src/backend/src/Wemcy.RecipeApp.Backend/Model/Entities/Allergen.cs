@@ -1,4 +1,4 @@
-﻿namespace Wemcy.RecipeApp.Backend.Model;
+﻿namespace Wemcy.RecipeApp.Backend.Model.Entities;
 
 [Flags]
 public enum AllergenType

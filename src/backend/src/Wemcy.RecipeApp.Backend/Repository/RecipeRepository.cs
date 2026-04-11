@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Extensions;
-using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Model.Entities;
 using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Search;
 

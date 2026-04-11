@@ -1,4 +1,4 @@
-﻿using Wemcy.RecipeApp.Backend.Model;
+﻿using Wemcy.RecipeApp.Backend.Model.Entities;
 using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Search;
 
@@ -17,7 +17,7 @@ namespace Wemcy.RecipeApp.Backend.Services
         Task<Recipe> GetRecipeByIdAsync(Guid recipeId);
         Task<IList<Recipe>> GetRecipesByIdsAsync(Guid[] recipeIds);
         Task<IList<T>> ListResipesAsAsync<T>(IQueryFilter<Recipe> recipeFilter);
-        Task<PaginatedResult<T>> ListResipesAsAsync<T>(PaginationOptions options, IQueryFilter<Model.Recipe> recipeFilter);
+        Task<PaginatedResult<T>> ListResipesAsAsync<T>(PaginationOptions options, IQueryFilter<Recipe> recipeFilter);
         Task RateRecipeAsync(Guid recipeId, int rating);
         IAsyncEnumerable<T> SearchRecipesByTitleAsAsync<T>(RecipeSearch recipeSearch, RecipeFilter recipeFilter);
         Task UpdateImageByIdAsync(Guid recipeId, Stream imageStream, string name);

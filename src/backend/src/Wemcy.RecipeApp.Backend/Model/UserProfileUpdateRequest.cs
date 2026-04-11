@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Wemcy.RecipeApp.Backend.Services;
+namespace Wemcy.RecipeApp.Backend.Model;
 
 public class UserProfileUpdateRequest
 {

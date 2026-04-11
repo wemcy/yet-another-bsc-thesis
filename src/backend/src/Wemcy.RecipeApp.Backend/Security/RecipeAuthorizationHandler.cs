@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using System.Security.Claims;
-using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Model.Entities;
 
 namespace Wemcy.RecipeApp.Backend.Security;
 

@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Model.Entities;
 
 namespace Wemcy.RecipeApp.Backend.Services
 {

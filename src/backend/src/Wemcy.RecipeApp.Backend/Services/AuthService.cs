@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Exceptions;
-using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Model.Entities;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 

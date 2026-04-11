@@ -2,14 +2,14 @@
 using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Extensions;
-using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Model.Entities;
 using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Search;
 using Wemcy.RecipeApp.Backend.Security;
 using Wemcy.RecipeApp.Backend.Services;
 using Wemcy.RecipeApp.Backend.Utils;
 using Comment = Wemcy.RecipeApp.Backend.Api.Models.Comment;
-using Recipe = Wemcy.RecipeApp.Backend.Model.Recipe;
+using Recipe = Wemcy.RecipeApp.Backend.Model.Entities.Recipe;
 
 namespace Wemcy.RecipeApp.Backend.Controllers;
 
@@ -31,7 +31,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
 
     public override async Task<IActionResult> ListShowcaseRecipes()
     {
-        var dtos = await showcaseRecipeService.GetShowcaseRecipes<Api.Models.Recipe>();
+        var dtos = await showcaseRecipeService.GetShowcaseRecipesAsync<Api.Models.Recipe>();
         return Ok(dtos);
     }
 
@@ -117,7 +117,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
     [Authorize(Roles = Roles.Admin)]
     public override async Task<IActionResult> UpdateFeaturedRecipe([FromBody] Api.Models.UpdateFeaturedRecipeRequest updateFeaturedRecipeRequest)
     {
-        await showcaseRecipeService.SetFeaturedRecipe(updateFeaturedRecipeRequest.RecipeId);
+        await showcaseRecipeService.SetFeaturedRecipeAsync(updateFeaturedRecipeRequest.RecipeId);
         return NoContent();
     }
 

@@ -1,4 +1,4 @@
-﻿using Wemcy.RecipeApp.Backend.Model;
+﻿using Wemcy.RecipeApp.Backend.Model.Entities;
 using Allergen = Wemcy.RecipeApp.Backend.Api.Models.Allergen;
 using RecipeDTO = Wemcy.RecipeApp.Backend.Api.Models.Recipe;
 

@@ -1,7 +1,7 @@
 ﻿using NpgsqlTypes;
 using Wemcy.RecipeApp.Backend.Exceptions;
 
-namespace Wemcy.RecipeApp.Backend.Model;
+namespace Wemcy.RecipeApp.Backend.Model.Entities;
 
 public class Recipe : Entity
 {
