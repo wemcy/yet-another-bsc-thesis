@@ -123,6 +123,7 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
         return await databaseContext.Recipes
             .AsNoTracking()
             .Where(r => ids.Contains(r.Id))
+            .Include(r => r.User)
             .ToListAsync();
     }
 }
