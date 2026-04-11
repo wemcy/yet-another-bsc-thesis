@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
-  title: Receptkezelő webalkalmazás API
-  description: Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+  title: Recipe Management Web Application API
+  description: Recipe create/list/update/delete operations with allergen-based filtering.
   contact:
     name: Máté Zsolt Sándor
     email: mzsoltsandor@gmail.com
@@ -20,19 +20,21 @@ tags:
 - name: Health
   description: Service health / availability
 - name: Recipes
-  description: Recept műveletek
+  description: Recipe operations
 - name: Rating
-  description: Értékelések
+  description: Ratings
 - name: Comment
-  description: Kommentek a receptekhez
+  description: Comments on recipes
 - name: Auth
-  description: Felhasználói autentikáció
+  description: User authentication
+- name: Profile
+  description: User profile operations
 paths:
   "/search":
     get:
       tags:
       - Recipes
-      summary: Receptek keresése cím alapján
+      summary: Search recipes by title
       operationId: searchRecipes
       parameters:
         - name: title
@@ -55,7 +57,7 @@ paths:
             "$ref": "#/components/schemas/allergenSearchList"
       responses:
         '200':
-          description: Receptek a keresési feltételeknek megfelelően
+          description: Recipes matching the search criteria
           content:
             application/json:
               schema:
@@ -66,7 +68,7 @@ paths:
     post:
       tags:
       - Auth
-      summary: Felhasználó regisztráció
+      summary: User registration
       operationId: register
       requestBody:
         required: true
@@ -76,13 +78,13 @@ paths:
               "$ref": "#/components/schemas/registerRequest"
       responses:
         '200':
-          description: Sikeres regisztráció
+          description: Registration successful
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/loginResponse"
         '400':
-          description: Érvénytelen kérés (pl. az email már foglalt, gyenge jelszó)
+          description: Invalid request (e.g., email already in use, weak password)
           content:
             application/json:
               schema:
@@ -93,7 +95,7 @@ paths:
     post:
       tags:
       - Auth
-      summary: Bejelentkezés
+      summary: Login
       operationId: login
       requestBody:
         required: true
@@ -103,14 +105,14 @@ paths:
               "$ref": "#/components/schemas/loginRequest"
       responses:
         '200':
-          description: Sikeres bejelentkezés – munkamenet cookie beállítva
+          description: Login successful; session cookie set
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/loginResponse"
 
         '401':
-          description: Hibás email cím vagy jelszó
+          description: Invalid email address or password
           content:
             application/json:
               schema:
@@ -123,36 +125,45 @@ paths:
     post:
       tags:
       - Auth
-      summary: Kijelentkezés
+      summary: Logout
       operationId: logout
       responses:
         '204':
-          description: Sikeres kijelentkezés, cookie törlésre kerül
+          description: Logout successful; cookie removed
         '401':
-          description: Nem volt aktív munkamenet
+          description: No active session
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
       security:
         - cookieAuth: []
   "/profile/me":
     get:
       tags:
       - Profile
-      summary: Bejelentkezett felhasználó adatainak lekérdezése
+      summary: Get the logged-in user profile
       operationId: getOwnProfile
       responses:
         '200':
-          description: Sikeres lekérdezés
+          description: Request successful
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/profileResponse"
         '401':
-          description: Nem volt aktív munkamenet
+          description: No active session
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
+
       security:
         - cookieAuth: []
     put:
       tags:
       - Profile
-      summary: Bejelentkezett felhasználó adatainak frissítése
+      summary: Update the logged-in user profile
       operationId: updateOwnProfile
       requestBody:
         required: false
@@ -162,89 +173,113 @@ paths:
               "$ref": "#/components/schemas/updateProfileRequest"
       responses:
         '204':
-          description: Sikeres frissítés
+          description: Update successful
         '401':
-          description: Nem volt aktív munkamenet
+          description: No active session
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
       security:
         - cookieAuth: []
   "/profile/me/image":
     get:
       tags:
       - Profile
-      summary: Bejelentkezett felhasználó profilképének lekérdezése
+      summary: Get the logged-in user profile image
       operationId: getOwnProfileImage
       responses:
         '200':
-          description: Profilkép sikeresen lekérdezve
+          description: Profile image retrieved successfully
           content:
             image/jpeg:
               schema:
                 type: string
                 format: binary
         '401':
-          description: Nem volt aktív munkamenet
+          description: No active session
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
+
       security:
         - cookieAuth: []
   "/profile/{id}/image":
     get:
       tags:
       - Profile
-      summary: Felhasználó profilképének lekérdezése ID alapján
+      summary: Get user profile image by ID
       parameters:
         - name: id
           required: true
           in: path
-          description: A lekérdezendő felhasználó egyedi azonosítója (UUID)
+          description: Unique identifier of the user to query (UUID)
           schema:
             type: string
             format: uuid
       operationId: getProfileImageById
       responses:
         '200':
-          description: Profilkép sikeresen lekérdezve
+          description: Profile image retrieved successfully
           content:
             image/jpeg:
               schema:
                 type: string
                 format: binary
         '404':
-          description: Profilkép vagy felhasználó nem található
+          description: Profile image or user not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
+
   "/profile/{id}":
     get:
       tags:
       - Profile
-      summary: Felhasználó adatainak lekérdezése ID alapján
+      summary: Get user profile by ID
       parameters:
         - name: id
           required: true
           in: path
-          description: A lekérdezendő felhasználó egyedi azonosítója (UUID)
+          description: Unique identifier of the user to query (UUID)
           schema:
             type: string
             format: uuid
       operationId: getProfileById
       responses:
         '200':
-          description: Felhasználó adatai sikeresen lekérdezve
+          description: User profile retrieved successfully
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/profileResponse"
         '401':
-          description: Nem volt aktív munkamenet
+          description: No active session
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
+
         '404':
-          description: Felhasználó nem található
+          description: User not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
+
       security:
         - cookieAuth: []
     put:
       tags:
       - Profile
-      summary: Felhasználó adatainak frissítése ID alapján
+      summary: Update user profile by ID
       parameters:
         - name: id
           required: true
           in: path
-          description: A frissítendő felhasználó egyedi azonosítója (UUID)
+          description: Unique identifier of the user to update (UUID)
           schema:
             type: string
             format: uuid
@@ -257,49 +292,75 @@ paths:
               "$ref": "#/components/schemas/updateProfileRequest"
       responses:
         '204':
-          description: Felhasználó adatai sikeresen frissítve
+          description: User profile updated successfully
         '401':
-          description: Nem volt aktív munkamenet
+          description: No active session
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
+
         '403':
-          description: Nem a felhasználó tulajdonosa
+          description: Not the owner of this user profile
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
+
         '404':
-          description: Felhasználó nem található
+          description: User not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
       security: 
         - cookieAuth: []
     delete:
       tags:
       - Profile
-      summary: Felhasználó törlése ID alapján
+      summary: Delete user by ID
       parameters:
         - name: id
           required: true
           in: path
-          description: A törlendő felhasználó egyedi azonosítója (UUID)
+          description: Unique identifier of the user to delete (UUID)
           schema:
             type: string
             format: uuid
       operationId: deleteProfileById
       responses:
         '204':
-          description: Felhasználó sikeresen törölve
+          description: User deleted successfully
         '401':
-          description: Nem volt aktív munkamenet
+          description: No active session
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
         '403':
-          description: Nem a felhasználó tulajdonosa
+          description: Not the owner of this user profile
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
         '404':
-          description: Felhasználó nem található
+          description: User not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
       security:
         - cookieAuth: []
   "/profile/{id}/roles":
     post:
       tags:
       - Profile
-      summary: Felhasználó szerepköreinek frissítése ID alapján
+      summary: Update user roles by ID
       parameters:
         - name: id
           required: true
           in: path
-          description: A frissítendő felhasználó egyedi azonosítója (UUID)
+          description: Unique identifier of the user to update (UUID)
           schema:
             type: string
             format: uuid
@@ -317,27 +378,44 @@ paths:
                   "$ref": "#/components/schemas/rolesEnum"
       responses:
         '204':
-          description: Felhasználó szerepkörei sikeresen frissítve
+          description: User roles updated successfully
         '401':
-          description: Nem volt aktív munkamenet
+          description: No active session
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
         '403':
-          description: Nem jogosult a művelet végrehajtására (csak adminok módosíthatják a szerepköröket)
+          description: Not authorized to perform this operation (csak adminok módosíthatják a szerepköröket)
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
         '404':
-          description: Felhasználó nem található
+          description: User not found
+          content:
+              application/json:
+                schema:
+                  "$ref": "#/components/schemas/errorResponse"
         '410':
-          description: Érvénytelen szerepkör megadva
+          description: Invalid role provided
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
+
       security:
         - cookieAuth: []
   "/profile/{id}/recipes":
     get:
       tags:
       - Recipes
-      summary: Felhasználó receptek listázása ID alapján
+      summary: List recipes by user ID
       parameters:
         - name: id
           required: true
           in: path
-          description: A lekérdezendő felhasználó egyedi azonosítója (UUID)
+          description: Unique identifier of the user to query (UUID)
           schema:
             type: string
             format: uuid
@@ -359,7 +437,7 @@ paths:
       operationId: getRecipesByAuthorId
       responses:
         '200':
-          description: Receptek
+          description: Recipes
           content:
             application/json:
               schema:
@@ -375,7 +453,7 @@ paths:
     get:
       tags:
       - Health
-      summary: Állapotjelentés a szolgáltatásról
+      summary: Service health report
       operationId: getServiceReport
       responses:
         '200':
@@ -388,7 +466,7 @@ paths:
     get:
       tags:
       - Recipes
-      summary: Receptek listázása
+      summary: List recipes
       operationId: listRecipes
       parameters:
         - name: page
@@ -420,7 +498,7 @@ paths:
             "$ref": "#/components/schemas/allergenSearchList"
       responses:
         '200':
-          description: Receptek
+          description: Recipes
           content:
             application/json:
               schema:
@@ -435,7 +513,7 @@ paths:
     post:
       tags:
       - Recipes
-      summary: Új recept létrehozása
+      summary: Create a new recipe
       operationId: createRecipe
       requestBody:
         required: true
@@ -448,7 +526,7 @@ paths:
           description: Recipe created successfully
           headers:
             Location:
-              description: Az új erőforrás URL-je
+              description: URL of the newly created resource
               schema:
                 type: string
           content:
@@ -461,19 +539,19 @@ paths:
     get:
       tags:
       - Recipes
-      summary: Recept lekérdezése ID alapján
+      summary: Get recipe by ID
       parameters: 
         - name: id
           required: true
           in: path
-          description: A lekérdezendő recept egyedi azonosítója (UUID)
+          description: Unique identifier of the recipe to query (UUID)
           schema:
             type: string
             format: uuid
       operationId: getRecipeById
       responses:
         '200':
-          description: Receptek
+          description: Recipes
           content:
             application/json:
               schema:
@@ -481,34 +559,42 @@ paths:
     delete:
       tags:
       - Recipes
-      summary: Recept törlése ID alapján
+      summary: Delete recipe by ID
       parameters: 
         - name: id
           required: true
           in: path
-          description: A törlendő recept egyedi azonosítója (UUID)
+          description: Unique identifier of the recipe to delete (UUID)
           schema:
             type: string
             format: uuid
       operationId: deleteRecipeById
       responses:
         '204':
-          description: Recept sikeresen törölve
+          description: Recipe deleted successfully
         '401':
-          description: Nem jogosult a művelet végrehajtására
+          description: Not authorized to perform this operation
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
         '404':
-          description: Recept nem található
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
       security:
         - cookieAuth: []
     put:
       tags:
       - Recipes
-      summary: Recept szerkesztése ID alapján
+      summary: Update recipe by ID
       parameters: 
         - name: id
           required: true
           in: path
-          description: A szerkesztendő recept egyedi azonosítója (UUID)
+          description: Unique identifier of the recipe to update (UUID)
           schema:
             type: string
             format: uuid
@@ -521,27 +607,35 @@ paths:
               "$ref": "#/components/schemas/createRecipeDTO"
       responses:
         '200':
-          description: Recept sikeresen frissítve
+          description: Recipe updated successfully
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/readRecipeDTO"
         '401':
-          description: Nem jogosult a művelet végrehajtására
+          description: Not authorized to perform this operation
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
         '404':
-          description: Recept nem található
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
       security:
         - cookieAuth: []
   "/recipes/{id}/rate":
     put:
       tags:
       - Recipes
-      summary: Recept értékelése ID alapján (1-5 csillag)
+      summary: Rate recipe by ID (1-5 stars)
       parameters: 
         - name: id
           required: true
           in: path
-          description: A lekérdezendő recept egyedi azonosítója (UUID)
+          description: Unique identifier of the recipe to query (UUID)
           schema:
             type: string
             format: uuid
@@ -562,19 +656,31 @@ paths:
                   description: The rating value (1-5)
       responses:
         '204':
-          description: Recept értékelése sikeresen frissítve
+          description: Recipe rating updated successfully
+        '401':
+          description: Not authorized to perform this operation
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
+        '404':
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
       security:
         - cookieAuth: []
   "/recipes/{id}/image":
     put:
       tags:
       - Recipes
-      summary: Recept képének frissítése ID alapján
+      summary: Update recipe image by ID
       parameters: 
         - name: id
           required: true
           in: path
-          description: A lekérdezendő recept egyedi azonosítója (UUID)
+          description: Unique identifier of the recipe to query (UUID)
           schema:
             type: string
             format: uuid
@@ -591,25 +697,37 @@ paths:
                   description: The image file to upload.
       responses:
         '204':
-          description: Recept képe sikeresen frissítve
+          description: Recipe image updated successfully
+        '401':
+          description: Not authorized to perform this operation
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
+        '404':
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
       security:
         - cookieAuth: []
     get:
       tags:
       - Recipes
-      summary: Recept képének lekérdezése ID alapján
+      summary: Get recipe image by ID
       parameters: 
         - name: id
           required: true
           in: path
-          description: A lekérdezendő recept egyedi azonosítója (UUID)
+          description: Unique identifier of the recipe to query (UUID)
           schema:
             type: string
             format: uuid
       operationId: getRecipeImage
       responses:
         '200':
-          description: Recept képe sikeresen lekérdezve
+          description: Recipe image retrieved successfully
           content:
             image/jpeg:
               schema:
@@ -619,12 +737,12 @@ paths:
     post:
       tags:
       - Recipes
-      summary: Recept kommentelése ID alapján
+      summary: Add comment to recipe by ID
       parameters: 
         - name: id
           required: true
           in: path
-          description: A lekérdezendő recept egyedi azonosítója (UUID)
+          description: Unique identifier of the recipe to query (UUID)
           schema:
             type: string
             format: uuid
@@ -646,24 +764,36 @@ paths:
           description: Comment added successfully
           headers:
             Location:
-              description: Az új erőforrás URL-je
+              description: URL of the newly created resource
               schema:
                 type: string
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/comment"
+        '401':
+          description: Not authorized to perform this operation
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
+        '404':
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
       security:
         - cookieAuth: []
     get:
       tags:
       - Recipes
-      summary: Recept kommenteléseinek listázása ID alapján
+      summary: List comments for recipe by ID
       parameters: 
         - name: id
           required: true
           in: path
-          description: A lekérdezendő recept egyedi azonosítója (UUID)
+          description: Unique identifier of the recipe to query (UUID)
           schema:
             type: string
             format: uuid
@@ -685,7 +815,7 @@ paths:
       operationId: listRecipeComments
       responses:
         200:
-          description: Comment added successfully
+          description: Comments retrieved successfully
           content:
             application/json:
               schema:
@@ -698,46 +828,58 @@ paths:
               schema:
                 "$ref": "#/components/schemas/paginationMetadata"
         404:
-          description: Recept nem található
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
   "/recipes/{recipeId}/comments/{commentId}":
     delete:
       tags:
       - Recipes
-      summary: Recept kommentelése törlése ID alapján
+      summary: Delete recipe comment by ID
       parameters: 
         - name: recipeId
           required: true
           in: path
-          description: A lekérdezendő recept egyedi azonosítója (UUID)
+          description: Unique identifier of the recipe to query (UUID)
           schema:
             type: string
             format: uuid
         - name: commentId
           required: true
           in: path
-          description: A törlendő komment egyedi azonosítója (UUID)
+          description: Unique identifier of the comment to delete (UUID)
           schema:
             type: string
             format: uuid
       operationId: deleteRecipeComment
       responses:
         '204':
-          description: Recept kommentelése sikeresen törölve
+          description: Recipe comment deleted successfully
         '401':
-          description: Nem jogosult a művelet végrehajtására
+          description: Not authorized to perform this operation
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
         '404':
-          description: Recept vagy komment nem található
+          description: Recipe or comment not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
       security:
         - cookieAuth: []
   "/recipes/showcase":
     get:
       tags:
       - Recipes
-      summary: Kiemelt receptek listázása
+      summary: List featured recipes
       operationId: listShowcaseRecipes
       responses:
         '200':
-          description: Receptek
+          description: Recipes
           content:
             application/json:
               schema:
@@ -748,11 +890,11 @@ paths:
     get:
       tags:
       - Recipes
-      summary: Kiemelt recept listázása
+      summary: Get featured recipe
       operationId: getFeaturedRecipe
       responses:
         '200':
-          description: Receptek
+          description: Recipes
           content:
             application/json:
               schema:
@@ -760,7 +902,7 @@ paths:
     put:
       tags:
       - Recipes
-      summary: Kiemelt recept frissítése
+      summary: Update featured recipe
       operationId: updateFeaturedRecipe
       requestBody:
         required: true
@@ -777,13 +919,25 @@ paths:
                   description: The unique identifier of the recipe to set as featured.
       responses:
         '204':
-          description: Kiemelt recept sikeresen frissítve
+          description: Featured recipe updated successfully
         '401':
-          description: Nem jogosult a művelet végrehajtására
+          description: Not authorized to perform this operation
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
         '404':
-          description: Recept nem található
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
         '410':
-          description: Formatum hiba (pl. érvénytelen UUID)
+          description: Format error (e.g., invalid UUID)
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponse"
       security:
         - cookieAuth: []
 
@@ -865,7 +1019,7 @@ components:
       type: string
       enum:
         - Admin
-      description: List of roles to assign to the user (e.g., ["User"] or ["Admin"])
+      description: 'Role to assign to the user (currently supported: "Admin")'
 
     readRecipeDTO:
       type: object
@@ -1047,13 +1201,13 @@ components:
         id:
           type: string
           format: uuid
-          description: A bejelentkezett felhasználó azonosítója
+          description: Identifier of the logged-in user
         email:
           type: string
           format: email
         displayName:
           type: string
-          description: A bejelentkezett felhasználó megjelenítendő neve
+          description: Display name of the logged-in user
     profileResponse:
       type: object
       required:
@@ -1065,17 +1219,17 @@ components:
         id:
           type: string
           format: uuid
-          description: A bejelentkezett felhasználó azonosítója
+          description: Identifier of the logged-in user
         email:
           type: string
           format: email
         displayName:
           type: string
-          description: A bejelentkezett felhasználó megjelenítendő neve
+          description: Display name of the logged-in user
         registeredAt:
           type: string
           format: date-time
-          description: A bejelentkezett felhasználó regisztrációjának időpontja
+          description: Registration timestamp of the logged-in user
     updateProfileRequest:
       type: object
       properties:
@@ -1094,3 +1248,11 @@ components:
           format: binary
           nullable: true
           description: The profile image file to upload.
+    errorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message describing what went wrong.
+
+
