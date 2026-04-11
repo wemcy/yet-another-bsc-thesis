@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{
+{ 
     /// <summary>
     /// 
     /// </summary>
@@ -31,7 +31,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>The unique identifier of the recipe to set as featured.</value>
         [Required]
-        [DataMember(Name = "recipeId", EmitDefaultValue = true)]
+        [DataMember(Name="recipeId", EmitDefaultValue=true)]
         public Guid RecipeId { get; set; }
 
         /// <summary>
@@ -78,10 +78,10 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return
+            return 
                 (
                     RecipeId == other.RecipeId ||
-
+                    
                     RecipeId.Equals(other.RecipeId)
                 );
         }
@@ -96,14 +96,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-
-                hashCode = hashCode * 59 + RecipeId.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + RecipeId.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-#pragma warning disable 1591
+        #pragma warning disable 1591
 
         public static bool operator ==(UpdateFeaturedRecipeRequest left, UpdateFeaturedRecipeRequest right)
         {
@@ -115,7 +115,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             return !Equals(left, right);
         }
 
-#pragma warning restore 1591
+        #pragma warning restore 1591
         #endregion Operators
     }
 }

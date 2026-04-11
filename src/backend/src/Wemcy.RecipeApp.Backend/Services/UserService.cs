@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Identity;
+using SixLabors.ImageSharp;
 using System.Security.Claims;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Exceptions;
@@ -9,13 +10,13 @@ using Wemcy.RecipeApp.Backend.Security;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<User> userManager, ImageService imageService, IAuthorizationService authorizationService, RoleManager<IdentityRole<Guid>> roleManager) : IUserService
+public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<User> userManager, IImageService imageService, IAuthorizationService authorizationService, RoleManager<IdentityRole<Guid>> roleManager) : IUserService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
     private readonly UserManager<User> _userManager = userManager;
-    private readonly IAuthorizationService _authorizationService = authorizationService;
     private readonly RoleManager<IdentityRole<Guid>> _roleManager = roleManager;
-    private readonly ImageService _imageService = imageService;
+    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+    private readonly IAuthorizationService _authorizationService = authorizationService;
+    private readonly IImageService _imageService = imageService;
 
 
     public async Task<User> GetCurrentUserAsync()
@@ -115,12 +116,15 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<U
     {
         return await _userManager.FindByEmailAsync(email);
     }
-    public async Task<Stream> GetProfileImageByIdAsync(Guid id)
+    public async Task<Stream> GetProfileImageByIdAsync(Guid id, ImageSize imageSize)
     {
         var user = await GetUserByIdAsync(id);
         var image = user.Image ?? throw new ImageNotFoundException("User does not have profile picture");
-        return _imageService.GetImageById(image.Id);
+        return await _imageService.GetImageById(image.Id, imageSize);
     }
+
+
+
     public async Task UpdateProfileByIdAsync(Guid id, UserProfileUpdateRequest request)
     {
         var user = await GetUserByIdAsync(id);

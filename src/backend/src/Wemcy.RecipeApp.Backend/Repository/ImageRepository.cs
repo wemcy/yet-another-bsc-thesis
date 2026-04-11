@@ -3,7 +3,7 @@ using Wemcy.RecipeApp.Backend.Model.Entities;
 
 namespace Wemcy.RecipeApp.Backend.Repository;
 
-public class ImageRepository(DatabaseContext databaseContext)
+public class ImageRepository(DatabaseContext databaseContext) : IImageRepository
 {
     private readonly DatabaseContext _dbContext = databaseContext;
 

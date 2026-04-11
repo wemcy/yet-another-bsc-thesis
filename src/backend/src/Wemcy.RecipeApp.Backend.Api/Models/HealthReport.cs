@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{
+{ 
     /// <summary>
     /// 
     /// </summary>
@@ -30,13 +30,13 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// Gets or Sets Status
         /// </summary>
         /* <example>ok</example> */
-        [DataMember(Name = "status", EmitDefaultValue = false)]
+        [DataMember(Name="status", EmitDefaultValue=false)]
         public string? Status { get; set; }
 
         /// <summary>
         /// Gets or Sets Services
         /// </summary>
-        [DataMember(Name = "services", EmitDefaultValue = false)]
+        [DataMember(Name="services", EmitDefaultValue=false)]
         public List<HealthReportServicesInner> Services { get; set; }
 
         /// <summary>
@@ -84,12 +84,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return
+            return 
                 (
                     Status == other.Status ||
                     Status != null &&
                     Status.Equals(other.Status)
-                ) &&
+                ) && 
                 (
                     Services == other.Services ||
                     Services != null &&
@@ -108,16 +108,16 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                if (Status != null)
+                    if (Status != null)
                     hashCode = hashCode * 59 + Status.GetHashCode();
-                if (Services != null)
+                    if (Services != null)
                     hashCode = hashCode * 59 + Services.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-#pragma warning disable 1591
+        #pragma warning disable 1591
 
         public static bool operator ==(HealthReport left, HealthReport right)
         {
@@ -129,7 +129,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             return !Equals(left, right);
         }
 
-#pragma warning restore 1591
+        #pragma warning restore 1591
         #endregion Operators
     }
 }

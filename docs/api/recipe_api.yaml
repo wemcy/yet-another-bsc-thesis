@@ -47,16 +47,12 @@ paths:
           in: query
           description: List of allergens to include (comma-separated, e.g. "GLUTEN,PEANUTS")
           required: false
-          style: form
-          explode: false
           schema:
             "$ref": "#/components/schemas/AllergenFilter"
         - name: excludeAllergens
           in: query
           description: List of allergens to exclude (comma-separated, e.g. "GLUTEN,PEANUTS")
           required: false
-          style: form
-          explode: false
           schema:
             "$ref": "#/components/schemas/AllergenFilter"
       responses:
@@ -192,6 +188,13 @@ paths:
       - Profile
       summary: Get the logged-in user profile image
       operationId: getOwnProfileImage
+      parameters: 
+        - name: imageSize
+          in: query
+          description: Desired profile image size (e.g., "thumbnail", "medium", "large")
+          required: false
+          schema:
+            "$ref": "#/components/schemas/ImageSize"
       responses:
         '200':
           description: Profile image retrieved successfully
@@ -222,6 +225,12 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: size
+          in: query
+          description: Desired image size (e.g., "thumbnail", "medium", "large")
+          required: false
+          schema:
+            "$ref": "#/components/schemas/ImageSize"
       operationId: getProfileImageById
       responses:
         '200':
@@ -748,6 +757,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ErrorResponse"
+        '415':
+          description: Unsupported media type (e.g., not an image file)
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
       security:
         - cookieAuth: []
     get:
@@ -762,6 +777,12 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: size
+          in: query
+          description: Desired image size (e.g., "thumbnail", "medium", "large")
+          required: false
+          schema:
+            "$ref": "#/components/schemas/ImageSize"
       operationId: getRecipeImage
       responses:
         '200':
@@ -1055,7 +1076,12 @@ components:
           description: List of ingredients needed for the recipe
           items:
             $ref: '#/components/schemas/Ingredient'
-
+    ImageSize:
+      type: string
+      enum:
+        - thumbnail
+        - medium
+        - large
     PaginationMetadata:
       type: object
       properties:

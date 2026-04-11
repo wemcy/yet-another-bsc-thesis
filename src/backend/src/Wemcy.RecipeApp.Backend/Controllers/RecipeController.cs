@@ -1,4 +1,5 @@
 ﻿using Wemcy.RecipeApp.Backend.Api.Controllers;
+using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Extensions;
@@ -13,8 +14,6 @@ using Recipe = Wemcy.RecipeApp.Backend.Model.Entities.Recipe;
 
 namespace Wemcy.RecipeApp.Backend.Controllers;
 
-[EntityNotFoundHandler]
-[UnauthorizedHandler]
 public class RecipeController(IRecipeService recipeService, IMapper mapper, IShowcaseRecipeService showcaseRecipeService) : RecipesApiController
 {
     public override async Task<IActionResult> GetRecipeById([FromRoute(Name = "id"), Required] Guid id)
@@ -39,19 +38,6 @@ public class RecipeController(IRecipeService recipeService, IMapper mapper, ISho
     {
         await recipeService.UpdateImageByIdAsync(id, image.OpenReadStream(), image.Name);
         return NoContent();
-    }
-
-    public override async Task<IActionResult> GetRecipeImage([FromRoute(Name = "id"), Required] Guid id)
-    {
-        try
-        {
-            return new FileStreamResult(await recipeService.GetImageByIdAsync(id), "image/jpeg");
-        }
-        catch (ImageNotFoundException)
-        {
-            return File(DefaultImages.DefaultImageSvg, "image/svg+xml");
-        }
-
     }
 
     public override async Task<IActionResult> RateRecipe([FromRoute(Name = "id"), Required] Guid id, [FromBody] Api.Models.RateRecipeRequest rateRecipeRequest)
@@ -126,5 +112,17 @@ public class RecipeController(IRecipeService recipeService, IMapper mapper, ISho
         var recipe = mapper.Map<Recipe>(createRecipeRequest);
         await recipeService.CreateRecipeAsync(recipe);
         return Ok(mapper.Map<Api.Models.Recipe>(recipe));
+    }
+
+    public  override async Task<IActionResult> GetRecipeImage([FromRoute(Name = "id"), Required] Guid id, [FromQuery(Name = "size")] Api.Models.ImageSize? size)
+    {
+        try
+        {
+            return new FileStreamResult(await recipeService.GetImageByIdAsync(id, size ?? ImageSize.LargeEnum), "image/jpeg");
+        }
+        catch (ImageNotFoundException)
+        {
+            return File(DefaultImages.DefaultImageSvg, "image/svg+xml");
+        }
     }
 }

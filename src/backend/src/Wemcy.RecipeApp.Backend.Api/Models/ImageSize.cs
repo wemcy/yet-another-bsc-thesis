@@ -21,18 +21,29 @@ using Wemcy.RecipeApp.Backend.Api.Converters;
 namespace Wemcy.RecipeApp.Backend.Api.Models
 { 
         /// <summary>
-        /// Role to assign to the user (currently supported: \"Admin\")
+        /// Gets or Sets ImageSize
         /// </summary>
-        /// <value>Role to assign to the user (currently supported: \"Admin\")</value>
-        [TypeConverter(typeof(CustomEnumConverter<UserRole>))]
+        [TypeConverter(typeof(CustomEnumConverter<ImageSize>))]
         [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public enum UserRole
+        public enum ImageSize
         {
             
             /// <summary>
-            /// Enum AdminEnum for Admin
+            /// Enum ThumbnailEnum for thumbnail
             /// </summary>
-            [EnumMember(Value = "Admin")]
-            AdminEnum = 1
+            [EnumMember(Value = "thumbnail")]
+            ThumbnailEnum = 1,
+            
+            /// <summary>
+            /// Enum MediumEnum for medium
+            /// </summary>
+            [EnumMember(Value = "medium")]
+            MediumEnum = 2,
+            
+            /// <summary>
+            /// Enum LargeEnum for large
+            /// </summary>
+            [EnumMember(Value = "large")]
+            LargeEnum = 3
         }
 }

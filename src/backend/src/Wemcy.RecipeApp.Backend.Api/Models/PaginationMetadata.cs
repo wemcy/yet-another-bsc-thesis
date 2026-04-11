@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{
+{ 
     /// <summary>
     /// 
     /// </summary>
@@ -30,42 +30,42 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// Total number of items available
         /// </summary>
         /// <value>Total number of items available</value>
-        [DataMember(Name = "totalCount", EmitDefaultValue = true)]
+        [DataMember(Name="totalCount", EmitDefaultValue=true)]
         public int? TotalCount { get; set; }
 
         /// <summary>
         /// Current page number (starting from 0)
         /// </summary>
         /// <value>Current page number (starting from 0)</value>
-        [DataMember(Name = "pageNumber", EmitDefaultValue = true)]
+        [DataMember(Name="pageNumber", EmitDefaultValue=true)]
         public int? PageNumber { get; set; }
 
         /// <summary>
         /// Total number of pages available
         /// </summary>
         /// <value>Total number of pages available</value>
-        [DataMember(Name = "pageCount", EmitDefaultValue = true)]
+        [DataMember(Name="pageCount", EmitDefaultValue=true)]
         public int? PageCount { get; set; }
 
         /// <summary>
         /// Number of items per page
         /// </summary>
         /// <value>Number of items per page</value>
-        [DataMember(Name = "pageSize", EmitDefaultValue = true)]
+        [DataMember(Name="pageSize", EmitDefaultValue=true)]
         public int? PageSize { get; set; }
 
         /// <summary>
         /// Indicates if there is a next page available
         /// </summary>
         /// <value>Indicates if there is a next page available</value>
-        [DataMember(Name = "hasNextPage", EmitDefaultValue = true)]
+        [DataMember(Name="hasNextPage", EmitDefaultValue=true)]
         public bool? HasNextPage { get; set; }
 
         /// <summary>
         /// Indicates if there is a previous page available
         /// </summary>
         /// <value>Indicates if there is a previous page available</value>
-        [DataMember(Name = "hasPreviousPage", EmitDefaultValue = true)]
+        [DataMember(Name="hasPreviousPage", EmitDefaultValue=true)]
         public bool? HasPreviousPage { get; set; }
 
         /// <summary>
@@ -117,35 +117,35 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return
+            return 
                 (
                     TotalCount == other.TotalCount ||
-
+                    
                     TotalCount.Equals(other.TotalCount)
-                ) &&
+                ) && 
                 (
                     PageNumber == other.PageNumber ||
-
+                    
                     PageNumber.Equals(other.PageNumber)
-                ) &&
+                ) && 
                 (
                     PageCount == other.PageCount ||
-
+                    
                     PageCount.Equals(other.PageCount)
-                ) &&
+                ) && 
                 (
                     PageSize == other.PageSize ||
-
+                    
                     PageSize.Equals(other.PageSize)
-                ) &&
+                ) && 
                 (
                     HasNextPage == other.HasNextPage ||
-
+                    
                     HasNextPage.Equals(other.HasNextPage)
-                ) &&
+                ) && 
                 (
                     HasPreviousPage == other.HasPreviousPage ||
-
+                    
                     HasPreviousPage.Equals(other.HasPreviousPage)
                 );
         }
@@ -160,24 +160,24 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-
-                hashCode = hashCode * 59 + TotalCount.GetHashCode();
-
-                hashCode = hashCode * 59 + PageNumber.GetHashCode();
-
-                hashCode = hashCode * 59 + PageCount.GetHashCode();
-
-                hashCode = hashCode * 59 + PageSize.GetHashCode();
-
-                hashCode = hashCode * 59 + HasNextPage.GetHashCode();
-
-                hashCode = hashCode * 59 + HasPreviousPage.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + TotalCount.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + PageNumber.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + PageCount.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + PageSize.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + HasNextPage.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + HasPreviousPage.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-#pragma warning disable 1591
+        #pragma warning disable 1591
 
         public static bool operator ==(PaginationMetadata left, PaginationMetadata right)
         {
@@ -189,7 +189,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             return !Equals(left, right);
         }
 
-#pragma warning restore 1591
+        #pragma warning restore 1591
         #endregion Operators
     }
 }

@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{
+{ 
     /// <summary>
     /// 
     /// </summary>
@@ -31,7 +31,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>Unique identifier of the recipe</value>
         [Required]
-        [DataMember(Name = "id", EmitDefaultValue = true)]
+        [DataMember(Name="id", EmitDefaultValue=true)]
         public Guid Id { get; set; }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>The display name of the recipe&#39;s author</value>
         [Required]
-        [DataMember(Name = "creatorDisplayName", EmitDefaultValue = false)]
+        [DataMember(Name="creatorDisplayName", EmitDefaultValue=false)]
         public string CreatorDisplayName { get; set; }
 
         /// <summary>
@@ -47,14 +47,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>Title of the recipe</value>
         [Required]
-        [DataMember(Name = "title", EmitDefaultValue = false)]
+        [DataMember(Name="title", EmitDefaultValue=false)]
         public string Title { get; set; }
 
         /// <summary>
         /// Short description of the recipe
         /// </summary>
         /// <value>Short description of the recipe</value>
-        [DataMember(Name = "description", EmitDefaultValue = true)]
+        [DataMember(Name="description", EmitDefaultValue=true)]
         public string? Description { get; set; }
 
         /// <summary>
@@ -62,35 +62,35 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>Timestamp when the recipe was created</value>
         [Required]
-        [DataMember(Name = "createdAt", EmitDefaultValue = true)]
+        [DataMember(Name="createdAt", EmitDefaultValue=true)]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>
         /// Timestamp when the recipe was last updated
         /// </summary>
         /// <value>Timestamp when the recipe was last updated</value>
-        [DataMember(Name = "updatedAt", EmitDefaultValue = true)]
+        [DataMember(Name="updatedAt", EmitDefaultValue=true)]
         public DateTimeOffset? UpdatedAt { get; set; }
 
         /// <summary>
         /// List of allergens present in the recipe
         /// </summary>
         /// <value>List of allergens present in the recipe</value>
-        [DataMember(Name = "allergens", EmitDefaultValue = false)]
+        [DataMember(Name="allergens", EmitDefaultValue=false)]
         public List<Allergen> Allergens { get; set; }
 
         /// <summary>
         /// List of steps to prepare the recipe
         /// </summary>
         /// <value>List of steps to prepare the recipe</value>
-        [DataMember(Name = "steps", EmitDefaultValue = false)]
+        [DataMember(Name="steps", EmitDefaultValue=false)]
         public List<string> Steps { get; set; }
 
         /// <summary>
         /// List of ingredients needed for the recipe
         /// </summary>
         /// <value>List of ingredients needed for the recipe</value>
-        [DataMember(Name = "ingredients", EmitDefaultValue = false)]
+        [DataMember(Name="ingredients", EmitDefaultValue=false)]
         public List<Ingredient> Ingredients { get; set; }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>The average rating of the recipe (1-5)</value>
         [Required]
-        [DataMember(Name = "averageRating", EmitDefaultValue = true)]
+        [DataMember(Name="averageRating", EmitDefaultValue=true)]
         public double AverageRating { get; set; }
 
         /// <summary>
@@ -154,58 +154,58 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return
+            return 
                 (
                     Id == other.Id ||
-
+                    
                     Id.Equals(other.Id)
-                ) &&
+                ) && 
                 (
                     CreatorDisplayName == other.CreatorDisplayName ||
                     CreatorDisplayName != null &&
                     CreatorDisplayName.Equals(other.CreatorDisplayName)
-                ) &&
+                ) && 
                 (
                     Title == other.Title ||
                     Title != null &&
                     Title.Equals(other.Title)
-                ) &&
+                ) && 
                 (
                     Description == other.Description ||
                     Description != null &&
                     Description.Equals(other.Description)
-                ) &&
+                ) && 
                 (
                     CreatedAt == other.CreatedAt ||
-
+                    
                     CreatedAt.Equals(other.CreatedAt)
-                ) &&
+                ) && 
                 (
                     UpdatedAt == other.UpdatedAt ||
                     UpdatedAt != null &&
                     UpdatedAt.Equals(other.UpdatedAt)
-                ) &&
+                ) && 
                 (
                     Allergens == other.Allergens ||
                     Allergens != null &&
                     other.Allergens != null &&
                     Allergens.SequenceEqual(other.Allergens)
-                ) &&
+                ) && 
                 (
                     Steps == other.Steps ||
                     Steps != null &&
                     other.Steps != null &&
                     Steps.SequenceEqual(other.Steps)
-                ) &&
+                ) && 
                 (
                     Ingredients == other.Ingredients ||
                     Ingredients != null &&
                     other.Ingredients != null &&
                     Ingredients.SequenceEqual(other.Ingredients)
-                ) &&
+                ) && 
                 (
                     AverageRating == other.AverageRating ||
-
+                    
                     AverageRating.Equals(other.AverageRating)
                 );
         }
@@ -220,32 +220,32 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-
-                hashCode = hashCode * 59 + Id.GetHashCode();
-                if (CreatorDisplayName != null)
+                    
+                    hashCode = hashCode * 59 + Id.GetHashCode();
+                    if (CreatorDisplayName != null)
                     hashCode = hashCode * 59 + CreatorDisplayName.GetHashCode();
-                if (Title != null)
+                    if (Title != null)
                     hashCode = hashCode * 59 + Title.GetHashCode();
-                if (Description != null)
+                    if (Description != null)
                     hashCode = hashCode * 59 + Description.GetHashCode();
-
-                hashCode = hashCode * 59 + CreatedAt.GetHashCode();
-                if (UpdatedAt != null)
+                    
+                    hashCode = hashCode * 59 + CreatedAt.GetHashCode();
+                    if (UpdatedAt != null)
                     hashCode = hashCode * 59 + UpdatedAt.GetHashCode();
-                if (Allergens != null)
+                    if (Allergens != null)
                     hashCode = hashCode * 59 + Allergens.GetHashCode();
-                if (Steps != null)
+                    if (Steps != null)
                     hashCode = hashCode * 59 + Steps.GetHashCode();
-                if (Ingredients != null)
+                    if (Ingredients != null)
                     hashCode = hashCode * 59 + Ingredients.GetHashCode();
-
-                hashCode = hashCode * 59 + AverageRating.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + AverageRating.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-#pragma warning disable 1591
+        #pragma warning disable 1591
 
         public static bool operator ==(Recipe left, Recipe right)
         {
@@ -257,7 +257,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             return !Equals(left, right);
         }
 
-#pragma warning restore 1591
+        #pragma warning restore 1591
         #endregion Operators
     }
 }

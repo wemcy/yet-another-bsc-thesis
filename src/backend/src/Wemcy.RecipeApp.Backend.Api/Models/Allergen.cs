@@ -19,97 +19,97 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{
-    /// <summary>
-    /// Gets or Sets Allergen
-    /// </summary>
-    [TypeConverter(typeof(CustomEnumConverter<Allergen>))]
-    [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-    public enum Allergen
-    {
-
+{ 
         /// <summary>
-        /// Enum GLUTENEnum for GLUTEN
+        /// Gets or Sets Allergen
         /// </summary>
-        [EnumMember(Value = "GLUTEN")]
-        GLUTENEnum = 1,
-
-        /// <summary>
-        /// Enum CRUSTACEANSEnum for CRUSTACEANS
-        /// </summary>
-        [EnumMember(Value = "CRUSTACEANS")]
-        CRUSTACEANSEnum = 2,
-
-        /// <summary>
-        /// Enum EGGSEnum for EGGS
-        /// </summary>
-        [EnumMember(Value = "EGGS")]
-        EGGSEnum = 3,
-
-        /// <summary>
-        /// Enum FISHEnum for FISH
-        /// </summary>
-        [EnumMember(Value = "FISH")]
-        FISHEnum = 4,
-
-        /// <summary>
-        /// Enum PEANUTSEnum for PEANUTS
-        /// </summary>
-        [EnumMember(Value = "PEANUTS")]
-        PEANUTSEnum = 5,
-
-        /// <summary>
-        /// Enum SOYBEANSEnum for SOYBEANS
-        /// </summary>
-        [EnumMember(Value = "SOYBEANS")]
-        SOYBEANSEnum = 6,
-
-        /// <summary>
-        /// Enum MILKEnum for MILK
-        /// </summary>
-        [EnumMember(Value = "MILK")]
-        MILKEnum = 7,
-
-        /// <summary>
-        /// Enum NUTSEnum for NUTS
-        /// </summary>
-        [EnumMember(Value = "NUTS")]
-        NUTSEnum = 8,
-
-        /// <summary>
-        /// Enum CELERYEnum for CELERY
-        /// </summary>
-        [EnumMember(Value = "CELERY")]
-        CELERYEnum = 9,
-
-        /// <summary>
-        /// Enum MUSTARDEnum for MUSTARD
-        /// </summary>
-        [EnumMember(Value = "MUSTARD")]
-        MUSTARDEnum = 10,
-
-        /// <summary>
-        /// Enum SESAMESEEDSEnum for SESAMESEEDS
-        /// </summary>
-        [EnumMember(Value = "SESAMESEEDS")]
-        SESAMESEEDSEnum = 11,
-
-        /// <summary>
-        /// Enum SULPHURDIOXIDEEnum for SULPHURDIOXIDE
-        /// </summary>
-        [EnumMember(Value = "SULPHURDIOXIDE")]
-        SULPHURDIOXIDEEnum = 12,
-
-        /// <summary>
-        /// Enum LUPINEnum for LUPIN
-        /// </summary>
-        [EnumMember(Value = "LUPIN")]
-        LUPINEnum = 13,
-
-        /// <summary>
-        /// Enum MOLLUSCSEnum for MOLLUSCS
-        /// </summary>
-        [EnumMember(Value = "MOLLUSCS")]
-        MOLLUSCSEnum = 14
-    }
+        [TypeConverter(typeof(CustomEnumConverter<Allergen>))]
+        [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public enum Allergen
+        {
+            
+            /// <summary>
+            /// Enum GLUTENEnum for GLUTEN
+            /// </summary>
+            [EnumMember(Value = "GLUTEN")]
+            GLUTENEnum = 1,
+            
+            /// <summary>
+            /// Enum CRUSTACEANSEnum for CRUSTACEANS
+            /// </summary>
+            [EnumMember(Value = "CRUSTACEANS")]
+            CRUSTACEANSEnum = 2,
+            
+            /// <summary>
+            /// Enum EGGSEnum for EGGS
+            /// </summary>
+            [EnumMember(Value = "EGGS")]
+            EGGSEnum = 3,
+            
+            /// <summary>
+            /// Enum FISHEnum for FISH
+            /// </summary>
+            [EnumMember(Value = "FISH")]
+            FISHEnum = 4,
+            
+            /// <summary>
+            /// Enum PEANUTSEnum for PEANUTS
+            /// </summary>
+            [EnumMember(Value = "PEANUTS")]
+            PEANUTSEnum = 5,
+            
+            /// <summary>
+            /// Enum SOYBEANSEnum for SOYBEANS
+            /// </summary>
+            [EnumMember(Value = "SOYBEANS")]
+            SOYBEANSEnum = 6,
+            
+            /// <summary>
+            /// Enum MILKEnum for MILK
+            /// </summary>
+            [EnumMember(Value = "MILK")]
+            MILKEnum = 7,
+            
+            /// <summary>
+            /// Enum NUTSEnum for NUTS
+            /// </summary>
+            [EnumMember(Value = "NUTS")]
+            NUTSEnum = 8,
+            
+            /// <summary>
+            /// Enum CELERYEnum for CELERY
+            /// </summary>
+            [EnumMember(Value = "CELERY")]
+            CELERYEnum = 9,
+            
+            /// <summary>
+            /// Enum MUSTARDEnum for MUSTARD
+            /// </summary>
+            [EnumMember(Value = "MUSTARD")]
+            MUSTARDEnum = 10,
+            
+            /// <summary>
+            /// Enum SESAMESEEDSEnum for SESAMESEEDS
+            /// </summary>
+            [EnumMember(Value = "SESAMESEEDS")]
+            SESAMESEEDSEnum = 11,
+            
+            /// <summary>
+            /// Enum SULPHURDIOXIDEEnum for SULPHURDIOXIDE
+            /// </summary>
+            [EnumMember(Value = "SULPHURDIOXIDE")]
+            SULPHURDIOXIDEEnum = 12,
+            
+            /// <summary>
+            /// Enum LUPINEnum for LUPIN
+            /// </summary>
+            [EnumMember(Value = "LUPIN")]
+            LUPINEnum = 13,
+            
+            /// <summary>
+            /// Enum MOLLUSCSEnum for MOLLUSCS
+            /// </summary>
+            [EnumMember(Value = "MOLLUSCS")]
+            MOLLUSCSEnum = 14
+        }
 }

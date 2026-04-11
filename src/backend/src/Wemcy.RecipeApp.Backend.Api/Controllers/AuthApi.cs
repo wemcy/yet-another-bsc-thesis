@@ -20,13 +20,13 @@ using Wemcy.RecipeApp.Backend.Api.Attributes;
 using Wemcy.RecipeApp.Backend.Api.Models;
 
 namespace Wemcy.RecipeApp.Backend.Api.Controllers
-{
+{ 
     /// <summary>
     /// 
     /// </summary>
     [ApiController]
     public abstract class AuthApiController : ControllerBase
-    {
+    { 
         /// <summary>
         /// Login
         /// </summary>
@@ -39,7 +39,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(LoginResponse))]
         [ProducesResponseType(statusCode: 401, type: typeof(Login401Response))]
-        public abstract Task<IActionResult> Login([FromBody] LoginRequest loginRequest);
+        public abstract Task<IActionResult> Login([FromBody]LoginRequest loginRequest);
 
         /// <summary>
         /// Logout
@@ -65,6 +65,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(LoginResponse))]
         [ProducesResponseType(statusCode: 400, type: typeof(List<IdentityError>))]
-        public abstract Task<IActionResult> Register([FromBody] RegisterRequest registerRequest);
+        public abstract Task<IActionResult> Register([FromBody]RegisterRequest registerRequest);
     }
 }

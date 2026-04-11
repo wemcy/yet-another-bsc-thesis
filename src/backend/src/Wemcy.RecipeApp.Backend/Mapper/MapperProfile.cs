@@ -1,7 +1,7 @@
 ﻿using Wemcy.RecipeApp.Backend.Model.Entities;
+using CreateRecipeRequest =  Wemcy.RecipeApp.Backend.Api.Models.CreateRecipeRequest;
 using Allergen = Wemcy.RecipeApp.Backend.Api.Models.Allergen;
 using RecipeDTO = Wemcy.RecipeApp.Backend.Api.Models.Recipe;
-
 
 namespace Wemcy.RecipeApp.Backend.Mapper;
 
@@ -9,7 +9,7 @@ public class MapperProfile : Profile
 {
     public MapperProfile()
     {
-        CreateMap<RecipeDTO, Recipe>()
+        CreateMap<CreateRecipeRequest, Recipe>()
             .ForMember(
                 x => x.Allergens,
                 op => op.MapFrom(src => MapAllergensListToAllergen(src.Allergens)));

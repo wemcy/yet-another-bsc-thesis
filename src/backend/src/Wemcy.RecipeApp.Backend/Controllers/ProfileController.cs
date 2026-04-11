@@ -10,10 +10,7 @@ using Wemcy.RecipeApp.Backend.Utils;
 
 namespace Wemcy.RecipeApp.Backend.Controllers;
 
-[InvalidCredentialsHandler]
-[EntityNotFoundHandler]
-[UnauthorizedHandler]
-public class ProfileController( IMapper mapper, IUserService userService) : ProfileApiController
+public class ProfileController(IMapper mapper, IUserService userService) : ProfileApiController
 {
 
     [Authorize(Roles = Roles.Admin)]
@@ -40,11 +37,12 @@ public class ProfileController( IMapper mapper, IUserService userService) : Prof
 
     }
 
-    public override async Task<IActionResult> GetOwnProfileImage()
+
+    public override async Task<IActionResult> GetOwnProfileImage([FromQuery(Name = "imageSize")] ImageSize? imageSize)
     {
         if (User.Identity.TryGetUserId(out var userId))
         {
-            return await this.GetProfileImageById(userId);
+            return await this.GetProfileImageById(userId, imageSize);
         }
         throw new UserNotFoundException();
     }
@@ -55,11 +53,11 @@ public class ProfileController( IMapper mapper, IUserService userService) : Prof
         return Ok(mapper.Map<Api.Models.Profile>(profile));
     }
 
-    public override async Task<IActionResult> GetProfileImageById([FromRoute(Name = "id"), Required] Guid id)
+    public override async Task<IActionResult> GetProfileImageById([FromRoute(Name = "id"), Required] Guid id, [FromQuery(Name = "size")] ImageSize? size)
     {
         try
         {
-            return new FileStreamResult(await userService.GetProfileImageByIdAsync(id), "image/jpeg");
+            return new FileStreamResult(await userService.GetProfileImageByIdAsync(id, size ?? ImageSize.LargeEnum), "image/jpeg");
         }
         catch (ImageNotFoundException)
         {

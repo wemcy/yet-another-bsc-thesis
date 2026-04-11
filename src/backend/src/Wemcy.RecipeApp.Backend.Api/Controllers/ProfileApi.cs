@@ -20,13 +20,13 @@ using Wemcy.RecipeApp.Backend.Api.Attributes;
 using Wemcy.RecipeApp.Backend.Api.Models;
 
 namespace Wemcy.RecipeApp.Backend.Api.Controllers
-{
+{ 
     /// <summary>
     /// 
     /// </summary>
     [ApiController]
     public abstract class ProfileApiController : ControllerBase
-    {
+    { 
         /// <summary>
         /// Add role to user by ID
         /// </summary>
@@ -46,7 +46,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 400, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> AddUserRoleById([FromRoute(Name = "id")][Required] Guid id, [FromBody] AddUserRoleByIdRequest addUserRoleByIdRequest);
+        public abstract Task<IActionResult> AddUserRoleById([FromRoute (Name = "id")][Required]Guid id, [FromBody]AddUserRoleByIdRequest addUserRoleByIdRequest);
 
         /// <summary>
         /// Delete user by ID
@@ -63,7 +63,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> DeleteProfileById([FromRoute(Name = "id")][Required] Guid id);
+        public abstract Task<IActionResult> DeleteProfileById([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
         /// Get the logged-in user profile
@@ -81,6 +81,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <summary>
         /// Get the logged-in user profile image
         /// </summary>
+        /// <param name="imageSize">Desired profile image size (e.g., \&quot;thumbnail\&quot;, \&quot;medium\&quot;, \&quot;large\&quot;)</param>
         /// <response code="200">Profile image retrieved successfully</response>
         /// <response code="401">No active session</response>
         [HttpGet]
@@ -89,7 +90,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(System.IO.Stream))]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> GetOwnProfileImage();
+        public abstract Task<IActionResult> GetOwnProfileImage([FromQuery (Name = "imageSize")]ImageSize? imageSize);
 
         /// <summary>
         /// Get user profile by ID
@@ -105,12 +106,13 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ProducesResponseType(statusCode: 200, type: typeof(Profile))]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> GetProfileById([FromRoute(Name = "id")][Required] Guid id);
+        public abstract Task<IActionResult> GetProfileById([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
         /// Get user profile image by ID
         /// </summary>
         /// <param name="id">Unique identifier of the user to query (UUID)</param>
+        /// <param name="size">Desired image size (e.g., \&quot;thumbnail\&quot;, \&quot;medium\&quot;, \&quot;large\&quot;)</param>
         /// <response code="200">Profile image retrieved successfully</response>
         /// <response code="404">Profile image or user not found</response>
         [HttpGet]
@@ -118,7 +120,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(System.IO.Stream))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> GetProfileImageById([FromRoute(Name = "id")][Required] Guid id);
+        public abstract Task<IActionResult> GetProfileImageById([FromRoute (Name = "id")][Required]Guid id, [FromQuery (Name = "size")]ImageSize? size);
 
         /// <summary>
         /// Update the logged-in user profile
@@ -135,7 +137,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Consumes("multipart/form-data")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> UpdateOwnProfile([FromForm(Name = "displayName")] string? displayName, [FromForm(Name = "password")][MinLength(6)] string? password, IFormFile profileImage, [FromForm(Name = "email")] string? email);
+        public abstract Task<IActionResult> UpdateOwnProfile([FromForm (Name = "displayName")]string? displayName, [FromForm (Name = "password")] [MinLength(6)]string? password, IFormFile profileImage, [FromForm (Name = "email")]string? email);
 
         /// <summary>
         /// Update user profile by ID
@@ -157,6 +159,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> UpdateProfileById([FromRoute(Name = "id")][Required] Guid id, [FromForm(Name = "displayName")] string? displayName, [FromForm(Name = "password")][MinLength(6)] string? password, IFormFile profileImage, [FromForm(Name = "email")] string? email);
+        public abstract Task<IActionResult> UpdateProfileById([FromRoute (Name = "id")][Required]Guid id, [FromForm (Name = "displayName")]string? displayName, [FromForm (Name = "password")] [MinLength(6)]string? password, IFormFile profileImage, [FromForm (Name = "email")]string? email);
     }
 }

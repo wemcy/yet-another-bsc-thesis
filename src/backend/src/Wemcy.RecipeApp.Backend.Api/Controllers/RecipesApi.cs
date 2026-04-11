@@ -20,13 +20,13 @@ using Wemcy.RecipeApp.Backend.Api.Attributes;
 using Wemcy.RecipeApp.Backend.Api.Models;
 
 namespace Wemcy.RecipeApp.Backend.Api.Controllers
-{
+{ 
     /// <summary>
     /// 
     /// </summary>
     [ApiController]
     public abstract class RecipesApiController : ControllerBase
-    {
+    { 
         /// <summary>
         /// Add comment to recipe by ID
         /// </summary>
@@ -45,7 +45,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ProducesResponseType(statusCode: 400, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> AddRecipeComment([FromRoute(Name = "id")][Required] Guid id, [FromBody] AddRecipeCommentRequest addRecipeCommentRequest);
+        public abstract Task<IActionResult> AddRecipeComment([FromRoute (Name = "id")][Required]Guid id, [FromBody]AddRecipeCommentRequest addRecipeCommentRequest);
 
         /// <summary>
         /// Create a new recipe
@@ -58,7 +58,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 201, type: typeof(Recipe))]
-        public abstract Task<IActionResult> CreateRecipe([FromBody] CreateRecipeRequest createRecipeRequest);
+        public abstract Task<IActionResult> CreateRecipe([FromBody]CreateRecipeRequest createRecipeRequest);
 
         /// <summary>
         /// Delete recipe by ID
@@ -75,7 +75,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> DeleteRecipeById([FromRoute(Name = "id")][Required] Guid id);
+        public abstract Task<IActionResult> DeleteRecipeById([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
         /// Delete recipe comment by ID
@@ -93,7 +93,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> DeleteRecipeComment([FromRoute(Name = "recipeId")][Required] Guid recipeId, [FromRoute(Name = "commentId")][Required] Guid commentId);
+        public abstract Task<IActionResult> DeleteRecipeComment([FromRoute (Name = "recipeId")][Required]Guid recipeId, [FromRoute (Name = "commentId")][Required]Guid commentId);
 
         /// <summary>
         /// Get featured recipe
@@ -116,12 +116,13 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(Recipe))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> GetRecipeById([FromRoute(Name = "id")][Required] Guid id);
+        public abstract Task<IActionResult> GetRecipeById([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
         /// Get recipe image by ID
         /// </summary>
         /// <param name="id">Unique identifier of the recipe to query (UUID)</param>
+        /// <param name="size">Desired image size (e.g., \&quot;thumbnail\&quot;, \&quot;medium\&quot;, \&quot;large\&quot;)</param>
         /// <response code="200">Recipe image retrieved successfully</response>
         /// <response code="404">Recipe or recipe image not found</response>
         [HttpGet]
@@ -129,7 +130,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(System.IO.Stream))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> GetRecipeImage([FromRoute(Name = "id")][Required] Guid id);
+        public abstract Task<IActionResult> GetRecipeImage([FromRoute (Name = "id")][Required]Guid id, [FromQuery (Name = "size")]ImageSize? size);
 
         /// <summary>
         /// List recipes by user ID
@@ -142,7 +143,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/profile/{id}/recipes")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<Recipe>))]
-        public abstract Task<IActionResult> GetRecipesByAuthorId([FromRoute(Name = "id")][Required] Guid id, [FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize")][Range(25, 100)] int? pageSize);
+        public abstract Task<IActionResult> GetRecipesByAuthorId([FromRoute (Name = "id")][Required]Guid id, [FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize);
 
         /// <summary>
         /// List comments for recipe by ID
@@ -157,7 +158,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<Comment>))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> ListRecipeComments([FromRoute(Name = "id")][Required] Guid id, [FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize")][Range(25, 100)] int? pageSize);
+        public abstract Task<IActionResult> ListRecipeComments([FromRoute (Name = "id")][Required]Guid id, [FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize);
 
         /// <summary>
         /// List recipes
@@ -171,7 +172,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/recipes/")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<Recipe>))]
-        public abstract Task<IActionResult> ListRecipes([FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize")][Range(25, 100)] int? pageSize, [FromQuery(Name = "includeAllergens")] List<Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Allergen>? excludeAllergens);
+        public abstract Task<IActionResult> ListRecipes([FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize, [FromQuery (Name = "includeAllergens")]List<Allergen>? includeAllergens, [FromQuery (Name = "excludeAllergens")]List<Allergen>? excludeAllergens);
 
         /// <summary>
         /// List featured recipes
@@ -200,7 +201,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ProducesResponseType(statusCode: 400, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> RateRecipe([FromRoute(Name = "id")][Required] Guid id, [FromBody] RateRecipeRequest rateRecipeRequest);
+        public abstract Task<IActionResult> RateRecipe([FromRoute (Name = "id")][Required]Guid id, [FromBody]RateRecipeRequest rateRecipeRequest);
 
         /// <summary>
         /// Search recipes by title
@@ -213,7 +214,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/search")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<RecipeSummary>))]
-        public abstract Task<IActionResult> SearchRecipes([FromQuery(Name = "title")][Required()] string title, [FromQuery(Name = "includeAllergens")] List<Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Allergen>? excludeAllergens);
+        public abstract Task<IActionResult> SearchRecipes([FromQuery (Name = "title")][Required()]string title, [FromQuery (Name = "includeAllergens")]List<Allergen>? includeAllergens, [FromQuery (Name = "excludeAllergens")]List<Allergen>? excludeAllergens);
 
         /// <summary>
         /// Update featured recipe
@@ -233,7 +234,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 400, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> UpdateFeaturedRecipe([FromBody] UpdateFeaturedRecipeRequest updateFeaturedRecipeRequest);
+        public abstract Task<IActionResult> UpdateFeaturedRecipe([FromBody]UpdateFeaturedRecipeRequest updateFeaturedRecipeRequest);
 
         /// <summary>
         /// Update recipe by ID
@@ -253,7 +254,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> UpdateRecipeById([FromRoute(Name = "id")][Required] Guid id, [FromBody] CreateRecipeRequest createRecipeRequest);
+        public abstract Task<IActionResult> UpdateRecipeById([FromRoute (Name = "id")][Required]Guid id, [FromBody]CreateRecipeRequest createRecipeRequest);
 
         /// <summary>
         /// Update recipe image by ID
@@ -264,6 +265,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <response code="401">No active session</response>
         /// <response code="403">Not authorized to update this recipe image</response>
         /// <response code="404">Recipe not found</response>
+        /// <response code="415">Unsupported media type (e.g., not an image file)</response>
         [HttpPut]
         [Route("/recipes/{id}/image")]
         [Authorize(Policy = "cookieAuth")]
@@ -272,6 +274,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> UpdateRecipeImage([FromRoute(Name = "id")][Required] Guid id, IFormFile image);
+        [ProducesResponseType(statusCode: 415, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> UpdateRecipeImage([FromRoute (Name = "id")][Required]Guid id, IFormFile image);
     }
 }

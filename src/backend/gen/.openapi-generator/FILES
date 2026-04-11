@@ -16,6 +16,7 @@
 ../src/Wemcy.RecipeApp.Backend.Api/Models/HealthReport.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/HealthReportServicesInner.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/IdentityError.cs
+../src/Wemcy.RecipeApp.Backend.Api/Models/ImageSize.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/Ingredient.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/Login401Response.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/LoginRequest.cs

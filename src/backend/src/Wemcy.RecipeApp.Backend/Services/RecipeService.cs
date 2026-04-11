@@ -13,10 +13,10 @@ using Recipe = Wemcy.RecipeApp.Backend.Model.Entities.Recipe;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class RecipeService(IRecipeRepository recipeRepository, ImageService imageService, IMapper mapper, IUserService userService) : IRecipeService
+public class RecipeService(IRecipeRepository recipeRepository, IImageService imageService, IMapper mapper, IUserService userService) : IRecipeService
 {
     private readonly IRecipeRepository _recipeRepository = recipeRepository;
-    private readonly ImageService _imageService = imageService;
+    private readonly IImageService _imageService = imageService;
     private readonly IMapper _mapper = mapper;
     private readonly IUserService _userService = userService;
 
@@ -52,10 +52,10 @@ public class RecipeService(IRecipeRepository recipeRepository, ImageService imag
 
     }
 
-    public async Task<Stream> GetImageByIdAsync(Guid id)
+    public async Task<Stream> GetImageByIdAsync(Guid id, ImageSize imageSize)
     {
         var image = await this._recipeRepository.GetImageByIdAsync(id);
-        return _imageService.GetImageById(image.Id);
+        return await _imageService.GetImageById(image.Id, imageSize);
 
     }
 

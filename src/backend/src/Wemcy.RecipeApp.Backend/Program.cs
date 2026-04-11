@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Reflection;
+using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Extensions;
 using Wemcy.RecipeApp.Backend.Pagination;
@@ -15,6 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options =>
 {
     options.AddPaginationFilter();
+    options.Filters.Add<InvalidCredentialsHandler>();
+    options.Filters.Add<EntityNotFoundHandler>();
+    options.Filters.Add<RegistrationErrorHandler>();
+    options.Filters.Add<UnknownImageFormatHandler>();
+    options.Filters.Add<UnauthorizedHandler>();
+
 }).AddNewtonsoftJson();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -35,9 +42,9 @@ builder.Services
 
 builder.Services.AddScoped<IRecipeService, RecipeService>()
                 .AddScoped<IRecipeRepository, RecipeRepository>()
-                .AddScoped<ImageRepository, ImageRepository>()
-                .AddScoped<ImageService, ImageService>()
-                .AddScoped<ImageStorageService, ImageStorageService>()
+                .AddScoped<IImageRepository, ImageRepository>()
+                .AddScoped<IImageService, ImageService>()
+                .AddScoped<IImageStorageService, ImageStorageService>()
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IAuthService, AuthService>()
                 .AddScoped<IShowcaseRecipeService, ShowcaseRecipeService>()

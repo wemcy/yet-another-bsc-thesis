@@ -10,12 +10,7 @@ using Wemcy.RecipeApp.Backend.Services;
 
 namespace Wemcy.RecipeApp.Backend.Controllers;
 
-[InvalidCredentialsHandler]
-[EntityNotFoundHandler]
-[UnauthorizedHandler]
-[RegistrationErrorHandler]
-
-public class AuthController(AuthService authService) : AuthApiController
+public class AuthController(IAuthService authService) : AuthApiController
 {
     public async override Task<IActionResult> Register([FromBody] Api.Models.RegisterRequest registerRequest)
     {

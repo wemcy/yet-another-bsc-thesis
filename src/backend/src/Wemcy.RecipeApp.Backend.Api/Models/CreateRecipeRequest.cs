@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{
+{ 
     /// <summary>
     /// 
     /// </summary>
@@ -32,35 +32,35 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// <value>The title of the new recipe</value>
         [Required]
         [MinLength(1)]
-        [DataMember(Name = "title", EmitDefaultValue = false)]
+        [DataMember(Name="title", EmitDefaultValue=false)]
         public string Title { get; set; }
 
         /// <summary>
         /// Short textual summary of the recipe
         /// </summary>
         /// <value>Short textual summary of the recipe</value>
-        [DataMember(Name = "description", EmitDefaultValue = false)]
+        [DataMember(Name="description", EmitDefaultValue=false)]
         public string? Description { get; set; }
 
         /// <summary>
         /// List of allergens present in the recipe
         /// </summary>
         /// <value>List of allergens present in the recipe</value>
-        [DataMember(Name = "allergens", EmitDefaultValue = false)]
+        [DataMember(Name="allergens", EmitDefaultValue=false)]
         public List<Allergen> Allergens { get; set; }
 
         /// <summary>
         /// List of steps to prepare the recipe
         /// </summary>
         /// <value>List of steps to prepare the recipe</value>
-        [DataMember(Name = "steps", EmitDefaultValue = false)]
+        [DataMember(Name="steps", EmitDefaultValue=false)]
         public List<string> Steps { get; set; }
 
         /// <summary>
         /// List of ingredients needed for the recipe
         /// </summary>
         /// <value>List of ingredients needed for the recipe</value>
-        [DataMember(Name = "ingredients", EmitDefaultValue = false)]
+        [DataMember(Name="ingredients", EmitDefaultValue=false)]
         public List<Ingredient> Ingredients { get; set; }
 
         /// <summary>
@@ -111,29 +111,29 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return
+            return 
                 (
                     Title == other.Title ||
                     Title != null &&
                     Title.Equals(other.Title)
-                ) &&
+                ) && 
                 (
                     Description == other.Description ||
                     Description != null &&
                     Description.Equals(other.Description)
-                ) &&
+                ) && 
                 (
                     Allergens == other.Allergens ||
                     Allergens != null &&
                     other.Allergens != null &&
                     Allergens.SequenceEqual(other.Allergens)
-                ) &&
+                ) && 
                 (
                     Steps == other.Steps ||
                     Steps != null &&
                     other.Steps != null &&
                     Steps.SequenceEqual(other.Steps)
-                ) &&
+                ) && 
                 (
                     Ingredients == other.Ingredients ||
                     Ingredients != null &&
@@ -152,22 +152,22 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                if (Title != null)
+                    if (Title != null)
                     hashCode = hashCode * 59 + Title.GetHashCode();
-                if (Description != null)
+                    if (Description != null)
                     hashCode = hashCode * 59 + Description.GetHashCode();
-                if (Allergens != null)
+                    if (Allergens != null)
                     hashCode = hashCode * 59 + Allergens.GetHashCode();
-                if (Steps != null)
+                    if (Steps != null)
                     hashCode = hashCode * 59 + Steps.GetHashCode();
-                if (Ingredients != null)
+                    if (Ingredients != null)
                     hashCode = hashCode * 59 + Ingredients.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-#pragma warning disable 1591
+        #pragma warning disable 1591
 
         public static bool operator ==(CreateRecipeRequest left, CreateRecipeRequest right)
         {
@@ -179,7 +179,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             return !Equals(left, right);
         }
 
-#pragma warning restore 1591
+        #pragma warning restore 1591
         #endregion Operators
     }
 }
