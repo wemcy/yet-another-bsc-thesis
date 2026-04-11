@@ -757,7 +757,35 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/readRecipeDTO"
-
+    put:
+      tags:
+      - Recipes
+      summary: Kiemelt recept frissítése
+      operationId: updateFeaturedRecipe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - recipeId
+              properties:
+                recipeId:
+                  type: string
+                  format: uuid
+                  description: The unique identifier of the recipe to set as featured.
+      responses:
+        '204':
+          description: Kiemelt recept sikeresen frissítve
+        '401':
+          description: Nem jogosult a művelet végrehajtására
+        '404':
+          description: Recept nem található
+        '410':
+          description: Formatum hiba (pl. érvénytelen UUID)
+      security:
+        - cookieAuth: []
 
 components:
   securitySchemes:

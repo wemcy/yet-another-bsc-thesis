@@ -191,6 +191,21 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         public abstract Task<IActionResult> SearchRecipes([FromQuery (Name = "title")][Required()]string title, [FromQuery (Name = "includeAllergens")]List<Allergen>? includeAllergens, [FromQuery (Name = "excludeAllergens")]List<Allergen>? excludeAllergens);
 
         /// <summary>
+        /// Kiemelt recept frissítése
+        /// </summary>
+        /// <param name="updateFeaturedRecipeRequest"></param>
+        /// <response code="204">Kiemelt recept sikeresen frissítve</response>
+        /// <response code="401">Nem jogosult a művelet végrehajtására</response>
+        /// <response code="404">Recept nem található</response>
+        /// <response code="410">Formatum hiba (pl. érvénytelen UUID)</response>
+        [HttpPut]
+        [Route("/recipes/featured")]
+        [Authorize(Policy = "cookieAuth")]
+        [Consumes("application/json")]
+        [ValidateModelState]
+        public abstract Task<IActionResult> UpdateFeaturedRecipe([FromBody]UpdateFeaturedRecipeRequest updateFeaturedRecipeRequest);
+
+        /// <summary>
         /// Recept szerkesztése ID alapján
         /// </summary>
         /// <param name="id">A szerkesztendő recept egyedi azonosítója (UUID)</param>

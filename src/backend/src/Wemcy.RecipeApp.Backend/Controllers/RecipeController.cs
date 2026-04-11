@@ -126,5 +126,11 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
         var dtos = await recipeService.ListResipesAs<ReadRecipeDTO>(new PaginationOptions(page, pageSize), new RecipeFilter(includeAllergenTypes,excludeAllergenTypes));
         return Ok(dtos);
     }
+
+    public override async Task<IActionResult> UpdateFeaturedRecipe([FromBody] UpdateFeaturedRecipeRequest updateFeaturedRecipeRequest)
+    {
+        await showcaseRecipeService.SetFeaturedRecipe(updateFeaturedRecipeRequest.RecipeId);
+        return NoContent();
+    }
 }
     
