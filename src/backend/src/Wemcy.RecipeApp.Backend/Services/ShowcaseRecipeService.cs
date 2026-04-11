@@ -34,4 +34,16 @@ public class ShowcaseRecipeService(RecipeService recipeService, RecipeShowcaseRe
         showcase.ShowcaseRecipeIds = [.. recipeIds];
         await recipeShowcaseRepository.SaveAsync();
     }
+
+    public async Task CreateDeafaultShowcaseAndFeaturedRecipe()
+    {
+        await UpdateShowcaseRecipes();
+        await SelectRandomFeatured();
+    }
+
+    private async Task SelectRandomFeatured()
+    {
+        var recipeId = (await recipeService.GetRandomRecipesGuids(1)).Single();
+        await SetFeaturedRecipe(recipeId);
+    }
 }

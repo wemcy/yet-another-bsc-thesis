@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Utils;
 
 
 namespace Wemcy.RecipeApp.Backend.Database;
@@ -26,6 +27,7 @@ public class DatabaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Gu
             entity.Property(r => r.Allergens)
                   .HasConversion<int>();
             entity.HasGeneratedTsVectorColumn(x => x.TitleSearchVector, "english", x => x.Title).HasIndex(x => x.TitleSearchVector).HasMethod("GIN");
+            entity.HasData(DefaultRecipies.GetDefaultRecipes());
         });
         modelBuilder.Entity<RecipeShowcase>(entity =>
         {

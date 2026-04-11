@@ -70,7 +70,8 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<A
     private async Task<AppUser> CreateUserIfNotExist(string email, string password, string displayName)
     {
         var user = await userManager.FindByEmailAsync(email);
-        if (user is not null) return user;
+        if (user is not null)
+            return user;
         var newUser = new AppUser
         {
             UserName = email,

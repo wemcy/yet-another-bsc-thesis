@@ -12,8 +12,19 @@ public static class ApplicationInitializationExtensions
         using var scope = app.Services.CreateScope();
         var userService = scope.ServiceProvider.GetRequiredService<UserService>();
         await userService.CreateAdminUser();
+    }
 
-       
-        // TODO Showcased recipes creation, and featured recipe when we first start up the appplication
+    public static async Task EnsureDefaultShowcasesCreated(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var showcaseRecipeService = scope.ServiceProvider.GetRequiredService<ShowcaseRecipeService>();
+        await showcaseRecipeService.CreateDeafaultShowcaseAndFeaturedRecipe();
+    }
+
+    public static async Task MigrateDatabase(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var databaseContext = scope.ServiceProvider.GetRequiredService<Database.DatabaseContext>();
+        await databaseContext.Database.MigrateAsync();
     }
 }

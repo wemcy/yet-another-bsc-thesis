@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NpgsqlTypes;
@@ -12,9 +13,11 @@ using Wemcy.RecipeApp.Backend.Database;
 namespace Wemcy.RecipeApp.Backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20260411143456_ChangedRecipeUserRequirment")]
+    partial class ChangedRecipeUserRequirment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -373,19 +376,6 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Recipes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
-                            Allergens = 138,
-                            AverageRating = 0.0,
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "A classic Italian pasta dish made with eggs, cheese, pancetta, and pepper.",
-                            Steps = new[] { "Cook spaghetti according to package instructions.", "In a separate pan, cook pancetta until crispy.", "In a bowl, whisk together eggs and grated cheese.", "Drain spaghetti and return to pot. Mix in pancetta and egg mixture quickly.", "Season with pepper and serve immediately." },
-                            Title = "Spaghetti Carbonara",
-                            UpdatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
-                        });
                 });
 
             modelBuilder.Entity("Wemcy.RecipeApp.Backend.Model.RecipeShowcase", b =>

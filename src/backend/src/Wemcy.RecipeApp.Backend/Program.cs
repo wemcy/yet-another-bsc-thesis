@@ -1,11 +1,7 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Extensions;
-using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Repository;
 using Wemcy.RecipeApp.Backend.Security;
@@ -20,6 +16,7 @@ builder.Services.AddControllers(options =>
 {
     options.AddPaginationFilter();
 }).AddNewtonsoftJson();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(config => { }, Assembly.GetExecutingAssembly());
@@ -36,19 +33,20 @@ builder.Services
     .ConfigureCookies()
     .AddCookieAuthorizationPolicy();
 
-builder.Services.AddScoped<RecipeService, RecipeService>().
-                 AddScoped<RecipeRepository, RecipeRepository>().
-                 AddScoped<ImageRepository, ImageRepository>().
-                 AddScoped<ImageService, ImageService>().
-                 AddScoped<ImageStorageService, ImageStorageService>().
-                 AddScoped<UserService, UserService>().
-                 AddScoped<AuthService, AuthService>().
-                 AddScoped<ProfileService, ProfileService>().
-                 AddScoped<ShowcaseRecipeService, ShowcaseRecipeService>().
-                 AddScoped<RecipeShowcaseRepository, RecipeShowcaseRepository>().
-                 AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>().
-                 AddSingleton<IAuthorizationHandler, CommentAuthorizationCrudHandler>().
-                 AddSingleton<IAuthorizationHandler, AppUserAuthorizationCrudHandler>();
+builder.Services.AddScoped<RecipeService, RecipeService>()
+                .AddScoped<RecipeRepository, RecipeRepository>()
+                .AddScoped<ImageRepository, ImageRepository>()
+                .AddScoped<ImageService, ImageService>()
+                .AddScoped<ImageStorageService, ImageStorageService>()
+                .AddScoped<UserService, UserService>()
+                .AddScoped<AuthService, AuthService>()
+                .AddScoped<ProfileService, ProfileService>()
+                .AddScoped<ShowcaseRecipeService, ShowcaseRecipeService>()
+                .AddScoped<RecipeShowcaseRepository, RecipeShowcaseRepository>()
+                .AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>()
+                .AddSingleton<IAuthorizationHandler, CommentAuthorizationCrudHandler>()
+                .AddSingleton<IAuthorizationHandler, AppUserAuthorizationCrudHandler>();
+
 builder.Services.AddHostedService<ShowcaseRefreshService>();
 builder.Services.ConfigurePagination();
 
@@ -65,13 +63,9 @@ builder.Services.AddHttpContextAccessor().AddCors(opt =>
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-    db.Database.Migrate();
-}
-
+await app.MigrateDatabase();
 await app.EnsureDefaultAdminAsync();
+await app.EnsureDefaultShowcasesCreated();
 
 // Configure the HTTP request pipeline.
 
@@ -93,13 +87,9 @@ if (app.Environment.IsDevelopment())
             });
 
         });
-    app.UseForwardedHeaders();
+
     app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
-}
-else
-{
-    app.UseForwardedHeaders();
 }
 
 //app.UseHttpsRedirection();

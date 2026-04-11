@@ -20,13 +20,12 @@ public static class LinqExtensions
         {
             return source.Where(predicate);
         }
-
         return source;
     }
 
     public static TOutput? MapIfHasElementOrDefault<TInput, TOutput>(
         this IList<TInput>? source,
-        Func<IList<TInput>, TOutput> mapper, 
+        Func<IList<TInput>, TOutput> mapper,
         TOutput? defaultValue = default)
     {
         if (source is null)

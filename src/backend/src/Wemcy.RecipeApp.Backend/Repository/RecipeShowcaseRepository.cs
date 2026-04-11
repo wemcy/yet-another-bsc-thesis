@@ -23,7 +23,7 @@ public class RecipeShowcaseRepository(DatabaseContext databaseContext)
         await databaseContext.SaveChangesAsync();
     }
 
-    public async Task<RecipeShowcase> GetRecipeShowcase() 
+    public async Task<RecipeShowcase> GetRecipeShowcase()
     {
         return await databaseContext.FindAsync<RecipeShowcase>(RecipeShowcase.SingletonId) ?? throw new InvalidOperationException("Recipe showcase not found.");
     }

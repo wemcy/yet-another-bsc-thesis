@@ -19,14 +19,14 @@ public class MapperProfile : Profile
             .ForMember(dest => dest.Allergens, op => op.MapFrom(src => MappAllergenDTO(src.Allergens)));
 
         CreateMap<Ingredient, Api.Models.Ingredient>()
-            .ForMember(dest => dest.Quantity, 
+            .ForMember(dest => dest.Quantity,
                 opt => opt.MapFrom(src => Convert.ToDecimal(src.Quantity)))
             .ReverseMap()
-            .ForMember(dest => dest.Quantity, 
+            .ForMember(dest => dest.Quantity,
                 opt => opt.MapFrom(src => Convert.ToDouble(src.Quantity)));
 
         CreateMap<Comment, Api.Models.Comment>()
-            .ForMember(dest => dest.Author, 
+            .ForMember(dest => dest.Author,
                 opt => opt.MapFrom(src => src.User.DisplayName));
 
         CreateMap<AppUser, Api.Models.Profile>();
@@ -39,7 +39,8 @@ public class MapperProfile : Profile
     }
     private static AllergenType? MapAllergensListToAllergen(IList<Allergen>? src)
     {
-        if (src is null) return null;
+        if (src is null)
+            return null;
         return src.Select(MapAllergens).Aggregate(AllergenType.None, (current, allergen) => current | allergen);
     }
 
@@ -72,7 +73,7 @@ public class MapperProfile : Profile
         };
     }
 
-    private static Allergen MapAllergenTypeToAllergen( AllergenType allergen)
+    private static Allergen MapAllergenTypeToAllergen(AllergenType allergen)
     {
         return allergen switch
         {

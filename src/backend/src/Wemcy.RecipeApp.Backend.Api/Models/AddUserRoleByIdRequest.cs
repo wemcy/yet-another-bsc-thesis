@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -30,7 +30,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// Gets or Sets Role
         /// </summary>
         [Required]
-        [DataMember(Name="role", EmitDefaultValue=true)]
+        [DataMember(Name = "role", EmitDefaultValue = true)]
         public UserRole Role { get; set; }
 
         /// <summary>
@@ -77,10 +77,10 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return 
+            return
                 (
                     Role == other.Role ||
-                    
+
                     Role.Equals(other.Role)
                 );
         }
@@ -95,14 +95,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    
-                    hashCode = hashCode * 59 + Role.GetHashCode();
+
+                hashCode = hashCode * 59 + Role.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(AddUserRoleByIdRequest left, AddUserRoleByIdRequest right)
         {
@@ -114,7 +114,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
         services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
             {
                 options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 6;
+                options.Password.RequiredLength = 8;
                 options.User.RequireUniqueEmail = true;
             })
             .AddEntityFrameworkStores<DatabaseContext>()

@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -30,20 +30,20 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// Gets or Sets Name
         /// </summary>
         /* <example>database</example> */
-        [DataMember(Name="name", EmitDefaultValue=false)]
+        [DataMember(Name = "name", EmitDefaultValue = false)]
         public string? Name { get; set; }
 
         /// <summary>
         /// Gets or Sets Healthy
         /// </summary>
         /* <example>true</example> */
-        [DataMember(Name="healthy", EmitDefaultValue=true)]
+        [DataMember(Name = "healthy", EmitDefaultValue = true)]
         public bool? Healthy { get; set; }
 
         /// <summary>
         /// Gets or Sets Message
         /// </summary>
-        [DataMember(Name="message", EmitDefaultValue=true)]
+        [DataMember(Name = "message", EmitDefaultValue = true)]
         public string? Message { get; set; }
 
         /// <summary>
@@ -92,17 +92,17 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return 
+            return
                 (
                     Name == other.Name ||
                     Name != null &&
                     Name.Equals(other.Name)
-                ) && 
+                ) &&
                 (
                     Healthy == other.Healthy ||
-                    
+
                     Healthy.Equals(other.Healthy)
-                ) && 
+                ) &&
                 (
                     Message == other.Message ||
                     Message != null &&
@@ -120,18 +120,18 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Name != null)
+                if (Name != null)
                     hashCode = hashCode * 59 + Name.GetHashCode();
-                    
-                    hashCode = hashCode * 59 + Healthy.GetHashCode();
-                    if (Message != null)
+
+                hashCode = hashCode * 59 + Healthy.GetHashCode();
+                if (Message != null)
                     hashCode = hashCode * 59 + Message.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(HealthReportServicesInner left, HealthReportServicesInner right)
         {
@@ -143,7 +143,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

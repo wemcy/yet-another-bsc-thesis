@@ -19,20 +19,20 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{ 
+{
+    /// <summary>
+    /// Role to assign to the user (currently supported: \"Admin\")
+    /// </summary>
+    /// <value>Role to assign to the user (currently supported: \"Admin\")</value>
+    [TypeConverter(typeof(CustomEnumConverter<UserRole>))]
+    [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public enum UserRole
+    {
+
         /// <summary>
-        /// Role to assign to the user (currently supported: \"Admin\")
+        /// Enum AdminEnum for Admin
         /// </summary>
-        /// <value>Role to assign to the user (currently supported: \"Admin\")</value>
-        [TypeConverter(typeof(CustomEnumConverter<UserRole>))]
-        [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public enum UserRole
-        {
-            
-            /// <summary>
-            /// Enum AdminEnum for Admin
-            /// </summary>
-            [EnumMember(Value = "Admin")]
-            AdminEnum = 1
-        }
+        [EnumMember(Value = "Admin")]
+        AdminEnum = 1
+    }
 }

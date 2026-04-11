@@ -7,15 +7,15 @@ public class Recipe : Entity
 {
     public required string Title { get; set; }
     public required string Description { get; set; }
-    public virtual required AppUser User { get; set; } = null!;
+    public virtual AppUser? User { get; set; } = null!;
     public required IList<string> Steps { get; set; } = [];
     public required IList<Ingredient> Ingredients { get; set; } = [];
-    public required double AverageRating { get; set; }
+    public double AverageRating { get; set; } = 0.0;
     public required AllergenType Allergens { get; set; } = AllergenType.None;
     public virtual required Image? Image { get; set; } = null;
     public virtual required IList<Rating> Ratings { get; set; } = [];
     public virtual required IList<Comment> Comments { get; set; } = [];
-    public string CreatorDisplayName => User.DisplayName;
+    public string CreatorDisplayName => User?.DisplayName ?? "Unknown";
     public NpgsqlTsVector TitleSearchVector { get; set; } = null!;
     public void UpdateAverageRating()
     {

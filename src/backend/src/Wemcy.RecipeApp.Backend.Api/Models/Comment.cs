@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -31,7 +31,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>Unique identifier of the comment</value>
         [Required]
-        [DataMember(Name="id", EmitDefaultValue=true)]
+        [DataMember(Name = "id", EmitDefaultValue = true)]
         public Guid Id { get; set; }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>Text content of the comment</value>
         [Required]
-        [DataMember(Name="content", EmitDefaultValue=false)]
+        [DataMember(Name = "content", EmitDefaultValue = false)]
         public string Content { get; set; }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>Timestamp when the comment was created</value>
         [Required]
-        [DataMember(Name="createdAt", EmitDefaultValue=true)]
+        [DataMember(Name = "createdAt", EmitDefaultValue = true)]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>Display name of the comment author</value>
         [Required]
-        [DataMember(Name="author", EmitDefaultValue=false)]
+        [DataMember(Name = "author", EmitDefaultValue = false)]
         public string Author { get; set; }
 
         /// <summary>
@@ -105,22 +105,22 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return 
+            return
                 (
                     Id == other.Id ||
-                    
+
                     Id.Equals(other.Id)
-                ) && 
+                ) &&
                 (
                     Content == other.Content ||
                     Content != null &&
                     Content.Equals(other.Content)
-                ) && 
+                ) &&
                 (
                     CreatedAt == other.CreatedAt ||
-                    
+
                     CreatedAt.Equals(other.CreatedAt)
-                ) && 
+                ) &&
                 (
                     Author == other.Author ||
                     Author != null &&
@@ -138,20 +138,20 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    
-                    hashCode = hashCode * 59 + Id.GetHashCode();
-                    if (Content != null)
+
+                hashCode = hashCode * 59 + Id.GetHashCode();
+                if (Content != null)
                     hashCode = hashCode * 59 + Content.GetHashCode();
-                    
-                    hashCode = hashCode * 59 + CreatedAt.GetHashCode();
-                    if (Author != null)
+
+                hashCode = hashCode * 59 + CreatedAt.GetHashCode();
+                if (Author != null)
                     hashCode = hashCode * 59 + Author.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(Comment left, Comment right)
         {
@@ -163,7 +163,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

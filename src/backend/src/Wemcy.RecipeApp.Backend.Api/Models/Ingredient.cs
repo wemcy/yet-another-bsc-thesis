@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -31,7 +31,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>The name of the ingredient</value>
         [Required]
-        [DataMember(Name="name", EmitDefaultValue=false)]
+        [DataMember(Name = "name", EmitDefaultValue = false)]
         public string Name { get; set; }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>The quantity of the ingredient needed for the recipe</value>
         [Required]
-        [DataMember(Name="quantity", EmitDefaultValue=true)]
+        [DataMember(Name = "quantity", EmitDefaultValue = true)]
         public decimal Quantity { get; set; }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>The unit of measure for the ingredient quantity (e.g., grams, cups, tablespoons)</value>
         [Required]
-        [DataMember(Name="unitOfMeasurement", EmitDefaultValue=false)]
+        [DataMember(Name = "unitOfMeasurement", EmitDefaultValue = false)]
         public string UnitOfMeasurement { get; set; }
 
         /// <summary>
@@ -96,17 +96,17 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return 
+            return
                 (
                     Name == other.Name ||
                     Name != null &&
                     Name.Equals(other.Name)
-                ) && 
+                ) &&
                 (
                     Quantity == other.Quantity ||
-                    
+
                     Quantity.Equals(other.Quantity)
-                ) && 
+                ) &&
                 (
                     UnitOfMeasurement == other.UnitOfMeasurement ||
                     UnitOfMeasurement != null &&
@@ -124,18 +124,18 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Name != null)
+                if (Name != null)
                     hashCode = hashCode * 59 + Name.GetHashCode();
-                    
-                    hashCode = hashCode * 59 + Quantity.GetHashCode();
-                    if (UnitOfMeasurement != null)
+
+                hashCode = hashCode * 59 + Quantity.GetHashCode();
+                if (UnitOfMeasurement != null)
                     hashCode = hashCode * 59 + UnitOfMeasurement.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(Ingredient left, Ingredient right)
         {
@@ -147,7 +147,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }
