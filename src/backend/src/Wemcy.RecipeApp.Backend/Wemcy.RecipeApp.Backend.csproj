@@ -42,4 +42,10 @@
     <Using Include="Newtonsoft.Json;" />
     <Using Include="System.ComponentModel.DataAnnotations;" />
   </ItemGroup>
+  <ItemGroup>
+    <EditorConfigFiles Remove="F:\Programming\yet-another-bsc-thesis\src\backend\src\Wemcy.RecipeApp.Backend\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="F:\Programming\yet-another-bsc-thesis\src\backend\src\Wemcy.RecipeApp.Backend\.editorconfig" />
+  </ItemGroup>
 </Project>

@@ -13,32 +13,21 @@ namespace Wemcy.RecipeApp.Backend.Controllers;
 [InvalidCredentialsHandler]
 [EntityNotFoundHandler]
 [UnauthorizedHandler]
+[RegistrationErrorHandler]
 
 public class AuthController(AuthService authService) : AuthApiController
 {
     public async override Task<IActionResult> Register([FromBody] Api.Models.RegisterRequest registerRequest)
     {
-        var result = await authService.RegisterAsync(registerRequest.Email, registerRequest.Password, registerRequest.DisplayName);
-        if (!result.Succeeded)
-            return BadRequest(result.Errors);
+        await authService.RegisterAsync(registerRequest.Email, registerRequest.Password, registerRequest.DisplayName);
         var user = await authService.LoginAsync(registerRequest.Email, registerRequest.Password);
-        return Ok(new LoginResponse
-        {
-            Id = user.UserId,
-            Email = user.Email,
-            DisplayName = user.DisplayName,
-        });
+        return Ok(user);
     }
 
     public async override Task<IActionResult> Login([FromBody] Api.Models.LoginRequest loginRequest)
     {
         var result = await authService.LoginAsync(loginRequest.Email, loginRequest.Password);
-        return Ok(new LoginResponse
-        {
-            Id = result.UserId,
-            Email = result.Email,
-            DisplayName = result.DisplayName,
-        });
+        return Ok(result);
     }
     public async override Task<IActionResult> Logout()
     {

@@ -9,10 +9,10 @@ using Wemcy.RecipeApp.Backend.Security;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class ProfileService(UserManager<AppUser> userManager, ImageService imageService, UserService userService)
+public class ProfileService(UserManager<User> userManager, ImageService imageService, UserService userService)
 {
     // TODO Make these atomic transactions to prevent partial updates
-    public async Task<AppUser> GetProfileById(Guid id)
+    public async Task<User> GetProfileById(Guid id)
     {
         var user = await userService.GetUserByIdAsync(id);
         await userService.EnsureAuthorizedAsync(user, Operations.Read);

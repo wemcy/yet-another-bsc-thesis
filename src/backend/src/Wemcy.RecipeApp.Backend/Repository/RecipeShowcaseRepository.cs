@@ -5,7 +5,7 @@ using Wemcy.RecipeApp.Backend.Services;
 
 namespace Wemcy.RecipeApp.Backend.Repository;
 
-public class RecipeShowcaseRepository(DatabaseContext databaseContext)
+public class RecipeShowcaseRepository(DatabaseContext databaseContext) : IRecipeShowcaseRepository
 {
     public async Task<Recipe> GetFeaturedRecipe()
     {

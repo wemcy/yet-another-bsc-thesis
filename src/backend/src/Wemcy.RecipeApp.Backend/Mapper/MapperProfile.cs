@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Wemcy.RecipeApp.Backend.Model;
+﻿using Wemcy.RecipeApp.Backend.Model;
 using Allergen = Wemcy.RecipeApp.Backend.Api.Models.Allergen;
 using RecipeDTO = Wemcy.RecipeApp.Backend.Api.Models.Recipe;
 
@@ -29,7 +28,7 @@ public class MapperProfile : Profile
             .ForMember(dest => dest.Author,
                 opt => opt.MapFrom(src => src.User.DisplayName));
 
-        CreateMap<AppUser, Api.Models.Profile>();
+        CreateMap<User, Api.Models.Profile>();
 
         CreateMap<Recipe, Api.Models.RecipeSummary>();
 

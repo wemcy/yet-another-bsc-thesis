@@ -1,15 +1,12 @@
 ﻿using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Search;
 
-namespace Wemcy.RecipeApp.Backend.Services;
+namespace Wemcy.RecipeApp.Backend.Utils;
 
-public class GuidFilter : IQueryFilter<Recipe>
+public class RecipeIdFilter(IList<Guid> ids) : IQueryFilter<Recipe>
 {
-    private readonly IList<Guid> _ids;
-    public GuidFilter(IList<Guid> ids)
-    {
-        _ids = ids;
-    }
+    private readonly IList<Guid> _ids = ids;
+
     public IQueryable<Recipe> ApplyFilters(IQueryable<Recipe> query)
     {
         return query.Where(x => _ids.Contains(x.Id));

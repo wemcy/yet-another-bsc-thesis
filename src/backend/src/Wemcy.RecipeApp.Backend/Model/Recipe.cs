@@ -6,17 +6,29 @@ namespace Wemcy.RecipeApp.Backend.Model;
 public class Recipe : Entity
 {
     public required string Title { get; set; }
+
     public required string Description { get; set; }
-    public virtual AppUser? User { get; set; } = null!;
+
+    public virtual User? User { get; set; } = null!;
+
     public required IList<string> Steps { get; set; } = [];
+
     public required IList<Ingredient> Ingredients { get; set; } = [];
+
     public double AverageRating { get; set; } = 0.0;
+
     public required AllergenType Allergens { get; set; } = AllergenType.None;
+
     public virtual required Image? Image { get; set; } = null;
+
     public virtual required IList<Rating> Ratings { get; set; } = [];
+
     public virtual required IList<Comment> Comments { get; set; } = [];
+
     public string CreatorDisplayName => User?.DisplayName ?? "Unknown";
+
     public NpgsqlTsVector TitleSearchVector { get; set; } = null!;
+
     public void UpdateAverageRating()
     {
         AverageRating = Ratings.Count > 0 ? Ratings.Average(r => r.Value) : 0;
@@ -27,7 +39,8 @@ public class Recipe : Entity
         var comment = Comments.SingleOrDefault(c => c.Id == commentId);
         return comment ?? throw new CommentNotFoundExeption(commentId);
     }
-    public void Rate(int newRating, AppUser user)
+
+    public void Rate(int newRating, User user)
     {
         var rating = Ratings.SingleOrDefault(r => r.User.Id == user.Id);
         if (rating is null)

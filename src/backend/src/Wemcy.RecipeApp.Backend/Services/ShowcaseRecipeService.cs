@@ -1,6 +1,7 @@
 ﻿
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Repository;
+using Wemcy.RecipeApp.Backend.Utils;
 
 
 namespace Wemcy.RecipeApp.Backend.Services;
@@ -10,7 +11,7 @@ public class ShowcaseRecipeService(RecipeService recipeService, RecipeShowcaseRe
     public async Task<IList<T>> GetShowcaseRecipes<T>()
     {
         var ids = await recipeShowcaseRepository.GetShowcaseRecipeIds();
-        var recipes = await recipeService.ListResipesAs<T>(new GuidFilter(ids));
+        var recipes = await recipeService.ListResipesAs<T>(new RecipeIdFilter(ids));
         return recipes;
     }
 

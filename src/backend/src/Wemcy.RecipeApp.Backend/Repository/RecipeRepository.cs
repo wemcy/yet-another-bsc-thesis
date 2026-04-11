@@ -10,20 +10,20 @@ using Wemcy.RecipeApp.Backend.Search;
 
 namespace Wemcy.RecipeApp.Backend.Repository;
 
-public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
+public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper) : IRecipeRepository
 {
-    private readonly DatabaseContext _dbContext = databaseContext;
-
+    private readonly DatabaseContext _databaseContext = databaseContext;
+    protected DbSet<Recipe> Recipes => _databaseContext.Recipes;
     public async Task<Recipe> CreateRecipeAsync(Recipe recipe)
     {
-        var newRecipe = _dbContext.Recipes.Add(recipe);
-        await _dbContext.SaveChangesAsync();
+        var newRecipe = Recipes.Add(recipe);
+        await _databaseContext.SaveChangesAsync();
         return newRecipe.Entity;
     }
 
     public async Task<Recipe> GetRecipeByIdAsync(Guid id)
     {
-        return await _dbContext.Recipes
+        return await Recipes
             .Where(x => x.Id == id)
             .SingleOrDefaultAsync() ?? throw new RecipeNotFoundException(id);
     }
@@ -35,21 +35,21 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
     }
     public async Task SaveAsync()
     {
-        await _dbContext.SaveChangesAsync();
+        await _databaseContext.SaveChangesAsync();
     }
 
     public void DeleteRecipe(Recipe recipe)
     {
-        _dbContext.Recipes.Remove(recipe);
+        Recipes.Remove(recipe);
     }
 
     public async Task<PaginatedResult<T>> GetAllRecipeByAuthorIdAs<T>(Guid id, PaginationOptions options)
     {
 
-        return await _dbContext.Recipes
+        return await Recipes
             .AsNoTracking()
             .Include(x => x.User)
-            .Where(x => x.User.Id == id)
+            .Where(x => x.User!.Id == id)
             .OrderByDescending(x => x.UpdatedAt)
             .ProjectTo<T>(mapper.ConfigurationProvider)
             .ToPaginatedListAsync(options);
@@ -58,7 +58,7 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
     public async Task<PaginatedResult<T>> GetCommentsByRecipeIdAs<T>(Guid id, PaginationOptions options)
     {
         var recipe = await GetRecipeByIdAsync(id);
-        return await _dbContext.Recipes
+        return await Recipes
             .AsNoTracking()
             .Where(x => x.Id == id)
             .SelectMany(x => x.Comments)
@@ -69,7 +69,7 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
 
     public async Task<PaginatedResult<T>> ListRecipesAs<T>(PaginationOptions options, IQueryFilter<Recipe> recipeFilter)
     {
-        return await _dbContext.Recipes
+        return await Recipes
             .AsNoTracking()
             .WithFilter(recipeFilter)
             .Include(x => x.User)
@@ -80,7 +80,7 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
 
     public async Task<IList<T>> ListRecipesAs<T>(IQueryFilter<Recipe> recipeFilter)
     {
-        return await _dbContext.Recipes
+        return await Recipes
             .AsNoTracking()
             .WithFilter(recipeFilter)
             .Include(x => x.User)
@@ -96,7 +96,7 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
 
     public IAsyncEnumerable<T> SearchRecipesByTitleAs<T>(RecipeSearch recipeSearch, RecipeFilter recipeFilter)
     {
-        return _dbContext.Recipes
+        return Recipes
             .AsNoTracking()
             .WithFilter(recipeSearch)
             .WithFilter(recipeFilter)
@@ -107,7 +107,7 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
 
     public async Task<List<Guid>> GetRandomRecipesGuids(int count)
     {
-        return await _dbContext.Recipes
+        return await Recipes
             .OrderBy(x => EF.Functions.Random())
             .Take(count)
             .Select(x => x.Id)
@@ -116,7 +116,7 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
 
     public async Task<IList<Recipe>> GetRecipesByIdsAsync(Guid[] ids)
     {
-        return await databaseContext.Recipes
+        return await Recipes
             .AsNoTracking()
             .Where(r => ids.Contains(r.Id))
             .Include(r => r.User)

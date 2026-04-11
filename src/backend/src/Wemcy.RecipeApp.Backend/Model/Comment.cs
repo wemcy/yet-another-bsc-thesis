@@ -3,6 +3,8 @@
 public class Comment : Entity
 {
     public virtual Recipe Recipe { get; set; } = null!;
+
     public required string Content { get; set; }
-    public virtual required AppUser User { get; set; } = null!;
+
+    public virtual required User User { get; set; } = null!;
 }

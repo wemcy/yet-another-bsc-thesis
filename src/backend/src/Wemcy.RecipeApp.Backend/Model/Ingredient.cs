@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Wemcy.RecipeApp.Backend.Model;
+﻿namespace Wemcy.RecipeApp.Backend.Model;
 
 [Owned]
 public record Ingredient

@@ -1,48 +1,41 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Newtonsoft.Json;
-using Wemcy.RecipeApp.Backend.Pagination;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Wemcy.RecipeApp.Backend.Pagination
+namespace Wemcy.RecipeApp.Backend.Pagination;
+
+public class PaginationRequestFilter(IMapper mapper) : IResultFilter
 {
-    public class PaginationRequestFilter(IMapper mapper) : IResultFilter
+    private const string PAGINATION_HEADER_NAME = "X-Pagination";
+
+    protected IMapper Mapper => mapper;
+
+    public void OnResultExecuted(ResultExecutedContext context)
     {
-        private const string PAGINATION_HADER_NAME = "X-Pagination";
+        // Do nothing
+    }
 
-        protected IMapper Mapper => mapper;
-
-        public void OnResultExecuted(ResultExecutedContext context)
+    public void OnResultExecuting(ResultExecutingContext context)
+    {
+        if (context.Result is IPaginatedResult paginatedResult)
         {
-            // Do nothing
+            HandlePaginatedResult(context.HttpContext, paginatedResult);
         }
-
-        public void OnResultExecuting(ResultExecutingContext context)
+        else if (context.Result is ObjectResult objectResult)
         {
-            if (context.Result is IPaginatedResult paginatedResult)
+            if (objectResult.Value is IPaginatedResult result)
             {
-                HandlePaginatedResult(context.HttpContext, paginatedResult);
-            }
-            else if (context.Result is ObjectResult objectResult)
-            {
-                if (objectResult.Value is IPaginatedResult result)
-                {
-                    HandlePaginatedResult(context.HttpContext, result);
-                }
+                HandlePaginatedResult(context.HttpContext, result);
             }
         }
+    }
 
 
-        private void HandlePaginatedResult(HttpContext httpContext, IPaginatedResult result)
-        {
-            //var paginationDataDto = Mapper.Map<SomeDTO>(result);
+    private static void HandlePaginatedResult(HttpContext httpContext, IPaginatedResult result)
+    {
+        AddPaginationHeader(httpContext, result);
+    }
 
-            AddPaginationHeader(httpContext, result);
-        }
-
-        private void AddPaginationHeader(HttpContext httpContext, IPaginatedResult paginationData)
-        {
-            httpContext.Response.Headers.Append(PAGINATION_HADER_NAME, JsonConvert.SerializeObject(paginationData));
-        }
+    private static void AddPaginationHeader(HttpContext httpContext, IPaginatedResult paginationData)
+    {
+        httpContext.Response.Headers.Append(PAGINATION_HEADER_NAME, JsonConvert.SerializeObject(paginationData));
     }
 }

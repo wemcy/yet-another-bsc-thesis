@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-
-namespace Wemcy.RecipeApp.Backend.Pagination;
+﻿namespace Wemcy.RecipeApp.Backend.Pagination;
 
 public class PaginatedResult<T> : IAsyncEnumerable<T>, IPaginatedResult
 {

@@ -43,9 +43,9 @@ builder.Services.AddScoped<RecipeService, RecipeService>()
                 .AddScoped<ProfileService, ProfileService>()
                 .AddScoped<ShowcaseRecipeService, ShowcaseRecipeService>()
                 .AddScoped<RecipeShowcaseRepository, RecipeShowcaseRepository>()
-                .AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>()
+                .AddSingleton<IAuthorizationHandler, RecipeAuthorizationHandler>()
                 .AddSingleton<IAuthorizationHandler, CommentAuthorizationCrudHandler>()
-                .AddSingleton<IAuthorizationHandler, AppUserAuthorizationCrudHandler>();
+                .AddSingleton<IAuthorizationHandler, UserAuthorizationHandler>();
 
 builder.Services.AddHostedService<ShowcaseRefreshService>();
 builder.Services.ConfigurePagination();

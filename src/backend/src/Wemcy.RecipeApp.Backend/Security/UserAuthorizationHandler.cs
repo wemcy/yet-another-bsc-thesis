@@ -5,9 +5,9 @@ using Wemcy.RecipeApp.Backend.Model;
 
 namespace Wemcy.RecipeApp.Backend.Security;
 
-public class AppUserAuthorizationCrudHandler : AuthorizationHandler<OperationAuthorizationRequirement, AppUser>
+public class UserAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, User>
 {
-    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, OperationAuthorizationRequirement requirement, AppUser resource)
+    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, OperationAuthorizationRequirement requirement, User resource)
     {
         // Admin users can manage every user.
         if (context.User.IsInRole(Roles.Admin) &&

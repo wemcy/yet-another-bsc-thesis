@@ -7,7 +7,7 @@ using Wemcy.RecipeApp.Backend.Utils;
 
 namespace Wemcy.RecipeApp.Backend.Database;
 
-public class DatabaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
+public class DatabaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<Image> Images { get; set; }
@@ -83,7 +83,7 @@ public class DatabaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Gu
 
     private void UpdateUserTimestamps()
     {
-        var entries = ChangeTracker.Entries<AppUser>();
+        var entries = ChangeTracker.Entries<User>();
         var now = DateTimeOffset.UtcNow;
         foreach (var entry in entries)
         {

@@ -7,11 +7,16 @@ using Wemcy.RecipeApp.Backend.Security;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<AppUser> userManager, IAuthorizationService authorizationService, RoleManager<IdentityRole<Guid>> roleManager)
+public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<User> userManager, IAuthorizationService authorizationService, RoleManager<IdentityRole<Guid>> roleManager)
 {
+    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+    private readonly UserManager<User> _userManager = userManager;
+    private readonly IAuthorizationService _authorizationService = authorizationService;
+    private readonly RoleManager<IdentityRole<Guid>> _roleManager = roleManager;
+
     public ClaimsPrincipal GetCurrentUser()
     {
-        return httpContextAccessor?.HttpContext?.User ?? throw new UnauthorizedAccessException();
+        return _httpContextAccessor?.HttpContext?.User ?? throw new UnauthorizedAccessException();
     }
 
     public Guid GetCurrentUserId()
@@ -23,22 +28,22 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<A
         return userId;
     }
 
-    public async Task<AppUser> GetCurrentUserEntityAsync()
+    public async Task<User> GetCurrentUserEntityAsync()
     {
-        var user = await userManager.FindByIdAsync(GetCurrentUserId().ToString());
+        var user = await _userManager.FindByIdAsync(GetCurrentUserId().ToString());
         return user ?? throw new UnauthorizedAccessException("Authenticated user no longer exists.");
     }
 
     public async Task EnsureAuthorizedAsync<T>(T resource, OperationAuthorizationRequirement operation)
     {
-        var result = await authorizationService.AuthorizeAsync(GetCurrentUser(), resource, operation);
+        var result = await _authorizationService.AuthorizeAsync(GetCurrentUser(), resource, operation);
         if (!result.Succeeded)
             throw new UnauthorizedAccessException("You are not allowed to modify this resource.");
     }
 
-    public async Task<AppUser> GetUserByIdAsync(Guid id)
+    public async Task<User> GetUserByIdAsync(Guid id)
     {
-        return await userManager.FindByIdAsync(id.ToString()) ?? throw new UserNotFoundException(id);
+        return await _userManager.FindByIdAsync(id.ToString()) ?? throw new UserNotFoundException(id);
     }
 
     public async Task CreateAdminUser()
@@ -54,11 +59,11 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<A
         await AddRoleToUser(defaultAdmin, Roles.Admin);
     }
 
-    private async Task AddRoleToUser(AppUser appUser, string role)
+    private async Task AddRoleToUser(User appUser, string role)
     {
-        if (!await userManager.IsInRoleAsync(appUser, role))
+        if (!await _userManager.IsInRoleAsync(appUser, role))
         {
-            var roleResult = await userManager.AddToRoleAsync(appUser, role);
+            var roleResult = await _userManager.AddToRoleAsync(appUser, role);
             if (!roleResult.Succeeded)
             {
                 throw new InvalidOperationException(
@@ -67,12 +72,13 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<A
         }
     }
 
-    private async Task<AppUser> CreateUserIfNotExist(string email, string password, string displayName)
+    private async Task<User> CreateUserIfNotExist(string email, string password, string displayName)
     {
-        var user = await userManager.FindByEmailAsync(email);
+        var user = await _userManager.FindByEmailAsync(email);
         if (user is not null)
             return user;
-        var newUser = new AppUser
+
+        var newUser = new User
         {
             UserName = email,
             Email = email,
@@ -81,7 +87,7 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<A
             Image = null,
         };
 
-        var createResult = await userManager.CreateAsync(newUser, password);
+        var createResult = await _userManager.CreateAsync(newUser, password);
         if (!createResult.Succeeded)
         {
             throw new InvalidOperationException(
@@ -90,11 +96,33 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<A
         return newUser;
     }
 
+    public async Task CreateUserAsync(string email, string password, string? displayName)
+    {
+        var user = new User
+        {
+            UserName = email,
+            Email = email,
+            DisplayName = string.IsNullOrWhiteSpace(displayName) ? email : displayName.Trim(),
+            Image = null,
+        };
+
+        var createResult = await _userManager.CreateAsync(user, password);
+        if (!createResult.Succeeded)
+        {
+            throw new RegistrationExeption([.. createResult.Errors]);
+        }
+    }
+
     private async Task EnsureRoleCreated(string roleName)
     {
-        if (!await roleManager.RoleExistsAsync(roleName))
+        if (!await _roleManager.RoleExistsAsync(roleName))
         {
-            await roleManager.CreateAsync(new IdentityRole<Guid>(roleName));
+            await _roleManager.CreateAsync(new IdentityRole<Guid>(roleName));
         }
+    }
+
+    public async Task<User?> FindByEmailAsync(string email)
+    {
+        return await _userManager.FindByEmailAsync(email);
     }
 }

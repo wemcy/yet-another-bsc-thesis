@@ -5,6 +5,7 @@ namespace Wemcy.RecipeApp.Backend.Services;
 
 public class ImageService(ImageStorageService imageStorageService, ImageRepository imageRepository)
 {
+    // TODO fix images extensions thingys
     private readonly ImageRepository imageRepository = imageRepository;
     private readonly ImageStorageService imageStorageService = imageStorageService;
     public async Task<Image> CreateImage(Stream imageStream, string name)

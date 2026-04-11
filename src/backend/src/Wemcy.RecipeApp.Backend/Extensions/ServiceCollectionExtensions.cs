@@ -8,7 +8,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddAppIdentity(this IServiceCollection services)
     {
-        services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
+        services.AddIdentity<User, IdentityRole<Guid>>(options =>
             {
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
@@ -48,14 +48,12 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddCookieAuthorizationPolicy(this IServiceCollection services)
     {
-        services.AddAuthorization(options =>
-        {
-            options.AddPolicy("cookieAuth", policy =>
+        services.AddAuthorizationBuilder()
+            .AddPolicy("cookieAuth", policy =>
             {
                 policy.AuthenticationSchemes.Add(IdentityConstants.ApplicationScheme);
                 policy.RequireAuthenticatedUser();
             });
-        });
 
         return services;
     }

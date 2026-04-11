@@ -5,7 +5,7 @@ using Wemcy.RecipeApp.Backend.Model;
 
 namespace Wemcy.RecipeApp.Backend.Security;
 
-public class RecipeAuthorizationCrudHandler : AuthorizationHandler<OperationAuthorizationRequirement, Recipe>
+public class RecipeAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, Recipe>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, OperationAuthorizationRequirement requirement, Recipe resource)
     {
