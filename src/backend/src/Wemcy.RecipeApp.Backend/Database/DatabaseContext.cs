@@ -10,7 +10,6 @@ public class DatabaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Gu
 {
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<Image> Images { get; set; }
-    public RecipeShowcase RecipeShowcase => this.Find<RecipeShowcase>(RecipeShowcase.SingletonId) ?? throw new Exception("RecipeShowcase not found in database, this should never happen"); //TODO Exception
 
     public DatabaseContext(DbContextOptions options) : base(options)
     {

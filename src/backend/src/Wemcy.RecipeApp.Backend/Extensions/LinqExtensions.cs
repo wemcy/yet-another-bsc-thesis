@@ -24,7 +24,10 @@ public static class LinqExtensions
         return source;
     }
 
-    public static TOutput? MapIfHasElementOrDefault<TInput, TOutput>(this IList<TInput>? source, Func<IList<TInput>, TOutput> mapper, TOutput? defaultValue = default)
+    public static TOutput? MapIfHasElementOrDefault<TInput, TOutput>(
+        this IList<TInput>? source,
+        Func<IList<TInput>, TOutput> mapper, 
+        TOutput? defaultValue = default)
     {
         if (source is null)
             return defaultValue;

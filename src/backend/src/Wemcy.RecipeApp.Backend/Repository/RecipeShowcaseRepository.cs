@@ -9,12 +9,12 @@ public class RecipeShowcaseRepository(DatabaseContext databaseContext)
 {
     public async Task<Recipe> GetFeaturedRecipe()
     {
-        return (await databaseContext.FindAsync<RecipeShowcase>(RecipeShowcase.SingletonId))?.FeaturedRecipe ?? throw new RecipeNotFoundException(Guid.Empty);
+        return (await GetRecipeShowcase())?.FeaturedRecipe ?? throw new RecipeNotFoundException(Guid.Empty);
     }
 
     public async Task<IList<Guid>> GetShowcaseRecipeIds()
     {
-        var showcase = await databaseContext.FindAsync<RecipeShowcase>(RecipeShowcase.SingletonId);
+        var showcase = await GetRecipeShowcase();
         return showcase?.ShowcaseRecipeIds.ToList() ?? [];
     }
 
@@ -23,13 +23,8 @@ public class RecipeShowcaseRepository(DatabaseContext databaseContext)
         await databaseContext.SaveChangesAsync();
     }
 
-    public void SetFeaturedRecipe(Recipe featuredRecipe)
+    public async Task<RecipeShowcase> GetRecipeShowcase() 
     {
-        databaseContext.RecipeShowcase.FeaturedRecipe = featuredRecipe;
-    }
-
-    internal void SetShowcaseRecipes(IList<Guid> recipeIds)
-    {
-        databaseContext.RecipeShowcase.ShowcaseRecipeIds = [.. recipeIds];
+        return await databaseContext.FindAsync<RecipeShowcase>(RecipeShowcase.SingletonId) ?? throw new InvalidOperationException("Recipe showcase not found.");
     }
 }

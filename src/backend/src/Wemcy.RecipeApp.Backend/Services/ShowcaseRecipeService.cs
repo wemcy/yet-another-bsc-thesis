@@ -22,14 +22,16 @@ public class ShowcaseRecipeService(RecipeService recipeService, RecipeShowcaseRe
     public async Task SetFeaturedRecipe(Guid featuredRecipeId)
     {
         var featuredRecipe = await recipeService.GetRecipeByIdAsync(featuredRecipeId);
-        recipeShowcaseRepository.SetFeaturedRecipe(featuredRecipe);
+        var showcase = await recipeShowcaseRepository.GetRecipeShowcase();
+        showcase.FeaturedRecipe = featuredRecipe;
         await recipeShowcaseRepository.SaveAsync();
     }
 
     public async Task UpdateShowcaseRecipes()
     {
         var recipeIds = await recipeService.GetRandomRecipesGuids(6);
-        recipeShowcaseRepository.SetShowcaseRecipes(recipeIds);
+        var showcase = await recipeShowcaseRepository.GetRecipeShowcase();
+        showcase.ShowcaseRecipeIds = [.. recipeIds];
         await recipeShowcaseRepository.SaveAsync();
     }
 }
