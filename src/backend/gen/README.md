@@ -1,6 +1,6 @@
 # Wemcy.RecipeApp.Backend.Api - ASP.NET Core 8.0 Server
 
-Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+Recipe create/list/update/delete operations with allergen-based filtering.
 
 ## Upgrade NuGet Packages
 

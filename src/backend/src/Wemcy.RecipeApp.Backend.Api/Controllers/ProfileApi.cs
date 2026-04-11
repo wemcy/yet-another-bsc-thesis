@@ -1,7 +1,7 @@
 /*
- * Receptkezelő webalkalmazás API
+ * Recipe Management Web Application API
  *
- * Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+ * Recipe create/list/update/delete operations with allergen-based filtering.
  *
  * The version of the OpenAPI document: v0.1.0-dev
  * Contact: mzsoltsandor@gmail.com
@@ -20,125 +20,143 @@ using Wemcy.RecipeApp.Backend.Api.Attributes;
 using Wemcy.RecipeApp.Backend.Api.Models;
 
 namespace Wemcy.RecipeApp.Backend.Api.Controllers
-{
+{ 
     /// <summary>
     /// 
     /// </summary>
     [ApiController]
     public abstract class ProfileApiController : ControllerBase
-    {
+    { 
         /// <summary>
-        /// Felhasználó szerepköreinek frissítése ID alapján
+        /// Update user roles by ID
         /// </summary>
-        /// <param name="id">A frissítendő felhasználó egyedi azonosítója (UUID)</param>
+        /// <param name="id">Unique identifier of the user to update (UUID)</param>
         /// <param name="addRoleToProfileByIdRequest"></param>
-        /// <response code="204">Felhasználó szerepkörei sikeresen frissítve</response>
-        /// <response code="401">Nem volt aktív munkamenet</response>
-        /// <response code="403">Nem jogosult a művelet végrehajtására (csak adminok módosíthatják a szerepköröket)</response>
-        /// <response code="404">Felhasználó nem található</response>
-        /// <response code="410">Érvénytelen szerepkör megadva</response>
+        /// <response code="204">User roles updated successfully</response>
+        /// <response code="401">No active session</response>
+        /// <response code="403">Not authorized to perform this operation (csak adminok módosíthatják a szerepköröket)</response>
+        /// <response code="404">User not found</response>
+        /// <response code="410">Invalid role provided</response>
         [HttpPost]
         [Route("/profile/{id}/roles")]
         [Authorize(Policy = "cookieAuth")]
         [Consumes("application/json")]
         [ValidateModelState]
-        public abstract Task<IActionResult> AddRoleToProfileById([FromRoute(Name = "id")][Required] Guid id, [FromBody] AddRoleToProfileByIdRequest addRoleToProfileByIdRequest);
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 410, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> AddRoleToProfileById([FromRoute (Name = "id")][Required]Guid id, [FromBody]AddRoleToProfileByIdRequest addRoleToProfileByIdRequest);
 
         /// <summary>
-        /// Felhasználó törlése ID alapján
+        /// Delete user by ID
         /// </summary>
-        /// <param name="id">A törlendő felhasználó egyedi azonosítója (UUID)</param>
-        /// <response code="204">Felhasználó sikeresen törölve</response>
-        /// <response code="401">Nem volt aktív munkamenet</response>
-        /// <response code="403">Nem a felhasználó tulajdonosa</response>
-        /// <response code="404">Felhasználó nem található</response>
+        /// <param name="id">Unique identifier of the user to delete (UUID)</param>
+        /// <response code="204">User deleted successfully</response>
+        /// <response code="401">No active session</response>
+        /// <response code="403">Not the owner of this user profile</response>
+        /// <response code="404">User not found</response>
         [HttpDelete]
         [Route("/profile/{id}")]
         [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
-        public abstract Task<IActionResult> DeleteProfileById([FromRoute(Name = "id")][Required] Guid id);
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> DeleteProfileById([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
-        /// Bejelentkezett felhasználó adatainak lekérdezése
+        /// Get the logged-in user profile
         /// </summary>
-        /// <response code="200">Sikeres lekérdezés</response>
-        /// <response code="401">Nem volt aktív munkamenet</response>
+        /// <response code="200">Request successful</response>
+        /// <response code="401">No active session</response>
         [HttpGet]
         [Route("/profile/me")]
         [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(ProfileResponse))]
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         public abstract Task<IActionResult> GetOwnProfile();
 
         /// <summary>
-        /// Bejelentkezett felhasználó profilképének lekérdezése
+        /// Get the logged-in user profile image
         /// </summary>
-        /// <response code="200">Profilkép sikeresen lekérdezve</response>
-        /// <response code="401">Nem volt aktív munkamenet</response>
+        /// <response code="200">Profile image retrieved successfully</response>
+        /// <response code="401">No active session</response>
         [HttpGet]
         [Route("/profile/me/image")]
         [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(System.IO.Stream))]
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         public abstract Task<IActionResult> GetOwnProfileImage();
 
         /// <summary>
-        /// Felhasználó adatainak lekérdezése ID alapján
+        /// Get user profile by ID
         /// </summary>
-        /// <param name="id">A lekérdezendő felhasználó egyedi azonosítója (UUID)</param>
-        /// <response code="200">Felhasználó adatai sikeresen lekérdezve</response>
-        /// <response code="401">Nem volt aktív munkamenet</response>
-        /// <response code="404">Felhasználó nem található</response>
+        /// <param name="id">Unique identifier of the user to query (UUID)</param>
+        /// <response code="200">User profile retrieved successfully</response>
+        /// <response code="401">No active session</response>
+        /// <response code="404">User not found</response>
         [HttpGet]
         [Route("/profile/{id}")]
         [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(ProfileResponse))]
-        public abstract Task<IActionResult> GetProfileById([FromRoute(Name = "id")][Required] Guid id);
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> GetProfileById([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
-        /// Felhasználó profilképének lekérdezése ID alapján
+        /// Get user profile image by ID
         /// </summary>
-        /// <param name="id">A lekérdezendő felhasználó egyedi azonosítója (UUID)</param>
-        /// <response code="200">Profilkép sikeresen lekérdezve</response>
-        /// <response code="404">Profilkép vagy felhasználó nem található</response>
+        /// <param name="id">Unique identifier of the user to query (UUID)</param>
+        /// <response code="200">Profile image retrieved successfully</response>
+        /// <response code="404">Profile image or user not found</response>
         [HttpGet]
         [Route("/profile/{id}/image")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(System.IO.Stream))]
-        public abstract Task<IActionResult> GetProfileImageById([FromRoute(Name = "id")][Required] Guid id);
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> GetProfileImageById([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
-        /// Bejelentkezett felhasználó adatainak frissítése
+        /// Update the logged-in user profile
         /// </summary>
         /// <param name="displayName">The user&#39;s display name</param>
         /// <param name="password">Password</param>
         /// <param name="profileImage">The profile image file to upload.</param>
-        /// <response code="204">Sikeres frissítés</response>
-        /// <response code="401">Nem volt aktív munkamenet</response>
+        /// <param name="email">The user&#39;s email address (used as username)</param>
+        /// <response code="204">Update successful</response>
+        /// <response code="401">No active session</response>
         [HttpPut]
         [Route("/profile/me")]
         [Authorize(Policy = "cookieAuth")]
         [Consumes("multipart/form-data")]
         [ValidateModelState]
-        public abstract Task<IActionResult> UpdateOwnProfile([FromForm(Name = "displayName")] string? displayName, [FromForm(Name = "password")][MinLength(6)] string? password, IFormFile profileImage);
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> UpdateOwnProfile([FromForm (Name = "displayName")]string? displayName, [FromForm (Name = "password")] [MinLength(6)]string? password, IFormFile profileImage, [FromForm (Name = "email")]string? email);
 
         /// <summary>
-        /// Felhasználó adatainak frissítése ID alapján
+        /// Update user profile by ID
         /// </summary>
-        /// <param name="id">A frissítendő felhasználó egyedi azonosítója (UUID)</param>
+        /// <param name="id">Unique identifier of the user to update (UUID)</param>
         /// <param name="displayName">The user&#39;s display name</param>
         /// <param name="password">Password</param>
         /// <param name="profileImage">The profile image file to upload.</param>
-        /// <response code="204">Felhasználó adatai sikeresen frissítve</response>
-        /// <response code="401">Nem volt aktív munkamenet</response>
-        /// <response code="403">Nem a felhasználó tulajdonosa</response>
-        /// <response code="404">Felhasználó nem található</response>
+        /// <param name="email">The user&#39;s email address (used as username)</param>
+        /// <response code="204">User profile updated successfully</response>
+        /// <response code="401">No active session</response>
+        /// <response code="403">Not the owner of this user profile</response>
+        /// <response code="404">User not found</response>
         [HttpPut]
         [Route("/profile/{id}")]
         [Authorize(Policy = "cookieAuth")]
         [Consumes("multipart/form-data")]
         [ValidateModelState]
-        public abstract Task<IActionResult> UpdateProfileById([FromRoute(Name = "id")][Required] Guid id, [FromForm(Name = "displayName")] string? displayName, [FromForm(Name = "password")][MinLength(6)] string? password, IFormFile profileImage);
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> UpdateProfileById([FromRoute (Name = "id")][Required]Guid id, [FromForm (Name = "displayName")]string? displayName, [FromForm (Name = "password")] [MinLength(6)]string? password, IFormFile profileImage, [FromForm (Name = "email")]string? email);
     }
 }

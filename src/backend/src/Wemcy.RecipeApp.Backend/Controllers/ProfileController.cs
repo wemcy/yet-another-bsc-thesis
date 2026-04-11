@@ -5,6 +5,7 @@ using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Extensions;
 using Wemcy.RecipeApp.Backend.Security;
 using Wemcy.RecipeApp.Backend.Services;
+using Wemcy.RecipeApp.Backend.Utils;
 
 namespace Wemcy.RecipeApp.Backend.Controllers;
 
@@ -63,23 +64,24 @@ public class ProfileController(ProfileService profileService, IMapper mapper) : 
         }
     }
 
-    public override async Task<IActionResult> UpdateOwnProfile([FromForm(Name = "displayName")] string? displayName, [FromForm(Name = "password"), MinLength(6)] string? password, IFormFile? profileImage)
+    public override async Task<IActionResult> UpdateOwnProfile([FromForm(Name = "displayName")] string? displayName, [FromForm(Name = "password"), MinLength(6)] string? password, IFormFile? profileImage, [FromForm(Name = "email")] string? email)
     {
         if (User.Identity.TryGetUserId(out var userId))
         {
-            return await this.UpdateProfileById(userId, displayName, password, profileImage);
+            return await this.UpdateProfileById(userId, displayName, password, profileImage, email);
         }
         throw new UserNotFoundException();
     }
 
-    public override async Task<IActionResult> UpdateProfileById([FromRoute(Name = "id"), Required] Guid id, [FromForm(Name = "displayName")] string? displayName, [FromForm(Name = "password"), MinLength(6)] string? password, IFormFile? profileImage)
+    public override async Task<IActionResult> UpdateProfileById([FromRoute(Name = "id"), Required] Guid id, [FromForm(Name = "displayName")] string? displayName, [FromForm(Name = "password"), MinLength(6)] string? password, IFormFile? profileImage, [FromForm(Name = "email")] string? email)
     {
         await profileService.UpdateProfileByIdAsync(id, new UserProfileUpdateRequest()
         {
             DisplayName = displayName,
             Password = password,
             ImageStream = profileImage?.OpenReadStream(),
-            ImageName = profileImage?.FileName
+            ImageName = profileImage?.FileName,
+            Email = email
         });
         return NoContent();
     }

@@ -1,7 +1,7 @@
 /*
- * Receptkezelő webalkalmazás API
+ * Recipe Management Web Application API
  *
- * Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+ * Recipe create/list/update/delete operations with allergen-based filtering.
  *
  * The version of the OpenAPI document: v0.1.0-dev
  * Contact: mzsoltsandor@gmail.com
@@ -20,29 +20,33 @@ using Wemcy.RecipeApp.Backend.Api.Attributes;
 using Wemcy.RecipeApp.Backend.Api.Models;
 
 namespace Wemcy.RecipeApp.Backend.Api.Controllers
-{
+{ 
     /// <summary>
     /// 
     /// </summary>
     [ApiController]
     public abstract class RecipesApiController : ControllerBase
-    {
+    { 
         /// <summary>
-        /// Recept kommentelése ID alapján
+        /// Add comment to recipe by ID
         /// </summary>
-        /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>
+        /// <param name="id">Unique identifier of the recipe to query (UUID)</param>
         /// <param name="addRecipeCommentRequest"></param>
         /// <response code="201">Comment added successfully</response>
+        /// <response code="401">Not authorized to perform this operation</response>
+        /// <response code="404">Recipe not found</response>
         [HttpPost]
         [Route("/recipes/{id}/comments")]
         [Authorize(Policy = "cookieAuth")]
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 201, type: typeof(Comment))]
-        public abstract Task<IActionResult> AddRecipeComment([FromRoute(Name = "id")][Required] Guid id, [FromBody] AddRecipeCommentRequest addRecipeCommentRequest);
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> AddRecipeComment([FromRoute (Name = "id")][Required]Guid id, [FromBody]AddRecipeCommentRequest addRecipeCommentRequest);
 
         /// <summary>
-        /// Új recept létrehozása
+        /// Create a new recipe
         /// </summary>
         /// <param name="createRecipeDTO"></param>
         /// <response code="201">Recipe created successfully</response>
@@ -52,39 +56,43 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 201, type: typeof(ReadRecipeDTO))]
-        public abstract Task<IActionResult> CreateRecipe([FromBody] CreateRecipeDTO createRecipeDTO);
+        public abstract Task<IActionResult> CreateRecipe([FromBody]CreateRecipeDTO createRecipeDTO);
 
         /// <summary>
-        /// Recept törlése ID alapján
+        /// Delete recipe by ID
         /// </summary>
-        /// <param name="id">A törlendő recept egyedi azonosítója (UUID)</param>
-        /// <response code="204">Recept sikeresen törölve</response>
-        /// <response code="401">Nem jogosult a művelet végrehajtására</response>
-        /// <response code="404">Recept nem található</response>
+        /// <param name="id">Unique identifier of the recipe to delete (UUID)</param>
+        /// <response code="204">Recipe deleted successfully</response>
+        /// <response code="401">Not authorized to perform this operation</response>
+        /// <response code="404">Recipe not found</response>
         [HttpDelete]
         [Route("/recipes/{id}/")]
         [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
-        public abstract Task<IActionResult> DeleteRecipeById([FromRoute(Name = "id")][Required] Guid id);
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> DeleteRecipeById([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
-        /// Recept kommentelése törlése ID alapján
+        /// Delete recipe comment by ID
         /// </summary>
-        /// <param name="recipeId">A lekérdezendő recept egyedi azonosítója (UUID)</param>
-        /// <param name="commentId">A törlendő komment egyedi azonosítója (UUID)</param>
-        /// <response code="204">Recept kommentelése sikeresen törölve</response>
-        /// <response code="401">Nem jogosult a művelet végrehajtására</response>
-        /// <response code="404">Recept vagy komment nem található</response>
+        /// <param name="recipeId">Unique identifier of the recipe to query (UUID)</param>
+        /// <param name="commentId">Unique identifier of the comment to delete (UUID)</param>
+        /// <response code="204">Recipe comment deleted successfully</response>
+        /// <response code="401">Not authorized to perform this operation</response>
+        /// <response code="404">Recipe or comment not found</response>
         [HttpDelete]
         [Route("/recipes/{recipeId}/comments/{commentId}")]
         [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
-        public abstract Task<IActionResult> DeleteRecipeComment([FromRoute(Name = "recipeId")][Required] Guid recipeId, [FromRoute(Name = "commentId")][Required] Guid commentId);
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> DeleteRecipeComment([FromRoute (Name = "recipeId")][Required]Guid recipeId, [FromRoute (Name = "commentId")][Required]Guid commentId);
 
         /// <summary>
-        /// Kiemelt recept listázása
+        /// Get featured recipe
         /// </summary>
-        /// <response code="200">Receptek</response>
+        /// <response code="200">Recipes</response>
         [HttpGet]
         [Route("/recipes/featured")]
         [ValidateModelState]
@@ -92,72 +100,73 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         public abstract Task<IActionResult> GetFeaturedRecipe();
 
         /// <summary>
-        /// Recept lekérdezése ID alapján
+        /// Get recipe by ID
         /// </summary>
-        /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>
-        /// <response code="200">Receptek</response>
+        /// <param name="id">Unique identifier of the recipe to query (UUID)</param>
+        /// <response code="200">Recipes</response>
         [HttpGet]
         [Route("/recipes/{id}/")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(ReadRecipeDTO))]
-        public abstract Task<IActionResult> GetRecipeById([FromRoute(Name = "id")][Required] Guid id);
+        public abstract Task<IActionResult> GetRecipeById([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
-        /// Recept képének lekérdezése ID alapján
+        /// Get recipe image by ID
         /// </summary>
-        /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>
-        /// <response code="200">Recept képe sikeresen lekérdezve</response>
+        /// <param name="id">Unique identifier of the recipe to query (UUID)</param>
+        /// <response code="200">Recipe image retrieved successfully</response>
         [HttpGet]
         [Route("/recipes/{id}/image")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(System.IO.Stream))]
-        public abstract Task<IActionResult> GetRecipeImage([FromRoute(Name = "id")][Required] Guid id);
+        public abstract Task<IActionResult> GetRecipeImage([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
-        /// Felhasználó receptek listázása ID alapján
+        /// List recipes by user ID
         /// </summary>
-        /// <param name="id">A lekérdezendő felhasználó egyedi azonosítója (UUID)</param>
+        /// <param name="id">Unique identifier of the user to query (UUID)</param>
         /// <param name="page">The page number to retrieve (starting from 0)</param>
         /// <param name="pageSize">The number of items per page (default is 25)</param>
-        /// <response code="200">Receptek</response>
+        /// <response code="200">Recipes</response>
         [HttpGet]
         [Route("/profile/{id}/recipes")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<ReadRecipeDTO>))]
-        public abstract Task<IActionResult> GetRecipesByAuthorId([FromRoute(Name = "id")][Required] Guid id, [FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize")][Range(25, 100)] int? pageSize);
+        public abstract Task<IActionResult> GetRecipesByAuthorId([FromRoute (Name = "id")][Required]Guid id, [FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize);
 
         /// <summary>
-        /// Recept kommenteléseinek listázása ID alapján
+        /// List comments for recipe by ID
         /// </summary>
-        /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>
+        /// <param name="id">Unique identifier of the recipe to query (UUID)</param>
         /// <param name="page">The page number to retrieve (starting from 0)</param>
         /// <param name="pageSize">The number of items per page (default is 25)</param>
-        /// <response code="200">Comment added successfully</response>
-        /// <response code="404">Recept nem található</response>
+        /// <response code="200">Comments retrieved successfully</response>
+        /// <response code="404">Recipe not found</response>
         [HttpGet]
         [Route("/recipes/{id}/comments")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<Comment>))]
-        public abstract Task<IActionResult> ListRecipeComments([FromRoute(Name = "id")][Required] Guid id, [FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize")][Range(25, 100)] int? pageSize);
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> ListRecipeComments([FromRoute (Name = "id")][Required]Guid id, [FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize);
 
         /// <summary>
-        /// Receptek listázása
+        /// List recipes
         /// </summary>
         /// <param name="page">The page number to retrieve (starting from 0)</param>
         /// <param name="pageSize">The number of items per page (default is 25)</param>
         /// <param name="includeAllergens">List of allergens to include (comma-separated, e.g. \&quot;GLUTEN,PEANUTS\&quot;)</param>
         /// <param name="excludeAllergens">List of allergens to exclude (comma-separated, e.g. \&quot;GLUTEN,PEANUTS\&quot;)</param>
-        /// <response code="200">Receptek</response>
+        /// <response code="200">Recipes</response>
         [HttpGet]
         [Route("/recipes/")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<ReadRecipeDTO>))]
-        public abstract Task<IActionResult> ListRecipes([FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize")][Range(25, 100)] int? pageSize, [FromQuery(Name = "includeAllergens")] List<Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Allergen>? excludeAllergens);
+        public abstract Task<IActionResult> ListRecipes([FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize, [FromQuery (Name = "includeAllergens")]List<Allergen>? includeAllergens, [FromQuery (Name = "excludeAllergens")]List<Allergen>? excludeAllergens);
 
         /// <summary>
-        /// Kiemelt receptek listázása
+        /// List featured recipes
         /// </summary>
-        /// <response code="200">Receptek</response>
+        /// <response code="200">Recipes</response>
         [HttpGet]
         [Route("/recipes/showcase")]
         [ValidateModelState]
@@ -165,73 +174,86 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         public abstract Task<IActionResult> ListShowcaseRecipes();
 
         /// <summary>
-        /// Recept értékelése ID alapján (1-5 csillag)
+        /// Rate recipe by ID (1-5 stars)
         /// </summary>
-        /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>
+        /// <param name="id">Unique identifier of the recipe to query (UUID)</param>
         /// <param name="rateRecipeRequest"></param>
-        /// <response code="204">Recept értékelése sikeresen frissítve</response>
+        /// <response code="204">Recipe rating updated successfully</response>
+        /// <response code="401">Not authorized to perform this operation</response>
+        /// <response code="404">Recipe not found</response>
         [HttpPut]
         [Route("/recipes/{id}/rate")]
         [Authorize(Policy = "cookieAuth")]
         [Consumes("application/json")]
         [ValidateModelState]
-        public abstract Task<IActionResult> RateRecipe([FromRoute(Name = "id")][Required] Guid id, [FromBody] RateRecipeRequest rateRecipeRequest);
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> RateRecipe([FromRoute (Name = "id")][Required]Guid id, [FromBody]RateRecipeRequest rateRecipeRequest);
 
         /// <summary>
-        /// Receptek keresése cím alapján
+        /// Search recipes by title
         /// </summary>
         /// <param name="title">The title or part of the title to search for</param>
         /// <param name="includeAllergens">List of allergens to include (comma-separated, e.g. \&quot;GLUTEN,PEANUTS\&quot;)</param>
         /// <param name="excludeAllergens">List of allergens to exclude (comma-separated, e.g. \&quot;GLUTEN,PEANUTS\&quot;)</param>
-        /// <response code="200">Receptek a keresési feltételeknek megfelelően</response>
+        /// <response code="200">Recipes matching the search criteria</response>
         [HttpGet]
         [Route("/search")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<SearchRecipeDTO>))]
-        public abstract Task<IActionResult> SearchRecipes([FromQuery(Name = "title")][Required()] string title, [FromQuery(Name = "includeAllergens")] List<Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Allergen>? excludeAllergens);
+        public abstract Task<IActionResult> SearchRecipes([FromQuery (Name = "title")][Required()]string title, [FromQuery (Name = "includeAllergens")]List<Allergen>? includeAllergens, [FromQuery (Name = "excludeAllergens")]List<Allergen>? excludeAllergens);
 
         /// <summary>
-        /// Kiemelt recept frissítése
+        /// Update featured recipe
         /// </summary>
         /// <param name="updateFeaturedRecipeRequest"></param>
-        /// <response code="204">Kiemelt recept sikeresen frissítve</response>
-        /// <response code="401">Nem jogosult a művelet végrehajtására</response>
-        /// <response code="404">Recept nem található</response>
-        /// <response code="410">Formatum hiba (pl. érvénytelen UUID)</response>
+        /// <response code="204">Featured recipe updated successfully</response>
+        /// <response code="401">Not authorized to perform this operation</response>
+        /// <response code="404">Recipe not found</response>
+        /// <response code="410">Format error (e.g., invalid UUID)</response>
         [HttpPut]
         [Route("/recipes/featured")]
         [Authorize(Policy = "cookieAuth")]
         [Consumes("application/json")]
         [ValidateModelState]
-        public abstract Task<IActionResult> UpdateFeaturedRecipe([FromBody] UpdateFeaturedRecipeRequest updateFeaturedRecipeRequest);
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 410, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> UpdateFeaturedRecipe([FromBody]UpdateFeaturedRecipeRequest updateFeaturedRecipeRequest);
 
         /// <summary>
-        /// Recept szerkesztése ID alapján
+        /// Update recipe by ID
         /// </summary>
-        /// <param name="id">A szerkesztendő recept egyedi azonosítója (UUID)</param>
+        /// <param name="id">Unique identifier of the recipe to update (UUID)</param>
         /// <param name="createRecipeDTO"></param>
-        /// <response code="200">Recept sikeresen frissítve</response>
-        /// <response code="401">Nem jogosult a művelet végrehajtására</response>
-        /// <response code="404">Recept nem található</response>
+        /// <response code="200">Recipe updated successfully</response>
+        /// <response code="401">Not authorized to perform this operation</response>
+        /// <response code="404">Recipe not found</response>
         [HttpPut]
         [Route("/recipes/{id}/")]
         [Authorize(Policy = "cookieAuth")]
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(ReadRecipeDTO))]
-        public abstract Task<IActionResult> UpdateRecipeById([FromRoute(Name = "id")][Required] Guid id, [FromBody] CreateRecipeDTO createRecipeDTO);
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> UpdateRecipeById([FromRoute (Name = "id")][Required]Guid id, [FromBody]CreateRecipeDTO createRecipeDTO);
 
         /// <summary>
-        /// Recept képének frissítése ID alapján
+        /// Update recipe image by ID
         /// </summary>
-        /// <param name="id">A lekérdezendő recept egyedi azonosítója (UUID)</param>
+        /// <param name="id">Unique identifier of the recipe to query (UUID)</param>
         /// <param name="image">The image file to upload.</param>
-        /// <response code="204">Recept képe sikeresen frissítve</response>
+        /// <response code="204">Recipe image updated successfully</response>
+        /// <response code="401">Not authorized to perform this operation</response>
+        /// <response code="404">Recipe not found</response>
         [HttpPut]
         [Route("/recipes/{id}/image")]
         [Authorize(Policy = "cookieAuth")]
         [Consumes("multipart/form-data")]
         [ValidateModelState]
-        public abstract Task<IActionResult> UpdateRecipeImage([FromRoute(Name = "id")][Required] Guid id, IFormFile image);
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> UpdateRecipeImage([FromRoute (Name = "id")][Required]Guid id, IFormFile image);
     }
 }

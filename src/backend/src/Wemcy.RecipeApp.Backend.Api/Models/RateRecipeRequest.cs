@@ -1,7 +1,7 @@
 /*
- * Receptkezelő webalkalmazás API
+ * Recipe Management Web Application API
  *
- * Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+ * Recipe create/list/update/delete operations with allergen-based filtering.
  *
  * The version of the OpenAPI document: v0.1.0-dev
  * Contact: mzsoltsandor@gmail.com
@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{
+{ 
     /// <summary>
     /// 
     /// </summary>
@@ -32,7 +32,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// <value>The rating value (1-5)</value>
         [Required]
         [Range(1, 5)]
-        [DataMember(Name = "rating", EmitDefaultValue = true)]
+        [DataMember(Name="rating", EmitDefaultValue=true)]
         public int Rating { get; set; }
 
         /// <summary>
@@ -79,10 +79,10 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return
+            return 
                 (
                     Rating == other.Rating ||
-
+                    
                     Rating.Equals(other.Rating)
                 );
         }
@@ -97,14 +97,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-
-                hashCode = hashCode * 59 + Rating.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + Rating.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-#pragma warning disable 1591
+        #pragma warning disable 1591
 
         public static bool operator ==(RateRecipeRequest left, RateRecipeRequest right)
         {
@@ -116,7 +116,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             return !Equals(left, right);
         }
 
-#pragma warning restore 1591
+        #pragma warning restore 1591
         #endregion Operators
     }
 }

@@ -39,14 +39,18 @@ public class ProfileService(UserManager<AppUser> userManager, ImageService image
         {
             user.DisplayName = request.DisplayName;
         }
+        if(request.HasEmailUpdate)
+        {
+            var token = await userManager.GenerateChangeEmailTokenAsync(user, request.Email);
+            await userManager.ChangeEmailAsync(user, request.Email, token);
+            await userManager.SetUserNameAsync(user, request.Email);
+        }
         if (request.HasPasswordUpdate)
         {
             var token = await userManager.GeneratePasswordResetTokenAsync(user);
             await userManager.ResetPasswordAsync(user, token, request.Password);
         }
-        // TODO email
         await userManager.UpdateAsync(user);
-
     }
 
     public async Task DeleteProfileByIdAsync(Guid id)

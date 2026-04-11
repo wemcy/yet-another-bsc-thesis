@@ -24,14 +24,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
     /// 
     /// </summary>
     [DataContract]
-    public class AddRoleToProfileByIdRequest : IEquatable<AddRoleToProfileByIdRequest>
+    public class ErrorResponse : IEquatable<ErrorResponse>
     {
         /// <summary>
-        /// Gets or Sets Role
+        /// A human-readable error message describing what went wrong.
         /// </summary>
-        [Required]
-        [DataMember(Name="role", EmitDefaultValue=true)]
-        public RolesEnum Role { get; set; }
+        /// <value>A human-readable error message describing what went wrong.</value>
+        [DataMember(Name="message", EmitDefaultValue=false)]
+        public string? Message { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -40,8 +40,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class AddRoleToProfileByIdRequest {\n");
-            sb.Append("  Role: ").Append(Role).Append("\n");
+            sb.Append("class ErrorResponse {\n");
+            sb.Append("  Message: ").Append(Message).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -64,24 +64,24 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((AddRoleToProfileByIdRequest)obj);
+            return obj.GetType() == GetType() && Equals((ErrorResponse)obj);
         }
 
         /// <summary>
-        /// Returns true if AddRoleToProfileByIdRequest instances are equal
+        /// Returns true if ErrorResponse instances are equal
         /// </summary>
-        /// <param name="other">Instance of AddRoleToProfileByIdRequest to be compared</param>
+        /// <param name="other">Instance of ErrorResponse to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(AddRoleToProfileByIdRequest other)
+        public bool Equals(ErrorResponse other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return 
                 (
-                    Role == other.Role ||
-                    
-                    Role.Equals(other.Role)
+                    Message == other.Message ||
+                    Message != null &&
+                    Message.Equals(other.Message)
                 );
         }
 
@@ -95,8 +95,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    
-                    hashCode = hashCode * 59 + Role.GetHashCode();
+                    if (Message != null)
+                    hashCode = hashCode * 59 + Message.GetHashCode();
                 return hashCode;
             }
         }
@@ -104,12 +104,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(AddRoleToProfileByIdRequest left, AddRoleToProfileByIdRequest right)
+        public static bool operator ==(ErrorResponse left, ErrorResponse right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(AddRoleToProfileByIdRequest left, AddRoleToProfileByIdRequest right)
+        public static bool operator !=(ErrorResponse left, ErrorResponse right)
         {
             return !Equals(left, right);
         }

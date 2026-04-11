@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Wemcy.RecipeApp.Backend.Controllers
+namespace Wemcy.RecipeApp.Backend.Utils
 {
     internal static class DefaultImages
     {

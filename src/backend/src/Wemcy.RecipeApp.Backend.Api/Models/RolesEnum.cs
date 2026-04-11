@@ -1,7 +1,7 @@
 /*
- * Receptkezelő webalkalmazás API
+ * Recipe Management Web Application API
  *
- * Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+ * Recipe create/list/update/delete operations with allergen-based filtering.
  *
  * The version of the OpenAPI document: v0.1.0-dev
  * Contact: mzsoltsandor@gmail.com
@@ -19,20 +19,20 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{
-    /// <summary>
-    /// List of roles to assign to the user (e.g., [\"User\"] or [\"Admin\"])
-    /// </summary>
-    /// <value>List of roles to assign to the user (e.g., [\"User\"] or [\"Admin\"])</value>
-    [TypeConverter(typeof(CustomEnumConverter<RolesEnum>))]
-    [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-    public enum RolesEnum
-    {
-
+{ 
         /// <summary>
-        /// Enum AdminEnum for Admin
+        /// Role to assign to the user (currently supported: \"Admin\")
         /// </summary>
-        [EnumMember(Value = "Admin")]
-        AdminEnum = 1
-    }
+        /// <value>Role to assign to the user (currently supported: \"Admin\")</value>
+        [TypeConverter(typeof(CustomEnumConverter<RolesEnum>))]
+        [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public enum RolesEnum
+        {
+            
+            /// <summary>
+            /// Enum AdminEnum for Admin
+            /// </summary>
+            [EnumMember(Value = "Admin")]
+            AdminEnum = 1
+        }
 }

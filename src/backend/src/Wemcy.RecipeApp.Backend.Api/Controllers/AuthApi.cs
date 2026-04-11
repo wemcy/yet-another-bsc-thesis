@@ -1,7 +1,7 @@
 /*
- * Receptkezelő webalkalmazás API
+ * Recipe Management Web Application API
  *
- * Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+ * Recipe create/list/update/delete operations with allergen-based filtering.
  *
  * The version of the OpenAPI document: v0.1.0-dev
  * Contact: mzsoltsandor@gmail.com
@@ -20,50 +20,51 @@ using Wemcy.RecipeApp.Backend.Api.Attributes;
 using Wemcy.RecipeApp.Backend.Api.Models;
 
 namespace Wemcy.RecipeApp.Backend.Api.Controllers
-{
+{ 
     /// <summary>
     /// 
     /// </summary>
     [ApiController]
     public abstract class AuthApiController : ControllerBase
-    {
+    { 
         /// <summary>
-        /// Bejelentkezés
+        /// Login
         /// </summary>
         /// <param name="loginRequest"></param>
-        /// <response code="200">Sikeres bejelentkezés – munkamenet cookie beállítva</response>
-        /// <response code="401">Hibás email cím vagy jelszó</response>
+        /// <response code="200">Login successful; session cookie set</response>
+        /// <response code="401">Invalid email address or password</response>
         [HttpPost]
         [Route("/auth/login")]
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(LoginResponse))]
         [ProducesResponseType(statusCode: 401, type: typeof(Login401Response))]
-        public abstract Task<IActionResult> Login([FromBody] LoginRequest loginRequest);
+        public abstract Task<IActionResult> Login([FromBody]LoginRequest loginRequest);
 
         /// <summary>
-        /// Kijelentkezés
+        /// Logout
         /// </summary>
-        /// <response code="204">Sikeres kijelentkezés, cookie törlésre kerül</response>
-        /// <response code="401">Nem volt aktív munkamenet</response>
+        /// <response code="204">Logout successful; cookie removed</response>
+        /// <response code="401">No active session</response>
         [HttpPost]
         [Route("/auth/logout")]
         [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         public abstract Task<IActionResult> Logout();
 
         /// <summary>
-        /// Felhasználó regisztráció
+        /// User registration
         /// </summary>
         /// <param name="registerRequest"></param>
-        /// <response code="200">Sikeres regisztráció</response>
-        /// <response code="400">Érvénytelen kérés (pl. az email már foglalt, gyenge jelszó)</response>
+        /// <response code="200">Registration successful</response>
+        /// <response code="400">Invalid request (e.g., email already in use, weak password)</response>
         [HttpPost]
         [Route("/auth/register")]
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(LoginResponse))]
         [ProducesResponseType(statusCode: 400, type: typeof(List<IdentityError>))]
-        public abstract Task<IActionResult> Register([FromBody] RegisterRequest registerRequest);
+        public abstract Task<IActionResult> Register([FromBody]RegisterRequest registerRequest);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * Receptkezelő webalkalmazás API
+ * Recipe Management Web Application API
  *
- * Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+ * Recipe create/list/update/delete operations with allergen-based filtering.
  *
  * The version of the OpenAPI document: v0.1.0-dev
  * Contact: mzsoltsandor@gmail.com
@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{
+{ 
     /// <summary>
     /// 
     /// </summary>
@@ -27,26 +27,26 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
     public class LoginResponse : IEquatable<LoginResponse>
     {
         /// <summary>
-        /// A bejelentkezett felhasználó azonosítója
+        /// Identifier of the logged-in user
         /// </summary>
-        /// <value>A bejelentkezett felhasználó azonosítója</value>
+        /// <value>Identifier of the logged-in user</value>
         [Required]
-        [DataMember(Name = "id", EmitDefaultValue = true)]
+        [DataMember(Name="id", EmitDefaultValue=true)]
         public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Email
         /// </summary>
         [Required]
-        [DataMember(Name = "email", EmitDefaultValue = false)]
+        [DataMember(Name="email", EmitDefaultValue=false)]
         public string Email { get; set; }
 
         /// <summary>
-        /// A bejelentkezett felhasználó megjelenítendő neve
+        /// Display name of the logged-in user
         /// </summary>
-        /// <value>A bejelentkezett felhasználó megjelenítendő neve</value>
+        /// <value>Display name of the logged-in user</value>
         [Required]
-        [DataMember(Name = "displayName", EmitDefaultValue = false)]
+        [DataMember(Name="displayName", EmitDefaultValue=false)]
         public string DisplayName { get; set; }
 
         /// <summary>
@@ -95,17 +95,17 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return
+            return 
                 (
                     Id == other.Id ||
-
+                    
                     Id.Equals(other.Id)
-                ) &&
+                ) && 
                 (
                     Email == other.Email ||
                     Email != null &&
                     Email.Equals(other.Email)
-                ) &&
+                ) && 
                 (
                     DisplayName == other.DisplayName ||
                     DisplayName != null &&
@@ -123,18 +123,18 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-
-                hashCode = hashCode * 59 + Id.GetHashCode();
-                if (Email != null)
+                    
+                    hashCode = hashCode * 59 + Id.GetHashCode();
+                    if (Email != null)
                     hashCode = hashCode * 59 + Email.GetHashCode();
-                if (DisplayName != null)
+                    if (DisplayName != null)
                     hashCode = hashCode * 59 + DisplayName.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-#pragma warning disable 1591
+        #pragma warning disable 1591
 
         public static bool operator ==(LoginResponse left, LoginResponse right)
         {
@@ -146,7 +146,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             return !Equals(left, right);
         }
 
-#pragma warning restore 1591
+        #pragma warning restore 1591
         #endregion Operators
     }
 }

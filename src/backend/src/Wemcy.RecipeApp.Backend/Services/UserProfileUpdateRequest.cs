@@ -8,7 +8,7 @@ public class UserProfileUpdateRequest
     public required string? ImageName { get; set; }
     public required string? DisplayName { get; set; }
     public required string? Password { get; set; }
-    //public required string? Email { get; set; }
+    public required string? Email { get; set; }
 
     [MemberNotNullWhen(true, nameof(ImageStream))]
     [MemberNotNullWhen(true, nameof(ImageName))]
@@ -17,5 +17,6 @@ public class UserProfileUpdateRequest
     public bool HasDisplayNameUpdate => !String.IsNullOrWhiteSpace(DisplayName);
     [MemberNotNullWhen(true, nameof(Password))]
     public bool HasPasswordUpdate => !String.IsNullOrWhiteSpace(Password);
-
+    [MemberNotNullWhen(true, nameof(Email))]
+    public bool HasEmailUpdate => !String.IsNullOrWhiteSpace(Email);
 }

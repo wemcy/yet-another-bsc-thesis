@@ -1248,6 +1248,11 @@ components:
           format: binary
           nullable: true
           description: The profile image file to upload.
+        email:
+          type: string
+          format: email
+          nullable: true
+          description: The user's email address (used as username)
     errorResponse:
       type: object
       properties:

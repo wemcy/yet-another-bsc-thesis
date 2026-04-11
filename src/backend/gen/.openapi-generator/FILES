@@ -14,6 +14,7 @@
 ../src/Wemcy.RecipeApp.Backend.Api/Models/Allergen.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/Comment.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/CreateRecipeDTO.cs
+../src/Wemcy.RecipeApp.Backend.Api/Models/ErrorResponse.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/IdentityError.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/Ingredient.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/Login401Response.cs

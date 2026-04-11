@@ -1,7 +1,7 @@
 /*
- * Receptkezelő webalkalmazás API
+ * Recipe Management Web Application API
  *
- * Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+ * Recipe create/list/update/delete operations with allergen-based filtering.
  *
  * The version of the OpenAPI document: v0.1.0-dev
  * Contact: mzsoltsandor@gmail.com
@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{
+{ 
     /// <summary>
     /// 
     /// </summary>
@@ -30,14 +30,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// Machine-readable error code (e.g. DuplicateEmail)
         /// </summary>
         /// <value>Machine-readable error code (e.g. DuplicateEmail)</value>
-        [DataMember(Name = "code", EmitDefaultValue = false)]
+        [DataMember(Name="code", EmitDefaultValue=false)]
         public string? Code { get; set; }
 
         /// <summary>
         /// Human-readable error description
         /// </summary>
         /// <value>Human-readable error description</value>
-        [DataMember(Name = "description", EmitDefaultValue = false)]
+        [DataMember(Name="description", EmitDefaultValue=false)]
         public string? Description { get; set; }
 
         /// <summary>
@@ -85,12 +85,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return
+            return 
                 (
                     Code == other.Code ||
                     Code != null &&
                     Code.Equals(other.Code)
-                ) &&
+                ) && 
                 (
                     Description == other.Description ||
                     Description != null &&
@@ -108,16 +108,16 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                if (Code != null)
+                    if (Code != null)
                     hashCode = hashCode * 59 + Code.GetHashCode();
-                if (Description != null)
+                    if (Description != null)
                     hashCode = hashCode * 59 + Description.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-#pragma warning disable 1591
+        #pragma warning disable 1591
 
         public static bool operator ==(IdentityError left, IdentityError right)
         {
@@ -129,7 +129,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             return !Equals(left, right);
         }
 
-#pragma warning restore 1591
+        #pragma warning restore 1591
         #endregion Operators
     }
 }
