@@ -15,7 +15,7 @@ namespace Wemcy.RecipeApp.Backend.Controllers;
 
 [EntityNotFoundHandler]
 [UnauthorizedHandler]
-public class RecipeController(RecipeService recipeService, IMapper mapper, ShowcaseRecipeService showcaseRecipeService) : RecipesApiController
+public class RecipeController(IRecipeService recipeService, IMapper mapper, IShowcaseRecipeService showcaseRecipeService) : RecipesApiController
 {
     public override async Task<IActionResult> GetRecipeById([FromRoute(Name = "id"), Required] Guid id)
     {

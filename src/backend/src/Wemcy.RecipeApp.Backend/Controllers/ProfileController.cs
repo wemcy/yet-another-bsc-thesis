@@ -3,6 +3,7 @@ using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Extensions;
+using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Security;
 using Wemcy.RecipeApp.Backend.Services;
 using Wemcy.RecipeApp.Backend.Utils;

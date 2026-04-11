@@ -17,7 +17,7 @@ public static class ApplicationInitializationExtensions
     public static async Task EnsureDefaultShowcasesCreated(this WebApplication app)
     {
         using var scope = app.Services.CreateScope();
-        var showcaseRecipeService = scope.ServiceProvider.GetRequiredService<ShowcaseRecipeService>();
+        var showcaseRecipeService = scope.ServiceProvider.GetRequiredService<IShowcaseRecipeService>();
         await showcaseRecipeService.CreateDeafaultShowcaseAndFeaturedRecipeAsync();
     }
 

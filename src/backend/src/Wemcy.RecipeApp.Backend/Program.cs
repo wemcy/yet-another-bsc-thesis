@@ -33,14 +33,14 @@ builder.Services
     .ConfigureCookies()
     .AddCookieAuthorizationPolicy();
 
-builder.Services.AddScoped<RecipeService, RecipeService>()
+builder.Services.AddScoped<IRecipeService, RecipeService>()
                 .AddScoped<IRecipeRepository, RecipeRepository>()
                 .AddScoped<ImageRepository, ImageRepository>()
                 .AddScoped<ImageService, ImageService>()
                 .AddScoped<ImageStorageService, ImageStorageService>()
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IAuthService, AuthService>()
-                .AddScoped<ShowcaseRecipeService, ShowcaseRecipeService>()
+                .AddScoped<IShowcaseRecipeService, ShowcaseRecipeService>()
                 .AddScoped<IRecipeShowcaseRepository, RecipeShowcaseRepository>()
                 .AddSingleton<IAuthorizationHandler, RecipeAuthorizationHandler>()
                 .AddSingleton<IAuthorizationHandler, CommentAuthorizationCrudHandler>()

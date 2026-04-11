@@ -10,7 +10,7 @@ using Wemcy.RecipeApp.Backend.Search;
 
 namespace Wemcy.RecipeApp.Backend.Repository;
 
-public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
+public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper) : IRecipeRepository
 {
     private readonly DatabaseContext _databaseContext = databaseContext;
     protected DbSet<Recipe> Recipes => _databaseContext.Recipes;
@@ -40,7 +40,7 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
 
     public void DeleteRecipe(Recipe recipe)
     {
-       Recipes.Remove(recipe);
+        Recipes.Remove(recipe);
     }
 
     public async Task<PaginatedResult<T>> GetAllRecipeByAuthorIdAs<T>(Guid id, PaginationOptions options)
