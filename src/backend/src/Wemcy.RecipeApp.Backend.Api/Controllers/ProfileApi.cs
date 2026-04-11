@@ -28,15 +28,15 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
     public abstract class ProfileApiController : ControllerBase
     { 
         /// <summary>
-        /// Update user roles by ID
+        /// Add role to user by ID
         /// </summary>
         /// <param name="id">Unique identifier of the user to update (UUID)</param>
-        /// <param name="addRoleToProfileByIdRequest"></param>
-        /// <response code="204">User roles updated successfully</response>
+        /// <param name="addUserRoleByIdRequest"></param>
+        /// <response code="204">User role added successfully</response>
         /// <response code="401">No active session</response>
-        /// <response code="403">Not authorized to perform this operation (csak adminok módosíthatják a szerepköröket)</response>
+        /// <response code="403">Not authorized to perform this operation (only admins can modify roles)</response>
         /// <response code="404">User not found</response>
-        /// <response code="410">Invalid role provided</response>
+        /// <response code="400">Invalid role provided</response>
         [HttpPost]
         [Route("/profile/{id}/roles")]
         [Authorize(Policy = "cookieAuth")]
@@ -45,8 +45,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        [ProducesResponseType(statusCode: 410, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> AddRoleToProfileById([FromRoute (Name = "id")][Required]Guid id, [FromBody]AddRoleToProfileByIdRequest addRoleToProfileByIdRequest);
+        [ProducesResponseType(statusCode: 400, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> AddUserRoleById([FromRoute (Name = "id")][Required]Guid id, [FromBody]AddUserRoleByIdRequest addUserRoleByIdRequest);
 
         /// <summary>
         /// Delete user by ID
@@ -74,7 +74,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/profile/me")]
         [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
-        [ProducesResponseType(statusCode: 200, type: typeof(ProfileResponse))]
+        [ProducesResponseType(statusCode: 200, type: typeof(Profile))]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         public abstract Task<IActionResult> GetOwnProfile();
 
@@ -102,7 +102,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/profile/{id}")]
         [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
-        [ProducesResponseType(statusCode: 200, type: typeof(ProfileResponse))]
+        [ProducesResponseType(statusCode: 200, type: typeof(Profile))]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
         public abstract Task<IActionResult> GetProfileById([FromRoute (Name = "id")][Required]Guid id);
@@ -124,7 +124,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// Update the logged-in user profile
         /// </summary>
         /// <param name="displayName">The user&#39;s display name</param>
-        /// <param name="password">Password</param>
+        /// <param name="password">New password for the user account</param>
         /// <param name="profileImage">The profile image file to upload.</param>
         /// <param name="email">The user&#39;s email address (used as username)</param>
         /// <response code="204">Update successful</response>
@@ -142,7 +142,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// </summary>
         /// <param name="id">Unique identifier of the user to update (UUID)</param>
         /// <param name="displayName">The user&#39;s display name</param>
-        /// <param name="password">Password</param>
+        /// <param name="password">New password for the user account</param>
         /// <param name="profileImage">The profile image file to upload.</param>
         /// <param name="email">The user&#39;s email address (used as username)</param>
         /// <response code="204">User profile updated successfully</response>

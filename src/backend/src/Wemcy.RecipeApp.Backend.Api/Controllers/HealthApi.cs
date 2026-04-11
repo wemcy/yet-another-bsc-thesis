@@ -34,7 +34,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [HttpGet]
         [Route("/alive/")]
         [ValidateModelState]
-        [ProducesResponseType(statusCode: 200, type: typeof(AliveReport))]
+        [ProducesResponseType(statusCode: 200, type: typeof(HealthReport))]
         public abstract Task<IActionResult> GetServiceReport();
     }
 }

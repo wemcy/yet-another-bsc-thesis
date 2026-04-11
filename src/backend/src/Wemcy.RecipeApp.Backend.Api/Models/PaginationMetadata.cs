@@ -41,11 +41,11 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public int? PageNumber { get; set; }
 
         /// <summary>
-        /// Current page number (starting from 0)
+        /// Total number of pages available
         /// </summary>
-        /// <value>Current page number (starting from 0)</value>
-        [DataMember(Name="currentPage", EmitDefaultValue=true)]
-        public int? CurrentPage { get; set; }
+        /// <value>Total number of pages available</value>
+        [DataMember(Name="pageCount", EmitDefaultValue=true)]
+        public int? PageCount { get; set; }
 
         /// <summary>
         /// Number of items per page
@@ -78,7 +78,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             sb.Append("class PaginationMetadata {\n");
             sb.Append("  TotalCount: ").Append(TotalCount).Append("\n");
             sb.Append("  PageNumber: ").Append(PageNumber).Append("\n");
-            sb.Append("  CurrentPage: ").Append(CurrentPage).Append("\n");
+            sb.Append("  PageCount: ").Append(PageCount).Append("\n");
             sb.Append("  PageSize: ").Append(PageSize).Append("\n");
             sb.Append("  HasNextPage: ").Append(HasNextPage).Append("\n");
             sb.Append("  HasPreviousPage: ").Append(HasPreviousPage).Append("\n");
@@ -129,9 +129,9 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     PageNumber.Equals(other.PageNumber)
                 ) && 
                 (
-                    CurrentPage == other.CurrentPage ||
+                    PageCount == other.PageCount ||
                     
-                    CurrentPage.Equals(other.CurrentPage)
+                    PageCount.Equals(other.PageCount)
                 ) && 
                 (
                     PageSize == other.PageSize ||
@@ -165,7 +165,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     
                     hashCode = hashCode * 59 + PageNumber.GetHashCode();
                     
-                    hashCode = hashCode * 59 + CurrentPage.GetHashCode();
+                    hashCode = hashCode * 59 + PageCount.GetHashCode();
                     
                     hashCode = hashCode * 59 + PageSize.GetHashCode();
                     

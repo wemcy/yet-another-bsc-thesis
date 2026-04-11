@@ -35,8 +35,9 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or Sets Email
+        /// Email address of the logged-in user
         /// </summary>
+        /// <value>Email address of the logged-in user</value>
         [Required]
         [DataMember(Name="email", EmitDefaultValue=false)]
         public string Email { get; set; }

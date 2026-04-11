@@ -21,7 +21,7 @@ using Wemcy.RecipeApp.Backend.Api.Converters;
 namespace Wemcy.RecipeApp.Backend.Api.Models
 { 
         /// <summary>
-        /// Gets or Sets allergen
+        /// Gets or Sets Allergen
         /// </summary>
         [TypeConverter(typeof(CustomEnumConverter<Allergen>))]
         [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]

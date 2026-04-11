@@ -24,48 +24,23 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
     /// 
     /// </summary>
     [DataContract]
-    public class ReadRecipeDTO : IEquatable<ReadRecipeDTO>
+    public class CreateRecipeRequest : IEquatable<CreateRecipeRequest>
     {
         /// <summary>
-        /// Gets or Sets Id
+        /// The title of the new recipe
         /// </summary>
+        /// <value>The title of the new recipe</value>
         [Required]
-        [DataMember(Name="id", EmitDefaultValue=true)]
-        public Guid Id { get; set; }
-
-        /// <summary>
-        /// The display name of the recipe&#39;s author
-        /// </summary>
-        /// <value>The display name of the recipe&#39;s author</value>
-        [Required]
-        [DataMember(Name="creatorDisplayName", EmitDefaultValue=false)]
-        public string CreatorDisplayName { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Title
-        /// </summary>
-        [Required]
+        [MinLength(1)]
         [DataMember(Name="title", EmitDefaultValue=false)]
         public string Title { get; set; }
 
         /// <summary>
-        /// Gets or Sets Description
+        /// Short textual summary of the recipe
         /// </summary>
-        [DataMember(Name="description", EmitDefaultValue=true)]
+        /// <value>Short textual summary of the recipe</value>
+        [DataMember(Name="description", EmitDefaultValue=false)]
         public string? Description { get; set; }
-
-        /// <summary>
-        /// Gets or Sets CreatedAt
-        /// </summary>
-        [Required]
-        [DataMember(Name="createdAt", EmitDefaultValue=true)]
-        public DateTimeOffset CreatedAt { get; set; }
-
-        /// <summary>
-        /// Gets or Sets UpdatedAt
-        /// </summary>
-        [DataMember(Name="updatedAt", EmitDefaultValue=true)]
-        public DateTimeOffset? UpdatedAt { get; set; }
 
         /// <summary>
         /// List of allergens present in the recipe
@@ -89,31 +64,18 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public List<Ingredient> Ingredients { get; set; }
 
         /// <summary>
-        /// The average rating of the recipe (1-5)
-        /// </summary>
-        /// <value>The average rating of the recipe (1-5)</value>
-        [Required]
-        [DataMember(Name="averageRating", EmitDefaultValue=true)]
-        public double AverageRating { get; set; }
-
-        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class ReadRecipeDTO {\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  CreatorDisplayName: ").Append(CreatorDisplayName).Append("\n");
+            sb.Append("class CreateRecipeRequest {\n");
             sb.Append("  Title: ").Append(Title).Append("\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
-            sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
-            sb.Append("  UpdatedAt: ").Append(UpdatedAt).Append("\n");
             sb.Append("  Allergens: ").Append(Allergens).Append("\n");
             sb.Append("  Steps: ").Append(Steps).Append("\n");
             sb.Append("  Ingredients: ").Append(Ingredients).Append("\n");
-            sb.Append("  AverageRating: ").Append(AverageRating).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -136,30 +98,20 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((ReadRecipeDTO)obj);
+            return obj.GetType() == GetType() && Equals((CreateRecipeRequest)obj);
         }
 
         /// <summary>
-        /// Returns true if ReadRecipeDTO instances are equal
+        /// Returns true if CreateRecipeRequest instances are equal
         /// </summary>
-        /// <param name="other">Instance of ReadRecipeDTO to be compared</param>
+        /// <param name="other">Instance of CreateRecipeRequest to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(ReadRecipeDTO other)
+        public bool Equals(CreateRecipeRequest other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return 
-                (
-                    Id == other.Id ||
-                    
-                    Id.Equals(other.Id)
-                ) && 
-                (
-                    CreatorDisplayName == other.CreatorDisplayName ||
-                    CreatorDisplayName != null &&
-                    CreatorDisplayName.Equals(other.CreatorDisplayName)
-                ) && 
                 (
                     Title == other.Title ||
                     Title != null &&
@@ -169,16 +121,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     Description == other.Description ||
                     Description != null &&
                     Description.Equals(other.Description)
-                ) && 
-                (
-                    CreatedAt == other.CreatedAt ||
-                    
-                    CreatedAt.Equals(other.CreatedAt)
-                ) && 
-                (
-                    UpdatedAt == other.UpdatedAt ||
-                    UpdatedAt != null &&
-                    UpdatedAt.Equals(other.UpdatedAt)
                 ) && 
                 (
                     Allergens == other.Allergens ||
@@ -197,11 +139,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     Ingredients != null &&
                     other.Ingredients != null &&
                     Ingredients.SequenceEqual(other.Ingredients)
-                ) && 
-                (
-                    AverageRating == other.AverageRating ||
-                    
-                    AverageRating.Equals(other.AverageRating)
                 );
         }
 
@@ -215,26 +152,16 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    
-                    hashCode = hashCode * 59 + Id.GetHashCode();
-                    if (CreatorDisplayName != null)
-                    hashCode = hashCode * 59 + CreatorDisplayName.GetHashCode();
                     if (Title != null)
                     hashCode = hashCode * 59 + Title.GetHashCode();
                     if (Description != null)
                     hashCode = hashCode * 59 + Description.GetHashCode();
-                    
-                    hashCode = hashCode * 59 + CreatedAt.GetHashCode();
-                    if (UpdatedAt != null)
-                    hashCode = hashCode * 59 + UpdatedAt.GetHashCode();
                     if (Allergens != null)
                     hashCode = hashCode * 59 + Allergens.GetHashCode();
                     if (Steps != null)
                     hashCode = hashCode * 59 + Steps.GetHashCode();
                     if (Ingredients != null)
                     hashCode = hashCode * 59 + Ingredients.GetHashCode();
-                    
-                    hashCode = hashCode * 59 + AverageRating.GetHashCode();
                 return hashCode;
             }
         }
@@ -242,12 +169,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(ReadRecipeDTO left, ReadRecipeDTO right)
+        public static bool operator ==(CreateRecipeRequest left, CreateRecipeRequest right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(ReadRecipeDTO left, ReadRecipeDTO right)
+        public static bool operator !=(CreateRecipeRequest left, CreateRecipeRequest right)
         {
             return !Equals(left, right);
         }

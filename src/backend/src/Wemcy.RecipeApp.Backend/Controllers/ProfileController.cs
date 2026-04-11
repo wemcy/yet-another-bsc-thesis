@@ -14,10 +14,12 @@ namespace Wemcy.RecipeApp.Backend.Controllers;
 [UnauthorizedHandler]
 public class ProfileController(ProfileService profileService, IMapper mapper) : ProfileApiController
 {
+
     [Authorize(Roles = Roles.Admin)]
-    public override async Task<IActionResult> AddRoleToProfileById([FromRoute(Name = "id"), Required] Guid id, [FromBody] AddRoleToProfileByIdRequest addRoleToProfileByIdRequest)
+
+    public override async Task<IActionResult> AddUserRoleById([FromRoute(Name = "id"), Required] Guid id, [FromBody] AddUserRoleByIdRequest addUserRoleByIdRequest)
     {
-        await profileService.AddRoleToUserAsync(id, addRoleToProfileByIdRequest);
+        await profileService.AddRoleToUserAsync(id, addUserRoleByIdRequest);
         return NoContent();
     }
 
@@ -49,7 +51,7 @@ public class ProfileController(ProfileService profileService, IMapper mapper) : 
     public async override Task<IActionResult> GetProfileById([FromRoute(Name = "id"), Required] Guid id)
     {
         var profile = await profileService.GetProfileById(id);
-        return Ok(mapper.Map<ProfileResponse>(profile));
+        return Ok(mapper.Map<Api.Models.Profile>(profile));
     }
 
     public override async Task<IActionResult> GetProfileImageById([FromRoute(Name = "id"), Required] Guid id)

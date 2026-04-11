@@ -24,7 +24,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
     /// 
     /// </summary>
     [DataContract]
-    public class AliveReportServicesInner : IEquatable<AliveReportServicesInner>
+    public class HealthReportServicesInner : IEquatable<HealthReportServicesInner>
     {
         /// <summary>
         /// Gets or Sets Name
@@ -53,7 +53,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class AliveReportServicesInner {\n");
+            sb.Append("class HealthReportServicesInner {\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Healthy: ").Append(Healthy).Append("\n");
             sb.Append("  Message: ").Append(Message).Append("\n");
@@ -79,15 +79,15 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((AliveReportServicesInner)obj);
+            return obj.GetType() == GetType() && Equals((HealthReportServicesInner)obj);
         }
 
         /// <summary>
-        /// Returns true if AliveReportServicesInner instances are equal
+        /// Returns true if HealthReportServicesInner instances are equal
         /// </summary>
-        /// <param name="other">Instance of AliveReportServicesInner to be compared</param>
+        /// <param name="other">Instance of HealthReportServicesInner to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(AliveReportServicesInner other)
+        public bool Equals(HealthReportServicesInner other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -133,12 +133,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(AliveReportServicesInner left, AliveReportServicesInner right)
+        public static bool operator ==(HealthReportServicesInner left, HealthReportServicesInner right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(AliveReportServicesInner left, AliveReportServicesInner right)
+        public static bool operator !=(HealthReportServicesInner left, HealthReportServicesInner right)
         {
             return !Equals(left, right);
         }

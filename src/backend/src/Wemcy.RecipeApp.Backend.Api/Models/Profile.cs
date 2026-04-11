@@ -24,21 +24,39 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
     /// 
     /// </summary>
     [DataContract]
-    public class SearchRecipeDTO : IEquatable<SearchRecipeDTO>
+    public class Profile : IEquatable<Profile>
     {
         /// <summary>
-        /// Gets or Sets Id
+        /// Identifier of the logged-in user
         /// </summary>
+        /// <value>Identifier of the logged-in user</value>
         [Required]
         [DataMember(Name="id", EmitDefaultValue=true)]
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or Sets Title
+        /// Email address of the user
         /// </summary>
+        /// <value>Email address of the user</value>
         [Required]
-        [DataMember(Name="title", EmitDefaultValue=false)]
-        public string Title { get; set; }
+        [DataMember(Name="email", EmitDefaultValue=false)]
+        public string Email { get; set; }
+
+        /// <summary>
+        /// Display name of the logged-in user
+        /// </summary>
+        /// <value>Display name of the logged-in user</value>
+        [Required]
+        [DataMember(Name="displayName", EmitDefaultValue=false)]
+        public string DisplayName { get; set; }
+
+        /// <summary>
+        /// Registration timestamp of the logged-in user
+        /// </summary>
+        /// <value>Registration timestamp of the logged-in user</value>
+        [Required]
+        [DataMember(Name="registeredAt", EmitDefaultValue=true)]
+        public DateTimeOffset RegisteredAt { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -47,9 +65,11 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class SearchRecipeDTO {\n");
+            sb.Append("class Profile {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  Title: ").Append(Title).Append("\n");
+            sb.Append("  Email: ").Append(Email).Append("\n");
+            sb.Append("  DisplayName: ").Append(DisplayName).Append("\n");
+            sb.Append("  RegisteredAt: ").Append(RegisteredAt).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -72,15 +92,15 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((SearchRecipeDTO)obj);
+            return obj.GetType() == GetType() && Equals((Profile)obj);
         }
 
         /// <summary>
-        /// Returns true if SearchRecipeDTO instances are equal
+        /// Returns true if Profile instances are equal
         /// </summary>
-        /// <param name="other">Instance of SearchRecipeDTO to be compared</param>
+        /// <param name="other">Instance of Profile to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(SearchRecipeDTO other)
+        public bool Equals(Profile other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -92,9 +112,19 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     Id.Equals(other.Id)
                 ) && 
                 (
-                    Title == other.Title ||
-                    Title != null &&
-                    Title.Equals(other.Title)
+                    Email == other.Email ||
+                    Email != null &&
+                    Email.Equals(other.Email)
+                ) && 
+                (
+                    DisplayName == other.DisplayName ||
+                    DisplayName != null &&
+                    DisplayName.Equals(other.DisplayName)
+                ) && 
+                (
+                    RegisteredAt == other.RegisteredAt ||
+                    
+                    RegisteredAt.Equals(other.RegisteredAt)
                 );
         }
 
@@ -110,8 +140,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                 // Suitable nullity checks etc, of course :)
                     
                     hashCode = hashCode * 59 + Id.GetHashCode();
-                    if (Title != null)
-                    hashCode = hashCode * 59 + Title.GetHashCode();
+                    if (Email != null)
+                    hashCode = hashCode * 59 + Email.GetHashCode();
+                    if (DisplayName != null)
+                    hashCode = hashCode * 59 + DisplayName.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + RegisteredAt.GetHashCode();
                 return hashCode;
             }
         }
@@ -119,12 +153,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(SearchRecipeDTO left, SearchRecipeDTO right)
+        public static bool operator ==(Profile left, Profile right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(SearchRecipeDTO left, SearchRecipeDTO right)
+        public static bool operator !=(Profile left, Profile right)
         {
             return !Equals(left, right);
         }

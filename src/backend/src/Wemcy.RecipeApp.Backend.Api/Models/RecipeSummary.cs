@@ -24,20 +24,23 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
     /// 
     /// </summary>
     [DataContract]
-    public class AliveReport : IEquatable<AliveReport>
+    public class RecipeSummary : IEquatable<RecipeSummary>
     {
         /// <summary>
-        /// Gets or Sets Status
+        /// Unique identifier of the recipe
         /// </summary>
-        /* <example>ok</example> */
-        [DataMember(Name="status", EmitDefaultValue=false)]
-        public string? Status { get; set; }
+        /// <value>Unique identifier of the recipe</value>
+        [Required]
+        [DataMember(Name="id", EmitDefaultValue=true)]
+        public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or Sets Services
+        /// Title of the recipe
         /// </summary>
-        [DataMember(Name="services", EmitDefaultValue=false)]
-        public List<AliveReportServicesInner> Services { get; set; }
+        /// <value>Title of the recipe</value>
+        [Required]
+        [DataMember(Name="title", EmitDefaultValue=false)]
+        public string Title { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -46,9 +49,9 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class AliveReport {\n");
-            sb.Append("  Status: ").Append(Status).Append("\n");
-            sb.Append("  Services: ").Append(Services).Append("\n");
+            sb.Append("class RecipeSummary {\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  Title: ").Append(Title).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -71,30 +74,29 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((AliveReport)obj);
+            return obj.GetType() == GetType() && Equals((RecipeSummary)obj);
         }
 
         /// <summary>
-        /// Returns true if AliveReport instances are equal
+        /// Returns true if RecipeSummary instances are equal
         /// </summary>
-        /// <param name="other">Instance of AliveReport to be compared</param>
+        /// <param name="other">Instance of RecipeSummary to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(AliveReport other)
+        public bool Equals(RecipeSummary other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return 
                 (
-                    Status == other.Status ||
-                    Status != null &&
-                    Status.Equals(other.Status)
+                    Id == other.Id ||
+                    
+                    Id.Equals(other.Id)
                 ) && 
                 (
-                    Services == other.Services ||
-                    Services != null &&
-                    other.Services != null &&
-                    Services.SequenceEqual(other.Services)
+                    Title == other.Title ||
+                    Title != null &&
+                    Title.Equals(other.Title)
                 );
         }
 
@@ -108,10 +110,10 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Status != null)
-                    hashCode = hashCode * 59 + Status.GetHashCode();
-                    if (Services != null)
-                    hashCode = hashCode * 59 + Services.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + Id.GetHashCode();
+                    if (Title != null)
+                    hashCode = hashCode * 59 + Title.GetHashCode();
                 return hashCode;
             }
         }
@@ -119,12 +121,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(AliveReport left, AliveReport right)
+        public static bool operator ==(RecipeSummary left, RecipeSummary right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(AliveReport left, AliveReport right)
+        public static bool operator !=(RecipeSummary left, RecipeSummary right)
         {
             return !Equals(left, right);
         }

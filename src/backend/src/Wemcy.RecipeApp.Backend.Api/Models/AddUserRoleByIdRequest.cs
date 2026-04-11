@@ -24,14 +24,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
     /// 
     /// </summary>
     [DataContract]
-    public class AddRoleToProfileByIdRequest : IEquatable<AddRoleToProfileByIdRequest>
+    public class AddUserRoleByIdRequest : IEquatable<AddUserRoleByIdRequest>
     {
         /// <summary>
         /// Gets or Sets Role
         /// </summary>
         [Required]
         [DataMember(Name="role", EmitDefaultValue=true)]
-        public RolesEnum Role { get; set; }
+        public UserRole Role { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -40,7 +40,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class AddRoleToProfileByIdRequest {\n");
+            sb.Append("class AddUserRoleByIdRequest {\n");
             sb.Append("  Role: ").Append(Role).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -64,15 +64,15 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((AddRoleToProfileByIdRequest)obj);
+            return obj.GetType() == GetType() && Equals((AddUserRoleByIdRequest)obj);
         }
 
         /// <summary>
-        /// Returns true if AddRoleToProfileByIdRequest instances are equal
+        /// Returns true if AddUserRoleByIdRequest instances are equal
         /// </summary>
-        /// <param name="other">Instance of AddRoleToProfileByIdRequest to be compared</param>
+        /// <param name="other">Instance of AddUserRoleByIdRequest to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(AddRoleToProfileByIdRequest other)
+        public bool Equals(AddUserRoleByIdRequest other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -104,12 +104,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(AddRoleToProfileByIdRequest left, AddRoleToProfileByIdRequest right)
+        public static bool operator ==(AddUserRoleByIdRequest left, AddUserRoleByIdRequest right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(AddRoleToProfileByIdRequest left, AddRoleToProfileByIdRequest right)
+        public static bool operator !=(AddUserRoleByIdRequest left, AddUserRoleByIdRequest right)
         {
             return !Equals(left, right);
         }

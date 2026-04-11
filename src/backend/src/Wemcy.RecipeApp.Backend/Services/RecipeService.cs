@@ -10,6 +10,7 @@ using Wemcy.RecipeApp.Backend.Repository;
 using Wemcy.RecipeApp.Backend.Search;
 using Wemcy.RecipeApp.Backend.Security;
 using Comment = Wemcy.RecipeApp.Backend.Model.Comment;
+using Recipe = Wemcy.RecipeApp.Backend.Model.Recipe;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
@@ -81,11 +82,11 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         await this.recipeRepository.SaveAsync();
     }
 
-    public async Task<Recipe> UpdateRecipeAsync(Guid id, Api.Models.CreateRecipeDTO createRecipeDTO)
+    public async Task<Recipe> UpdateRecipeAsync(Guid id, CreateRecipeRequest createRecipeRequest)
     {
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
         await userService.EnsureAuthorizedAsync(recipe, Operations.Update);
-        mapper.Map(createRecipeDTO, recipe);
+        mapper.Map(createRecipeRequest, recipe);
         await this.recipeRepository.SaveAsync();
         return recipe;
     }

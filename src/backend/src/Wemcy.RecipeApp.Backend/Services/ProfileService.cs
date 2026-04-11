@@ -61,12 +61,12 @@ public class ProfileService(UserManager<AppUser> userManager, ImageService image
         await userManager.DeleteAsync(user);
     }
 
-    internal async Task AddRoleToUserAsync(Guid id, AddRoleToProfileByIdRequest addRoleToProfileByIdRequest)
+    internal async Task AddRoleToUserAsync(Guid id, AddUserRoleByIdRequest addUserRoleByIdRequest)
     {
         var user = await this.GetProfileById(id);
         await userService.EnsureAuthorizedAsync(user, Operations.Update);
-        if (addRoleToProfileByIdRequest.Role != RolesEnum.AdminEnum)
-            throw new Exception(addRoleToProfileByIdRequest.Role.ToString()); // TODO better exception
+        if (addUserRoleByIdRequest.Role != UserRole.AdminEnum)
+            throw new Exception(addUserRoleByIdRequest.Role.ToString()); // TODO better exception
         if (!await userManager.IsInRoleAsync(user, Security.Roles.Admin))
             await userManager.AddToRoleAsync(user, Security.Roles.Admin);
     }

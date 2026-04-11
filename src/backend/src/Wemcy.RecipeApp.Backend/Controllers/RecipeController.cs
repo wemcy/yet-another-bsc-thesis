@@ -2,6 +2,7 @@
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
 using Wemcy.RecipeApp.Backend.Exceptions;
+using Wemcy.RecipeApp.Backend.Extensions;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Search;
@@ -9,6 +10,7 @@ using Wemcy.RecipeApp.Backend.Security;
 using Wemcy.RecipeApp.Backend.Services;
 using Wemcy.RecipeApp.Backend.Utils;
 using Comment = Wemcy.RecipeApp.Backend.Api.Models.Comment;
+using Recipe = Wemcy.RecipeApp.Backend.Model.Recipe;
 
 namespace Wemcy.RecipeApp.Backend.Controllers;
 
@@ -16,28 +18,21 @@ namespace Wemcy.RecipeApp.Backend.Controllers;
 [UnauthorizedHandler]
 public class RecipeController(RecipeService recipeService, IMapper mapper, ShowcaseRecipeService showcaseRecipeService) : RecipesApiController
 {
-    public override async Task<IActionResult> CreateRecipe([FromBody] CreateRecipeDTO createRecipeDTO)
-    {
-        var recipe = mapper.Map<Recipe>(createRecipeDTO);
-        await recipeService.CreateRecipeAsync(recipe);
-        return Ok(mapper.Map<ReadRecipeDTO>(recipe));
-    }
-
     public override async Task<IActionResult> GetRecipeById([FromRoute(Name = "id"), Required] Guid id)
     {
         var recipe = await recipeService.GetRecipeByIdAsync(id);
-        return Ok(mapper.Map<ReadRecipeDTO>(recipe));
+        return Ok(mapper.Map<Recipe>(recipe));
     }
 
     public override async Task<IActionResult> GetFeaturedRecipe()
     {
         var recipe = await showcaseRecipeService.GetFeaturedRecipeAsync();
-        return Ok(mapper.Map<ReadRecipeDTO>(recipe));
+        return Ok(mapper.Map<Api.Models.Recipe>(recipe));
     }
 
     public override async Task<IActionResult> ListShowcaseRecipes()
     {
-        var dtos = await showcaseRecipeService.GetShowcaseRecipes<ReadRecipeDTO>();
+        var dtos = await showcaseRecipeService.GetShowcaseRecipes<Api.Models.Recipe>();
         return Ok(dtos);
     }
 
@@ -78,16 +73,16 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
         return NoContent();
     }
 
-    public override async Task<IActionResult> UpdateRecipeById([FromRoute(Name = "id"), Required] Guid id, [FromBody] CreateRecipeDTO createRecipeDTO)
+    public override async Task<IActionResult> UpdateRecipeById([FromRoute(Name = "id"), Required] Guid id, [FromBody] CreateRecipeRequest createRecipeRequest)
     {
-        var recipe = await recipeService.UpdateRecipeAsync(id, createRecipeDTO);
-        return Ok(mapper.Map<ReadRecipeDTO>(recipe));
+        var recipe = await recipeService.UpdateRecipeAsync(id, createRecipeRequest);
+        return Ok(mapper.Map<Api.Models.Recipe>(recipe));
 
     }
 
     public override async Task<IActionResult> GetRecipesByAuthorId([FromRoute(Name = "id"), Required] Guid id, [FromQuery(Name = "page"), Range(0, int.MaxValue)] int? page, [FromQuery(Name = "pageSize"), Range(25, 100)] int? pageSize)
     {
-        var dtos = await recipeService.GetAllRecipeByAuthorIdAs<ReadRecipeDTO>(id, new PaginationOptions(page, pageSize));
+        var dtos = await recipeService.GetAllRecipeByAuthorIdAs<Api.Models.Recipe>(id, new PaginationOptions(page, pageSize));
         return Ok(dtos);
     }
 
@@ -105,18 +100,18 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
 
     public override async Task<IActionResult> SearchRecipes([FromQuery(Name = "title"), Required] string title, [FromQuery(Name = "includeAllergens")] List<Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Allergen>? excludeAllergens)
     {
-        var includeAllergenTypes = includeAllergens?.Any() ?? false ? mapper.Map<AllergenType?>(includeAllergens) : null;
-        var excludeAllergenTypes = excludeAllergens?.Any() ?? false ? mapper.Map<AllergenType?>(excludeAllergens) : null;
-        var recipes = recipeService.SearchRecipesByTitleAs<SearchRecipeDTO>(new RecipeSearch(title), new RecipeFilter(includeAllergenTypes, excludeAllergenTypes));
+        var includeAllergenTypes = includeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
+        var excludeAllergenTypes = excludeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
+        var recipes = recipeService.SearchRecipesByTitleAs<Api.Models.RecipeSummary>(new RecipeSearch(title), new RecipeFilter(includeAllergenTypes, excludeAllergenTypes));
         return Ok(recipes);
     }
 
     public override async Task<IActionResult> ListRecipes([FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize"), Range(25, 100)] int? pageSize, [FromQuery(Name = "includeAllergens")] List<Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Allergen>? excludeAllergens)
     {
-        var includeAllergenTypes = includeAllergens?.Any() ?? false ? mapper.Map<AllergenType?>(includeAllergens) : null;
-        var excludeAllergenTypes = excludeAllergens?.Any() ?? false ? mapper.Map<AllergenType?>(excludeAllergens) : null;
+        var includeAllergenTypes = includeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
+        var excludeAllergenTypes = excludeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
 
-        var dtos = await recipeService.ListResipesAs<ReadRecipeDTO>(new PaginationOptions(page, pageSize), new RecipeFilter(includeAllergenTypes, excludeAllergenTypes));
+        var dtos = await recipeService.ListResipesAs<Api.Models.Recipe>(new PaginationOptions(page, pageSize), new RecipeFilter(includeAllergenTypes, excludeAllergenTypes));
         return Ok(dtos);
     }
 
@@ -125,5 +120,12 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
     {
         await showcaseRecipeService.SetFeaturedRecipe(updateFeaturedRecipeRequest.RecipeId);
         return NoContent();
+    }
+
+    public override async Task<IActionResult> CreateRecipe([FromBody] CreateRecipeRequest createRecipeRequest)
+    {
+        var recipe = mapper.Map<Recipe>(createRecipeRequest);
+        await recipeService.CreateRecipeAsync(recipe);
+        return Ok(mapper.Map<Api.Models.Recipe>(recipe));
     }
 }

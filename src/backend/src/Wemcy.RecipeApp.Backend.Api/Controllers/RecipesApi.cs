@@ -33,7 +33,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <param name="id">Unique identifier of the recipe to query (UUID)</param>
         /// <param name="addRecipeCommentRequest"></param>
         /// <response code="201">Comment added successfully</response>
-        /// <response code="401">Not authorized to perform this operation</response>
+        /// <response code="400">Invalid comment payload supplied</response>
+        /// <response code="401">No active session</response>
         /// <response code="404">Recipe not found</response>
         [HttpPost]
         [Route("/recipes/{id}/comments")]
@@ -41,6 +42,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 201, type: typeof(Comment))]
+        [ProducesResponseType(statusCode: 400, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
         public abstract Task<IActionResult> AddRecipeComment([FromRoute (Name = "id")][Required]Guid id, [FromBody]AddRecipeCommentRequest addRecipeCommentRequest);
@@ -48,28 +50,30 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <summary>
         /// Create a new recipe
         /// </summary>
-        /// <param name="createRecipeDTO"></param>
+        /// <param name="createRecipeRequest"></param>
         /// <response code="201">Recipe created successfully</response>
         [HttpPost]
         [Route("/recipes/")]
         [Authorize(Policy = "cookieAuth")]
         [Consumes("application/json")]
         [ValidateModelState]
-        [ProducesResponseType(statusCode: 201, type: typeof(ReadRecipeDTO))]
-        public abstract Task<IActionResult> CreateRecipe([FromBody]CreateRecipeDTO createRecipeDTO);
+        [ProducesResponseType(statusCode: 201, type: typeof(Recipe))]
+        public abstract Task<IActionResult> CreateRecipe([FromBody]CreateRecipeRequest createRecipeRequest);
 
         /// <summary>
         /// Delete recipe by ID
         /// </summary>
         /// <param name="id">Unique identifier of the recipe to delete (UUID)</param>
         /// <response code="204">Recipe deleted successfully</response>
-        /// <response code="401">Not authorized to perform this operation</response>
+        /// <response code="401">No active session</response>
+        /// <response code="403">Not authorized to delete this recipe</response>
         /// <response code="404">Recipe not found</response>
         [HttpDelete]
         [Route("/recipes/{id}/")]
         [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
         public abstract Task<IActionResult> DeleteRecipeById([FromRoute (Name = "id")][Required]Guid id);
 
@@ -79,35 +83,39 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <param name="recipeId">Unique identifier of the recipe to query (UUID)</param>
         /// <param name="commentId">Unique identifier of the comment to delete (UUID)</param>
         /// <response code="204">Recipe comment deleted successfully</response>
-        /// <response code="401">Not authorized to perform this operation</response>
+        /// <response code="401">No active session</response>
+        /// <response code="403">Not authorized to delete this comment</response>
         /// <response code="404">Recipe or comment not found</response>
         [HttpDelete]
         [Route("/recipes/{recipeId}/comments/{commentId}")]
         [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
         public abstract Task<IActionResult> DeleteRecipeComment([FromRoute (Name = "recipeId")][Required]Guid recipeId, [FromRoute (Name = "commentId")][Required]Guid commentId);
 
         /// <summary>
         /// Get featured recipe
         /// </summary>
-        /// <response code="200">Recipes</response>
+        /// <response code="200">Featured recipe retrieved successfully</response>
         [HttpGet]
         [Route("/recipes/featured")]
         [ValidateModelState]
-        [ProducesResponseType(statusCode: 200, type: typeof(ReadRecipeDTO))]
+        [ProducesResponseType(statusCode: 200, type: typeof(Recipe))]
         public abstract Task<IActionResult> GetFeaturedRecipe();
 
         /// <summary>
         /// Get recipe by ID
         /// </summary>
         /// <param name="id">Unique identifier of the recipe to query (UUID)</param>
-        /// <response code="200">Recipes</response>
+        /// <response code="200">Recipe retrieved successfully</response>
+        /// <response code="404">Recipe not found</response>
         [HttpGet]
         [Route("/recipes/{id}/")]
         [ValidateModelState]
-        [ProducesResponseType(statusCode: 200, type: typeof(ReadRecipeDTO))]
+        [ProducesResponseType(statusCode: 200, type: typeof(Recipe))]
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
         public abstract Task<IActionResult> GetRecipeById([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
@@ -115,10 +123,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// </summary>
         /// <param name="id">Unique identifier of the recipe to query (UUID)</param>
         /// <response code="200">Recipe image retrieved successfully</response>
+        /// <response code="404">Recipe or recipe image not found</response>
         [HttpGet]
         [Route("/recipes/{id}/image")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(System.IO.Stream))]
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
         public abstract Task<IActionResult> GetRecipeImage([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
@@ -127,11 +137,11 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <param name="id">Unique identifier of the user to query (UUID)</param>
         /// <param name="page">The page number to retrieve (starting from 0)</param>
         /// <param name="pageSize">The number of items per page (default is 25)</param>
-        /// <response code="200">Recipes</response>
+        /// <response code="200">Recipes retrieved successfully</response>
         [HttpGet]
         [Route("/profile/{id}/recipes")]
         [ValidateModelState]
-        [ProducesResponseType(statusCode: 200, type: typeof(List<ReadRecipeDTO>))]
+        [ProducesResponseType(statusCode: 200, type: typeof(List<Recipe>))]
         public abstract Task<IActionResult> GetRecipesByAuthorId([FromRoute (Name = "id")][Required]Guid id, [FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize);
 
         /// <summary>
@@ -160,17 +170,17 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [HttpGet]
         [Route("/recipes/")]
         [ValidateModelState]
-        [ProducesResponseType(statusCode: 200, type: typeof(List<ReadRecipeDTO>))]
+        [ProducesResponseType(statusCode: 200, type: typeof(List<Recipe>))]
         public abstract Task<IActionResult> ListRecipes([FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize, [FromQuery (Name = "includeAllergens")]List<Allergen>? includeAllergens, [FromQuery (Name = "excludeAllergens")]List<Allergen>? excludeAllergens);
 
         /// <summary>
         /// List featured recipes
         /// </summary>
-        /// <response code="200">Recipes</response>
+        /// <response code="200">Featured recipes retrieved successfully</response>
         [HttpGet]
         [Route("/recipes/showcase")]
         [ValidateModelState]
-        [ProducesResponseType(statusCode: 200, type: typeof(List<ReadRecipeDTO>))]
+        [ProducesResponseType(statusCode: 200, type: typeof(List<Recipe>))]
         public abstract Task<IActionResult> ListShowcaseRecipes();
 
         /// <summary>
@@ -179,13 +189,15 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <param name="id">Unique identifier of the recipe to query (UUID)</param>
         /// <param name="rateRecipeRequest"></param>
         /// <response code="204">Recipe rating updated successfully</response>
-        /// <response code="401">Not authorized to perform this operation</response>
+        /// <response code="400">Invalid rating value supplied</response>
+        /// <response code="401">No active session</response>
         /// <response code="404">Recipe not found</response>
         [HttpPut]
         [Route("/recipes/{id}/rate")]
         [Authorize(Policy = "cookieAuth")]
         [Consumes("application/json")]
         [ValidateModelState]
+        [ProducesResponseType(statusCode: 400, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
         public abstract Task<IActionResult> RateRecipe([FromRoute (Name = "id")][Required]Guid id, [FromBody]RateRecipeRequest rateRecipeRequest);
@@ -200,7 +212,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [HttpGet]
         [Route("/search")]
         [ValidateModelState]
-        [ProducesResponseType(statusCode: 200, type: typeof(List<SearchRecipeDTO>))]
+        [ProducesResponseType(statusCode: 200, type: typeof(List<RecipeSummary>))]
         public abstract Task<IActionResult> SearchRecipes([FromQuery (Name = "title")][Required()]string title, [FromQuery (Name = "includeAllergens")]List<Allergen>? includeAllergens, [FromQuery (Name = "excludeAllergens")]List<Allergen>? excludeAllergens);
 
         /// <summary>
@@ -208,36 +220,40 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// </summary>
         /// <param name="updateFeaturedRecipeRequest"></param>
         /// <response code="204">Featured recipe updated successfully</response>
-        /// <response code="401">Not authorized to perform this operation</response>
+        /// <response code="401">No active session</response>
+        /// <response code="403">Not authorized to update the featured recipe</response>
         /// <response code="404">Recipe not found</response>
-        /// <response code="410">Format error (e.g., invalid UUID)</response>
+        /// <response code="400">Format error (e.g., invalid UUID)</response>
         [HttpPut]
         [Route("/recipes/featured")]
         [Authorize(Policy = "cookieAuth")]
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        [ProducesResponseType(statusCode: 410, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 400, type: typeof(ErrorResponse))]
         public abstract Task<IActionResult> UpdateFeaturedRecipe([FromBody]UpdateFeaturedRecipeRequest updateFeaturedRecipeRequest);
 
         /// <summary>
         /// Update recipe by ID
         /// </summary>
         /// <param name="id">Unique identifier of the recipe to update (UUID)</param>
-        /// <param name="createRecipeDTO"></param>
+        /// <param name="createRecipeRequest"></param>
         /// <response code="200">Recipe updated successfully</response>
-        /// <response code="401">Not authorized to perform this operation</response>
+        /// <response code="401">No active session</response>
+        /// <response code="403">Not authorized to update this recipe</response>
         /// <response code="404">Recipe not found</response>
         [HttpPut]
         [Route("/recipes/{id}/")]
         [Authorize(Policy = "cookieAuth")]
         [Consumes("application/json")]
         [ValidateModelState]
-        [ProducesResponseType(statusCode: 200, type: typeof(ReadRecipeDTO))]
+        [ProducesResponseType(statusCode: 200, type: typeof(Recipe))]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> UpdateRecipeById([FromRoute (Name = "id")][Required]Guid id, [FromBody]CreateRecipeDTO createRecipeDTO);
+        public abstract Task<IActionResult> UpdateRecipeById([FromRoute (Name = "id")][Required]Guid id, [FromBody]CreateRecipeRequest createRecipeRequest);
 
         /// <summary>
         /// Update recipe image by ID
@@ -245,7 +261,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <param name="id">Unique identifier of the recipe to query (UUID)</param>
         /// <param name="image">The image file to upload.</param>
         /// <response code="204">Recipe image updated successfully</response>
-        /// <response code="401">Not authorized to perform this operation</response>
+        /// <response code="401">No active session</response>
+        /// <response code="403">Not authorized to update this recipe image</response>
         /// <response code="404">Recipe not found</response>
         [HttpPut]
         [Route("/recipes/{id}/image")]
@@ -253,6 +270,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Consumes("multipart/form-data")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
         public abstract Task<IActionResult> UpdateRecipeImage([FromRoute (Name = "id")][Required]Guid id, IFormFile image);
     }

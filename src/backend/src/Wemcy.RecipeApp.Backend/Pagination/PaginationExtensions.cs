@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Wemcy.RecipeApp.Backend.Pagination;
+﻿namespace Wemcy.RecipeApp.Backend.Pagination;
 
 public static class PaginationExtensions
 {
@@ -11,7 +9,7 @@ public static class PaginationExtensions
     }
     public static void AddPaginationFilter(this MvcOptions mvcOptions)
     {
-        mvcOptions.Filters.AddService(typeof(PaginationRequestFilter));
+        mvcOptions.Filters.AddService<PaginationRequestFilter>();
     }
 
     public static IServiceCollection ConfigurePagination(this IServiceCollection services)

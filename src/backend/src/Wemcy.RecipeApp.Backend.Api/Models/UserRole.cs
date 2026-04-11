@@ -24,9 +24,9 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// Role to assign to the user (currently supported: \"Admin\")
         /// </summary>
         /// <value>Role to assign to the user (currently supported: \"Admin\")</value>
-        [TypeConverter(typeof(CustomEnumConverter<RolesEnum>))]
+        [TypeConverter(typeof(CustomEnumConverter<UserRole>))]
         [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public enum RolesEnum
+        public enum UserRole
         {
             
             /// <summary>

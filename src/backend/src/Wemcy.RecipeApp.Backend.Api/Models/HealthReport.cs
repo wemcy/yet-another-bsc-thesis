@@ -24,23 +24,20 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
     /// 
     /// </summary>
     [DataContract]
-    public class LoginRequest : IEquatable<LoginRequest>
+    public class HealthReport : IEquatable<HealthReport>
     {
         /// <summary>
-        /// The user&#39;s email address (used as username)
+        /// Gets or Sets Status
         /// </summary>
-        /// <value>The user&#39;s email address (used as username)</value>
-        [Required]
-        [DataMember(Name="email", EmitDefaultValue=false)]
-        public string Email { get; set; }
+        /* <example>ok</example> */
+        [DataMember(Name="status", EmitDefaultValue=false)]
+        public string? Status { get; set; }
 
         /// <summary>
-        /// The user&#39;s password
+        /// Gets or Sets Services
         /// </summary>
-        /// <value>The user&#39;s password</value>
-        [Required]
-        [DataMember(Name="password", EmitDefaultValue=false)]
-        public string Password { get; set; }
+        [DataMember(Name="services", EmitDefaultValue=false)]
+        public List<HealthReportServicesInner> Services { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -49,9 +46,9 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class LoginRequest {\n");
-            sb.Append("  Email: ").Append(Email).Append("\n");
-            sb.Append("  Password: ").Append(Password).Append("\n");
+            sb.Append("class HealthReport {\n");
+            sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("  Services: ").Append(Services).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -74,29 +71,30 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((LoginRequest)obj);
+            return obj.GetType() == GetType() && Equals((HealthReport)obj);
         }
 
         /// <summary>
-        /// Returns true if LoginRequest instances are equal
+        /// Returns true if HealthReport instances are equal
         /// </summary>
-        /// <param name="other">Instance of LoginRequest to be compared</param>
+        /// <param name="other">Instance of HealthReport to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(LoginRequest other)
+        public bool Equals(HealthReport other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return 
                 (
-                    Email == other.Email ||
-                    Email != null &&
-                    Email.Equals(other.Email)
+                    Status == other.Status ||
+                    Status != null &&
+                    Status.Equals(other.Status)
                 ) && 
                 (
-                    Password == other.Password ||
-                    Password != null &&
-                    Password.Equals(other.Password)
+                    Services == other.Services ||
+                    Services != null &&
+                    other.Services != null &&
+                    Services.SequenceEqual(other.Services)
                 );
         }
 
@@ -110,10 +108,10 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Email != null)
-                    hashCode = hashCode * 59 + Email.GetHashCode();
-                    if (Password != null)
-                    hashCode = hashCode * 59 + Password.GetHashCode();
+                    if (Status != null)
+                    hashCode = hashCode * 59 + Status.GetHashCode();
+                    if (Services != null)
+                    hashCode = hashCode * 59 + Services.GetHashCode();
                 return hashCode;
             }
         }
@@ -121,12 +119,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(LoginRequest left, LoginRequest right)
+        public static bool operator ==(HealthReport left, HealthReport right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(LoginRequest left, LoginRequest right)
+        public static bool operator !=(HealthReport left, HealthReport right)
         {
             return !Equals(left, right);
         }
