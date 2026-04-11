@@ -11,7 +11,7 @@ public class ShowcaseRecipeService(RecipeService recipeService, IRecipeShowcaseR
     public async Task<IList<T>> GetShowcaseRecipes<T>()
     {
         var ids = await recipeShowcaseRepository.GetShowcaseRecipeIds();
-        var recipes = await recipeService.ListResipesAs<T>(new RecipeIdFilter(ids));
+        var recipes = await recipeService.ListResipesAsAsync<T>(new RecipeIdFilter(ids));
         return recipes;
     }
 

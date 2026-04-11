@@ -11,7 +11,7 @@ public static class ApplicationInitializationExtensions
     {
         using var scope = app.Services.CreateScope();
         var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
-        await userService.CreateAdminUser();
+        await userService.CreateAdminUserAsync();
     }
 
     public static async Task EnsureDefaultShowcasesCreated(this WebApplication app)

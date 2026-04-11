@@ -18,7 +18,7 @@ public class AuthService(
 
     public async Task<LoginResponse> LoginAsync(string email, string password)
     {
-        var user = await _userSerivice.FindByEmailAsync(email) ?? throw new InvalidCredentialsException();
+        var user = await _userSerivice.FindUserByEmailAsync(email) ?? throw new InvalidCredentialsException();
         var result = await _signInManager.PasswordSignInAsync(user, password, isPersistent: true, lockoutOnFailure: false);
         if (!result.Succeeded)
             throw new InvalidCredentialsException();

@@ -16,29 +16,16 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<U
     private readonly RoleManager<IdentityRole<Guid>> _roleManager = roleManager;
     private readonly ImageService _imageService = imageService;
 
-    public ClaimsPrincipal GetCurrentUser()
-    {
-        return _httpContextAccessor?.HttpContext?.User ?? throw new UnauthorizedAccessException();
-    }
 
-    public Guid GetCurrentUserId()
-    {
-        var userIdValue = GetCurrentUser().FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userIdValue is null || !Guid.TryParse(userIdValue, out var userId))
-            throw new UnauthorizedAccessException("Authenticated user id is missing or invalid.");
-
-        return userId;
-    }
-
-    public async Task<User> GetCurrentUserEntityAsync()
+    public async Task<User> GetCurrentUserAsync()
     {
         var user = await _userManager.FindByIdAsync(GetCurrentUserId().ToString());
         return user ?? throw new UnauthorizedAccessException("Authenticated user no longer exists.");
     }
 
-    public async Task EnsureAuthorizedAsync<T>(T resource, OperationAuthorizationRequirement operation)
+    public async Task EnsureCurrentUserCanAsync<T>(OperationAuthorizationRequirement operation, T resource)
     {
-        var result = await _authorizationService.AuthorizeAsync(GetCurrentUser(), resource, operation);
+        var result = await _authorizationService.AuthorizeAsync(GetCurrentUserPrincipal(), resource, operation);
         if (!result.Succeeded)
             throw new UnauthorizedAccessException("You are not allowed to modify this resource.");
     }
@@ -48,7 +35,7 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<U
         return await _userManager.FindByIdAsync(id.ToString()) ?? throw new UserNotFoundException(id);
     }
 
-    public async Task CreateAdminUser()
+    public async Task CreateAdminUserAsync()
     {
         await EnsureRoleCreated(Roles.Admin);
 
@@ -123,11 +110,11 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<U
         }
     }
 
-    public async Task<User?> FindByEmailAsync(string email)
+    public async Task<User?> FindUserByEmailAsync(string email)
     {
         return await _userManager.FindByEmailAsync(email);
     }
-    public async Task<Stream> GetProfileImageById(Guid id)
+    public async Task<Stream> GetProfileImageByIdAsync(Guid id)
     {
         var user = await GetUserByIdAsync(id);
         var image = user.Image ?? throw new ImageNotFoundException("User does not have profile picture");
@@ -136,7 +123,7 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<U
     public async Task UpdateProfileByIdAsync(Guid id, UserProfileUpdateRequest request)
     {
         var user = await GetUserByIdAsync(id);
-        await EnsureAuthorizedAsync(user, Operations.Update);
+        await EnsureCurrentUserCanAsync(Operations.Update, user);
         if (request.HasImageUpdate)
         {
             var image = await _imageService.CreateImage(request.ImageStream, request.ImageName);
@@ -160,10 +147,10 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<U
         await _userManager.UpdateAsync(user);
     }
 
-    public async Task DeleteProfileByIdAsync(Guid id)
+    public async Task DeleteUserByIdAsync(Guid id)
     {
         var user = await GetUserByIdAsync(id);
-        await EnsureAuthorizedAsync(user, Operations.Delete);
+        await EnsureCurrentUserCanAsync(Operations.Delete, user);
         await _userManager.UpdateSecurityStampAsync(user);
         await _userManager.DeleteAsync(user);
     }
@@ -171,10 +158,24 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<U
     public async Task AddRoleToUserAsync(Guid id, AddUserRoleByIdRequest addUserRoleByIdRequest)
     {
         var user = await GetUserByIdAsync(id);
-        await EnsureAuthorizedAsync(user, Operations.Update);
+        await EnsureCurrentUserCanAsync(Operations.Update, user);
         if (addUserRoleByIdRequest.Role != UserRole.AdminEnum)
             throw new UnknowRoleExeption(addUserRoleByIdRequest.Role.ToString()); // TODO better exception
         if (!await _userManager.IsInRoleAsync(user, Security.Roles.Admin))
             await _userManager.AddToRoleAsync(user, Security.Roles.Admin);
+    }
+
+    private ClaimsPrincipal GetCurrentUserPrincipal()
+    {
+        return _httpContextAccessor?.HttpContext?.User ?? throw new UnauthorizedAccessException();
+    }
+
+    private Guid GetCurrentUserId()
+    {
+        var userIdValue = GetCurrentUserPrincipal().FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userIdValue is null || !Guid.TryParse(userIdValue, out var userId))
+            throw new UnauthorizedAccessException("Authenticated user id is missing or invalid.");
+
+        return userId;
     }
 }

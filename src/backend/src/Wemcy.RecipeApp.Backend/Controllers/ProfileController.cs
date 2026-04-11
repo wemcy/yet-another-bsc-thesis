@@ -25,7 +25,7 @@ public class ProfileController( IMapper mapper, IUserService userService) : Prof
 
     public override async Task<IActionResult> DeleteProfileById([FromRoute(Name = "id"), Required] Guid id)
     {
-        await userService.DeleteProfileByIdAsync(id);
+        await userService.DeleteUserByIdAsync(id);
         return NoContent();
     }
 
@@ -58,7 +58,7 @@ public class ProfileController( IMapper mapper, IUserService userService) : Prof
     {
         try
         {
-            return new FileStreamResult(await userService.GetProfileImageById(id), "image/jpeg");
+            return new FileStreamResult(await userService.GetProfileImageByIdAsync(id), "image/jpeg");
         }
         catch (ImageNotFoundException)
         {

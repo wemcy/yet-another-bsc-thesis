@@ -101,7 +101,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
     {
         var includeAllergenTypes = includeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
         var excludeAllergenTypes = excludeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
-        var recipes = recipeService.SearchRecipesByTitleAs<Api.Models.RecipeSummary>(new RecipeSearch(title), new RecipeFilter(includeAllergenTypes, excludeAllergenTypes));
+        var recipes = recipeService.SearchRecipesByTitleAsAsync<Api.Models.RecipeSummary>(new RecipeSearch(title), new RecipeFilter(includeAllergenTypes, excludeAllergenTypes));
         return Ok(recipes);
     }
 
@@ -110,7 +110,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
         var includeAllergenTypes = includeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
         var excludeAllergenTypes = excludeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
 
-        var dtos = await recipeService.ListResipesAs<Api.Models.Recipe>(new PaginationOptions(page, pageSize), new RecipeFilter(includeAllergenTypes, excludeAllergenTypes));
+        var dtos = await recipeService.ListResipesAsAsync<Api.Models.Recipe>(new PaginationOptions(page, pageSize), new RecipeFilter(includeAllergenTypes, excludeAllergenTypes));
         return Ok(dtos);
     }
 
