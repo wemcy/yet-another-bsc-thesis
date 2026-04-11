@@ -39,7 +39,7 @@ public class ProfileService(UserManager<AppUser> userManager, ImageService image
         {
             user.DisplayName = request.DisplayName;
         }
-        if(request.HasEmailUpdate)
+        if (request.HasEmailUpdate)
         {
             var token = await userManager.GenerateChangeEmailTokenAsync(user, request.Email);
             await userManager.ChangeEmailAsync(user, request.Email, token);

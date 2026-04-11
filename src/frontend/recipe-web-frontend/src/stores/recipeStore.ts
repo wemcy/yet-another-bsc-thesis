@@ -159,7 +159,7 @@ export const useRecipeStore = defineStore('recipe', {
         },
         async addRecipe(recipe: Omit<Recipe, 'id'>) {
             const response = await api.createRecipe({
-                createRecipeDTO: MapRecipeToApiRecipe(recipe),
+                createRecipeRequest: MapRecipeToApiRecipe(recipe),
             })
             return response.id
         },

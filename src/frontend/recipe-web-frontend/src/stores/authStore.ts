@@ -5,7 +5,7 @@ import {
     ProfileApi,
     Configuration,
     type LoginResponse,
-    type ProfileResponse,
+    type Profile,
 } from 'recipe-api-client'
 import { toErrorMessage } from '../utils/identityErrors'
 
@@ -22,7 +22,7 @@ function mapLoginToUser(response: LoginResponse): User {
     }
 }
 
-function mapProfileToUser(response: ProfileResponse, avatarUrl?: string): User {
+function mapProfileToUser(response: Profile, avatarUrl?: string): User {
     return {
         id: response.id,
         name: response.displayName,

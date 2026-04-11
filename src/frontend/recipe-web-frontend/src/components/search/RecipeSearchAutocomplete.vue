@@ -45,14 +45,14 @@
 import { recipeApiClient as api } from '@/utils/recipeApiClient'
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/vue'
 import { useDebounceFn } from '@vueuse/core'
-import type { SearchRecipeDTO } from 'recipe-api-client'
+import type { RecipeSummary } from 'recipe-api-client'
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const searchTerm = ref('')
-const selectedRecipe = ref<SearchRecipeDTO | null>(null)
-const searchResults = ref<SearchRecipeDTO[]>([])
+const selectedRecipe = ref<RecipeSummary | null>(null)
+const searchResults = ref<RecipeSummary[]>([])
 const isLoading = ref(false)
 const errorMessage = ref('')
 
@@ -105,7 +105,7 @@ function onInputChange(event: Event) {
     searchTerm.value = target.value
 }
 
-async function handleSelect(recipe: SearchRecipeDTO | null) {
+async function handleSelect(recipe: RecipeSummary | null) {
     if (!recipe) return
 
     selectedRecipe.value = null

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
-using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Model;
+using Allergen = Wemcy.RecipeApp.Backend.Api.Models.Allergen;
+using RecipeDTO = Wemcy.RecipeApp.Backend.Api.Models.Recipe;
+
 
 namespace Wemcy.RecipeApp.Backend.DTOProfiles
 {
@@ -8,11 +10,11 @@ namespace Wemcy.RecipeApp.Backend.DTOProfiles
     {
         public RecipeProfile()
         {
-            CreateMap<CreateRecipeDTO, Recipe>()
+            CreateMap<RecipeDTO, Recipe>()
                 .ForMember(
                 x => x.Allergens,
                 op => op.MapFrom(src => MapAllergensListToAllergen(src.Allergens)));
-            CreateMap<Recipe, ReadRecipeDTO>()
+            CreateMap<Recipe, RecipeDTO>()
               .ForMember(dest => dest.Allergens, op => op.MapFrom(src => MappAllergenDTO(src.Allergens)));
             CreateMap<Model.Ingredient, Api.Models.Ingredient>()
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => Convert.ToDecimal(src.Quantity)))
@@ -20,8 +22,8 @@ namespace Wemcy.RecipeApp.Backend.DTOProfiles
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => Convert.ToDouble(src.Quantity)));
             CreateMap<Model.Comment, Api.Models.Comment>()
                 .ForMember(dest => dest.Author, op => op.MapFrom(src => src.User.DisplayName));
-            CreateMap<Model.AppUser, Api.Models.ProfileResponse>();
-            CreateMap<Recipe, SearchRecipeDTO>();
+            CreateMap<Model.AppUser, Api.Models.Profile>();
+            CreateMap<Recipe, Api.Models.RecipeSummary>();
             CreateMap<List<Allergen>?, AllergenType?>().ConvertUsing(src => MapAllergensListToAllergen(src));
 
 
@@ -75,7 +77,8 @@ namespace Wemcy.RecipeApp.Backend.DTOProfiles
 
         private static AllergenType? MapAllergensListToAllergen(List<Allergen>? src)
         {
-            if (src is null) return null;
+            if (src is null)
+                return null;
             return src.Select(MapAllergens).Aggregate(AllergenType.None, (current, allergen) => current | allergen);
         }
     }

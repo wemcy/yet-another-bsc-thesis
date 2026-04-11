@@ -1,15 +1,15 @@
-using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Extensions;
 using Wemcy.RecipeApp.Backend.Model;
-using Wemcy.RecipeApp.Backend.Database;
+using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Repository;
 using Wemcy.RecipeApp.Backend.Security;
 using Wemcy.RecipeApp.Backend.Services;
-using Wemcy.RecipeApp.Backend.Pagination;
 
 
 var builder = WebApplication.CreateBuilder(args);

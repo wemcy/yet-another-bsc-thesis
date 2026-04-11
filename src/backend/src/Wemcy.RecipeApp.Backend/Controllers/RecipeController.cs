@@ -1,5 +1,4 @@
 ﻿using Wemcy.RecipeApp.Backend.Api.Controllers;
-using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Extensions;
@@ -21,7 +20,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
     public override async Task<IActionResult> GetRecipeById([FromRoute(Name = "id"), Required] Guid id)
     {
         var recipe = await recipeService.GetRecipeByIdAsync(id);
-        return Ok(mapper.Map<Recipe>(recipe));
+        return Ok(mapper.Map<Api.Models.Recipe>(recipe));
     }
 
     public override async Task<IActionResult> GetFeaturedRecipe()
@@ -55,13 +54,13 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
 
     }
 
-    public override async Task<IActionResult> RateRecipe([FromRoute(Name = "id"), Required] Guid id, [FromBody] RateRecipeRequest rateRecipeRequest)
+    public override async Task<IActionResult> RateRecipe([FromRoute(Name = "id"), Required] Guid id, [FromBody] Api.Models.RateRecipeRequest rateRecipeRequest)
     {
         await recipeService.RateRecipeAsync(id, rateRecipeRequest.Rating);
         return NoContent();
     }
 
-    public async override Task<IActionResult> AddRecipeComment([FromRoute(Name = "id"), Required] Guid id, [FromBody] AddRecipeCommentRequest addRecipeCommentRequest)
+    public async override Task<IActionResult> AddRecipeComment([FromRoute(Name = "id"), Required] Guid id, [FromBody] Api.Models.AddRecipeCommentRequest addRecipeCommentRequest)
     {
         await recipeService.AddCommentAsync(id, addRecipeCommentRequest.Content);
         return NoContent();
@@ -73,7 +72,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
         return NoContent();
     }
 
-    public override async Task<IActionResult> UpdateRecipeById([FromRoute(Name = "id"), Required] Guid id, [FromBody] CreateRecipeRequest createRecipeRequest)
+    public override async Task<IActionResult> UpdateRecipeById([FromRoute(Name = "id"), Required] Guid id, [FromBody] Api.Models.CreateRecipeRequest createRecipeRequest)
     {
         var recipe = await recipeService.UpdateRecipeAsync(id, createRecipeRequest);
         return Ok(mapper.Map<Api.Models.Recipe>(recipe));
@@ -98,7 +97,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
         return NoContent();
     }
 
-    public override async Task<IActionResult> SearchRecipes([FromQuery(Name = "title"), Required] string title, [FromQuery(Name = "includeAllergens")] List<Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Allergen>? excludeAllergens)
+    public override async Task<IActionResult> SearchRecipes([FromQuery(Name = "title"), Required] string title, [FromQuery(Name = "includeAllergens")] List<Api.Models.Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Api.Models.Allergen>? excludeAllergens)
     {
         var includeAllergenTypes = includeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
         var excludeAllergenTypes = excludeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
@@ -106,7 +105,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
         return Ok(recipes);
     }
 
-    public override async Task<IActionResult> ListRecipes([FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize"), Range(25, 100)] int? pageSize, [FromQuery(Name = "includeAllergens")] List<Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Allergen>? excludeAllergens)
+    public override async Task<IActionResult> ListRecipes([FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize"), Range(25, 100)] int? pageSize, [FromQuery(Name = "includeAllergens")] List<Api.Models.Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Api.Models.Allergen>? excludeAllergens)
     {
         var includeAllergenTypes = includeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
         var excludeAllergenTypes = excludeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
@@ -116,13 +115,13 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
     }
 
     [Authorize(Roles = Roles.Admin)]
-    public override async Task<IActionResult> UpdateFeaturedRecipe([FromBody] UpdateFeaturedRecipeRequest updateFeaturedRecipeRequest)
+    public override async Task<IActionResult> UpdateFeaturedRecipe([FromBody] Api.Models.UpdateFeaturedRecipeRequest updateFeaturedRecipeRequest)
     {
         await showcaseRecipeService.SetFeaturedRecipe(updateFeaturedRecipeRequest.RecipeId);
         return NoContent();
     }
 
-    public override async Task<IActionResult> CreateRecipe([FromBody] CreateRecipeRequest createRecipeRequest)
+    public override async Task<IActionResult> CreateRecipe([FromBody] Api.Models.CreateRecipeRequest createRecipeRequest)
     {
         var recipe = mapper.Map<Recipe>(createRecipeRequest);
         await recipeService.CreateRecipeAsync(recipe);

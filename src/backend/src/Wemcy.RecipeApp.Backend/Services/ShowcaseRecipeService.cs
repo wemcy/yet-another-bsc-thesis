@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using Wemcy.RecipeApp.Backend.Api.Models;
-using Wemcy.RecipeApp.Backend.Database;
-using Wemcy.RecipeApp.Backend.Exceptions;
+﻿
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Repository;
-using Wemcy.RecipeApp.Backend.Security;
+
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
