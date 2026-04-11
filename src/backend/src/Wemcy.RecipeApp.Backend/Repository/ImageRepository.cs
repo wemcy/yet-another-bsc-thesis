@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Wemcy.RecipeApp.Backend.Database;
+﻿using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Model;
 
 namespace Wemcy.RecipeApp.Backend.Repository;

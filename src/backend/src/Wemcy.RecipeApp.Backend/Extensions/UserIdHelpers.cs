@@ -6,7 +6,7 @@ namespace Wemcy.RecipeApp.Backend.Extensions;
 
 public static class UserIdHelpers
 {
-    
+
     public static bool TryGetUserId(this System.Security.Principal.IIdentity? user, [NotNullWhen(true)] out Guid userId)
     {
         var userID = user.GetUserId();

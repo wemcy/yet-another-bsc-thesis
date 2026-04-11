@@ -26,7 +26,7 @@ public class DatabaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Gu
                   .ValueGeneratedOnAdd();
             entity.Property(r => r.Allergens)
                   .HasConversion<int>();
-            entity.HasGeneratedTsVectorColumn(x=> x.TitleSearchVector, "english", x => x.Title).HasIndex( x => x.TitleSearchVector).HasMethod("GIN"); 
+            entity.HasGeneratedTsVectorColumn(x => x.TitleSearchVector, "english", x => x.Title).HasIndex(x => x.TitleSearchVector).HasMethod("GIN");
         });
         modelBuilder.Entity<RecipeShowcase>(entity =>
         {

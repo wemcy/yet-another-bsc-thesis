@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -31,7 +31,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// </summary>
         /// <value>The content of the comment to add.</value>
         [Required]
-        [DataMember(Name="content", EmitDefaultValue=false)]
+        [DataMember(Name = "content", EmitDefaultValue = false)]
         public string Content { get; set; }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return 
+            return
                 (
                     Content == other.Content ||
                     Content != null &&
@@ -96,14 +96,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Content != null)
+                if (Content != null)
                     hashCode = hashCode * 59 + Content.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(AddRecipeCommentRequest left, AddRecipeCommentRequest right)
         {
@@ -115,7 +115,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

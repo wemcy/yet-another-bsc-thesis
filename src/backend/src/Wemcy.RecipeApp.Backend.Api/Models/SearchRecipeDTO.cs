@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Wemcy.RecipeApp.Backend.Api.Converters;
 
 namespace Wemcy.RecipeApp.Backend.Api.Models
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -30,14 +30,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// Gets or Sets Id
         /// </summary>
         [Required]
-        [DataMember(Name="id", EmitDefaultValue=true)]
+        [DataMember(Name = "id", EmitDefaultValue = true)]
         public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Title
         /// </summary>
         [Required]
-        [DataMember(Name="title", EmitDefaultValue=false)]
+        [DataMember(Name = "title", EmitDefaultValue = false)]
         public string Title { get; set; }
 
         /// <summary>
@@ -85,12 +85,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return 
+            return
                 (
                     Id == other.Id ||
-                    
+
                     Id.Equals(other.Id)
-                ) && 
+                ) &&
                 (
                     Title == other.Title ||
                     Title != null &&
@@ -108,16 +108,16 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    
-                    hashCode = hashCode * 59 + Id.GetHashCode();
-                    if (Title != null)
+
+                hashCode = hashCode * 59 + Id.GetHashCode();
+                if (Title != null)
                     hashCode = hashCode * 59 + Title.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(SearchRecipeDTO left, SearchRecipeDTO right)
         {
@@ -129,7 +129,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

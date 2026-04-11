@@ -12,7 +12,7 @@ public class ImageStorageService
 
     public Stream LoadImage(Guid id)
     {
-       try
+        try
         {
             var filestream = File.OpenRead(GetImagePath(id));
             return filestream;

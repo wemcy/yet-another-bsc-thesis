@@ -1,36 +1,39 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Repository;
 using Wemcy.RecipeApp.Backend.Security;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class ShowcaseRecipeService(DatabaseContext databaseContext, RecipeService recipeService)
+public class ShowcaseRecipeService(RecipeService recipeService, RecipeShowcaseRepository recipeShowcaseRepository)
 {
-    public async Task<IList<Recipe>> GetShowcaseRecipes()
+    public async Task<IList<T>> GetShowcaseRecipes<T>()
     {
-        var ids = databaseContext.RecipeShowcase.ShowcaseRecipeIds;
-        return await recipeService.GetRecipesByIdsAsync(ids);
+        var ids = await recipeShowcaseRepository.GetShowcaseRecipeIds();
+        var recipes = await recipeService.ListResipesAs<T>(new GuidFilter(ids));
+        return recipes;
     }
 
-    public Recipe? GetFeaturedRecipeAsync()
+    public async Task<Recipe> GetFeaturedRecipeAsync()
     {
-        return databaseContext.RecipeShowcase.FeaturedRecipe ?? throw new RecipeNotFoundException(Guid.Empty);
+        return await recipeShowcaseRepository.GetFeaturedRecipe();
     }
 
     public async Task SetFeaturedRecipe(Guid featuredRecipeId)
     {
         var featuredRecipe = await recipeService.GetRecipeByIdAsync(featuredRecipeId);
-        databaseContext.RecipeShowcase.FeaturedRecipe = featuredRecipe;
-        await databaseContext.SaveChangesAsync();
+        recipeShowcaseRepository.SetFeaturedRecipe(featuredRecipe);
+        await recipeShowcaseRepository.SaveAsync();
     }
-    [Authorize(Roles = Roles.Admin)]
+
     public async Task UpdateShowcaseRecipes()
     {
         var recipeIds = await recipeService.GetRandomRecipesGuids(6);
-        databaseContext.RecipeShowcase.ShowcaseRecipeIds = [.. recipeIds];
-        await databaseContext.SaveChangesAsync();
+        recipeShowcaseRepository.SetShowcaseRecipes(recipeIds);
+        await recipeShowcaseRepository.SaveAsync();
     }
 }

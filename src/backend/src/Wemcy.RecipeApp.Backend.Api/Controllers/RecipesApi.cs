@@ -20,13 +20,13 @@ using Wemcy.RecipeApp.Backend.Api.Attributes;
 using Wemcy.RecipeApp.Backend.Api.Models;
 
 namespace Wemcy.RecipeApp.Backend.Api.Controllers
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
     [ApiController]
     public abstract class RecipesApiController : ControllerBase
-    { 
+    {
         /// <summary>
         /// Recept kommentelése ID alapján
         /// </summary>
@@ -39,7 +39,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 201, type: typeof(Comment))]
-        public abstract Task<IActionResult> AddRecipeComment([FromRoute (Name = "id")][Required]Guid id, [FromBody]AddRecipeCommentRequest addRecipeCommentRequest);
+        public abstract Task<IActionResult> AddRecipeComment([FromRoute(Name = "id")][Required] Guid id, [FromBody] AddRecipeCommentRequest addRecipeCommentRequest);
 
         /// <summary>
         /// Új recept létrehozása
@@ -52,7 +52,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 201, type: typeof(ReadRecipeDTO))]
-        public abstract Task<IActionResult> CreateRecipe([FromBody]CreateRecipeDTO createRecipeDTO);
+        public abstract Task<IActionResult> CreateRecipe([FromBody] CreateRecipeDTO createRecipeDTO);
 
         /// <summary>
         /// Recept törlése ID alapján
@@ -65,7 +65,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/recipes/{id}/")]
         [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
-        public abstract Task<IActionResult> DeleteRecipeById([FromRoute (Name = "id")][Required]Guid id);
+        public abstract Task<IActionResult> DeleteRecipeById([FromRoute(Name = "id")][Required] Guid id);
 
         /// <summary>
         /// Recept kommentelése törlése ID alapján
@@ -79,7 +79,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/recipes/{recipeId}/comments/{commentId}")]
         [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
-        public abstract Task<IActionResult> DeleteRecipeComment([FromRoute (Name = "recipeId")][Required]Guid recipeId, [FromRoute (Name = "commentId")][Required]Guid commentId);
+        public abstract Task<IActionResult> DeleteRecipeComment([FromRoute(Name = "recipeId")][Required] Guid recipeId, [FromRoute(Name = "commentId")][Required] Guid commentId);
 
         /// <summary>
         /// Kiemelt recept listázása
@@ -100,7 +100,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/recipes/{id}/")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(ReadRecipeDTO))]
-        public abstract Task<IActionResult> GetRecipeById([FromRoute (Name = "id")][Required]Guid id);
+        public abstract Task<IActionResult> GetRecipeById([FromRoute(Name = "id")][Required] Guid id);
 
         /// <summary>
         /// Recept képének lekérdezése ID alapján
@@ -111,7 +111,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/recipes/{id}/image")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(System.IO.Stream))]
-        public abstract Task<IActionResult> GetRecipeImage([FromRoute (Name = "id")][Required]Guid id);
+        public abstract Task<IActionResult> GetRecipeImage([FromRoute(Name = "id")][Required] Guid id);
 
         /// <summary>
         /// Felhasználó receptek listázása ID alapján
@@ -124,7 +124,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/profile/{id}/recipes")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<ReadRecipeDTO>))]
-        public abstract Task<IActionResult> GetRecipesByAuthorId([FromRoute (Name = "id")][Required]Guid id, [FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize);
+        public abstract Task<IActionResult> GetRecipesByAuthorId([FromRoute(Name = "id")][Required] Guid id, [FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize")][Range(25, 100)] int? pageSize);
 
         /// <summary>
         /// Recept kommenteléseinek listázása ID alapján
@@ -138,7 +138,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/recipes/{id}/comments")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<Comment>))]
-        public abstract Task<IActionResult> ListRecipeComments([FromRoute (Name = "id")][Required]Guid id, [FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize);
+        public abstract Task<IActionResult> ListRecipeComments([FromRoute(Name = "id")][Required] Guid id, [FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize")][Range(25, 100)] int? pageSize);
 
         /// <summary>
         /// Receptek listázása
@@ -152,7 +152,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/recipes/")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<ReadRecipeDTO>))]
-        public abstract Task<IActionResult> ListRecipes([FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize, [FromQuery (Name = "includeAllergens")]List<Allergen>? includeAllergens, [FromQuery (Name = "excludeAllergens")]List<Allergen>? excludeAllergens);
+        public abstract Task<IActionResult> ListRecipes([FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize")][Range(25, 100)] int? pageSize, [FromQuery(Name = "includeAllergens")] List<Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Allergen>? excludeAllergens);
 
         /// <summary>
         /// Kiemelt receptek listázása
@@ -175,7 +175,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Authorize(Policy = "cookieAuth")]
         [Consumes("application/json")]
         [ValidateModelState]
-        public abstract Task<IActionResult> RateRecipe([FromRoute (Name = "id")][Required]Guid id, [FromBody]RateRecipeRequest rateRecipeRequest);
+        public abstract Task<IActionResult> RateRecipe([FromRoute(Name = "id")][Required] Guid id, [FromBody] RateRecipeRequest rateRecipeRequest);
 
         /// <summary>
         /// Receptek keresése cím alapján
@@ -188,7 +188,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/search")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<SearchRecipeDTO>))]
-        public abstract Task<IActionResult> SearchRecipes([FromQuery (Name = "title")][Required()]string title, [FromQuery (Name = "includeAllergens")]List<Allergen>? includeAllergens, [FromQuery (Name = "excludeAllergens")]List<Allergen>? excludeAllergens);
+        public abstract Task<IActionResult> SearchRecipes([FromQuery(Name = "title")][Required()] string title, [FromQuery(Name = "includeAllergens")] List<Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Allergen>? excludeAllergens);
 
         /// <summary>
         /// Kiemelt recept frissítése
@@ -203,7 +203,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Authorize(Policy = "cookieAuth")]
         [Consumes("application/json")]
         [ValidateModelState]
-        public abstract Task<IActionResult> UpdateFeaturedRecipe([FromBody]UpdateFeaturedRecipeRequest updateFeaturedRecipeRequest);
+        public abstract Task<IActionResult> UpdateFeaturedRecipe([FromBody] UpdateFeaturedRecipeRequest updateFeaturedRecipeRequest);
 
         /// <summary>
         /// Recept szerkesztése ID alapján
@@ -219,7 +219,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Consumes("application/json")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(ReadRecipeDTO))]
-        public abstract Task<IActionResult> UpdateRecipeById([FromRoute (Name = "id")][Required]Guid id, [FromBody]CreateRecipeDTO createRecipeDTO);
+        public abstract Task<IActionResult> UpdateRecipeById([FromRoute(Name = "id")][Required] Guid id, [FromBody] CreateRecipeDTO createRecipeDTO);
 
         /// <summary>
         /// Recept képének frissítése ID alapján
@@ -232,6 +232,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Authorize(Policy = "cookieAuth")]
         [Consumes("multipart/form-data")]
         [ValidateModelState]
-        public abstract Task<IActionResult> UpdateRecipeImage([FromRoute (Name = "id")][Required]Guid id, IFormFile image);
+        public abstract Task<IActionResult> UpdateRecipeImage([FromRoute(Name = "id")][Required] Guid id, IFormFile image);
     }
 }

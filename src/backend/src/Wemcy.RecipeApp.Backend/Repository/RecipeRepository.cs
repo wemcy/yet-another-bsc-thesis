@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System.Collections;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Extensions;
@@ -23,16 +19,6 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
         var newRecipe = _dbContext.Recipes.Add(recipe);
         await _dbContext.SaveChangesAsync();
         return newRecipe.Entity;
-    }
-    // TODO this is deprecated
-    public async Task<IList<Recipe>> GetRecipesAsync(int limit)
-    {
-        return await _dbContext.Recipes
-            .AsNoTracking()
-            .Include(x => x.Comments)
-            .Include( x => x.User)
-            .Take(limit)
-            .ToListAsync();
     }
 
     public async Task<Recipe> GetRecipeByIdAsync(Guid id)
@@ -86,10 +72,20 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
         return await _dbContext.Recipes
             .AsNoTracking()
             .WithFilter(recipeFilter)
-            .Include(x=>x.User)
+            .Include(x => x.User)
             .OrderByDescending(x => x.UpdatedAt)
             .ProjectTo<T>(mapper.ConfigurationProvider)
             .ToPaginatedListAsync(options);
+    }
+
+    public async Task<IList<T>> ListRecipesAs<T>(IQueryFilter<Recipe> recipeFilter)
+    {
+        return await _dbContext.Recipes
+            .AsNoTracking()
+            .WithFilter(recipeFilter)
+            .Include(x => x.User)
+            .ProjectTo<T>(mapper.ConfigurationProvider)
+            .ToListAsync();
     }
 
     public async Task DeleteCommentById(Guid recipeId, Guid commentId)
@@ -98,10 +94,10 @@ public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper)
         recipe.Comments.Remove(recipe.Comments.FirstOrDefault(c => c.Id == commentId) ?? throw new CommentNotFoundExeption(commentId));
     }
 
-    public  IAsyncEnumerable<T> SearchRecipesByTitleAs<T>(RecipeSearch recipeSearch, RecipeFilter recipeFilter)
+    public IAsyncEnumerable<T> SearchRecipesByTitleAs<T>(RecipeSearch recipeSearch, RecipeFilter recipeFilter)
     {
         return _dbContext.Recipes
-            .AsNoTracking() 
+            .AsNoTracking()
             .WithFilter(recipeSearch)
             .WithFilter(recipeFilter)
             .Take(10)

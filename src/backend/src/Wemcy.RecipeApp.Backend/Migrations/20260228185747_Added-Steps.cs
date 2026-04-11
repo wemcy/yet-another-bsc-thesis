@@ -17,7 +17,7 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                 type: "text[]",
                 nullable: false,
                 defaultValue: new List<string>());
-                
+
         }
 
         /// <inheritdoc />

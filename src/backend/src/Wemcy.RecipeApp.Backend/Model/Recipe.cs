@@ -1,5 +1,4 @@
 ﻿using NpgsqlTypes;
-using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Exceptions;
 
 namespace Wemcy.RecipeApp.Backend.Model;

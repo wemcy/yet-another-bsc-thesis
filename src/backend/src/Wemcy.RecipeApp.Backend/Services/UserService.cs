@@ -9,7 +9,8 @@ namespace Wemcy.RecipeApp.Backend.Services;
 
 public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<AppUser> userManager, IAuthorizationService authorizationService)
 {
-    public ClaimsPrincipal GetCurrentUser() {
+    public ClaimsPrincipal GetCurrentUser()
+    {
         return httpContextAccessor?.HttpContext?.User ?? throw new UnauthorizedAccessException();
     }
 

@@ -9,6 +9,7 @@
     <FileVersion>0.11.0.0</FileVersion>
     <InformationalVersion>0.11.0-alpha.23+Branch.dev.Sha.c23a5114f580bc914560a12f1388bffe7c231163</InformationalVersion>
     <Version>0.11.0-alpha.23</Version>
+    <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.1.1" />
@@ -32,5 +33,13 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wemcy.RecipeApp.Backend.Api\Wemcy.RecipeApp.Backend.Api.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="AutoMapper" />
+    <Using Include="Microsoft.AspNetCore.Authorization;" />
+    <Using Include="Microsoft.AspNetCore.Mvc;" />
+    <Using Include="Microsoft.EntityFrameworkCore" />
+    <Using Include="Newtonsoft.Json;" />
+    <Using Include="System.ComponentModel.DataAnnotations;" />
   </ItemGroup>
 </Project>

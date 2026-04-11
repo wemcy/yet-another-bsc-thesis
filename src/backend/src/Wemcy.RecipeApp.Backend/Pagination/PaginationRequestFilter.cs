@@ -14,7 +14,7 @@ namespace Wemcy.RecipeApp.Backend.Pagination
 
         public void OnResultExecuted(ResultExecutedContext context)
         {
-           // Do nothing
+            // Do nothing
         }
 
         public void OnResultExecuting(ResultExecutingContext context)

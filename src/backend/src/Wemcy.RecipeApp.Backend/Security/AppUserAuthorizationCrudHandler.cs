@@ -27,7 +27,9 @@ public class AppUserAuthorizationCrudHandler : AuthorizationHandler<OperationAut
                  requirement.Name == Operations.Read.Name ||
                  requirement.Name == Operations.Delete.Name))
                 context.Succeed(requirement);
-        } else {
+        }
+        else
+        {
             context.Fail();
         }
 

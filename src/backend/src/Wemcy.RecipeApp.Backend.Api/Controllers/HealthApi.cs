@@ -20,13 +20,13 @@ using Wemcy.RecipeApp.Backend.Api.Attributes;
 using Wemcy.RecipeApp.Backend.Api.Models;
 
 namespace Wemcy.RecipeApp.Backend.Api.Controllers
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
     [ApiController]
     public abstract class HealthApiController : ControllerBase
-    { 
+    {
         /// <summary>
         /// Állapotjelentés a szolgáltatásról
         /// </summary>

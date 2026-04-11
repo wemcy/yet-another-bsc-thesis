@@ -1,18 +1,11 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using Wemcy.RecipeApp.Backend.Api.Controllers;
+﻿using Wemcy.RecipeApp.Backend.Api.Controllers;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
-using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Search;
+using Wemcy.RecipeApp.Backend.Security;
 using Wemcy.RecipeApp.Backend.Services;
 using Comment = Wemcy.RecipeApp.Backend.Api.Models.Comment;
 
@@ -37,14 +30,13 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
 
     public override async Task<IActionResult> GetFeaturedRecipe()
     {
-        var recipe = showcaseRecipeService.GetFeaturedRecipeAsync();
+        var recipe = await showcaseRecipeService.GetFeaturedRecipeAsync();
         return Ok(mapper.Map<ReadRecipeDTO>(recipe));
     }
 
     public override async Task<IActionResult> ListShowcaseRecipes()
     {
-        var q = await showcaseRecipeService.GetShowcaseRecipes();
-        var dtos = q.Select(x => mapper.Map<ReadRecipeDTO>(x)).ToList();
+        var dtos = await showcaseRecipeService.GetShowcaseRecipes<ReadRecipeDTO>();
         return Ok(dtos);
     }
 
@@ -53,7 +45,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
         await recipeService.UpdateImageByIdAsync(id, image.OpenReadStream(), image.Name);
         return NoContent();
     }
-  
+
     public override async Task<IActionResult> GetRecipeImage([FromRoute(Name = "id"), Required] Guid id)
     {
         try
@@ -94,7 +86,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
 
     public override async Task<IActionResult> GetRecipesByAuthorId([FromRoute(Name = "id"), Required] Guid id, [FromQuery(Name = "page"), Range(0, int.MaxValue)] int? page, [FromQuery(Name = "pageSize"), Range(25, 100)] int? pageSize)
     {
-        var dtos = await recipeService.GetAllRecipeByAuthorIdAs<ReadRecipeDTO>(id,new PaginationOptions(page, pageSize));
+        var dtos = await recipeService.GetAllRecipeByAuthorIdAs<ReadRecipeDTO>(id, new PaginationOptions(page, pageSize));
         return Ok(dtos);
     }
 
@@ -110,7 +102,7 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
         return NoContent();
     }
 
-    public override async Task<IActionResult> SearchRecipes([FromQuery(Name = "title"), Required] string title, [FromQuery(Name = "includeAllergens")] List<Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Allergen>?  excludeAllergens)
+    public override async Task<IActionResult> SearchRecipes([FromQuery(Name = "title"), Required] string title, [FromQuery(Name = "includeAllergens")] List<Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Allergen>? excludeAllergens)
     {
         var includeAllergenTypes = includeAllergens?.Any() ?? false ? mapper.Map<AllergenType?>(includeAllergens) : null;
         var excludeAllergenTypes = excludeAllergens?.Any() ?? false ? mapper.Map<AllergenType?>(excludeAllergens) : null;
@@ -123,14 +115,14 @@ public class RecipeController(RecipeService recipeService, IMapper mapper, Showc
         var includeAllergenTypes = includeAllergens?.Any() ?? false ? mapper.Map<AllergenType?>(includeAllergens) : null;
         var excludeAllergenTypes = excludeAllergens?.Any() ?? false ? mapper.Map<AllergenType?>(excludeAllergens) : null;
 
-        var dtos = await recipeService.ListResipesAs<ReadRecipeDTO>(new PaginationOptions(page, pageSize), new RecipeFilter(includeAllergenTypes,excludeAllergenTypes));
+        var dtos = await recipeService.ListResipesAs<ReadRecipeDTO>(new PaginationOptions(page, pageSize), new RecipeFilter(includeAllergenTypes, excludeAllergenTypes));
         return Ok(dtos);
     }
 
+    [Authorize(Roles = Roles.Admin)]
     public override async Task<IActionResult> UpdateFeaturedRecipe([FromBody] UpdateFeaturedRecipeRequest updateFeaturedRecipeRequest)
     {
         await showcaseRecipeService.SetFeaturedRecipe(updateFeaturedRecipeRequest.RecipeId);
         return NoContent();
     }
 }
-    

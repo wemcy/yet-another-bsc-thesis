@@ -22,13 +22,14 @@ builder.Services.AddControllers(options =>
 }).AddNewtonsoftJson();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAutoMapper( config => { }, Assembly.GetExecutingAssembly() );
+builder.Services.AddAutoMapper(config => { }, Assembly.GetExecutingAssembly());
 
 var cs = builder.Configuration.GetConnectionString("Default");
-builder.Services.AddDbContext<DatabaseContext>(opt => {
+builder.Services.AddDbContext<DatabaseContext>(opt =>
+{
     opt.UseLazyLoadingProxies();
     opt.UseNpgsql(cs);
-    });
+});
 
 builder.Services
     .AddAppIdentity()
@@ -44,6 +45,7 @@ builder.Services.AddScoped<RecipeService, RecipeService>().
                  AddScoped<AuthService, AuthService>().
                  AddScoped<ProfileService, ProfileService>().
                  AddScoped<ShowcaseRecipeService, ShowcaseRecipeService>().
+                 AddScoped<RecipeShowcaseRepository, RecipeShowcaseRepository>().
                  AddSingleton<IAuthorizationHandler, RecipeAuthorizationCrudHandler>().
                  AddSingleton<IAuthorizationHandler, CommentAuthorizationCrudHandler>().
                  AddSingleton<IAuthorizationHandler, AppUserAuthorizationCrudHandler>();
@@ -81,15 +83,16 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger(
-        c => {
-        c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+        c =>
         {
-            swaggerDoc.Servers = [
-                new() { Url = $"{httpReq.Headers["X-Forwarded-Proto"]}://{httpReq.Headers["X-Forwarded-Host"]}:{httpReq.Headers["X-Forwarded-Port"]}/{httpReq.Headers["X-Forwarded-Prefix"]}/{httpReq.PathBase.Value}", Description = "This is the path comes from the proxy" }
-            ];
-        });
+            c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+            {
+                swaggerDoc.Servers = [
+                    new() { Url = $"{httpReq.Headers["X-Forwarded-Proto"]}://{httpReq.Headers["X-Forwarded-Host"]}:{httpReq.Headers["X-Forwarded-Port"]}/{httpReq.Headers["X-Forwarded-Prefix"]}/{httpReq.PathBase.Value}", Description = "This is the path comes from the proxy" }
+                ];
+            });
 
-    });
+        });
     app.UseForwardedHeaders();
     app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();

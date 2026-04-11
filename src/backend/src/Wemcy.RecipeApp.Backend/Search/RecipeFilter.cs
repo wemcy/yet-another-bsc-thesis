@@ -4,7 +4,7 @@ using Wemcy.RecipeApp.Backend.Model;
 
 namespace Wemcy.RecipeApp.Backend.Search;
 
-public class RecipeFilter(AllergenType? includeAllergens, AllergenType? excludeAllergens): IQueryFilter<Recipe>
+public class RecipeFilter(AllergenType? includeAllergens, AllergenType? excludeAllergens) : IQueryFilter<Recipe>
 {
     private readonly AllergenType? includeAllergens = includeAllergens;
     private readonly AllergenType? excludeAllergens = excludeAllergens;

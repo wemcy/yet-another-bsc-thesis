@@ -40,7 +40,7 @@ public class PaginatedResult<T> : IAsyncEnumerable<T>, IPaginatedResult
             .Take(options.PageSize)
             .AsAsyncEnumerable();
 
-        return new PaginatedResult<T>(items, totalCount,  options.PageSize, options.PageNumber);
+        return new PaginatedResult<T>(items, totalCount, options.PageSize, options.PageNumber);
     }
 
     public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)

@@ -15,7 +15,7 @@ public class ProfileService(UserManager<AppUser> userManager, ImageService image
     public async Task<AppUser> GetProfileById(Guid id)
     {
         var user = await userService.GetUserByIdAsync(id);
-        await userService.EnsureAuthorizedAsync( user, Operations.Read);
+        await userService.EnsureAuthorizedAsync(user, Operations.Read);
         return user;
 
     }
@@ -26,7 +26,7 @@ public class ProfileService(UserManager<AppUser> userManager, ImageService image
         var image = user.Image ?? throw new ImageNotFoundException("User does not have profile picture");
         return imageService.GetImageById(image.Id);
     }
-    public async Task UpdateProfileByIdAsync(Guid id,UserProfileUpdateRequest request)
+    public async Task UpdateProfileByIdAsync(Guid id, UserProfileUpdateRequest request)
     {
         var user = await GetProfileById(id);
         await userService.EnsureAuthorizedAsync(user, Operations.Update);
@@ -46,7 +46,7 @@ public class ProfileService(UserManager<AppUser> userManager, ImageService image
         }
         // TODO email
         await userManager.UpdateAsync(user);
-       
+
     }
 
     public async Task DeleteProfileByIdAsync(Guid id)

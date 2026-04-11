@@ -25,25 +25,19 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         return await this.recipeRepository.CreateRecipeAsync(recipe);
     }
 
-    public async Task<PaginatedResult<T>> ListResipesAs<T>(PaginationOptions options, RecipeFilter recipeFilter)
+    public async Task<PaginatedResult<T>> ListResipesAs<T>(PaginationOptions options, IQueryFilter<Recipe> recipeFilter)
     {
         return await recipeRepository.ListRecipesAs<T>(options, recipeFilter);
+    }
+
+    public async Task<IList<T>> ListResipesAs<T>(IQueryFilter<Recipe> recipeFilter)
+    {
+        return await recipeRepository.ListRecipesAs<T>(recipeFilter);
     }
 
     public async Task<Recipe> GetRecipeByIdAsync(Guid id)
     {
         return await this.recipeRepository.GetRecipeByIdAsync(id);
-    }
-    public async Task<IList<Recipe>> GetShowcaseRecieps()
-    // TODO: implement daily random recipes 
-    {
-        return await this.recipeRepository.GetRecipesAsync(6);
-    }
-
-    public async Task<Recipe?> GetFeaturedRecipeAsync()
-    {
-        // TODO: implement admin selected featured recipe
-        return (await this.recipeRepository.GetRecipesAsync(1)).FirstOrDefault();
     }
 
     public async Task UpdateImageByIdAsync(Guid id, Stream imageStream, string name)
@@ -53,7 +47,7 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         var image = await imageService.CreateImage(imageStream, name);
         recipe.Image = image;
         await this.recipeRepository.SaveAsync();
-        
+
     }
 
     public async Task<Stream> GetImageByIdAsync(Guid id)
@@ -86,7 +80,7 @@ public class RecipeService(RecipeRepository recipeRepository, ImageService image
         this.recipeRepository.DeleteRecipe(recipe);
         await this.recipeRepository.SaveAsync();
     }
-    
+
     public async Task<Recipe> UpdateRecipeAsync(Guid id, Api.Models.CreateRecipeDTO createRecipeDTO)
     {
         var recipe = await this.recipeRepository.GetRecipeByIdAsync(id);
