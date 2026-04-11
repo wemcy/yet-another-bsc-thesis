@@ -1,0 +1,27 @@
+﻿\section{Megvalositas}
+\label{ch:implementation}
+
+\subsection{Backend}
+
+A backend ASP.NET Core alapokra epul, es kontrollerek, szolgaltatasok, repository-k, valamint adatbazis-kezelessel kapcsolatos komponensek kozmukodesebol all. A projektben megjelenik az Entity Framework Core hasznalata, az automatikus migraciofuttatas, a Swagger alapú API-leiras, valamint a hitelesitesi es jogosultsagkezelesi infrastruktura \cite{aspnetcore}.
+
+Ebben az alfejezetben erdemes majd reszletesen kiterni a kovetkezokre:
+
+\begin{itemize}
+	\item a fo entitasok es kapcsolatuk bemutatasa,
+	\item a repository es service retegek indoklasa,
+	\item a jogosultsagkezeles es a CRUD muveletek vedelme,
+	\item a lapozas, keresesi lehetosegek es hibakezeles megoldasa.
+\end{itemize}
+
+\subsection{Frontend}
+
+A frontend Vue es TypeScript alapokra epulo egyoldalas alkalmazas. A komponensalapu felépítés, a kliensoldali routing, valamint az API klienssel valo integracio lehetove teszi, hogy a felhasznaloi folyamatok jol elkulonitheto modulokban jelenjenek meg \cite{vue}. A feluletnek kulonosen fontos szerepe van a receptlista, a reszletes receptnezet, a keresesi felulet, valamint a profil- es kommentfunkciok megjeleniteseben.
+
+\subsection{API szerzodes es generalas}
+
+Az OpenAPI specifikacio kulon erteket kepvisel a projektben, mert egyszerre tamogatja a backend dokumentalasat, a kliensoldali integraciot es a kovetkezetes interfeszek kialakitasat. A dolgozatban itt lehet bemutatni, hogy a specifikacio hogyan kapcsolodik a generalhato klienshez, es ez milyen modon csokkenti a frontend es backend kozotti elteresek kockazatat \cite{openapi}.
+
+\subsection{Konteneres futtatas}
+
+A repositoryban szereplo Dockerfile-ok es Docker Compose allomanyok arra utalnak, hogy a projekt fejlesztesehez es terjeszteshez konteneres workflow is rendelkezesre all. Ezt az alfejezetet erdemes majd arra hasznalni, hogy bemutasd a fo szolgaltatasok egyuttfutasanak modjat, valamint a fejlesztoi es publikacios konfiguraciok kozotti eltereseket \cite{docker}.

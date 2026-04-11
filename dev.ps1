@@ -1,1 +1,1 @@
-docker compose --env-file gitversion.env -f docker-compose.yaml -f docker-compose-build.yaml -f docker-compose-dev.yaml up --build $args $0
+docker compose --env-file gitversion.env -f docker-compose.yaml -f docker-compose-build.yaml -f docker-compose-dev.yaml up --build $args

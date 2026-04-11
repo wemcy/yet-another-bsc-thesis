@@ -1,7 +1,7 @@
 /*
- * Receptkezelő webalkalmazás API
+ * Recipe Management Web Application API
  *
- * Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+ * Recipe create/list/update/delete operations with allergen-based filtering.
  *
  * The version of the OpenAPI document: v0.1.0-dev
  * Contact: mzsoltsandor@gmail.com
@@ -21,7 +21,7 @@ using Wemcy.RecipeApp.Backend.Api.Converters;
 namespace Wemcy.RecipeApp.Backend.Api.Models
 { 
         /// <summary>
-        /// Gets or Sets allergen
+        /// Gets or Sets Allergen
         /// </summary>
         [TypeConverter(typeof(CustomEnumConverter<Allergen>))]
         [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]

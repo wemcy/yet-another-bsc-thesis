@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System.Collections.Generic;
 
 #nullable disable
 
@@ -17,7 +17,7 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                 type: "text[]",
                 nullable: false,
                 defaultValue: new List<string>());
-                
+
         }
 
         /// <inheritdoc />

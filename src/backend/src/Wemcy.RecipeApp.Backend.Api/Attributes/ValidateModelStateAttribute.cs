@@ -1,7 +1,7 @@
 /*
- * Receptkezelő webalkalmazás API
+ * Recipe Management Web Application API
  *
- * Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+ * Recipe create/list/update/delete operations with allergen-based filtering.
  *
  * The version of the OpenAPI document: v0.1.0-dev
  * Contact: mzsoltsandor@gmail.com
@@ -33,8 +33,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Attributes
             {
                 foreach (var parameter in descriptor.MethodInfo.GetParameters())
                 {
-                    object args = null;
-                    if (context.ActionArguments.ContainsKey(parameter.Name))
+                    object? args = null;
+                    if (parameter.Name != null && context.ActionArguments.ContainsKey(parameter.Name))
                     {
                         args = context.ActionArguments[parameter.Name];
                     }
@@ -49,7 +49,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Attributes
             }
         }
 
-        private void ValidateAttributes(ParameterInfo parameter, object args, ModelStateDictionary modelState)
+        private void ValidateAttributes(ParameterInfo parameter, object? args, ModelStateDictionary modelState)
         {
             foreach (var attributeData in parameter.CustomAttributes)
             {
@@ -58,7 +58,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Attributes
                 if (attributeInstance is ValidationAttribute validationAttribute)
                 {
                     var isValid = validationAttribute.IsValid(args);
-                    if (!isValid)
+                    if (!isValid && parameter.Name != null)
                     {
                         modelState.AddModelError(parameter.Name, validationAttribute.FormatErrorMessage(parameter.Name));
                     }

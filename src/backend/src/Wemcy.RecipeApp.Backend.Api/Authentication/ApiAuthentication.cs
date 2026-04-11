@@ -1,7 +1,7 @@
 /*
- * Receptkezelő webalkalmazás API
+ * Recipe Management Web Application API
  *
- * Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+ * Recipe create/list/update/delete operations with allergen-based filtering.
  *
  * The version of the OpenAPI document: v0.1.0-dev
  * Contact: mzsoltsandor@gmail.com
@@ -57,6 +57,15 @@ namespace Wemcy.RecipeApp.Backend.Api.Authentication
 
         private void SucceedRequirementIfApiKeyPresentAndValid(AuthorizationHandlerContext context, ApiKeyRequirement requirement)
         {
+
+            if (context.Resource is AuthorizationFilterContext authorizationFilterContext)
+            {
+                var apiKey = authorizationFilterContext.HttpContext.Request.Cookies[".AspNetCore.Identity.Application"] ?? null;
+                if (requirement.PolicyName == "cookieAuth" && apiKey != null && requirement.ApiKeys.Any(requiredApiKey => apiKey == requiredApiKey))
+                {
+                    context.Succeed(requirement);
+                }
+            }
 
         }
     }

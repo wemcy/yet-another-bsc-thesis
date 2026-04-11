@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using NpgsqlTypes;
 using Wemcy.RecipeApp.Backend.Database;
 
 #nullable disable
@@ -17,7 +18,7 @@ namespace Wemcy.RecipeApp.Backend.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.21")
+                .HasAnnotation("ProductVersion", "10.0.5")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
@@ -25,87 +26,134 @@ namespace Wemcy.RecipeApp.Backend.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("AllergenRecipe", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
-                    b.Property<int>("AllergensType")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("RecipesId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.HasKey("AllergensType", "RecipesId");
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
 
-                    b.HasIndex("RecipesId");
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
-                    b.ToTable("AllergenRecipe");
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Wemcy.RecipeApp.Backend.Model.Allergen", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.Property<int>("Type")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    b.HasKey("Type");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.ToTable("Allergens");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
 
-                    b.HasData(
-                        new
-                        {
-                            Type = 1
-                        },
-                        new
-                        {
-                            Type = 2
-                        },
-                        new
-                        {
-                            Type = 3
-                        },
-                        new
-                        {
-                            Type = 4
-                        },
-                        new
-                        {
-                            Type = 5
-                        },
-                        new
-                        {
-                            Type = 6
-                        },
-                        new
-                        {
-                            Type = 7
-                        },
-                        new
-                        {
-                            Type = 8
-                        },
-                        new
-                        {
-                            Type = 9
-                        },
-                        new
-                        {
-                            Type = 10
-                        },
-                        new
-                        {
-                            Type = 11
-                        },
-                        new
-                        {
-                            Type = 12
-                        },
-                        new
-                        {
-                            Type = 13
-                        },
-                        new
-                        {
-                            Type = 14
-                        });
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("Wemcy.RecipeApp.Backend.Model.Comment", b =>
@@ -127,9 +175,14 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("RecipeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comment");
                 });
@@ -174,12 +227,17 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("Value")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RecipeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Rating");
                 });
@@ -189,6 +247,9 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<int>("Allergens")
+                        .HasColumnType("integer");
 
                     b.Property<double>("AverageRating")
                         .HasColumnType("double precision");
@@ -203,7 +264,7 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                     b.Property<Guid?>("ImageId")
                         .HasColumnType("uuid");
 
-                    b.Property<string[]>("Steps")
+                    b.PrimitiveCollection<string[]>("Steps")
                         .IsRequired()
                         .HasColumnType("text[]");
 
@@ -211,27 +272,198 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<NpgsqlTsVector>("TitleSearchVector")
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("tsvector")
+                        .HasAnnotation("Npgsql:TsVectorConfig", "english")
+                        .HasAnnotation("Npgsql:TsVectorProperties", new[] { "Title" });
+
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ImageId");
 
+                    b.HasIndex("TitleSearchVector");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("TitleSearchVector"), "GIN");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("Recipes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                            Allergens = 138,
+                            AverageRating = 0.0,
+                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "A classic Italian pasta dish made with eggs, cheese, pancetta, and pepper.",
+                            Steps = new[] { "Cook spaghetti according to package instructions.", "In a separate pan, cook pancetta until crispy.", "In a bowl, whisk together eggs and grated cheese.", "Drain spaghetti and return to pot. Mix in pancetta and egg mixture quickly.", "Season with pepper and serve immediately." },
+                            Title = "Spaghetti Carbonara",
+                            UpdatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        });
                 });
 
-            modelBuilder.Entity("AllergenRecipe", b =>
+            modelBuilder.Entity("Wemcy.RecipeApp.Backend.Model.RecipeShowcase", b =>
                 {
-                    b.HasOne("Wemcy.RecipeApp.Backend.Model.Allergen", null)
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("FeaturedRecipeId")
+                        .HasColumnType("uuid");
+
+                    b.PrimitiveCollection<Guid[]>("ShowcaseRecipeIds")
+                        .IsRequired()
+                        .HasColumnType("uuid[]");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FeaturedRecipeId");
+
+                    b.ToTable("RecipeShowcase", t =>
+                        {
+                            t.HasCheckConstraint("CK_RecipeShowcase_Singleton", "\"Id\" = 1");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ShowcaseRecipeIds = new Guid[0]
+                        });
+                });
+
+            modelBuilder.Entity("Wemcy.RecipeApp.Backend.Model.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid?>("ImageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("RegisteredAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
-                        .HasForeignKey("AllergensType")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.HasOne("Wemcy.RecipeApp.Backend.Model.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.HasOne("Wemcy.RecipeApp.Backend.Model.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Wemcy.RecipeApp.Backend.Model.Recipe", null)
+                    b.HasOne("Wemcy.RecipeApp.Backend.Model.User", null)
                         .WithMany()
-                        .HasForeignKey("RecipesId")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.HasOne("Wemcy.RecipeApp.Backend.Model.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -244,7 +476,15 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Wemcy.RecipeApp.Backend.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Recipe");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Wemcy.RecipeApp.Backend.Model.Rating", b =>
@@ -255,7 +495,15 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Wemcy.RecipeApp.Backend.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Recipe");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Wemcy.RecipeApp.Backend.Model.Recipe", b =>
@@ -263,6 +511,10 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                     b.HasOne("Wemcy.RecipeApp.Backend.Model.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId");
+
+                    b.HasOne("Wemcy.RecipeApp.Backend.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.OwnsMany("Wemcy.RecipeApp.Backend.Model.Ingredient", "Ingredients", b1 =>
                         {
@@ -279,8 +531,8 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                                 .IsRequired()
                                 .HasColumnType("text");
 
-                            b1.Property<double>("Quantity")
-                                .HasColumnType("double precision");
+                            b1.Property<float>("Quantity")
+                                .HasColumnType("real");
 
                             b1.Property<string>("UnitOfMeasurement")
                                 .IsRequired()
@@ -297,6 +549,26 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                     b.Navigation("Image");
 
                     b.Navigation("Ingredients");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Wemcy.RecipeApp.Backend.Model.RecipeShowcase", b =>
+                {
+                    b.HasOne("Wemcy.RecipeApp.Backend.Model.Recipe", "FeaturedRecipe")
+                        .WithMany()
+                        .HasForeignKey("FeaturedRecipeId");
+
+                    b.Navigation("FeaturedRecipe");
+                });
+
+            modelBuilder.Entity("Wemcy.RecipeApp.Backend.Model.User", b =>
+                {
+                    b.HasOne("Wemcy.RecipeApp.Backend.Model.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("Wemcy.RecipeApp.Backend.Model.Recipe", b =>

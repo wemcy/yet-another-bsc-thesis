@@ -1,7 +1,7 @@
 /*
- * Receptkezelő webalkalmazás API
+ * Recipe Management Web Application API
  *
- * Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+ * Recipe create/list/update/delete operations with allergen-based filtering.
  *
  * The version of the OpenAPI document: v0.1.0-dev
  * Contact: mzsoltsandor@gmail.com
@@ -28,13 +28,13 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
     public abstract class HealthApiController : ControllerBase
     { 
         /// <summary>
-        /// Állapotjelentés a szolgáltatásról
+        /// Service health report
         /// </summary>
         /// <response code="200">Report is sent back</response>
         [HttpGet]
         [Route("/alive/")]
         [ValidateModelState]
-        [ProducesResponseType(statusCode: 200, type: typeof(AliveReport))]
+        [ProducesResponseType(statusCode: 200, type: typeof(HealthReport))]
         public abstract Task<IActionResult> GetServiceReport();
     }
 }

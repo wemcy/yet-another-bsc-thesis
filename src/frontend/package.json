@@ -1,4 +1,13 @@
 {
-    "packageManager": "pnpm@10.14.0",
-    "version": "0.11.0-alpha.23"
+  "packageManager": "pnpm@10.30.3",
+  "version": "0.11.0-alpha.23",
+  "pnpm": {
+    "overrides": {
+      "vue": "3.5.31",
+      "@vue/compiler-core": "3.5.31",
+      "@vue/compiler-dom": "3.5.31",
+      "@vue/compiler-sfc": "3.5.31",
+      "@vue/compiler-ssr": "3.5.31"
+    }
+  }
 }

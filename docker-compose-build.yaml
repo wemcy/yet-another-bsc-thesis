@@ -18,15 +18,6 @@ services:
         - linux/arm64
       tags:
         - ghcr.io/wemcy/recipe-app-frontend:${GitVersion_FullSemVer}
-  authentication:
-    build:
-      context: ./src/authentication/
-      dockerfile: Dockerfile
-      platforms:
-        - linux/amd64
-        - linux/arm64
-      tags:
-        - ghcr.io/wemcy/recipe-app-authentication:${GitVersion_FullSemVer}
   backend:
     build:
       context: ./src/backend

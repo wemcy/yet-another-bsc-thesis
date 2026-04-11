@@ -1,13 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Wemcy.RecipeApp.Backend.Model;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Wemcy.RecipeApp.Backend.Model.Entities;
+using Wemcy.RecipeApp.Backend.Utils;
+
 
 namespace Wemcy.RecipeApp.Backend.Database;
 
-public class DatabaseContext : DbContext
+public class DatabaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
     public DbSet<Recipe> Recipes { get; set; }
-    public DbSet<Allergen> Allergens { get; set; }
     public DbSet<Image> Images { get; set; }
 
     public DatabaseContext(DbContextOptions options) : base(options)
@@ -22,30 +24,24 @@ public class DatabaseContext : DbContext
             entity.HasKey(r => r.Id);
             entity.Property(r => r.Id)
                   .ValueGeneratedOnAdd();
+            entity.Property(r => r.Allergens)
+                  .HasConversion<int>();
+            entity.HasGeneratedTsVectorColumn(x => x.TitleSearchVector, "english", x => x.Title).HasIndex(x => x.TitleSearchVector).HasMethod("GIN");
+            entity.HasData(DefaultRecipies.GetDefaultRecipes());
         });
-        modelBuilder.Entity<Allergen>(entity =>
+        modelBuilder.Entity<RecipeShowcase>(entity =>
         {
-            entity.HasData(
-            [
-                new() { Type = AllergenType.Gluten },
-                new() { Type = AllergenType.Crustaceans },
-                new() { Type = AllergenType.Eggs },
-                new Allergen { Type = AllergenType.Fish },
-                new Allergen { Type = AllergenType.Peanuts },
-                new Allergen { Type = AllergenType.Soybeans },
-                new Allergen { Type = AllergenType.Milk },
-                new Allergen { Type = AllergenType.Nuts },
-                new Allergen { Type = AllergenType.Celery },
-                new Allergen { Type = AllergenType.Mustard },
-                new Allergen { Type = AllergenType.SesameSeeds },
-                new Allergen { Type = AllergenType.SulphurDioxide },
-                new Allergen { Type = AllergenType.Lupin },
-                new Allergen { Type = AllergenType.Molluscs }
-            ]);
+            entity.HasKey(r => r.Id);
+            entity.Property(r => r.Id)
+                  .ValueGeneratedNever();
+            entity.Property(r => r.ShowcaseRecipeIds)
+                  .HasColumnType("uuid[]");
+            entity.ToTable(t => t.HasCheckConstraint("CK_RecipeShowcase_Singleton", "\"Id\" = 1"));
+            entity.HasData(new RecipeShowcase { Id = RecipeShowcase.SingletonId });
         });
-        modelBuilder.Entity<Allergen>().HasMany(x => x.Recipes).WithMany(x => x.Allergens);
-
     }
+
+
 
     //To not be able call this outside without context
     protected DatabaseContext()
@@ -54,26 +50,19 @@ public class DatabaseContext : DbContext
 
     public override int SaveChanges()
     {
-        var entries = ChangeTracker.Entries<Entity>();
-        var now = DateTimeOffset.UtcNow;
-
-        foreach (var entry in entries)
-        {
-            if (entry.State == EntityState.Added)
-            {
-                entry.Entity.CreatedAt = now;
-                entry.Entity.UpdatedAt = now;
-            }
-            else if (entry.State == EntityState.Modified)
-            {
-                entry.Entity.UpdatedAt = now;
-            }
-        }
-
+        UpdateEntityTimestamps();
+        UpdateUserTimestamps();
         return base.SaveChanges();
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        UpdateEntityTimestamps();
+        UpdateUserTimestamps();
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void UpdateEntityTimestamps()
     {
         var entries = ChangeTracker.Entries<Entity>();
         var now = DateTimeOffset.UtcNow;
@@ -90,7 +79,18 @@ public class DatabaseContext : DbContext
                 entry.Entity.UpdatedAt = now;
             }
         }
+    }
 
-        return await base.SaveChangesAsync(cancellationToken);
+    private void UpdateUserTimestamps()
+    {
+        var entries = ChangeTracker.Entries<User>();
+        var now = DateTimeOffset.UtcNow;
+        foreach (var entry in entries)
+        {
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.RegisteredAt = now;
+            }
+        }
     }
 }

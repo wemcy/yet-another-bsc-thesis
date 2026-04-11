@@ -1,8 +1,8 @@
-import type { CreateRecipeDTO, ReadRecipeDTO } from 'recipe-api-client'
+import type { CreateRecipeRequest, Recipe as RecipeDTO } from 'recipe-api-client'
 import type { Recipe } from './recipe'
 import { MapApiAllergenToEnum, MapEnumToApiAllergen } from './allergen.mappers'
 
-export function MapApiRecipeToRecipe(apiRecipe: ReadRecipeDTO): Recipe {
+export function MapApiRecipeToRecipe(apiRecipe: RecipeDTO): Recipe {
     return {
         id: apiRecipe.id,
         authorId: 'unknown', // TODO get author info from API
@@ -13,16 +13,10 @@ export function MapApiRecipeToRecipe(apiRecipe: ReadRecipeDTO): Recipe {
         allergens: Array.from(apiRecipe.allergens ?? []).map((a) => MapApiAllergenToEnum(a)),
         image: `/api/recipes/${apiRecipe.id}/image`,
         rating: apiRecipe.averageRating,
-        comments: apiRecipe.comments.map((c) => ({
-            id: c.id,
-            authorId: 'user',
-            content: c.content,
-            createdAt: new Date(c.createdAt),
-        })),
     }
 }
 
-export function MapRecipeToApiRecipe(recipe: Omit<Recipe, 'id'>): CreateRecipeDTO {
+export function MapRecipeToApiRecipe(recipe: Omit<Recipe, 'id'>): CreateRecipeRequest {
     return {
         title: recipe.title,
         description: recipe.description,

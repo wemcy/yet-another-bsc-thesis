@@ -1,67 +1,130 @@
-﻿using Wemcy.RecipeApp.Backend.Exceptions;
-using Wemcy.RecipeApp.Backend.Model;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using System.Collections;
+using Wemcy.RecipeApp.Backend.Api.Models;
+using Wemcy.RecipeApp.Backend.Database;
+using Wemcy.RecipeApp.Backend.Exceptions;
+using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Repository;
+using Wemcy.RecipeApp.Backend.Search;
+using Wemcy.RecipeApp.Backend.Security;
+using Comment = Wemcy.RecipeApp.Backend.Model.Entities.Comment;
+using Recipe = Wemcy.RecipeApp.Backend.Model.Entities.Recipe;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class RecipeService(RecipeRepository recipeRepository, ImageService imageService)
+public class RecipeService(IRecipeRepository recipeRepository, IImageService imageService, IMapper mapper, IUserService userService) : IRecipeService
 {
-    private readonly RecipeRepository recipeRepository = recipeRepository;
-    private readonly ImageService imageService = imageService;
+    private readonly IRecipeRepository _recipeRepository = recipeRepository;
+    private readonly IImageService _imageService = imageService;
+    private readonly IMapper _mapper = mapper;
+    private readonly IUserService _userService = userService;
 
-    public Recipe CreateRecipe(Recipe recipe)
+    public async Task<Recipe> CreateRecipeAsync(Recipe recipe)
     {
-        return this.recipeRepository.CreateRecipe(recipe);
+        recipe.User = await _userService.GetCurrentUserAsync();
+        await _userService.EnsureCurrentUserCanAsync(Operations.Create, recipe);
+        return await this._recipeRepository.CreateRecipeAsync(recipe);
     }
 
-    public IQueryable<Recipe> GetAllRecipe()
+    public async Task<PaginatedResult<T>> ListResipesAsAsync<T>(PaginationOptions options, IQueryFilter<Recipe> recipeFilter)
     {
-        return this.recipeRepository.GetAllRecipe();
+        return await _recipeRepository.ListRecipesAs<T>(options, recipeFilter);
     }
 
-    public Recipe GetRecipeById(Guid id)
+    public async Task<IList<T>> ListResipesAsAsync<T>(IQueryFilter<Recipe> recipeFilter)
     {
-        return this.recipeRepository.GetRecipeByIdWithAllergens(id) ?? throw new RecipeNotFoundException(id);
+        return await _recipeRepository.ListRecipesAs<T>(recipeFilter);
     }
 
-    public IQueryable<Recipe> GetShowcaseRecieps()
+    public async Task<Recipe> GetRecipeByIdAsync(Guid id)
     {
-        return this.recipeRepository.GetAllRecipe().Take(6);
+        return await this._recipeRepository.GetRecipeByIdAsync(id);
     }
 
-    public Recipe? GetFeaturedRecipe()
+    public async Task UpdateImageByIdAsync(Guid id, Stream imageStream, string name)
     {
-        // TODO: implement admin selected featured recipe
-        return this.recipeRepository.GetAllRecipe().FirstOrDefault();
-    }
-
-    public async Task UpdageImageById(Guid id, Stream imageStream, string name)
-    {
-        var recipe = this.recipeRepository.GetRecipeById(id);
-        var image = await imageService.CreateImage(imageStream, name);
+        var recipe = await this._recipeRepository.GetRecipeByIdAsync(id);
+        await _userService.EnsureCurrentUserCanAsync(Operations.Update, recipe);
+        var image = await _imageService.CreateImage(imageStream, name);
         recipe.Image = image;
-        this.recipeRepository.Save();
-        
-    }
-
-    public Stream GetImageById(Guid id)
-    {
-        var image = this.recipeRepository.GetImageById(id);
-        return imageService.GetImageById(image.Id);
+        await this._recipeRepository.SaveAsync();
 
     }
 
-    public void RateRecipe(Guid id, int rating)
+    public async Task<Stream> GetImageByIdAsync(Guid id, ImageSize imageSize)
     {
-        var recipe = this.recipeRepository.GetRecipeById(id);
-        recipe.Rate(rating);
-        this.recipeRepository.Save();
+        var image = await this._recipeRepository.GetImageByIdAsync(id);
+        return await _imageService.GetImageById(image.Id, imageSize);
+
     }
 
-    public void AddComment(Guid id, string content)
+    public async Task RateRecipeAsync(Guid id, int rating)
     {
-        var recipe = this.recipeRepository.GetRecipeById(id);
-        recipe.Comments.Add(new Comment() { Content = content });
-        this.recipeRepository.Save();
+        var currentUser = await _userService.GetCurrentUserAsync();
+        var recipe = await this._recipeRepository.GetRecipeByIdAsync(id);
+        recipe.Rate(rating, currentUser);
+        await this._recipeRepository.SaveAsync();
+    }
+
+    public async Task AddCommentAsync(Guid id, string content)
+    {
+        var currentUser = await _userService.GetCurrentUserAsync();
+        var recipe = await this._recipeRepository.GetRecipeByIdAsync(id);
+        recipe.Comments.Add(new Comment() { Content = content, User = currentUser });
+        await this._recipeRepository.SaveAsync();
+    }
+
+    public async Task DeleteRecipeByIdAsync(Guid id)
+    {
+        var recipe = await this._recipeRepository.GetRecipeByIdAsync(id);
+        await _userService.EnsureCurrentUserCanAsync(Operations.Delete, recipe);
+        this._recipeRepository.DeleteRecipe(recipe);
+        await this._recipeRepository.SaveAsync();
+    }
+
+    public async Task<Recipe> UpdateRecipeAsync(Guid id, CreateRecipeRequest createRecipeRequest)
+    {
+        var recipe = await this._recipeRepository.GetRecipeByIdAsync(id);
+        await _userService.EnsureCurrentUserCanAsync(Operations.Update, recipe);
+        _mapper.Map(createRecipeRequest, recipe);
+        await this._recipeRepository.SaveAsync();
+        return recipe;
+    }
+
+    public async Task<PaginatedResult<T>> GetAllRecipeByAuthorIdAs<T>(Guid id, PaginationOptions options)
+    {
+        return await this._recipeRepository.GetAllRecipeByAuthorIdAs<T>(id, options);
+    }
+
+    public async Task<PaginatedResult<T>> GetCommentsByRecipeIdAs<T>(Guid id, PaginationOptions options)
+    {
+        return await this._recipeRepository.GetCommentsByRecipeIdAs<T>(id, options);
+    }
+
+
+    public async Task DeleteCommentByIdAsync(Guid recipeId, Guid commentId)
+    {
+        var recipe = await this._recipeRepository.GetRecipeByIdAsync(recipeId);
+        var comment = recipe.GetCommentById(commentId);
+        await _userService.EnsureCurrentUserCanAsync(Operations.Update, recipe);
+        await _userService.EnsureCurrentUserCanAsync(Operations.Delete, comment);
+        recipe.Comments.Remove(comment);
+        await this._recipeRepository.SaveAsync();
+    }
+
+    public IAsyncEnumerable<T> SearchRecipesByTitleAsAsync<T>(RecipeSearch recipeSearch, RecipeFilter recipeFilter)
+    {
+        return this._recipeRepository.SearchRecipesByTitleAs<T>(recipeSearch, recipeFilter);
+    }
+
+    public async Task<List<Guid>> GetRandomRecipesGuids(int count)
+    {
+        return await this._recipeRepository.GetRandomRecipesGuids(count);
+    }
+
+    public async Task<IList<Recipe>> GetRecipesByIdsAsync(Guid[] ids)
+    {
+        return await this._recipeRepository.GetRecipesByIdsAsync(ids);
     }
 }

@@ -9,11 +9,7 @@
 
         <!-- Kereső -->
         <div class="w-full md:w-1/2">
-            <input
-                type="text"
-                placeholder="Keresés..."
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
+            <RecipeSearchAutocomplete />
         </div>
 
         <ul class="flex justify-end space-x-6 text-gray-700">
@@ -23,12 +19,19 @@
             </li>
         </ul>
 
-        <!-- Jobb oldalon csak avatar -->
-        <div class="flex items-center">
+        <!-- Jobb oldalon profil és auth akciók -->
+        <div class="flex items-center gap-3">
             <template v-if="auth.currentUser">
-                <router-link to="/profile" class="ml-4">
+                <router-link to="/profile" class="flex items-center gap-2 text-sm text-gray-700">
                     <ProfileAvatar :src="auth.currentUser?.avatarUrl" size="md" />
+                    <span class="font-medium">{{ auth.currentUser.name }}</span>
                 </router-link>
+                <button
+                    @click="handleLogout"
+                    class="border border-gray-300 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
+                >
+                    Kilépés
+                </button>
             </template>
             <template v-else>
                 <button
@@ -45,25 +48,18 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/authStore'
 import ProfileAvatar from '@/components/profile/ProfileAvatar.vue'
-import { useKeycloak } from '@josempgon/vue-keycloak'
+import RecipeSearchAutocomplete from '@/components/search/RecipeSearchAutocomplete.vue'
+import { useRouter } from 'vue-router'
 
 const auth = useAuthStore()
-const { keycloak } = useKeycloak()
-// const dummyUser: User = {
-//     id: 'dummy-user',
-//     name: 'Teszt Elek',
-//     email: 'teszt@valami.hu',
-//     password: 'titok',
-//     registered: '2023-11-01',
-// }
+const router = useRouter()
 
 function dummyLogin() {
-    keycloak.value
-        ?.login({
-            redirectUri: window.location.origin,
-        })
-        .catch((error) => {
-            console.error('Keycloak login failed:', error)
-        })
+    router.push('/login')
+}
+
+function handleLogout() {
+    auth.logout()
+    router.push('/login')
 }
 </script>

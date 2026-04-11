@@ -6,7 +6,7 @@
             <input
                 v-model="title"
                 type="text"
-                class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                class="w-full border rounded px-4 py-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
             <p v-if="errors.title" class="text-red-600 text-sm mt-1">{{ errors.title }}</p>
         </div>
@@ -16,7 +16,7 @@
             <label class="block font-semibold mb-1">Leírás</label>
             <textarea
                 v-model="description"
-                class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                class="w-full border rounded px-4 py-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                 rows="3"
             ></textarea>
             <p v-if="errors.description" class="text-red-600 text-sm mt-1">
@@ -32,19 +32,19 @@
                     v-model="ingredient.quantity"
                     type="number"
                     placeholder="Mennyiség"
-                    class="w-1/4 border rounded px-2 py-1"
+                    class="w-1/4 border rounded px-2 py-1 bg-white shadow-sm"
                 />
                 <input
                     v-model="ingredient.unitOfMeasurement"
                     type="text"
                     placeholder="Egység"
-                    class="w-1/4 border rounded px-2 py-1"
+                    class="w-1/4 border rounded px-2 py-1 bg-white shadow-sm"
                 />
                 <input
                     v-model="ingredient.name"
                     type="text"
                     placeholder="Hozzávaló"
-                    class="w-full border rounded px-2 py-1"
+                    class="w-full border rounded px-2 py-1 bg-white shadow-sm"
                 />
                 <button type="button" @click="removeIngredient(index)" class="text-red-500">
                     ✕
@@ -69,7 +69,7 @@
                 <textarea
                     v-model="steps[index]"
                     rows="2"
-                    class="w-full border rounded px-2 py-1"
+                    class="w-full border rounded px-2 py-1 bg-white shadow-sm"
                 ></textarea>
                 <button type="button" @click="removeStep(index)" class="text-red-500">✕</button>
             </div>
@@ -88,7 +88,7 @@
                         type="checkbox"
                         :value="item"
                         v-model="selectedAllergens"
-                        class="accent-blue-600"
+                        class="accent-blue-600 bg-white shadow-sm"
                     />
                     {{ item }}
                 </label>
@@ -98,14 +98,26 @@
         <!-- Image upload -->
         <div>
             <label class="block font-semibold mb-2">Kép feltöltése</label>
-            <input type="file" accept="image/*" @change="handleImageChange" />
+            <input
+                type="file"
+                accept="image/*"
+                @change="handleImageChange"
+                class="bg-white shadow-sm"
+            />
             <div v-if="imageUrl" class="mt-2">
                 <img :src="imageUrl" alt="Preview" class="w-64 h-40 object-cover rounded shadow" />
             </div>
         </div>
 
-        <!-- Submit -->
-        <div class="text-right pt-4">
+        <!-- Actions -->
+        <div class="pt-4 flex items-center justify-between gap-3">
+            <button
+                type="button"
+                @click="resetForm"
+                class="border border-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-100 transition"
+            >
+                Űrlap törlése
+            </button>
             <button
                 type="submit"
                 class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
@@ -117,7 +129,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRecipeStore } from '@/stores/recipeStore'
 import { useRouter } from 'vue-router'
 import { AllergenEnum, allergenList } from '@/types/recipe/allergens'
@@ -172,15 +184,15 @@ function resetForm() {
     imageFile.value = null
     imageUrl.value = null
     errors.value = {}
+    recipeStore.clearNewRecipeDraft(authStore.currentUser?.id)
 }
 
 function validateForm() {
     errors.value = {}
-    // TODO remove this comment
-    // if (!authStore.currentUser) {
-    //     errors.value.title = 'Csak bejelentkezve lehet receptet feltölteni.'
-    //     return
-    // }
+    if (!authStore.currentUser) {
+        errors.value.title = 'Csak bejelentkezve lehet receptet feltölteni.'
+        return
+    }
     if (!title.value.trim()) errors.value.title = 'A cím megadása kötelező.'
     if (!description.value.trim()) errors.value.description = 'A leírás nem lehet üres.'
     if (!ingredients.value.some((i) => i.name.trim()))
@@ -204,7 +216,6 @@ async function submit() {
         allergens: selectedAllergens.value,
         image: imageUrl.value || '',
         rating: 0,
-        comments: [],
     }
 
     const recipeId = await recipeStore.addRecipe(newRecipe)
@@ -214,4 +225,30 @@ async function submit() {
     router.push({ name: 'Recipe', params: { id: recipeId } })
     resetForm()
 }
+
+onMounted(() => {
+    const draft = recipeStore.loadNewRecipeDraft(authStore.currentUser?.id)
+    title.value = draft.title
+    description.value = draft.description
+    ingredients.value = draft.ingredients
+    steps.value = draft.steps
+    selectedAllergens.value = draft.selectedAllergens
+})
+
+watch(
+    [title, description, ingredients, steps, selectedAllergens],
+    () => {
+        recipeStore.saveNewRecipeDraft(
+            {
+                title: title.value,
+                description: description.value,
+                ingredients: ingredients.value,
+                steps: steps.value,
+                selectedAllergens: selectedAllergens.value,
+            },
+            authStore.currentUser?.id,
+        )
+    },
+    { deep: true },
+)
 </script>

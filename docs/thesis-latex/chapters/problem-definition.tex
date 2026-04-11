@@ -1,0 +1,32 @@
+﻿\chapter{Felhasználói dokumentáció}\label{ch:problem-definition}
+
+\section{Felhasznált módszerek röviden}
+
+\todo{Megírnit hogyan epul fel az app roviden}
+
+\section{Rendszerkövetelmények}
+
+A szerver futattasához szüksegés egy olyan környezet, amin futtatható a Docker\footnote{\url{https://www.docker.com/}. Utolsó elérés: 2026.04.10.}. Emiatt az alabbi követelmények szükségesek:
+\begin{itemize}
+	\item 64 bit-es Windows 11 vagy Linux operációs rendszer ami támogatja a Docker futtatását
+	\item Legalább 4 GB RAM, ajánlott 8 GB 
+	\item Legalább 10 GB szabad tárhely
+	\item Hálózati kapcsolat
+\end{itemize}
+
+Kliens oldalon egy modern webböngészőre van szükségünk, ami támogatja a HTML5-öt és a JavaScript-et:
+\begin{itemize}
+	\item Mozilla Firefox legfrissebb verziója
+	\item Google Chrome legfrissebb verziója
+	\item Microsoft Edge legfrissebb verziója
+	\item Apple Safari legfrissebb verziója
+\end{itemize}
+
+\section{Telepítés}
+Az alkalmazást a korábban említett Docker\footnote{\url{https://docs.docker.com/desktop/}. Utolsó elérés: 2026.04.10.}, illetve Docker Compose\footnote{\url{https://docs.docker.com/compose/install/}. Utolsó elérés: 2026.04.10.} segítségével lehet telepíteni. Ennek köszönhetően egyetlen parancs kiadásával a teljes rendszer, különösebb beállítások nélkül elindítható.
+
+\subsection{Telepítési útmutató}
+Miután a Docker és a Docker Compose telepítésre került, fájkezelőben a projekt mappájába kell navigálni. Azt itt található \texttt{docker-compose.yml} fájl segítségével indítható el a rendszert. Ez a fájl négy konténerből áll: egy PostgreSQL\footnote{\url{https://www.postgresql.org/}. Utolsó elérés: 2026.04.10.} adatbázisból, a backend REST API-ból, a frontend szerverből és egy Nginx\footnote{\url{https://nginx.org/}. Utolsó elérés: 2026.04.10.} fordított proxyból.
+
+A rendszer konfigurációja egy environment fájlon keresztül történik, amelyben a működéshez szükséges környezeti változók adhatók meg. Az elérhető konfigurációs opciókat az \ref{tab:config}~táblázat tartalmazza.
+

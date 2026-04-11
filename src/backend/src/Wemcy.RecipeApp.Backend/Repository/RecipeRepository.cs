@@ -1,56 +1,125 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Exceptions;
-using Wemcy.RecipeApp.Backend.Model;
+using Wemcy.RecipeApp.Backend.Extensions;
+using Wemcy.RecipeApp.Backend.Model.Entities;
+using Wemcy.RecipeApp.Backend.Pagination;
+using Wemcy.RecipeApp.Backend.Search;
 
-namespace Wemcy.RecipeApp.Backend.Repository
+namespace Wemcy.RecipeApp.Backend.Repository;
+
+public class RecipeRepository(DatabaseContext databaseContext, IMapper mapper) : IRecipeRepository
 {
-    public class RecipeRepository(DatabaseContext databaseContext)
+    private readonly DatabaseContext _databaseContext = databaseContext;
+    protected DbSet<Recipe> Recipes => _databaseContext.Recipes;
+    public async Task<Recipe> CreateRecipeAsync(Recipe recipe)
     {
-        private readonly DatabaseContext _dbContext = databaseContext;
+        var newRecipe = Recipes.Add(recipe);
+        await _databaseContext.SaveChangesAsync();
+        return newRecipe.Entity;
+    }
 
-        public Recipe CreateRecipe(Recipe recipe)
-        {
-            foreach (var allergen in recipe.Allergens)
-            {
-                _dbContext.Attach(allergen);
-            }
-            var newRecipe = _dbContext.Recipes.Add(recipe);
-            _dbContext.SaveChanges();
-            return newRecipe.Entity;
-        }
+    public async Task<Recipe> GetRecipeByIdAsync(Guid id)
+    {
+        return await Recipes
+            .Where(x => x.Id == id)
+            .SingleOrDefaultAsync() ?? throw new RecipeNotFoundException(id);
+    }
 
-        public Recipe SaveRecipe(Recipe recipe)
-        {
-            var updatedRecipe = _dbContext.Recipes.Update(recipe);
-            _dbContext.SaveChanges();
-            return updatedRecipe.Entity;
-        }
+    public async Task<Image> GetImageByIdAsync(Guid id)
+    {
+        var recipe = await GetRecipeByIdAsync(id);
+        return recipe.Image ?? throw new ImageNotFoundException();
+    }
+    public async Task SaveAsync()
+    {
+        await _databaseContext.SaveChangesAsync();
+    }
 
-        public IQueryable<Recipe> GetAllRecipe()
-        {
-            var breakpoint = _dbContext.Recipes.AsNoTracking().Include(x => x.Allergens).Include( x => x.Comments);
-            return breakpoint;
-        }
+    public void DeleteRecipe(Recipe recipe)
+    {
+        Recipes.Remove(recipe);
+    }
 
-        public Recipe GetRecipeByIdWithAllergens(Guid id)
-        {
-            return _dbContext.Recipes.Where(x => x.Id == id).Include(x => x.Allergens).SingleOrDefault() ?? throw new RecipeNotFoundException(id);
-        }
+    public async Task<PaginatedResult<T>> GetAllRecipeByAuthorIdAs<T>(Guid id, PaginationOptions options)
+    {
 
-        public Recipe GetRecipeById(Guid id)
-        {
-            return _dbContext.Recipes.Where(x => x.Id == id).SingleOrDefault() ?? throw new RecipeNotFoundException(id);
-        }
+        return await Recipes
+            .AsNoTracking()
+            .Include(x => x.User)
+            .Where(x => x.User!.Id == id)
+            .OrderByDescending(x => x.UpdatedAt)
+            .ProjectTo<T>(mapper.ConfigurationProvider)
+            .ToPaginatedListAsync(options);
+    }
 
-        public Image GetImageById(Guid id)
-        {
-            return GetRecipeById(id).Image ?? throw new ImageNotFoundException();
-        }
-        public void Save()
-        {
-            _dbContext.SaveChanges();
-        }
+    public async Task<PaginatedResult<T>> GetCommentsByRecipeIdAs<T>(Guid id, PaginationOptions options)
+    {
+        var recipe = await GetRecipeByIdAsync(id);
+        return await Recipes
+            .AsNoTracking()
+            .Where(x => x.Id == id)
+            .SelectMany(x => x.Comments)
+            .OrderByDescending(x => x.UpdatedAt)
+            .ProjectTo<T>(mapper.ConfigurationProvider)
+            .ToPaginatedListAsync(options);
+    }
+
+    public async Task<PaginatedResult<T>> ListRecipesAs<T>(PaginationOptions options, IQueryFilter<Recipe> recipeFilter)
+    {
+        return await Recipes
+            .AsNoTracking()
+            .WithFilter(recipeFilter)
+            .Include(x => x.User)
+            .OrderByDescending(x => x.UpdatedAt)
+            .ProjectTo<T>(mapper.ConfigurationProvider)
+            .ToPaginatedListAsync(options);
+    }
+
+    public async Task<IList<T>> ListRecipesAs<T>(IQueryFilter<Recipe> recipeFilter)
+    {
+        return await Recipes
+            .AsNoTracking()
+            .WithFilter(recipeFilter)
+            .Include(x => x.User)
+            .ProjectTo<T>(mapper.ConfigurationProvider)
+            .ToListAsync();
+    }
+
+    public async Task DeleteCommentById(Guid recipeId, Guid commentId)
+    {
+        var recipe = await GetRecipeByIdAsync(recipeId);
+        recipe.Comments.Remove(recipe.Comments.FirstOrDefault(c => c.Id == commentId) ?? throw new CommentNotFoundExeption(commentId));
+    }
+
+    public IAsyncEnumerable<T> SearchRecipesByTitleAs<T>(RecipeSearch recipeSearch, RecipeFilter recipeFilter)
+    {
+        return Recipes
+            .AsNoTracking()
+            .WithFilter(recipeSearch)
+            .WithFilter(recipeFilter)
+            .Take(10)
+            .ProjectTo<T>(mapper.ConfigurationProvider)
+            .ToAsyncEnumerable();
+    }
+
+    public async Task<List<Guid>> GetRandomRecipesGuids(int count)
+    {
+        return await Recipes
+            .OrderBy(x => EF.Functions.Random())
+            .Take(count)
+            .Select(x => x.Id)
+            .ToListAsync();
+    }
+
+    public async Task<IList<Recipe>> GetRecipesByIdsAsync(Guid[] ids)
+    {
+        return await Recipes
+            .AsNoTracking()
+            .Where(r => ids.Contains(r.Id))
+            .Include(r => r.User)
+            .ToListAsync();
     }
 }

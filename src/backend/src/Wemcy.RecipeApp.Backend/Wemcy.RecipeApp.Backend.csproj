@@ -1,6 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>bb3208eb-e001-48ad-8d01-9ecea4523f1e</UserSecretsId>
@@ -9,24 +9,44 @@
     <FileVersion>0.11.0.0</FileVersion>
     <InformationalVersion>0.11.0-alpha.23+Branch.dev.Sha.c23a5114f580bc914560a12f1388bffe7c231163</InformationalVersion>
     <Version>0.11.0-alpha.23</Version>
+    <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="15.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.21" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.21" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.21">
+    <PackageReference Include="AutoMapper" Version="16.1.1" />
+    <PackageReference Include="Cronos" Version="0.12.0" />
+    <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.21" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.21" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.21" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="10.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wemcy.RecipeApp.Backend.Api\Wemcy.RecipeApp.Backend.Api.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="AutoMapper" />
+    <Using Include="Microsoft.AspNetCore.Authorization;" />
+    <Using Include="Microsoft.AspNetCore.Mvc;" />
+    <Using Include="Microsoft.EntityFrameworkCore" />
+    <Using Include="Newtonsoft.Json;" />
+    <Using Include="System.ComponentModel.DataAnnotations;" />
+  </ItemGroup>
+  <ItemGroup>
+    <EditorConfigFiles Remove="F:\Programming\yet-another-bsc-thesis\src\backend\src\Wemcy.RecipeApp.Backend\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="F:\Programming\yet-another-bsc-thesis\src\backend\src\Wemcy.RecipeApp.Backend\.editorconfig" />
   </ItemGroup>
 </Project>

@@ -5,9 +5,8 @@ services:
   adminer:
     image: adminer:latest
     environment:
-      ADMINER_DEFAULT_SERVER: authentication_database
+      ADMINER_DEFAULT_SERVER: recipe_database
     depends_on:
-      - authentication_database
       - recipe_database
     ports:
       - "8082:8080"

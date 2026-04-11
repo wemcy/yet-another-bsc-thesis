@@ -1,0 +1,28 @@
+﻿\chapter{Fejlesztoi dokumentacio}
+\label{ch:architecture}
+
+\section{Reszletes specifikacio es fejlesztoi celok}
+
+Ez a fejezet a rendszer fejlesztoi nezetu leirasat adja: osszefoglalja a specifikacios szempontokat, bemutatja az alkalmazott modszereket, valamint rogzíti a logikai es fizikai szerkezetet. A kovetkezo alfejezetekhez kapcsolodva a \ref{ch:requirements}, \ref{ch:implementation} es \ref{ch:testing} jelolesu reszek tartalmazzak a kovetelmenyek, a megvalositas es a teszteles reszleteit.
+
+\section{Magas szintu attekintes}
+
+A projekt reteges, webalkalmazas-jellegu architekturara epul. A felhasznalo egy bongeszoben futo kliensalkalmazassal lep kapcsolatba, amely HTTP hivasokon keresztul eri el a backend szolgaltatast. A backend vegzi az uzleti logika, az adatelérés, a hitelesiteshez kapcsolodo folyamatok, valamint az API-dokumentacio kiszolgalasanak fo reszet. Az adatok perzisztalasat egy relacios adatbazis biztosítja \cite{vue,aspnetcore,postgresql}.
+
+\section{Fo komponensek}
+
+\begin{itemize}
+	\item Frontend: Vue alapu egyoldalas alkalmazas, amely a felhasznaloi folyamatokat es az oldalak kozi navigaciot kezeli.
+	\item API kliens: OpenAPI alapjan generalhato klienscsomag, amely a frontend es a backend kozotti szerzodest teszi kovethetoeve.
+	\item Backend: ASP.NET Core Web API, amely kontroller-, szolgaltatas- es repository-szintu felelosségekre tagolodik.
+	\item Adatbazis: PostgreSQL kompatibilis adatbazis, amelyet az alkalmazas entitasaihoz es kapcsolataihoz igazitott séma szolgal ki.
+	\item Infrastruktura: Docker Compose alapú helyi futtatási kornyezet, amely tamogatja a fejlesztest es a rendszer osszeepiteset \cite{docker}.
+\end{itemize}
+
+\section{Mappaszerkezet es felelossegek}
+
+A repository szerkezete is tukrozi a komponensfelosztast. A \texttt{src/backend} konyvtar a .NET oldali kodot, a \texttt{src/frontend} a kliensalkalmazast es a generalhato API klienset, a \texttt{docs} pedig a projekt dokumentacios anyagait tartalmazza. Ez a szeparacio megkonnyiti, hogy a dolgozatban kulon targyalhato legyen a rendszerterv, az implementacio, valamint a felhasznaloi es fejlesztoi tamogato anyagok halmaza.
+
+\section{Tovabbi kiegeszitesek helye}
+
+Ebben a fejezetben erdemes kesobb egy architekturaabrat is elhelyezni, amely megmutatja a bongeszo, a reverse proxy, a backend, az adatbazis es az esetleges autentikacios komponensek kapcsolatat. Ha a dolgozat vegleges valtozatahoz keszul diagram, azt az \texttt{images} konyvtarban erdemes tarolni, majd itt hivatkozni ra.

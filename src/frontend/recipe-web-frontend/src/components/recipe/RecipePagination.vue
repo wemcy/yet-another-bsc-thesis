@@ -1,61 +1,77 @@
 <script setup lang="ts">
-import type { Recipe } from '@/types/recipe/recipe'
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
-    items: Recipe[]
-    perPage?: number
+    currentPage: number
+    totalPages: number
+    hasNextPage: boolean
+    hasPreviousPage: boolean
+    disabled?: boolean
 }>()
 
-const currentPage = ref(1)
-const perPage = computed(() => props.perPage || 8)
-const totalPages = computed(() => Math.ceil(props.items.length / perPage.value))
+const emit = defineEmits<{
+    pageChange: [pageNumber: number]
+}>()
 
-const paginatedItems = computed<Recipe[]>(() =>
-    props.items.slice((currentPage.value - 1) * perPage.value, currentPage.value * perPage.value),
-)
+const pages = computed<(number | 'ellipsis')[]>(() => {
+    if (props.totalPages <= 0) return []
 
-// Lapozó nullázódik, ha új lista jön (pl. keresés, filter)
-watch(
-    () => props.items,
-    () => {
-        currentPage.value = 1
-    },
-)
+    const lastPage = props.totalPages - 1
+    const current = Math.min(Math.max(props.currentPage, 0), lastPage)
 
-defineExpose({ currentPage, totalPages, paginatedItems })
-function setPage(n: number) {
-    currentPage.value = Math.min(Math.max(n, 1), totalPages.value)
+    if (props.totalPages <= 7) {
+        return Array.from({ length: props.totalPages }, (_, i) => i)
+    }
+
+    const nearStart = current <= 3
+    const nearEnd = current >= lastPage - 3
+
+    if (nearStart) {
+        return [0, 1, 2, 3, 4, 'ellipsis', lastPage]
+    }
+
+    if (nearEnd) {
+        return [0, 'ellipsis', lastPage - 4, lastPage - 3, lastPage - 2, lastPage - 1, lastPage]
+    }
+
+    return [0, 'ellipsis', current - 1, current, current + 1, 'ellipsis', lastPage]
+})
+
+function setPage(pageNumber: number) {
+    if (props.disabled) return
+    if (pageNumber < 0 || pageNumber >= props.totalPages) return
+    if (pageNumber === props.currentPage) return
+    emit('pageChange', pageNumber)
 }
 </script>
 
 <template>
-    <div>
-        <slot :items="paginatedItems" />
-        <div class="flex justify-center mt-8 space-x-2">
+    <div v-if="totalPages > 0" class="flex justify-center mt-8 items-center gap-2">
+        <button
+            @click="setPage(currentPage - 1)"
+            :disabled="disabled || !hasPreviousPage"
+            class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+        >
+            Előző
+        </button>
+        <template v-for="(item, idx) in pages" :key="`${item}-${idx}`">
             <button
-                @click="setPage(currentPage - 1)"
-                :disabled="currentPage === 1"
-                class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+                v-if="item !== 'ellipsis'"
+                @click="setPage(item)"
+                :disabled="disabled"
+                class="px-3 py-2 rounded min-w-10"
+                :class="item === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-200'"
             >
-                Előző
+                {{ item + 1 }}
             </button>
-            <span
-                v-for="n in totalPages"
-                :key="n"
-                class="px-3 py-2 rounded"
-                :class="n === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-200'"
-                @click="setPage(n)"
-                style="cursor: pointer"
-                >{{ n }}</span
-            >
-            <button
-                @click="setPage(currentPage + 1)"
-                :disabled="currentPage === totalPages"
-                class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
-            >
-                Következő
-            </button>
-        </div>
+            <span v-else class="px-2 text-gray-500">...</span>
+        </template>
+        <button
+            @click="setPage(currentPage + 1)"
+            :disabled="disabled || !hasNextPage"
+            class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+        >
+            Következő
+        </button>
     </div>
 </template>

@@ -1,7 +1,7 @@
 /*
- * Receptkezelő webalkalmazás API
+ * Recipe Management Web Application API
  *
- * Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+ * Recipe create/list/update/delete operations with allergen-based filtering.
  *
  * The version of the OpenAPI document: v0.1.0-dev
  * Contact: mzsoltsandor@gmail.com
@@ -30,6 +30,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// The rating value (1-5)
         /// </summary>
         /// <value>The rating value (1-5)</value>
+        [Required]
         [Range(1, 5)]
         [DataMember(Name="rating", EmitDefaultValue=true)]
         public int Rating { get; set; }

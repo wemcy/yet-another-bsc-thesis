@@ -1,7 +1,7 @@
 /*
- * Receptkezelő webalkalmazás API
+ * Recipe Management Web Application API
  *
- * Recepthozzáadás, -listázás, -szerkesztés, -törlés; allergén-alapú szűréssel.
+ * Recipe create/list/update/delete operations with allergen-based filtering.
  *
  * The version of the OpenAPI document: v0.1.0-dev
  * Contact: mzsoltsandor@gmail.com
@@ -27,29 +27,33 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
     public class Comment : IEquatable<Comment>
     {
         /// <summary>
-        /// Gets or Sets Id
+        /// Unique identifier of the comment
         /// </summary>
+        /// <value>Unique identifier of the comment</value>
         [Required]
         [DataMember(Name="id", EmitDefaultValue=true)]
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or Sets Content
+        /// Text content of the comment
         /// </summary>
+        /// <value>Text content of the comment</value>
         [Required]
         [DataMember(Name="content", EmitDefaultValue=false)]
         public string Content { get; set; }
 
         /// <summary>
-        /// Gets or Sets CreatedAt
+        /// Timestamp when the comment was created
         /// </summary>
+        /// <value>Timestamp when the comment was created</value>
         [Required]
         [DataMember(Name="createdAt", EmitDefaultValue=true)]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>
-        /// Gets or Sets Author
+        /// Display name of the comment author
         /// </summary>
+        /// <value>Display name of the comment author</value>
         [Required]
         [DataMember(Name="author", EmitDefaultValue=false)]
         public string Author { get; set; }

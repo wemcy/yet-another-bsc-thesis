@@ -1,26 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Description>A library generated from a OpenAPI doc</Description>
         <Copyright>No Copyright</Copyright>
         <Authors>OpenAPI</Authors>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PreserveCompilationContext>true</PreserveCompilationContext>
         <Version>1.0.0</Version>
+        <Nullable>annotations</Nullable>
         <OutputType>Library</OutputType>
         <AssemblyName>Wemcy.RecipeApp.Backend.Api</AssemblyName>
         <PackageId>Wemcy.RecipeApp.Backend.Api</PackageId>
-        <UserSecretsId>d6fc7a04-20f1-40ed-997c-81352fbd9c18</UserSecretsId>
+        <UserSecretsId>9d3b2ac2-e8b4-4e4d-848d-495b597fef2e</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
-        <PackageReference Include="JsonSubTypes" Version="1.8.0" />
-    </ItemGroup>
-    <ItemGroup>
-        <!--<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />-->
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.5" />
+        <PackageReference Include="JsonSubTypes" Version="2.0.1" />
     </ItemGroup>
 </Project>

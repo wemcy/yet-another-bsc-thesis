@@ -4,6 +4,6 @@ export interface User {
     email: string
     password?: string // opcionális, élesben általában nem tartod itt!
     passwordConfirm?: string // opcionális, élesben általában nem tartod itt!
-    registered: string // pl. '2023-11-01'
+    registered?: string // pl. '2023-11-01'
     avatarUrl?: string // vagy avatar, ha úgy tetszik
 }

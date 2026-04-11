@@ -1,4 +1,20 @@
 @import './base.css';
+
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.skeleton-shimmer {
+    background: linear-gradient(110deg, #e5e7eb 8%, #f3f4f6 18%, #e5e7eb 33%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.2s linear infinite;
+}
+
 @layer base {
     :root {
         --text: #1d070e;
