@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Reflection;
+using Wemcy.RecipeApp.Backend.Configuration;
 using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
 using Wemcy.RecipeApp.Backend.Database;
 using Wemcy.RecipeApp.Backend.Extensions;
@@ -10,6 +11,11 @@ using Wemcy.RecipeApp.Backend.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<AdminSettings>(builder.Configuration.GetSection(AdminSettings.SectionName));
+builder.Services.Configure<CorsSettings>(builder.Configuration.GetSection(CorsSettings.SectionName));
+builder.Services.Configure<PaginationSettings>(builder.Configuration.GetSection(PaginationSettings.SectionName));
+builder.Services.Configure<ImageSizeSettings>(builder.Configuration.GetSection(ImageSizeSettings.SectionName));
 
 // Add services to the container.
 
@@ -56,11 +62,12 @@ builder.Services.AddScoped<IRecipeService, RecipeService>()
 builder.Services.AddHostedService<ShowcaseRefreshService>();
 builder.Services.ConfigurePagination();
 
+var corsSettings = builder.Configuration.GetSection(CorsSettings.SectionName).Get<CorsSettings>() ?? new CorsSettings();
 builder.Services.AddHttpContextAccessor().AddCors(opt =>
 {
-    opt.AddDefaultPolicy(builder =>
+    opt.AddDefaultPolicy(policy =>
     {
-        builder.WithOrigins("http://localhost:9393", "http://localhost:5173", "http://127.0.0.1:9393", "http://127.0.0.1:5173")
+        policy.WithOrigins(corsSettings.AllowedOrigins)
                .AllowAnyMethod()
                .AllowAnyHeader()
                .AllowCredentials();

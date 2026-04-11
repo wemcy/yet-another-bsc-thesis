@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using SixLabors.ImageSharp;
 using System.Security.Claims;
 using Wemcy.RecipeApp.Backend.Api.Models;
+using Wemcy.RecipeApp.Backend.Configuration;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Model.Entities;
@@ -10,13 +12,14 @@ using Wemcy.RecipeApp.Backend.Security;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<User> userManager, IImageService imageService, IAuthorizationService authorizationService, RoleManager<IdentityRole<Guid>> roleManager) : IUserService
+public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<User> userManager, IImageService imageService, IAuthorizationService authorizationService, RoleManager<IdentityRole<Guid>> roleManager, IOptions<AdminSettings> adminSettings) : IUserService
 {
     private readonly UserManager<User> _userManager = userManager;
     private readonly RoleManager<IdentityRole<Guid>> _roleManager = roleManager;
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
     private readonly IAuthorizationService _authorizationService = authorizationService;
     private readonly IImageService _imageService = imageService;
+    private readonly AdminSettings _adminSettings = adminSettings.Value;
 
 
     public async Task<User> GetCurrentUserAsync()
@@ -41,11 +44,7 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<U
     {
         await EnsureRoleCreated(Roles.Admin);
 
-        const string defaultAdminEmail = "admin@recipe-app.local";
-        const string defaultAdminPassword = "Admin123!";
-        const string defaultAdminDisplayName = "Administrator";
-
-        var defaultAdmin = await CreateUserIfNotExist(defaultAdminEmail, defaultAdminPassword, defaultAdminDisplayName);
+        var defaultAdmin = await CreateUserIfNotExist(_adminSettings.Email, _adminSettings.Password, _adminSettings.DisplayName);
 
         await AddRoleToUser(defaultAdmin, Roles.Admin);
     }

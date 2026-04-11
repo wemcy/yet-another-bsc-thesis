@@ -1,13 +1,16 @@
-﻿using SixLabors.ImageSharp;
+﻿using Microsoft.Extensions.Options;
+using SixLabors.ImageSharp;
 using Wemcy.RecipeApp.Backend.Api.Models;
+using Wemcy.RecipeApp.Backend.Configuration;
 using Wemcy.RecipeApp.Backend.Repository;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class ImageService(IImageStorageService imageStorageService, IImageRepository imageRepository) : IImageService
+public class ImageService(IImageStorageService imageStorageService, IImageRepository imageRepository, IOptions<ImageSizeSettings> imageSizeSettings) : IImageService
 {
     private readonly IImageRepository imageRepository = imageRepository;
     private readonly IImageStorageService imageStorageService = imageStorageService;
+    private readonly ImageSizeSettings _imageSizeSettings = imageSizeSettings.Value;
     public async Task<Model.Entities.Image> CreateImage(Stream imageStream, string name)
     {
         var image = new Model.Entities.Image
@@ -34,14 +37,15 @@ public class ImageService(IImageStorageService imageStorageService, IImageReposi
         return await imageStorageService.ReadImage(id, GetImageSize(size));
     }
 
-    private static Size GetImageSize(ImageSize imageSize)
+    private Size GetImageSize(ImageSize imageSize)
     {
-        return imageSize switch
+        var option = imageSize switch
         {
-            ImageSize.ThumbnailEnum => new Size(50, 50),
-            ImageSize.MediumEnum => new Size(200, 200),
-            ImageSize.LargeEnum => new Size(500, 500),
+            ImageSize.ThumbnailEnum => _imageSizeSettings.Thumbnail,
+            ImageSize.MediumEnum => _imageSizeSettings.Medium,
+            ImageSize.LargeEnum => _imageSizeSettings.Large,
             _ => throw new ArgumentOutOfRangeException(nameof(imageSize), "Invalid image size.")
         };
+        return new Size(option.Width, option.Height);
     }
 }

@@ -1,5 +1,7 @@
-﻿using Wemcy.RecipeApp.Backend.Api.Controllers;
+﻿using Microsoft.Extensions.Options;
+using Wemcy.RecipeApp.Backend.Api.Controllers;
 using Wemcy.RecipeApp.Backend.Api.Models;
+using Wemcy.RecipeApp.Backend.Configuration;
 using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Extensions;
@@ -14,8 +16,9 @@ using Recipe = Wemcy.RecipeApp.Backend.Model.Entities.Recipe;
 
 namespace Wemcy.RecipeApp.Backend.Controllers;
 
-public class RecipeController(IRecipeService recipeService, IMapper mapper, IShowcaseRecipeService showcaseRecipeService) : RecipesApiController
+public class RecipeController(IRecipeService recipeService, IMapper mapper, IShowcaseRecipeService showcaseRecipeService, IOptions<PaginationSettings> paginationSettings) : RecipesApiController
 {
+    private readonly PaginationSettings _paginationSettings = paginationSettings.Value;
     public override async Task<IActionResult> GetRecipeById([FromRoute(Name = "id"), Required] Guid id)
     {
         var recipe = await recipeService.GetRecipeByIdAsync(id);
@@ -67,13 +70,13 @@ public class RecipeController(IRecipeService recipeService, IMapper mapper, ISho
 
     public override async Task<IActionResult> GetRecipesByAuthorId([FromRoute(Name = "id"), Required] Guid id, [FromQuery(Name = "page"), Range(0, int.MaxValue)] int? page, [FromQuery(Name = "pageSize"), Range(25, 100)] int? pageSize)
     {
-        var dtos = await recipeService.GetAllRecipeByAuthorIdAs<Api.Models.Recipe>(id, new PaginationOptions(page, pageSize));
+        var dtos = await recipeService.GetAllRecipeByAuthorIdAs<Api.Models.Recipe>(id, new PaginationOptions(page ?? 0, pageSize ?? _paginationSettings.DefaultPageSize));
         return Ok(dtos);
     }
 
     public override async Task<IActionResult> ListRecipeComments([FromRoute(Name = "id"), Required] Guid id, [FromQuery(Name = "page"), Range(0, int.MaxValue)] int? page, [FromQuery(Name = "pageSize"), Range(25, 100)] int? pageSize)
     {
-        var dtos = await recipeService.GetCommentsByRecipeIdAs<Comment>(id, new PaginationOptions(page, pageSize));
+        var dtos = await recipeService.GetCommentsByRecipeIdAs<Comment>(id, new PaginationOptions(page ?? 0, pageSize ?? _paginationSettings.DefaultPageSize));
         return Ok(dtos);
     }
 
@@ -96,7 +99,7 @@ public class RecipeController(IRecipeService recipeService, IMapper mapper, ISho
         var includeAllergenTypes = includeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
         var excludeAllergenTypes = excludeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
 
-        var dtos = await recipeService.ListResipesAsAsync<Api.Models.Recipe>(new PaginationOptions(page, pageSize), new RecipeFilter(includeAllergenTypes, excludeAllergenTypes));
+        var dtos = await recipeService.ListResipesAsAsync<Api.Models.Recipe>(new PaginationOptions(page ?? 0, pageSize ?? _paginationSettings.DefaultPageSize), new RecipeFilter(includeAllergenTypes, excludeAllergenTypes));
         return Ok(dtos);
     }
 
