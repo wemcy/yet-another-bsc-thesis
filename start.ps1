@@ -1,6 +1,7 @@
 $ErrorActionPreference = 'Stop'
 
 $composeFile = Join-Path $PSScriptRoot 'docker-compose.yaml'
+$envFile = Join-Path $PSScriptRoot '.env'
 $minDockerEngineVersion = [Version]'28.0'
 
 function Get-NormalizedVersion {
@@ -27,6 +28,11 @@ if (-not (Test-Path $composeFile)) {
 	exit 1
 }
 
+if (-not (Test-Path $envFile)) {
+	Write-Error "Env file not found: $envFile"
+	exit 1
+}
+
 if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
 	Write-Error 'Docker is not installed or not available in PATH.'
 	exit 1
@@ -50,4 +56,4 @@ if ($dockerEngineVersion -lt $minDockerEngineVersion) {
 	exit 1
 }
 
-docker compose -f $composeFile up $args
+docker compose --env-file $envFile -f $composeFile up $args
