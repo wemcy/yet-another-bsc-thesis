@@ -30,7 +30,7 @@ Miután a Docker és a Docker Compose telepítésre került, fájkezelőben a pr
 
 A rendszer konfigurációja egy environment fájlon keresztül történik, amelyben a működéshez szükséges környezeti változók adhatók meg. Az elérhető konfigurációs opciókat az \ref{tab:config}~táblázat tartalmazza.
 
-Elindításához Linux és macOS rendszereken a \texttt{start.sh}, Windows rendszereken pedig a \texttt{start.ps1} scriptet kell futtatni, amely automatikusan elindítja a szükséges konténereket a konfigurációs fájl alapján. 
+Elindításához Linux és macOS rendszereken a \texttt{start.sh}, Windows rendszereken pedig a \texttt{start.ps1} scriptet kell futtatni, amely automatikusan elindítja a szükséges konténereket a konfigurációs fájl alapján. Beállítható az is, hogy a program biztonságos HTTPS kapcsolaton keresztül legyen elérhető, ehhez a konfigurációs fájlban meg kell adni a szükséges tanúsítványokat és kulcsokat.
 
 Az alap beállításokkal a rendszer a \texttt{http://localhost:9393} címen lesz elérhető, amit egy webböngészőben lehet megnyitni.
 
@@ -54,4 +54,60 @@ A felhasználók saját profiljukat is kezelhetik, ahol megtekinthetik és szerk
 \subsection{Adminisztrátor funkciók}
 
 Az adminisztrátorok hozzáférnek az oldalon több funkcióhoz, mint a normál felhasználók. Az adminisztrátorok kezelhetik a felhasználókat, például törölhetnek vagy módosíthatnak fiókokat. Emellett az adminisztrátorok moderálhatják a recepteket és a kommenteket, biztosítva ezzel a közösségi tartalom minőségét.
+
+\section{Az alkalmazás használatának felépítése}
+
+Az alkalmazás fő eleme az oldal felső részén elhelyezkedő navigációs sáv. Ez a sáv minden oldalon elérhető, és lehetővé teszi a gyors hozzáférést a legfontosabb funkciókhoz. A sávban található egy keresőmező, amely azonnali keresést tesz lehetővé a receptek között, találatokat jelenít meg a kulcsszavak alapján szinte azonannal. Enek kívül ebben a sávban helyezkednek el gombok a bejelentkezéshez, új recept létrehozásához és összes recept listázására is.
+
+\subsection{Kezdőoldal és receptlista}
+
+A kezdőlapon két kiemelt elem található: egy kiemelt recept szekció, ahol egy előre meghatározott recept jelenik meg, valamint egy recept kirakat, ahol minden nap hat véletlenszerű recept jelenik meg. A kiemelt receptnek láthatjuk a címét, egy rövid leírást és egy képet, valamint a recept értékelését. A recept kirakatban szintén megjelenik a cím, egy rövid leírás és egy kép, de az értékelés nem látható. Mindkét szekcióban a receptek kattinthatóak, így a részletes oldalra navigálhatunk.
+
+\subsection{Recept részletező oldal}
+
+	Rögtön a recept címe, leírása és képe jelenik meg. A kép felett látható a recept értékelése, amely a korrábban említett csillagok formájában jelenik meg. A csillagokra kattinttva a recept értékélesére van lehetőség, amely új értékélést ad a recepthez. Egy felhasználó csak egyszer értékelhet egy receptet, de korábbi értékelését módosíthatja.
+
+	A leírás alatt kap helyet a hozzávalók listája és elkészítési útmutató. Könnyen áttekinthető formátumban jelennek meg,a hol a hozzávalók egy felsorolásban, míg az elkészítési útmutató egy számozott listában van megjelenítve. A kép alatt helyezkedik el allergének listája. 
+
+	Ezek alatt található a komment szekció. A kommentek időrendben jelennek meg, a legfrissebb komment van legfelül. Minden kommentben látható a kommentelő neve, komment szövege és időpontja. A kommentelési blokk legfelső részén jelenik meg a beviteli mező, ahol a felhasználók új kommentet írhatnak. Ez csak akkor kitölthető, ha a felhasználó be van jelentkezve. 
+	
+	Bejelentkezés után a kép alatt megjelenik egy gomb, amely lehetővé teszi a recept szerkesztését, amennyiben a recept létrehozója vagy adminisztrátor vagyunk. Ez a gomb egy új oldalra navigál, ahol módosíthatjuk a recept adatait, hozzávalóit, elkészítési útmutatóját és képét.
+
+\subsection{Keresés és szűrés}
+
+
+
+\subsection{Bejelentkezés és regisztráció}
+\begin{itemize}
+	\item A két oldal szerepe
+	\item Megadandó adatok
+	\item Sikeres és sikertelen műveletek eredménye
+	\item Belépés utáni elérhető funkciók
+\end{itemize}
+
+\subsection{Profiloldal}
+\begin{itemize}
+	\item Milyen felhasználói adatok láthatók
+	\item Milyen adatok módosíthatók
+	\item Profilkép kezelése
+	\item Saját receptek elérése
+\end{itemize}
+
+\subsection{Recept létrehozása és szerkesztése}
+\begin{itemize}
+	\item Az űrlap célja
+	\item Kötelező és opcionális mezők
+	\item Kép feltöltése
+	\item Mentés és módosítás folyamata
+	\item Hibakezelés és ellenőrzések
+\end{itemize}
+
+\subsection{Adminisztrációs felület}
+\begin{itemize}
+	\item Kik használhatják
+	\item Felhasználók kezelése
+	\item Receptek moderálása
+	\item Kommentek moderálása
+	\item Adminisztrátori műveletek következményei
+\end{itemize}
 
