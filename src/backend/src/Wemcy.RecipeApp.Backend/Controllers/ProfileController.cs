@@ -27,14 +27,20 @@ public class ProfileController(IMapper mapper, IUserService userService) : Profi
         return NoContent();
     }
 
+    [Authorize(Roles = Roles.Admin)]
+    public override async Task<IActionResult> GetAdminViewProfileById([FromRoute(Name = "id"), Required] Guid id)
+    {
+        var profile = await userService.GetUserByIdAsync(id);
+        return Ok(mapper.Map<Api.Models.Profile>(profile));
+    }
+
     public override async Task<IActionResult> GetOwnProfile()
     {
         if (User.Identity.TryGetUserId(out var userId))
         {
-            return await this.GetProfileById(userId);
+            return await this.GetAdminViewProfileById(userId);
         }
         throw new UserNotFoundException();
-
     }
 
 
@@ -50,7 +56,7 @@ public class ProfileController(IMapper mapper, IUserService userService) : Profi
     public async override Task<IActionResult> GetProfileById([FromRoute(Name = "id"), Required] Guid id)
     {
         var profile = await userService.GetUserByIdAsync(id);
-        return Ok(mapper.Map<Api.Models.Profile>(profile));
+        return Ok(mapper.Map<Api.Models.ProfileSummary>(profile));
     }
 
     public override async Task<IActionResult> GetProfileImageById([FromRoute(Name = "id"), Required] Guid id, [FromQuery(Name = "size")] ImageSize? size)

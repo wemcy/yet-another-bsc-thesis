@@ -23,6 +23,7 @@
 ../src/Wemcy.RecipeApp.Backend.Api/Models/LoginResponse.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/PaginationMetadata.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/Profile.cs
+../src/Wemcy.RecipeApp.Backend.Api/Models/ProfileSummary.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/RateRecipeRequest.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/Recipe.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/RecipeSummary.cs

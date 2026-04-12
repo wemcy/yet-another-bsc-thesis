@@ -66,6 +66,22 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         public abstract Task<IActionResult> DeleteProfileById([FromRoute (Name = "id")][Required]Guid id);
 
         /// <summary>
+        /// Get user profile by ID
+        /// </summary>
+        /// <param name="id">Unique identifier of the user to query (UUID)</param>
+        /// <response code="200">User profile retrieved successfully</response>
+        /// <response code="401">No active session</response>
+        /// <response code="404">User not found</response>
+        [HttpGet]
+        [Route("/profile/{id}/adminView")]
+        [Authorize(Policy = "cookieAuth")]
+        [ValidateModelState]
+        [ProducesResponseType(statusCode: 200, type: typeof(Profile))]
+        [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
+        public abstract Task<IActionResult> GetAdminViewProfileById([FromRoute (Name = "id")][Required]Guid id);
+
+        /// <summary>
         /// Get the logged-in user profile
         /// </summary>
         /// <response code="200">Request successful</response>
@@ -103,7 +119,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [Route("/profile/{id}")]
         [Authorize(Policy = "cookieAuth")]
         [ValidateModelState]
-        [ProducesResponseType(statusCode: 200, type: typeof(Profile))]
+        [ProducesResponseType(statusCode: 200, type: typeof(ProfileSummary))]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
         public abstract Task<IActionResult> GetProfileById([FromRoute (Name = "id")][Required]Guid id);
