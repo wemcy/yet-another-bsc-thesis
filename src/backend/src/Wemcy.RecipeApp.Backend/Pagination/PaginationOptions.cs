@@ -15,6 +15,11 @@ public class PaginationOptions
         this.PageSize = pageSize;
     }
 
+    public PaginationOptions(int? pageNumber, int? pageSize, int defaultPageSize = 25)
+        : this(pageNumber ?? 0, pageSize ?? defaultPageSize)
+    {
+    }
+
     private static void ValidatePageSize(int pageSize)
     {
         if (pageSize <= 0)

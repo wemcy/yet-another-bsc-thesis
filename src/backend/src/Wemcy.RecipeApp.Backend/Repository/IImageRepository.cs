@@ -1,9 +1,8 @@
 ﻿using Wemcy.RecipeApp.Backend.Model.Entities;
 
-namespace Wemcy.RecipeApp.Backend.Repository
+namespace Wemcy.RecipeApp.Backend.Repository;
+
+public interface IImageRepository
 {
-    public interface IImageRepository
-    {
-        Image SaveImage(Image image);
-    }
+    Image SaveImage(Image image);
 }
