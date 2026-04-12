@@ -9,7 +9,7 @@ import {
 } from 'recipe-api-client'
 import { toErrorMessage } from '../utils/identityErrors'
 
-const config = new Configuration({ basePath: 'http://localhost:9393/api', credentials: 'include' })
+const config = new Configuration({ basePath: '/api', credentials: 'include' })
 const authApi = new AuthApi(config)
 const profileApi = new ProfileApi(config)
 
