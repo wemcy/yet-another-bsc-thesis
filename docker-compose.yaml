@@ -38,8 +38,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 12
-    # volumes:
-      # - recipe_db_data:/var/lib/postgresql/data
+    volumes:
+      - recipe_db_data:/var/lib/postgresql/data
 
 
 volumes:

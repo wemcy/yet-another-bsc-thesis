@@ -1,12 +1,11 @@
-﻿namespace Wemcy.RecipeApp.Backend.Exceptions
+﻿namespace Wemcy.RecipeApp.Backend.Exceptions;
+
+public class ImageNotFoundException : EntityNotFoundExeption
 {
-    public class ImageNotFoundException : EntityNotFoundExeption
+    public ImageNotFoundException() : base("Image not found.")
     {
-        public ImageNotFoundException() : base("Image not found.")
-        {
-        }
-        public ImageNotFoundException(string message) : base(message)
-        {
-        }
+    }
+    public ImageNotFoundException(string message) : base(message)
+    {
     }
 }

@@ -30,3 +30,28 @@ Miután a Docker és a Docker Compose telepítésre került, fájkezelőben a pr
 
 A rendszer konfigurációja egy environment fájlon keresztül történik, amelyben a működéshez szükséges környezeti változók adhatók meg. Az elérhető konfigurációs opciókat az \ref{tab:config}~táblázat tartalmazza.
 
+Elindításához Linux és macOS rendszereken a \texttt{start.sh}, Windows rendszereken pedig a \texttt{start.ps1} scriptet kell futtatni, amely automatikusan elindítja a szükséges konténereket a konfigurációs fájl alapján. 
+
+Az alap beállításokkal a rendszer a \texttt{http://localhost:9393} címen lesz elérhető, amit egy webböngészőben lehet megnyitni.
+
+\section{Funkciók}
+Az alkalmazásban két fajta felhasználói szerepkör van: adminisztrátor és normál felhasználó. Az oldalon a regisztráció nélkül böngészhetően a receptek. Bejelentkezés után a normál felhasználók hozzáférhetnek a közösségi funkciókhoz, kezelhetik saját receptjeiket, míg az adminisztrátorok további jogosultságokkal rendelkeznek, például a felhasználók kezeléséhez.
+
+\subsection{Receptkezelés}
+A felület könnyen lehetővé teszi a felhasználók számára, hogy létrehozzanak, szerkeszthessenek és törölhessenek recepteket. Minden recepthez megadható egy cím, leírás, hozzávalók listája és elkészítési útmutató. Egy képet is feltölthetnek a recepthez. 
+
+\subsection{Közösségi funkciók}
+
+A regisztrált felhasználók értékelhetik és kommentelhetik a recepteket. Az értékelése egytől ötig terjedő skálán történik, amelyek csillag formájában jellennek meg. A receptekhez kommenteket is lehet írni, amelyeket a receptek alatt lehet megtekinteni. 
+\subsection{Keresés}
+
+Az alkalmazás lehetőséget biztosít a receptek közötti keresésre. A keresőmezőbe kulcsszavakat lehet beírni, amelyek alapján a rendszer megjeleníti a releváns recepteket. Emellett a receptek szűkíthetőek allergének alapján, így a felhasználók könnyedén megtalálhatjak a számukra megfelelő recepteket.
+
+\subsection{Profilkezelés}
+
+A felhasználók saját profiljukat is kezelhetik, ahol megtekinthetik és szerkeszthetik profilképüket, adataikat, valamint megváltoztathatják jelszavukat. A profilban láthatóak az  általuk létrehozott receptek is, amelyeket könnyen elérhetnek és szerkeszthetnek.
+
+\subsection{Adminisztrátor funkciók}
+
+Az adminisztrátorok hozzáférnek az oldalon több funkcióhoz, mint a normál felhasználók. Az adminisztrátorok kezelhetik a felhasználókat, például törölhetnek vagy módosíthatnak fiókokat. Emellett az adminisztrátorok moderálhatják a recepteket és a kommenteket, biztosítva ezzel a közösségi tartalom minőségét.
+
