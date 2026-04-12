@@ -1286,6 +1286,10 @@ components:
         author:
           type: string
           description: Display name of the comment author
+        authorId:
+          type: string
+          format: uuid
+          description: Identifier of the comment author
     RegisterRequest:
       type: object
       required:

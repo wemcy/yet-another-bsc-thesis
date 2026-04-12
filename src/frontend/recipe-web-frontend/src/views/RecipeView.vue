@@ -63,7 +63,12 @@ watch(
                     <span>Szerkesztés</span>
                 </router-link>
             </div>
-            <RecipeHeader :title="recipe.title" :description="recipe.description" />
+            <RecipeHeader
+                :title="recipe.title"
+                :description="recipe.description"
+                :authorName="recipe.authorName"
+                :authorId="recipe.authorId"
+            />
 
             <IngredientList :ingredients="recipe.ingredients" />
             <InstructionsList :steps="recipe.steps" />

@@ -80,9 +80,11 @@ const mapApiCommentToComment = (apiComment: {
     content: string
     createdAt: Date
     author: string
+    authorId?: string
 }): Comment => ({
     id: apiComment.id,
-    authorId: apiComment.author,
+    authorId: apiComment.authorId ?? '',
+    authorName: apiComment.author,
     content: apiComment.content,
     createdAt: apiComment.createdAt,
 })

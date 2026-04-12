@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import ProfileView from '@/views/ProfileView.vue'
+import PublicProfileView from '@/views/PublicProfileView.vue'
 import RecipeView from '@/views/RecipeView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 import NewRecipeView from '@/views/NewRecipeView.vue'
@@ -23,6 +24,11 @@ const initRouter = () => {
                 name: 'Profile',
                 component: ProfileView,
                 meta: { requiresAuth: true },
+            },
+            {
+                path: '/profile/:id',
+                name: 'PublicProfile',
+                component: PublicProfileView,
             },
             { path: '/recipe/:id', name: 'Recipe', component: RecipeView },
             {

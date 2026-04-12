@@ -21,7 +21,8 @@
             <CommentPiece
                 v-for="comment in comments"
                 :key="comment.id"
-                :name="comment.authorId"
+                :name="comment.authorName"
+                :authorId="comment.authorId"
                 :content="comment.content"
                 :date="formatDate(comment.createdAt)"
             />
