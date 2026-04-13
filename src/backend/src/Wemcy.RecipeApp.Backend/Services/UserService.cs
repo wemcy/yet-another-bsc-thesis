@@ -158,6 +158,7 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<U
     public async Task DeleteUserByIdAsync(Guid id)
     {
         var user = await GetUserByIdAsync(id);
+        user.Recipes.Clear(); 
         await EnsureCurrentUserCanAsync(Operations.Delete, user);
         await _userManager.UpdateSecurityStampAsync(user);
         await _userManager.DeleteAsync(user);
