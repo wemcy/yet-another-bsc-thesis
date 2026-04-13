@@ -51,6 +51,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public string DisplayName { get; set; }
 
         /// <summary>
+        /// Roles assigned to the logged-in user
+        /// </summary>
+        /// <value>Roles assigned to the logged-in user</value>
+        [Required]
+        [DataMember(Name="roles", EmitDefaultValue=false)]
+        public List<UserRole> Roles { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -61,6 +69,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Email: ").Append(Email).Append("\n");
             sb.Append("  DisplayName: ").Append(DisplayName).Append("\n");
+            sb.Append("  Roles: ").Append(Roles).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -111,6 +120,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     DisplayName == other.DisplayName ||
                     DisplayName != null &&
                     DisplayName.Equals(other.DisplayName)
+                ) && 
+                (
+                    Roles == other.Roles ||
+                    Roles != null &&
+                    other.Roles != null &&
+                    Roles.SequenceEqual(other.Roles)
                 );
         }
 
@@ -130,6 +145,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     hashCode = hashCode * 59 + Email.GetHashCode();
                     if (DisplayName != null)
                     hashCode = hashCode * 59 + DisplayName.GetHashCode();
+                    if (Roles != null)
+                    hashCode = hashCode * 59 + Roles.GetHashCode();
                 return hashCode;
             }
         }

@@ -41,6 +41,6 @@ defineProps<{
     title: string
     description: string
     authorName?: string
-    authorId?: string
+    authorId: string
 }>()
 </script>

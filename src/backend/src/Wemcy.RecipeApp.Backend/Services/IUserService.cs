@@ -17,5 +17,6 @@ public interface IUserService
     Task<User> GetCurrentUserAsync();
     Task<Stream> GetProfileImageByIdAsync(Guid id, ImageSize size);
     Task<User> GetUserByIdAsync(Guid id);
+    Task<IList<string>> GetUserRolesAsync(User user);
     Task UpdateProfileByIdAsync(Guid id, UserProfileUpdateRequest request);
 }

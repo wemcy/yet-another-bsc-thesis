@@ -1153,6 +1153,7 @@ components:
       - createdAt
       - averageRating
       - creatorDisplayName
+      - creatorAuthorId
       properties:
         id:
           type: string
@@ -1194,6 +1195,10 @@ components:
           format: double
           description: The average rating of the recipe (1-5)
           nullable: false
+        creatorAuthorId:
+          type: string
+          format: uuid
+          description: Identifier of the recipe's author
     RecipeSummary:
       type: object
       required:
@@ -1337,6 +1342,7 @@ components:
         - id
         - email
         - displayName
+        - roles
       properties:
         id:
           type: string
@@ -1349,6 +1355,12 @@ components:
         displayName:
           type: string
           description: Display name of the logged-in user
+        roles:
+          type: array
+          description: Roles assigned to the logged-in user
+          items:
+            $ref: '#/components/schemas/UserRole'
+    
     Profile:
       type: object
       required:

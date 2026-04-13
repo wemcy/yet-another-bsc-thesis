@@ -5,7 +5,7 @@ import { MapApiAllergenToEnum, MapEnumToApiAllergen } from './allergen.mappers'
 export function MapApiRecipeToRecipe(apiRecipe: RecipeDTO): Recipe {
     return {
         id: apiRecipe.id,
-        authorId: apiRecipe.creatorId ?? '',
+        authorId: apiRecipe.creatorAuthorId ?? '',
         authorName: apiRecipe.creatorDisplayName ?? '',
         title: apiRecipe.title,
         description: apiRecipe.description ?? '',

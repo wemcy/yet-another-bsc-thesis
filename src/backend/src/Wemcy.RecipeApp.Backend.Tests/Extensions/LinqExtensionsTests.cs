@@ -56,7 +56,7 @@ public class LinqExtensionsTests
     {
         IList<int>? list = null;
 
-        var result = list.MapIfHasElementOrDefault(l => l.Sum());
+        var result = list.ApplyMapIfHasElementOrDefault(l => l.Sum());
 
         result.Should().Be(0);
     }
@@ -66,7 +66,7 @@ public class LinqExtensionsTests
     {
         IList<int> list = [];
 
-        var result = list.MapIfHasElementOrDefault(l => l.Sum());
+        var result = list.ApplyMapIfHasElementOrDefault(l => l.Sum());
 
         result.Should().Be(0);
     }
@@ -76,7 +76,7 @@ public class LinqExtensionsTests
     {
         IList<int> list = [1, 2, 3];
 
-        var result = list.MapIfHasElementOrDefault(l => l.Sum());
+        var result = list.ApplyMapIfHasElementOrDefault(l => l.Sum());
 
         result.Should().Be(6);
     }
@@ -86,7 +86,7 @@ public class LinqExtensionsTests
     {
         IList<int> list = [10];
 
-        var result = list.MapIfHasElementOrDefault(l => l.Sum(), defaultValue: -1);
+        var result = list.ApplyMapIfHasElementOrDefault(l => l.Sum(), defaultValue: -1);
 
         result.Should().Be(10);
     }

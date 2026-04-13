@@ -21,6 +21,11 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<U
     private readonly IImageService _imageService = imageService;
     private readonly AdminSettings _adminSettings = adminSettings.Value;
 
+    public async Task<IList<string>> GetUserRolesAsync(User user)
+    {
+        return await _userManager.GetRolesAsync(user);
+    }
+
 
     public async Task<User> GetCurrentUserAsync()
     {

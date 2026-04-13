@@ -7,10 +7,12 @@ namespace Wemcy.RecipeApp.Backend.Services;
 
 public class AuthService(
     SignInManager<User> signInManager,
-    IUserService userSerivice) : IAuthService
+    IUserService userSerivice,
+    IMapper mapper) : IAuthService
 {
     private readonly SignInManager<User> _signInManager = signInManager;
     private readonly IUserService _userSerivice = userSerivice;
+    private readonly IMapper _mapper = mapper;
     public async Task RegisterAsync(string email, string password, string? displayName)
     {
        await _userSerivice.CreateUserAsync(email, password, displayName);
@@ -22,8 +24,9 @@ public class AuthService(
         var result = await _signInManager.PasswordSignInAsync(user, password, isPersistent: true, lockoutOnFailure: false);
         if (!result.Succeeded)
             throw new InvalidCredentialsException();
-
-        return new LoginResponse() { Id = user.Id, Email = user.Email!, DisplayName = user.DisplayName };
+        var roles = await _userSerivice.GetUserRolesAsync(user);
+        var mappedRoles = _mapper.Map<List<UserRole>>(roles);
+        return new LoginResponse() { Id = user.Id, Email = user.Email!, DisplayName = user.DisplayName, Roles = mappedRoles };
     }
 
     public async Task LogoutAsync()
