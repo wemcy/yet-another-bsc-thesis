@@ -18,15 +18,21 @@ function mapLoginToUser(response: LoginResponse): User {
         id: response.id,
         name: response.displayName,
         email: response.email,
+        roles: response.roles,
         avatarUrl: undefined,
     }
 }
 
-function mapProfileToUser(response: Profile, avatarUrl?: string): User {
+function mapProfileToUser(
+    response: Profile,
+    avatarUrl?: string,
+    existingRoles?: User['roles'],
+): User {
     return {
         id: response.id,
         name: response.displayName,
         email: response.email,
+        roles: existingRoles ?? [],
         registered: response.registeredAt.toISOString().slice(0, 10),
         avatarUrl,
     }
@@ -105,7 +111,11 @@ export const useAuthStore = defineStore('auth', {
                         imageResult.status === 'fulfilled'
                             ? URL.createObjectURL(imageResult.value)
                             : this.currentUser?.avatarUrl
-                    this.currentUser = mapProfileToUser(profileResult.value, avatarUrl)
+                    this.currentUser = mapProfileToUser(
+                        profileResult.value,
+                        avatarUrl,
+                        this.currentUser?.roles,
+                    )
                 } else {
                     this.authError = await toErrorMessage(profileResult.reason)
                 }
@@ -158,6 +168,7 @@ export const useAuthStore = defineStore('auth', {
 
     getters: {
         isLoggedIn: (state) => !!state.currentUser,
+        isAdmin: (state) => state.currentUser?.roles?.includes('Admin') ?? false,
         userName: (state) => state.currentUser?.name || 'Vendég',
         getUserId: (state) => state.currentUser?.id || '1',
     },
