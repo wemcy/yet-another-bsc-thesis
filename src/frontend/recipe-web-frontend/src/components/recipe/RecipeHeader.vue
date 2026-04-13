@@ -8,7 +8,7 @@
             class="inline-flex items-center gap-2 mt-3 px-3 py-1.5 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition"
         >
             <img
-                :src="`/api/profile/${authorId}/image?size=Small`"
+                :src="`/api/profile/${authorId}/image?size=${ImageSize.Thumbnail}`"
                 :alt="authorName"
                 class="w-6 h-6 rounded-full object-cover"
                 @error="($event.target as HTMLImageElement).style.display = 'none'"
@@ -37,6 +37,8 @@
 </template>
 
 <script setup lang="ts">
+import { ImageSize } from 'recipe-api-client'
+
 defineProps<{
     title: string
     description: string

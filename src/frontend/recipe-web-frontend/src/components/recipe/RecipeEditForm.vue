@@ -114,12 +114,14 @@
         </div>
 
         <!-- Submit -->
+        <p v-if="submitError" class="text-red-600 text-sm">{{ submitError }}</p>
         <div class="text-right pt-4">
             <button
                 type="submit"
-                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
+                :disabled="submitting"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition disabled:opacity-50"
             >
-                Mentés
+                {{ submitting ? 'Mentés...' : 'Mentés' }}
             </button>
         </div>
     </form>
@@ -197,21 +199,36 @@ function validateForm() {
     return Object.keys(errors.value).length === 0
 }
 
-function submit() {
-    if (!validateForm()) return
+const submitting = ref(false)
+const submitError = ref<string | null>(null)
 
-    const updatedRecipe: Recipe = {
-        ...recipe, // ez már tartalmazza: id, authorId, rating, stb.
-        title: title.value,
-        description: description.value,
-        ingredients: ingredients.value,
-        steps: steps.value,
-        allergens: selectedAllergens.value,
-        image: imageUrl.value || recipe.image,
-        // rating marad, ha nem szerkeszted!
+async function submit() {
+    if (!validateForm() || submitting.value) return
+
+    submitting.value = true
+    submitError.value = null
+
+    try {
+        await recipeStore.updateRecipeById(
+            recipe.id,
+            {
+                title: title.value,
+                description: description.value,
+                ingredients: ingredients.value,
+                steps: steps.value,
+                allergens: selectedAllergens.value,
+                image: recipe.image,
+                authorId: recipe.authorId,
+                authorName: recipe.authorName,
+                rating: recipe.rating,
+            },
+            imageFile.value,
+        )
+        router.push({ name: 'Recipe', params: { id: recipe.id } })
+    } catch {
+        submitError.value = 'Nem sikerült menteni a receptet. Próbáld újra!'
+    } finally {
+        submitting.value = false
     }
-
-    recipeStore.updateRecipe(updatedRecipe)
-    router.push({ name: 'Recipe', params: { id: recipe.id } })
 }
 </script>

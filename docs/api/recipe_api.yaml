@@ -1199,6 +1199,7 @@ components:
           type: string
           format: uuid
           description: Identifier of the recipe's author
+          nullable: true
     RecipeSummary:
       type: object
       required:

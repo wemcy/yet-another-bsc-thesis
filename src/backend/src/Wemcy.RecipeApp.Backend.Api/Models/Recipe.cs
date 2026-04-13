@@ -107,7 +107,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         /// <value>Identifier of the recipe&#39;s author</value>
         [Required]
         [DataMember(Name="creatorAuthorId", EmitDefaultValue=true)]
-        public Guid CreatorAuthorId { get; set; }
+        public Guid? CreatorAuthorId { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -219,7 +219,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                 ) && 
                 (
                     CreatorAuthorId == other.CreatorAuthorId ||
-                    
+                    CreatorAuthorId != null &&
                     CreatorAuthorId.Equals(other.CreatorAuthorId)
                 );
         }
@@ -254,7 +254,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     hashCode = hashCode * 59 + Ingredients.GetHashCode();
                     
                     hashCode = hashCode * 59 + AverageRating.GetHashCode();
-                    
+                    if (CreatorAuthorId != null)
                     hashCode = hashCode * 59 + CreatorAuthorId.GetHashCode();
                 return hashCode;
             }

@@ -235,6 +235,18 @@ export const useRecipeStore = defineStore('recipe', {
         async updateImage(id: string, image: File) {
             await api.updateRecipeImage({ id, image })
         },
+        async updateRecipeById(id: string, recipe: Omit<Recipe, 'id'>, image?: File | null) {
+            const response = await api.updateRecipeById({
+                id,
+                createRecipeRequest: MapRecipeToApiRecipe(recipe),
+            })
+            const updated = MapApiRecipeToRecipe(response)
+            this.updateRecipe(updated)
+            if (image) {
+                await this.updateImage(id, image)
+            }
+            return updated
+        },
         async fetchOwnRecipes(authorId: string) {
             const response = await api.getRecipesByAuthorId({
                 id: authorId,
@@ -250,6 +262,13 @@ export const useRecipeStore = defineStore('recipe', {
                 id: recipeId,
                 addRecipeCommentRequest: { content },
             })
+        },
+        async deleteRecipeComment(recipeId: string, commentId: string) {
+            await api.deleteRecipeComment({ recipeId, commentId })
+        },
+        async deleteRecipe(id: string) {
+            await api.deleteRecipeById({ id })
+            this.recipes = this.recipes.filter((r) => r.id !== id)
         },
         async fetchRecipeCommentsPage(
             recipeId: string,

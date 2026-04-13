@@ -20,6 +20,7 @@ const profile = ref<User>(
         email: '',
         avatarUrl: undefined,
         registered: '',
+        roles: [],
     },
 )
 const imageFile = ref<File | null>(null)
