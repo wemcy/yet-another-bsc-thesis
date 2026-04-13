@@ -44,14 +44,24 @@ const canEditRecipe = computed(
     () => isOwnRecipe.value || (auth.currentUser?.roles?.includes('Admin') ?? false),
 )
 
-async function handleDeleteRecipe() {
-    if (!recipe.value) return
-    if (!confirm('Biztosan törölni szeretnéd ezt a receptet?')) return
+const deleteDialogOpen = ref(false)
+const isDeleting = ref(false)
+
+function handleDeleteRecipe() {
+    deleteDialogOpen.value = true
+}
+
+async function confirmDeleteRecipe() {
+    if (!recipe.value || isDeleting.value) return
+    isDeleting.value = true
     try {
         await recipeStore.deleteRecipe(recipe.value.id)
+        deleteDialogOpen.value = false
         router.push({ name: 'Home' })
     } catch {
         alert('Nem sikerült törölni a receptet. Próbáld újra!')
+    } finally {
+        isDeleting.value = false
     }
 }
 
@@ -98,9 +108,7 @@ watch(
                 <AllergenList :allergens="recipe.allergens" />
             </div>
         </main>
-        <div v-if="!recipe" class="text-center py-20 text-gray-500">
-            A recept nem található. 🫤
-        </div>
+        <div v-if="!recipe" class="text-center py-20 text-gray-500">A recept nem található. 🫤</div>
 
         <div
             v-if="recipe && canEditRecipe"
@@ -124,5 +132,35 @@ watch(
         </div>
 
         <CommentsSection v-if="recipe" />
+
+        <div
+            v-if="deleteDialogOpen"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+        >
+            <div class="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                <h2 class="text-lg font-semibold text-gray-900">Recept törlése</h2>
+                <p class="mt-2 text-sm text-gray-600">
+                    Biztosan törölni szeretnéd ezt a receptet? Ez a művelet nem visszavonható.
+                </p>
+                <div class="mt-5 flex justify-end gap-2">
+                    <button
+                        type="button"
+                        :disabled="isDeleting"
+                        class="rounded border px-4 py-2 hover:bg-gray-100 cursor-pointer disabled:opacity-50"
+                        @click="deleteDialogOpen = false"
+                    >
+                        Mégse
+                    </button>
+                    <button
+                        type="button"
+                        :disabled="isDeleting"
+                        class="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700 cursor-pointer disabled:opacity-50"
+                        @click="confirmDeleteRecipe"
+                    >
+                        {{ isDeleting ? 'Törlés...' : 'Igen, törlöm' }}
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
