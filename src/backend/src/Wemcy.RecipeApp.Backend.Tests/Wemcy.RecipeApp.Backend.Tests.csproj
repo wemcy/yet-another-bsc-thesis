@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="IntegrationTest\" />
+    <Folder Include="UnitTest\Controllers\" />
   </ItemGroup>
 
 </Project>

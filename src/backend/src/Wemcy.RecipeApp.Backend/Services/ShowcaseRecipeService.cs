@@ -1,6 +1,6 @@
 ﻿using Wemcy.RecipeApp.Backend.Model.Entities;
 using Wemcy.RecipeApp.Backend.Repository;
-using Wemcy.RecipeApp.Backend.Utils;
+using Wemcy.RecipeApp.Backend.Search;
 
 
 namespace Wemcy.RecipeApp.Backend.Services;

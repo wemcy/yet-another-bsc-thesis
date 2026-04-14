@@ -1,7 +1,6 @@
 ﻿using Wemcy.RecipeApp.Backend.Model.Entities;
-using Wemcy.RecipeApp.Backend.Search;
 
-namespace Wemcy.RecipeApp.Backend.Utils;
+namespace Wemcy.RecipeApp.Backend.Search;
 
 public class RecipeIdFilter(IList<Guid> ids) : IQueryFilter<Recipe>
 {

@@ -1,19 +1,22 @@
 ﻿using Microsoft.AspNet.Identity;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Principal;
 
 namespace Wemcy.RecipeApp.Backend.Extensions;
-
 
 public static class UserIdHelpers
 {
 
-    public static bool TryGetUserId(this System.Security.Principal.IIdentity? user, [NotNullWhen(true)] out Guid userId)
+    extension(IIdentity? user)
     {
-        var userID = user.GetUserId();
-        if (Guid.TryParse(userID, out userId))
+        public bool TryGetUserId([NotNullWhen(true)] out Guid userId)
         {
-            return true;
+            var userID = user.GetUserId();
+            if (Guid.TryParse(userID, out userId))
+            {
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 }
