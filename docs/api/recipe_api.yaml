@@ -538,7 +538,7 @@ paths:
           description: List of allergens to include (comma-separated, e.g. "GLUTEN,PEANUTS")
           required: false
           style: form
-          explode: false
+          explode: true
           schema:
             "$ref": "#/components/schemas/AllergenFilter"
         - name: excludeAllergens
@@ -546,9 +546,15 @@ paths:
           description: List of allergens to exclude (comma-separated, e.g. "GLUTEN,PEANUTS")
           required: false
           style: form
-          explode: false
+          explode: true
           schema:
             "$ref": "#/components/schemas/AllergenFilter"
+        - name: title
+          in: query
+          description: The title or part of the title to search for
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Recipes
