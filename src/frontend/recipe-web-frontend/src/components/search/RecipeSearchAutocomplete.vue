@@ -13,7 +13,12 @@
                 v-if="shouldShowDropdown"
                 class="absolute z-50 mt-2 max-h-96 w-full overflow-auto rounded-xl border border-gray-200 bg-white p-1 shadow-xl"
             >
-                <li v-if="isLoading" class="px-3 py-2 text-sm text-gray-500">Keresés...</li>
+                <li v-if="isLoading" class="flex items-center gap-3 px-3 py-3 text-sm text-gray-500">
+                    <span
+                        class="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500"
+                    />
+                    <span>Keresés...</span>
+                </li>
                 <li v-else-if="errorMessage" class="px-3 py-2 text-sm text-red-600">
                     {{ errorMessage }}
                 </li>
