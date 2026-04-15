@@ -15,8 +15,10 @@ const skeletonCards = computed(() => Array.from({ length: pageSize }, (_, i) => 
 const uiAllergenList = allergenList as readonly AllergenEnum[]
 const route = useRoute()
 const router = useRouter()
+const searchTitle = ref('')
 const includeAllergens = ref<AllergenEnum[]>([])
 const excludeAllergens = ref<AllergenEnum[]>([])
+const appliedSearchTitle = ref('')
 const appliedIncludeAllergens = ref<AllergenEnum[]>([])
 const appliedExcludeAllergens = ref<AllergenEnum[]>([])
 
@@ -38,6 +40,7 @@ const validApiAllergens = new Set<ApiAllergen>([
 ])
 
 const hasPendingFilterChanges = computed(() => {
+    const titleChanged = searchTitle.value.trim() !== appliedSearchTitle.value.trim()
     const includeChanged =
         includeAllergens.value.length !== appliedIncludeAllergens.value.length ||
         includeAllergens.value.some((item) => !appliedIncludeAllergens.value.includes(item))
@@ -45,11 +48,14 @@ const hasPendingFilterChanges = computed(() => {
         excludeAllergens.value.length !== appliedExcludeAllergens.value.length ||
         excludeAllergens.value.some((item) => !appliedExcludeAllergens.value.includes(item))
 
-    return includeChanged || excludeChanged
+    return titleChanged || includeChanged || excludeChanged
 })
 
 const hasAppliedFilters = computed(
-    () => appliedIncludeAllergens.value.length > 0 || appliedExcludeAllergens.value.length > 0,
+    () =>
+        appliedSearchTitle.value.trim().length > 0 ||
+        appliedIncludeAllergens.value.length > 0 ||
+        appliedExcludeAllergens.value.length > 0,
 )
 
 function parseAllergenQueryParam(param: unknown): AllergenEnum[] {
@@ -70,11 +76,14 @@ function getPageFromQuery() {
 }
 
 function syncFiltersFromQuery() {
+    const titleFromQuery = typeof route.query.title === 'string' ? route.query.title : ''
     const includeFromQuery = parseAllergenQueryParam(route.query.include)
     const excludeFromQuery = parseAllergenQueryParam(route.query.exclude).filter(
         (item) => !includeFromQuery.includes(item),
     )
 
+    searchTitle.value = titleFromQuery
+    appliedSearchTitle.value = titleFromQuery
     includeAllergens.value = [...includeFromQuery]
     excludeAllergens.value = [...excludeFromQuery]
     appliedIncludeAllergens.value = includeFromQuery
@@ -82,6 +91,7 @@ function syncFiltersFromQuery() {
 }
 
 async function loadPage(pageNumber: number) {
+    const title = appliedSearchTitle.value.trim()
     const includeApiAllergens = appliedIncludeAllergens.value.map((item) =>
         MapEnumToApiAllergen(item),
     )
@@ -92,6 +102,7 @@ async function loadPage(pageNumber: number) {
     await paginationStore.loadAllRecipesPage(
         pageNumber,
         pageSize,
+        title,
         includeApiAllergens,
         excludeApiAllergens,
     )
@@ -106,7 +117,8 @@ async function requestPage(pageNumber: number) {
     })
 }
 
-async function updateAllergenQuery() {
+async function updateFilterQuery() {
+    const title = appliedSearchTitle.value.trim()
     const includeApiValues = appliedIncludeAllergens.value.map((item) => MapEnumToApiAllergen(item))
     const excludeApiValues = appliedExcludeAllergens.value.map((item) => MapEnumToApiAllergen(item))
 
@@ -114,6 +126,7 @@ async function updateAllergenQuery() {
         query: {
             ...route.query,
             page: '1',
+            title: title.length > 0 ? title : undefined,
             include: includeApiValues.length > 0 ? includeApiValues.join(',') : undefined,
             exclude: excludeApiValues.length > 0 ? excludeApiValues.join(',') : undefined,
         },
@@ -139,18 +152,20 @@ async function toggleExclude(allergen: AllergenEnum) {
 }
 
 async function clearAllergenFilters() {
+    searchTitle.value = ''
     includeAllergens.value = []
     excludeAllergens.value = []
 }
 
 async function applyFilters() {
+    appliedSearchTitle.value = searchTitle.value.trim()
     appliedIncludeAllergens.value = [...includeAllergens.value]
     appliedExcludeAllergens.value = [...excludeAllergens.value]
-    await updateAllergenQuery()
+    await updateFilterQuery()
 }
 
 watch(
-    () => [route.query.page, route.query.include, route.query.exclude],
+    () => [route.query.page, route.query.title, route.query.include, route.query.exclude],
     async () => {
         syncFiltersFromQuery()
         await loadPage(getPageFromQuery())
@@ -169,11 +184,31 @@ watch(
                 <button
                     type="button"
                     class="text-sm text-blue-600 hover:underline disabled:text-gray-400 disabled:no-underline"
-                    :disabled="includeAllergens.length === 0 && excludeAllergens.length === 0"
+                    :disabled="
+                        searchTitle.trim().length === 0 &&
+                        includeAllergens.length === 0 &&
+                        excludeAllergens.length === 0
+                    "
                     @click="clearAllergenFilters"
                 >
                     Szűrők törlése
                 </button>
+            </div>
+
+            <div class="mb-4">
+                <label
+                    for="recipe-title-filter"
+                    class="mb-2 block text-sm font-medium text-gray-700"
+                >
+                    Keresés cím alapján
+                </label>
+                <input
+                    id="recipe-title-filter"
+                    v-model="searchTitle"
+                    type="text"
+                    placeholder="Például: gulyásleves"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                />
             </div>
 
             <div class="grid gap-6 md:grid-cols-2">
@@ -240,7 +275,7 @@ watch(
         >
             {{
                 hasAppliedFilters
-                    ? 'Nincs találat a kiválasztott allergén szűrőkkel.'
+                    ? 'Nincs találat a megadott keresésre és szűrőkre.'
                     : 'Nincs megjeleníthető recept.'
             }}
         </div>

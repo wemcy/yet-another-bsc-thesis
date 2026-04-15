@@ -102,6 +102,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public double AverageRating { get; set; }
 
         /// <summary>
+        /// Identifier of the recipe&#39;s author
+        /// </summary>
+        /// <value>Identifier of the recipe&#39;s author</value>
+        [Required]
+        [DataMember(Name="creatorAuthorId", EmitDefaultValue=true)]
+        public Guid? CreatorAuthorId { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -119,6 +127,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             sb.Append("  Steps: ").Append(Steps).Append("\n");
             sb.Append("  Ingredients: ").Append(Ingredients).Append("\n");
             sb.Append("  AverageRating: ").Append(AverageRating).Append("\n");
+            sb.Append("  CreatorAuthorId: ").Append(CreatorAuthorId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -207,6 +216,11 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     AverageRating == other.AverageRating ||
                     
                     AverageRating.Equals(other.AverageRating)
+                ) && 
+                (
+                    CreatorAuthorId == other.CreatorAuthorId ||
+                    CreatorAuthorId != null &&
+                    CreatorAuthorId.Equals(other.CreatorAuthorId)
                 );
         }
 
@@ -240,6 +254,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     hashCode = hashCode * 59 + Ingredients.GetHashCode();
                     
                     hashCode = hashCode * 59 + AverageRating.GetHashCode();
+                    if (CreatorAuthorId != null)
+                    hashCode = hashCode * 59 + CreatorAuthorId.GetHashCode();
                 return hashCode;
             }
         }

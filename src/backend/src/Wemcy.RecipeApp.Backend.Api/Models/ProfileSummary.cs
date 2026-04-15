@@ -24,7 +24,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
     /// 
     /// </summary>
     [DataContract]
-    public class LoginResponse : IEquatable<LoginResponse>
+    public class ProfileSummary : IEquatable<ProfileSummary>
     {
         /// <summary>
         /// Identifier of the logged-in user
@@ -35,14 +35,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Email address of the logged-in user
-        /// </summary>
-        /// <value>Email address of the logged-in user</value>
-        [Required]
-        [DataMember(Name="email", EmitDefaultValue=false)]
-        public string Email { get; set; }
-
-        /// <summary>
         /// Display name of the logged-in user
         /// </summary>
         /// <value>Display name of the logged-in user</value>
@@ -51,25 +43,15 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public string DisplayName { get; set; }
 
         /// <summary>
-        /// Roles assigned to the logged-in user
-        /// </summary>
-        /// <value>Roles assigned to the logged-in user</value>
-        [Required]
-        [DataMember(Name="roles", EmitDefaultValue=false)]
-        public List<UserRole> Roles { get; set; }
-
-        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class LoginResponse {\n");
+            sb.Append("class ProfileSummary {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  Email: ").Append(Email).Append("\n");
             sb.Append("  DisplayName: ").Append(DisplayName).Append("\n");
-            sb.Append("  Roles: ").Append(Roles).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -92,15 +74,15 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((LoginResponse)obj);
+            return obj.GetType() == GetType() && Equals((ProfileSummary)obj);
         }
 
         /// <summary>
-        /// Returns true if LoginResponse instances are equal
+        /// Returns true if ProfileSummary instances are equal
         /// </summary>
-        /// <param name="other">Instance of LoginResponse to be compared</param>
+        /// <param name="other">Instance of ProfileSummary to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(LoginResponse other)
+        public bool Equals(ProfileSummary other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -112,20 +94,9 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     Id.Equals(other.Id)
                 ) && 
                 (
-                    Email == other.Email ||
-                    Email != null &&
-                    Email.Equals(other.Email)
-                ) && 
-                (
                     DisplayName == other.DisplayName ||
                     DisplayName != null &&
                     DisplayName.Equals(other.DisplayName)
-                ) && 
-                (
-                    Roles == other.Roles ||
-                    Roles != null &&
-                    other.Roles != null &&
-                    Roles.SequenceEqual(other.Roles)
                 );
         }
 
@@ -141,12 +112,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                 // Suitable nullity checks etc, of course :)
                     
                     hashCode = hashCode * 59 + Id.GetHashCode();
-                    if (Email != null)
-                    hashCode = hashCode * 59 + Email.GetHashCode();
                     if (DisplayName != null)
                     hashCode = hashCode * 59 + DisplayName.GetHashCode();
-                    if (Roles != null)
-                    hashCode = hashCode * 59 + Roles.GetHashCode();
                 return hashCode;
             }
         }
@@ -154,12 +121,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(LoginResponse left, LoginResponse right)
+        public static bool operator ==(ProfileSummary left, ProfileSummary right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(LoginResponse left, LoginResponse right)
+        public static bool operator !=(ProfileSummary left, ProfileSummary right)
         {
             return !Equals(left, right);
         }

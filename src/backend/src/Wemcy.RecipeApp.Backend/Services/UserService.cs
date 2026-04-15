@@ -21,6 +21,11 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<U
     private readonly IImageService _imageService = imageService;
     private readonly AdminSettings _adminSettings = adminSettings.Value;
 
+    public async Task<IList<string>> GetUserRolesAsync(User user)
+    {
+        return await _userManager.GetRolesAsync(user);
+    }
+
 
     public async Task<User> GetCurrentUserAsync()
     {
@@ -139,21 +144,26 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<U
         }
         if (request.HasEmailUpdate)
         {
-            var token = await _userManager.GenerateChangeEmailTokenAsync(user, request.Email);
-            await _userManager.ChangeEmailAsync(user, request.Email, token);
-            await _userManager.SetUserNameAsync(user, request.Email);
+            await ChangeEmail(request.Email, user);
         }
         if (request.HasPasswordUpdate)
         {
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            await _userManager.ResetPasswordAsync(user, token, request.Password);
+            await ChangePassword(request.Password, user);
         }
         await _userManager.UpdateAsync(user);
+    }
+
+    private async Task ChangeEmail(string email, User user)
+    {
+        var token = await _userManager.GenerateChangeEmailTokenAsync(user, email);
+        await _userManager.ChangeEmailAsync(user, email, token);
+        await _userManager.SetUserNameAsync(user, email);
     }
 
     public async Task DeleteUserByIdAsync(Guid id)
     {
         var user = await GetUserByIdAsync(id);
+        user.Recipes.Clear(); 
         await EnsureCurrentUserCanAsync(Operations.Delete, user);
         await _userManager.UpdateSecurityStampAsync(user);
         await _userManager.DeleteAsync(user);
@@ -169,6 +179,15 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<U
             await _userManager.AddToRoleAsync(user, Security.Roles.Admin);
     }
 
+    private async Task ChangePassword(string password, User user)
+    {
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var updateResult = await _userManager.ResetPasswordAsync(user, token, password);
+        if (!updateResult.Succeeded)
+        {
+            throw new RegistrationExeption([.. updateResult.Errors]);
+        }
+    }
     private ClaimsPrincipal GetCurrentUserPrincipal()
     {
         return _httpContextAccessor?.HttpContext?.User ?? throw new UnauthorizedAccessException();

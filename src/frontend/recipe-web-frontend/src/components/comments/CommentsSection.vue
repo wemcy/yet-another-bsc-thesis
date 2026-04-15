@@ -21,9 +21,15 @@
             <CommentPiece
                 v-for="comment in comments"
                 :key="comment.id"
-                :name="comment.authorId"
+                :name="comment.authorName"
+                :authorId="comment.authorId"
                 :content="comment.content"
                 :date="formatDate(comment.createdAt)"
+                :canDelete="auth.isAdmin"
+                :isRecipeAuthor="
+                    !!recipe && !!comment.authorId && comment.authorId === recipe.authorId
+                "
+                @delete="handleDeleteComment(comment.id)"
             />
         </div>
 
@@ -44,18 +50,21 @@ import CommentPieceSkeleton from './CommentPieceSkeleton.vue'
 import CommentForm from './CommentForm.vue'
 import RecipePagination from '@/components/recipe/RecipePagination.vue'
 import { useRecipeStore } from '@/stores/recipeStore'
+import { useAuthStore } from '@/stores/authStore'
 import { toErrorMessage } from '@/utils/identityErrors'
 import { useRoute } from 'vue-router'
 import { computed, ref } from 'vue'
 
 const route = useRoute()
 const recipeStore = useRecipeStore()
+const auth = useAuthStore()
 const recipeId = computed(() => {
     const id = route.params.id
     return Array.isArray(id) ? id[0] : id
 })
 
 const comments = computed(() => recipeStore.getCommentsByRecipeId(recipeId.value ?? ''))
+const recipe = computed(() => recipeStore.getById(recipeId.value ?? ''))
 const pagination = computed(() => recipeStore.getCommentsPaginationByRecipeId(recipeId.value ?? ''))
 const isCommentsLoading = computed(() =>
     recipeStore.isCommentsLoadingByRecipeId(recipeId.value ?? ''),
@@ -80,6 +89,16 @@ async function handleSubmitComment(payload: { content: string }) {
         commentSubmitError.value = await toErrorMessage(error)
     } finally {
         isCommentSubmitting.value = false
+    }
+}
+
+async function handleDeleteComment(commentId: string) {
+    if (!recipeId.value) return
+    try {
+        await recipeStore.deleteRecipeComment(recipeId.value, commentId)
+        await loadPage(pagination.value.pageNumber)
+    } catch (error) {
+        commentSubmitError.value = await toErrorMessage(error)
     }
 }
 

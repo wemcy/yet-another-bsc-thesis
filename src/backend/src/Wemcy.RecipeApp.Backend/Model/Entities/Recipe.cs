@@ -26,6 +26,8 @@ public class Recipe : Entity
     public virtual required IList<Comment> Comments { get; set; } = [];
 
     public string CreatorDisplayName => User?.DisplayName ?? "Unknown";
+    public Guid? CreatorAuthorId => User?.Id;
+
 
     public NpgsqlTsVector TitleSearchVector { get; set; } = null!;
 

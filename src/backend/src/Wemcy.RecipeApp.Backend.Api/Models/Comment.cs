@@ -59,6 +59,13 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public string Author { get; set; }
 
         /// <summary>
+        /// Identifier of the comment author
+        /// </summary>
+        /// <value>Identifier of the comment author</value>
+        [DataMember(Name="authorId", EmitDefaultValue=true)]
+        public Guid? AuthorId { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -70,6 +77,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             sb.Append("  Content: ").Append(Content).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  Author: ").Append(Author).Append("\n");
+            sb.Append("  AuthorId: ").Append(AuthorId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -125,6 +133,11 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     Author == other.Author ||
                     Author != null &&
                     Author.Equals(other.Author)
+                ) && 
+                (
+                    AuthorId == other.AuthorId ||
+                    
+                    AuthorId.Equals(other.AuthorId)
                 );
         }
 
@@ -146,6 +159,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     hashCode = hashCode * 59 + CreatedAt.GetHashCode();
                     if (Author != null)
                     hashCode = hashCode * 59 + Author.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + AuthorId.GetHashCode();
                 return hashCode;
             }
         }

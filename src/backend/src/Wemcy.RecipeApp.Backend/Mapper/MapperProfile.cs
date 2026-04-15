@@ -25,8 +25,12 @@ public class MapperProfile : Profile
                 opt => opt.MapFrom(src => Convert.ToDouble(src.Quantity)));
 
         CreateMap<Comment, Api.Models.Comment>()
-            .ForMember(dest => dest.Author,
-                opt => opt.MapFrom(src => src.User.DisplayName));
+            .ForMember(
+                dest => dest.Author,
+                opt => opt.MapFrom(src => src.User.DisplayName))
+            .ForMember(
+                dest => dest.AuthorId,
+                opt => opt.MapFrom(src => src.User.Id));
 
         CreateMap<User, Api.Models.Profile>();
 
@@ -34,6 +38,9 @@ public class MapperProfile : Profile
 
         CreateMap<List<Allergen>?, AllergenType?>().ConvertUsing(src => MapAllergensListToAllergen(src));
 
+        CreateMap< User, Api.Models.ProfileSummary>();
+
+        CreateMap<string, Api.Models.UserRole?>().ConvertUsing(src => MapStringToUserRole(src));
 
     }
     private static AllergenType? MapAllergensListToAllergen(IList<Allergen>? src)
@@ -91,6 +98,15 @@ public class MapperProfile : Profile
             AllergenType.Lupin => Allergen.LUPINEnum,
             AllergenType.Molluscs => Allergen.MOLLUSCSEnum,
             _ => throw new ArgumentOutOfRangeException(nameof(allergen), $"Unexpected allergen value: {allergen}")
+        };
+    }
+
+    private static Api.Models.UserRole? MapStringToUserRole(string role)
+    {
+        return role switch
+        {
+            "Admin" => Api.Models.UserRole.AdminEnum,
+            _ => null
         };
     }
 

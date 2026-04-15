@@ -88,18 +88,23 @@ public class RecipeController(IRecipeService recipeService, IMapper mapper, ISho
 
     public override async Task<IActionResult> SearchRecipes([FromQuery(Name = "title"), Required] string title, [FromQuery(Name = "includeAllergens")] List<Api.Models.Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Api.Models.Allergen>? excludeAllergens)
     {
-        var includeAllergenTypes = includeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
-        var excludeAllergenTypes = excludeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
+        var includeAllergenTypes = includeAllergens.ApplyMapIfHasElementOrDefault(mapper.Map<AllergenType?>);
+        var excludeAllergenTypes = excludeAllergens.ApplyMapIfHasElementOrDefault(mapper.Map<AllergenType?>);
         var recipes = recipeService.SearchRecipesByTitleAsAsync<Api.Models.RecipeSummary>(new RecipeSearch(title), new RecipeFilter(includeAllergenTypes, excludeAllergenTypes));
         return Ok(recipes);
     }
 
-    public override async Task<IActionResult> ListRecipes([FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize"), Range(25, 100)] int? pageSize, [FromQuery(Name = "includeAllergens")] List<Api.Models.Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Api.Models.Allergen>? excludeAllergens)
+    public override async Task<IActionResult> ListRecipes([FromQuery(Name = "page")] int? page, [FromQuery(Name = "pageSize"), Range(25, 100)] int? pageSize, [FromQuery(Name = "includeAllergens")] List<Api.Models.Allergen>? includeAllergens, [FromQuery(Name = "excludeAllergens")] List<Api.Models.Allergen>? excludeAllergens, [FromQuery(Name = "title")] string? title)
     {
-        var includeAllergenTypes = includeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
-        var excludeAllergenTypes = excludeAllergens.MapIfHasElementOrDefault(mapper.Map<AllergenType?>);
-
-        var dtos = await recipeService.ListResipesAsAsync<Api.Models.Recipe>(new PaginationOptions(page ?? 0, pageSize ?? _paginationSettings.DefaultPageSize), new RecipeFilter(includeAllergenTypes, excludeAllergenTypes));
+        var includeAllergenTypes = includeAllergens.ApplyMapIfHasElementOrDefault(mapper.Map<AllergenType?>);
+        var excludeAllergenTypes = excludeAllergens.ApplyMapIfHasElementOrDefault(mapper.Map<AllergenType?>);
+        var aggregatedFilter = new AggregateQueryFilter<Recipe>();
+        aggregatedFilter.AddFilter(new RecipeFilter(includeAllergenTypes, excludeAllergenTypes));
+        if (title is not null)
+        {
+            aggregatedFilter.AddFilter(new RecipeSearch(title));
+        }
+        var dtos = await recipeService.ListResipesAsAsync<Api.Models.Recipe>(new PaginationOptions(page ?? 0, pageSize ?? _paginationSettings.DefaultPageSize), aggregatedFilter);
         return Ok(dtos);
     }
 

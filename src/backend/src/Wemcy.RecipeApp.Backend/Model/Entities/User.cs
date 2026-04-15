@@ -9,4 +9,6 @@ public class User : IdentityUser<Guid>
     public DateTimeOffset RegisteredAt { get; set; }
 
     public virtual required Image? Image { get; set; } = null;
+
+    public virtual IList<Recipe> Recipes { get; set; } = [];
 }

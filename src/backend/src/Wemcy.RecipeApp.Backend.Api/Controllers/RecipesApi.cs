@@ -167,12 +167,13 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <param name="pageSize">The number of items per page (default is 25)</param>
         /// <param name="includeAllergens">List of allergens to include (comma-separated, e.g. \&quot;GLUTEN,PEANUTS\&quot;)</param>
         /// <param name="excludeAllergens">List of allergens to exclude (comma-separated, e.g. \&quot;GLUTEN,PEANUTS\&quot;)</param>
+        /// <param name="title">The title or part of the title to search for</param>
         /// <response code="200">Recipes</response>
         [HttpGet]
         [Route("/recipes/")]
         [ValidateModelState]
         [ProducesResponseType(statusCode: 200, type: typeof(List<Recipe>))]
-        public abstract Task<IActionResult> ListRecipes([FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize, [FromQuery (Name = "includeAllergens")]List<Allergen>? includeAllergens, [FromQuery (Name = "excludeAllergens")]List<Allergen>? excludeAllergens);
+        public abstract Task<IActionResult> ListRecipes([FromQuery (Name = "page")]int? page, [FromQuery (Name = "pageSize")][Range(25, 100)]int? pageSize, [FromQuery (Name = "includeAllergens")]List<Allergen>? includeAllergens, [FromQuery (Name = "excludeAllergens")]List<Allergen>? excludeAllergens, [FromQuery (Name = "title")]string? title);
 
         /// <summary>
         /// List featured recipes

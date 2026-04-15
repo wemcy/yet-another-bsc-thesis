@@ -4,6 +4,7 @@ import type { Ingredient } from './ingredient'
 export type Recipe = {
     id: string
     authorId: string
+    authorName: string
     title: string
     description: string
     ingredients: Ingredient[]
@@ -57,6 +58,7 @@ export interface PaginatedRecipes {
 export interface Comment {
     id: string
     authorId: string
+    authorName: string
     content: string
     createdAt: Date
 }

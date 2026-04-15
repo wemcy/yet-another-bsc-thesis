@@ -209,6 +209,7 @@ async function submit() {
     const newRecipe: Recipe = {
         id: Date.now().toString(),
         authorId: authStore.getUserId,
+        authorName: authStore.userName,
         title: title.value,
         description: description.value,
         ingredients: ingredients.value,

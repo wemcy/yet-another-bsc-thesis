@@ -246,7 +246,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ErrorResponse"
-
   "/profile/{id}":
     get:
       tags:
@@ -267,7 +266,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Profile"
+                "$ref": "#/components/schemas/ProfileSummary"
         '401':
           description: No active session
           content:
@@ -364,6 +363,43 @@ paths:
                 "$ref": "#/components/schemas/ErrorResponse"
       security:
         - cookieAuth: []
+  "/profile/{id}/adminView":
+    get:
+      tags:
+      - Profile
+      summary: Get user profile by ID
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: Unique identifier of the user to query (UUID)
+          schema:
+            type: string
+            format: uuid
+      operationId: getAdminViewProfileById
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Profile"
+        '401':
+          description: No active session
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+
+      security:
+        - cookieAuth: []  
   "/profile/{id}/roles":
     post:
       tags:
@@ -502,7 +538,7 @@ paths:
           description: List of allergens to include (comma-separated, e.g. "GLUTEN,PEANUTS")
           required: false
           style: form
-          explode: false
+          explode: true
           schema:
             "$ref": "#/components/schemas/AllergenFilter"
         - name: excludeAllergens
@@ -510,9 +546,15 @@ paths:
           description: List of allergens to exclude (comma-separated, e.g. "GLUTEN,PEANUTS")
           required: false
           style: form
-          explode: false
+          explode: true
           schema:
             "$ref": "#/components/schemas/AllergenFilter"
+        - name: title
+          in: query
+          description: The title or part of the title to search for
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Recipes
@@ -1117,6 +1159,7 @@ components:
       - createdAt
       - averageRating
       - creatorDisplayName
+      - creatorAuthorId
       properties:
         id:
           type: string
@@ -1158,6 +1201,11 @@ components:
           format: double
           description: The average rating of the recipe (1-5)
           nullable: false
+        creatorAuthorId:
+          type: string
+          format: uuid
+          description: Identifier of the recipe's author
+          nullable: true
     RecipeSummary:
       type: object
       required:
@@ -1250,6 +1298,10 @@ components:
         author:
           type: string
           description: Display name of the comment author
+        authorId:
+          type: string
+          format: uuid
+          description: Identifier of the comment author
     RegisterRequest:
       type: object
       required:
@@ -1297,6 +1349,7 @@ components:
         - id
         - email
         - displayName
+        - roles
       properties:
         id:
           type: string
@@ -1309,6 +1362,12 @@ components:
         displayName:
           type: string
           description: Display name of the logged-in user
+        roles:
+          type: array
+          description: Roles assigned to the logged-in user
+          items:
+            $ref: '#/components/schemas/UserRole'
+    
     Profile:
       type: object
       required:
@@ -1332,6 +1391,19 @@ components:
           type: string
           format: date-time
           description: Registration timestamp of the logged-in user
+    ProfileSummary:
+      type: object
+      required:
+        - id
+        - displayName
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Identifier of the logged-in user
+        displayName:
+          type: string
+          description: Display name of the logged-in user
     UpdateProfileRequest:
       type: object
       properties:

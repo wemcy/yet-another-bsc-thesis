@@ -70,6 +70,7 @@ export const useRecipePaginationStore = defineStore('recipePagination', {
         async loadAllRecipesPage(
             pageNumber: number,
             pageSize: number,
+            title = '',
             includeAllergens: Allergen[] = [],
             excludeAllergens: Allergen[] = [],
         ): Promise<PaginatedRecipes> {
@@ -78,6 +79,7 @@ export const useRecipePaginationStore = defineStore('recipePagination', {
                 const response = await api.listRecipesRaw({
                     page: pageNumber,
                     pageSize,
+                    title: title.trim().length > 0 ? title.trim() : undefined,
                     includeAllergens:
                         includeAllergens.length > 0 ? new Set(includeAllergens) : null,
                     excludeAllergens:
