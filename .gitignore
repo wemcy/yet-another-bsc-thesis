@@ -1,2 +1,4 @@
 tools
 gitversion.env
+certs/*
+!certs/.gitkeep

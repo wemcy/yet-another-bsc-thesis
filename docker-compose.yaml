@@ -7,10 +7,15 @@ services:
     environment:  
       PUBLIC_HOST: ${APP_HOST}
       PUBLIC_PORT: ${APP_PORT}
+      PROXY_TLS_ENABLED: ${PROXY_TLS_ENABLED:-false}
+      PROXY_TLS_CERTIFICATE_FILE: ${PROXY_TLS_CERTIFICATE_FILE:-tls.crt}
+      PROXY_TLS_CERTIFICATE_KEY_FILE: ${PROXY_TLS_CERTIFICATE_KEY_FILE:-tls.key}
       FRONTEND_HOST: frontend
       FRONTEND_PORT: 80
       BACKEND_HOST: backend
       BACKEND_PORT: 8080
+    volumes:
+      - ./certs:/etc/nginx/certs:ro
     depends_on:
       - frontend
       - backend

@@ -121,6 +121,13 @@ Open:
 - App: http://localhost:9393
 - Adminer: http://localhost:8082
 
+Optional HTTPS at the proxy:
+
+1. Put your certificate and key files into the repository root `certs/` directory.
+2. Set `PROXY_TLS_ENABLED=true` in `.env`.
+3. If needed, change `PROXY_TLS_CERTIFICATE_FILE` and `PROXY_TLS_CERTIFICATE_KEY_FILE` to match your filenames.
+4. Re-run the stack and open `https://localhost:9393`.
+
 Stop stack:
 
 ```powershell
@@ -278,6 +285,12 @@ Clean thesis build artifacts:
 
 - If using Docker stack, call through proxy on `http://localhost:9393/api`.
 - Check proxy container is up and healthy.
+
+## HTTPS proxy fails to start
+
+- Ensure `certs/` exists in the repository root.
+- Ensure the certificate and key filenames in `.env` match files inside `certs/`.
+- If `PROXY_TLS_ENABLED=true`, the proxy will fail fast when either file is missing.
 
 ## LaTeX build fails
 

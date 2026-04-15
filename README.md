@@ -26,6 +26,12 @@ Routing through proxy:
 - `http://localhost:9393/` -> frontend
 - `http://localhost:9393/api/` -> backend
 
+Optional HTTPS:
+
+- TLS terminates at the proxy only.
+- Frontend and backend traffic inside Docker stays on HTTP.
+- Set `PROXY_TLS_ENABLED=true` in `.env` and place cert files in `./certs/`.
+
 ## Tech stack
 
 - Frontend: Vue 3, Vite, TypeScript, Pinia, Tailwind CSS, Vitest
@@ -64,6 +70,21 @@ Useful URLs:
 ```powershell
 ./prod.ps1
 ```
+
+### Enable HTTPS at the proxy
+
+1. Put your certificate and key into `./certs/`.
+2. Set these values in `.env`:
+
+```dotenv
+PROXY_TLS_ENABLED=true
+PROXY_TLS_CERTIFICATE_FILE=tls.crt
+PROXY_TLS_CERTIFICATE_KEY_FILE=tls.key
+```
+
+3. Start the stack as usual with `./start.ps1`, `./dev.ps1`, or `./prod.ps1`.
+
+Once enabled, use `https://localhost:9393` or `https://<APP_HOST>:<APP_PORT>`.
 
 ### Refresh generated assets and print build plan
 
