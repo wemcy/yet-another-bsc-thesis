@@ -29,7 +29,7 @@
             <label class="block font-semibold mb-2">Hozzávalók</label>
             <div v-for="(ingredient, index) in ingredients" :key="index" class="flex gap-2 mb-2">
                 <input
-                    v-model="ingredient.quantity"
+                    v-model.number="ingredient.quantity"
                     type="number"
                     placeholder="Mennyiség"
                     class="w-1/4 border rounded px-2 py-1 bg-white shadow-sm"
@@ -110,6 +110,7 @@
         </div>
 
         <!-- Actions -->
+        <p v-if="submitError" class="text-red-600 text-sm">{{ submitError }}</p>
         <div class="pt-4 flex items-center justify-between gap-3">
             <button
                 type="button"
@@ -120,9 +121,10 @@
             </button>
             <button
                 type="submit"
-                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
+                :disabled="submitting"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition disabled:opacity-50"
             >
-                Mentés
+                {{ submitting ? 'Mentés...' : 'Mentés' }}
             </button>
         </div>
     </form>
@@ -136,6 +138,7 @@ import { AllergenEnum, allergenList } from '@/types/recipe/allergens'
 import type { Recipe, RecipeFormErrors } from '@/types/recipe/recipe'
 import type { Ingredient } from '@/types/recipe/ingredient'
 import { useAuthStore } from '@/stores/authStore'
+import { normalizeIngredients, normalizeSteps, validateRecipeFields } from './recipeFormUtils'
 
 const recipeStore = useRecipeStore()
 const authStore = useAuthStore() // Assuming you have an auth store to get the authorId
@@ -158,6 +161,8 @@ const ingredients = ref<Ingredient[]>([{ quantity: 0, unitOfMeasurement: '', nam
 const steps = ref<string[]>([''])
 const selectedAllergens = ref<AllergenEnum[]>([])
 const errors = ref<RecipeFormErrors>({})
+const submitting = ref(false)
+const submitError = ref<string | null>(null)
 
 const allergenOptions = allergenList
 
@@ -191,40 +196,52 @@ function validateForm() {
     errors.value = {}
     if (!authStore.currentUser) {
         errors.value.title = 'Csak bejelentkezve lehet receptet feltölteni.'
-        return
+        return false
     }
-    if (!title.value.trim()) errors.value.title = 'A cím megadása kötelező.'
-    if (!description.value.trim()) errors.value.description = 'A leírás nem lehet üres.'
-    if (!ingredients.value.some((i) => i.name.trim()))
-        errors.value.ingredients = 'Adj meg legalább egy hozzávalót.'
-    if (!steps.value.some((s) => s.trim()))
-        errors.value.steps = 'Legalább egy lépést meg kell adni.'
+    const validation = validateRecipeFields(
+        title.value,
+        description.value,
+        ingredients.value,
+        steps.value,
+    )
+
+    errors.value = validation.errors
 
     return Object.keys(errors.value).length === 0
 }
 
 async function submit() {
-    if (!validateForm()) return
+    if (!validateForm() || submitting.value) return
 
-    const newRecipe: Recipe = {
-        id: Date.now().toString(),
+    const normalizedIngredients = normalizeIngredients(ingredients.value)
+    const normalizedSteps = normalizeSteps(steps.value)
+    const newRecipe: Omit<Recipe, 'id'> = {
         authorId: authStore.getUserId,
         authorName: authStore.userName,
-        title: title.value,
-        description: description.value,
-        ingredients: ingredients.value,
-        steps: steps.value,
+        title: title.value.trim(),
+        description: description.value.trim(),
+        ingredients: normalizedIngredients,
+        steps: normalizedSteps,
         allergens: selectedAllergens.value,
         image: imageUrl.value || '',
         rating: 0,
     }
 
-    const recipeId = await recipeStore.addRecipe(newRecipe)
-    if (imageFile.value) {
-        await recipeStore.updateImage(recipeId, imageFile.value)
+    submitting.value = true
+    submitError.value = null
+
+    try {
+        const recipeId = await recipeStore.addRecipe(newRecipe)
+        if (imageFile.value) {
+            await recipeStore.updateImage(recipeId, imageFile.value)
+        }
+        router.push({ name: 'Recipe', params: { id: recipeId } })
+        resetForm()
+    } catch {
+        submitError.value = 'Nem sikerült menteni a receptet. Próbáld újra!'
+    } finally {
+        submitting.value = false
     }
-    router.push({ name: 'Recipe', params: { id: recipeId } })
-    resetForm()
 }
 
 onMounted(() => {

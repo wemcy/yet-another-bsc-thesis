@@ -19,9 +19,9 @@ watch(
 </script>
 
 <template>
-    <div class="max-w-2xl mx-auto py-8">
-        <h2 class="text-2xl font-bold mb-6">Recept szerkesztése</h2>
+    <main class="max-w-4xl mx-auto px-4 py-10 text-gray-800">
+        <h1 class="text-3xl font-bold mb-6 text-center">Recept szerkesztése</h1>
         <RecipeEditForm v-if="recipe" :recipe="recipe!" />
         <div v-else>Recept nem található.</div>
-    </div>
+    </main>
 </template>

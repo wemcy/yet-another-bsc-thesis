@@ -33,7 +33,7 @@
             <label class="block font-semibold mb-2">Hozzávalók</label>
             <div v-for="(ingredient, index) in ingredients" :key="index" class="flex gap-2 mb-2">
                 <input
-                    v-model="ingredient.quantity"
+                    v-model.number="ingredient.quantity"
                     type="number"
                     placeholder="Mennyiség"
                     class="w-1/4 border rounded px-2 py-1 bg-white shadow-sm"
@@ -115,7 +115,14 @@
 
         <!-- Submit -->
         <p v-if="submitError" class="text-red-600 text-sm">{{ submitError }}</p>
-        <div class="text-right pt-4">
+        <div class="pt-4 flex items-center justify-between gap-3">
+            <button
+                type="button"
+                @click="router.push({ name: 'Recipe', params: { id: recipe.id } })"
+                class="border border-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-100 transition"
+            >
+                Mégse
+            </button>
             <button
                 type="submit"
                 :disabled="submitting"
@@ -134,6 +141,7 @@ import { useRouter } from 'vue-router'
 import { AllergenEnum, allergenList } from '@/types/recipe/allergens'
 import type { Recipe, RecipeFormErrors } from '@/types/recipe/recipe'
 import type { Ingredient } from '@/types/recipe/ingredient'
+import { normalizeIngredients, normalizeSteps, validateRecipeFields } from './recipeFormUtils'
 const { recipe } = defineProps<{ recipe: Recipe }>()
 const recipeStore = useRecipeStore()
 const router = useRouter()
@@ -188,13 +196,14 @@ function removeStep(index: number) {
 }
 
 function validateForm() {
-    errors.value = {}
-    if (!title.value.trim()) errors.value.title = 'A cím megadása kötelező.'
-    if (!description.value.trim()) errors.value.description = 'A leírás nem lehet üres.'
-    if (!ingredients.value.some((i) => i.name.trim()))
-        errors.value.ingredients = 'Adj meg legalább egy hozzávalót.'
-    if (!steps.value.some((s) => s.trim()))
-        errors.value.steps = 'Legalább egy lépést meg kell adni.'
+    const validation = validateRecipeFields(
+        title.value,
+        description.value,
+        ingredients.value,
+        steps.value,
+    )
+
+    errors.value = validation.errors
 
     return Object.keys(errors.value).length === 0
 }
@@ -209,13 +218,16 @@ async function submit() {
     submitError.value = null
 
     try {
+        const normalizedIngredients = normalizeIngredients(ingredients.value)
+        const normalizedSteps = normalizeSteps(steps.value)
+
         await recipeStore.updateRecipeById(
             recipe.id,
             {
-                title: title.value,
-                description: description.value,
-                ingredients: ingredients.value,
-                steps: steps.value,
+                title: title.value.trim(),
+                description: description.value.trim(),
+                ingredients: normalizedIngredients,
+                steps: normalizedSteps,
                 allergens: selectedAllergens.value,
                 image: recipe.image,
                 authorId: recipe.authorId,
