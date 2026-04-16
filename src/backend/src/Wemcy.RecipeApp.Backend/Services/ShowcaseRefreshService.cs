@@ -14,7 +14,7 @@ public class ShowcaseRefreshService(IServiceScopeFactory scopeFactory) : Backgro
             await Task.Delay(next - DateTimeOffset.UtcNow, stoppingToken);
 
             using var scope = scopeFactory.CreateScope();
-            var service = scope.ServiceProvider.GetRequiredService<ShowcaseRecipeService>();
+            var service = scope.ServiceProvider.GetRequiredService<IShowcaseRecipeService>();
             await service.UpdateShowcaseRecipesAsync();
         }
     }
