@@ -1,12 +1,20 @@
 <template>
     <div
-        class="flex items-center gap-1 text-yellow-500 text-2xl"
+        class="flex flex-wrap items-center gap-1.5 text-yellow-500 text-xl sm:text-2xl"
         :class="{ 'opacity-60': isSubmitting }"
     >
-        <span v-for="n in 5" :key="n" class="cursor-pointer" @click="rate(n)">
+        <button
+            v-for="n in 5"
+            :key="n"
+            type="button"
+            class="cursor-pointer h-9 w-9 inline-flex items-center justify-center rounded-md hover:bg-yellow-50"
+            :disabled="isSubmitting"
+            :aria-label="`${n} csillag`"
+            @click="rate(n)"
+        >
             <span v-if="n <= localRating">★</span>
             <span v-else>☆</span>
-        </span>
+        </button>
         <span class="text-sm text-gray-500 ml-2">({{ localRating }}/5)</span>
     </div>
 </template>

@@ -106,7 +106,7 @@ watch(
     <div>
         <main
             v-if="recipe"
-            class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-10 text-gray-800"
+            class="max-w-6xl mx-auto px-4 py-6 sm:py-10 grid md:grid-cols-3 gap-6 md:gap-10 text-gray-800"
         >
             <!-- Bal oszlop -->
             <div class="md:col-span-2 space-y-6">
@@ -131,7 +131,7 @@ watch(
                 <img
                     :src="`${recipe.image}?size=${ImageSize.Large}`"
                     alt="Image of the recipe"
-                    class="w-full h-64 object-cover rounded shadow"
+                    class="w-full h-56 sm:h-64 object-cover rounded shadow"
                 />
                 <AllergenList :allergens="recipe.allergens" />
             </div>
@@ -140,12 +140,12 @@ watch(
 
         <div
             v-if="recipe && (canEditRecipe || canManageFeaturedRecipe)"
-            class="max-w-6xl mx-auto px-4 mt-6 mb-4 flex justify-center gap-3"
+            class="max-w-6xl mx-auto px-4 mt-3 sm:mt-6 mb-4 flex flex-col sm:flex-row justify-center gap-2 sm:gap-3"
         >
             <router-link
                 v-if="canEditRecipe"
                 :to="`/edit/${recipe.id}`"
-                class="border border-blue-400 text-blue-600 bg-blue-50 px-4 py-2 rounded hover:bg-blue-100 transition flex items-center gap-2 cursor-pointer"
+                class="border border-blue-400 text-blue-600 bg-blue-50 px-4 py-2.5 rounded hover:bg-blue-100 transition flex items-center justify-center gap-2 cursor-pointer w-full sm:w-auto"
             >
                 <span>✏️</span>
                 <span>Szerkesztés</span>
@@ -153,7 +153,7 @@ watch(
             <button
                 v-if="canEditRecipe"
                 type="button"
-                class="border border-red-400 text-red-600 bg-red-50 px-4 py-2 rounded hover:bg-red-100 transition flex items-center gap-2 cursor-pointer"
+                class="border border-red-400 text-red-600 bg-red-50 px-4 py-2.5 rounded hover:bg-red-100 transition flex items-center justify-center gap-2 cursor-pointer w-full sm:w-auto"
                 @click="handleDeleteRecipe"
             >
                 <span>🗑️</span>
@@ -163,7 +163,7 @@ watch(
                 v-if="canManageFeaturedRecipe"
                 type="button"
                 :disabled="isFeaturedRecipe || isUpdatingFeatured"
-                class="border border-amber-400 text-amber-700 bg-amber-50 px-4 py-2 rounded hover:bg-amber-100 transition flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                class="border border-amber-400 text-amber-700 bg-amber-50 px-4 py-2.5 rounded hover:bg-amber-100 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 w-full sm:w-auto"
                 @click="handleFeatureRecipe"
             >
                 <span>⭐</span>

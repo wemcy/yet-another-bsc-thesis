@@ -1,11 +1,11 @@
 <template>
     <div class="mb-6">
-        <h1 class="text-3xl font-bold mb-2">{{ title }}</h1>
-        <p class="text-gray-700">{{ description }}</p>
+        <h1 class="text-2xl sm:text-3xl font-bold mb-2 leading-tight">{{ title }}</h1>
+        <p class="text-sm sm:text-base text-gray-700 leading-relaxed">{{ description }}</p>
         <router-link
             v-if="authorName && authorId"
             :to="{ name: 'PublicProfile', params: { id: authorId } }"
-            class="inline-flex items-center gap-2 mt-3 px-3 py-1.5 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition"
+            class="inline-flex items-center gap-2 mt-3 px-3 py-1.5 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition max-w-full"
         >
             <img
                 :src="`/api/profile/${authorId}/image?size=${ImageSize.Thumbnail}`"

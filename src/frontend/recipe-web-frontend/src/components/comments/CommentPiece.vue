@@ -1,6 +1,6 @@
 <template>
     <div class="border-b pb-4">
-        <div class="flex items-start justify-between gap-4">
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
             <div class="flex items-start gap-3">
                 <router-link
                     v-if="authorId"
@@ -35,7 +35,7 @@
             <button
                 v-if="canDelete"
                 type="button"
-                class="inline-flex items-center gap-1.5 rounded-full border border-red-200 bg-white px-3 py-1.5 text-sm font-medium text-red-600 shadow-sm transition hover:-translate-y-0.5 hover:border-red-300 hover:bg-red-50 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-200"
+                class="inline-flex items-center gap-1.5 rounded-full border border-red-200 bg-white px-3 py-1.5 text-sm font-medium text-red-600 shadow-sm transition hover:-translate-y-0.5 hover:border-red-300 hover:bg-red-50 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-200 self-start sm:self-auto"
                 @click="$emit('delete')"
             >
                 <span aria-hidden="true" class="text-base leading-none">×</span>
