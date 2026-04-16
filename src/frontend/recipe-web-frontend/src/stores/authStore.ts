@@ -6,6 +6,7 @@ import {
     Configuration,
     type LoginResponse,
     type Profile,
+    UserRole,
 } from 'recipe-api-client'
 import { toErrorMessage } from '../utils/identityErrors'
 
@@ -157,6 +158,35 @@ export const useAuthStore = defineStore('auth', {
             try {
                 await profileApi.deleteProfileById({ id: this.currentUser.id })
                 this.logout()
+            } catch (error) {
+                this.authError = await toErrorMessage(error)
+                throw error
+            } finally {
+                this.authLoading = false
+            }
+        },
+        async deleteProfileById(id: string) {
+            this.authLoading = true
+            this.authError = null
+
+            try {
+                await profileApi.deleteProfileById({ id })
+            } catch (error) {
+                this.authError = await toErrorMessage(error)
+                throw error
+            } finally {
+                this.authLoading = false
+            }
+        },
+        async makeUserAdminById(id: string) {
+            this.authLoading = true
+            this.authError = null
+
+            try {
+                await profileApi.addUserRoleById({
+                    id,
+                    addUserRoleByIdRequest: { role: UserRole.Admin },
+                })
             } catch (error) {
                 this.authError = await toErrorMessage(error)
                 throw error

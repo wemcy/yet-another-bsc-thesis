@@ -7,7 +7,7 @@ import { ProfileApi, Configuration, type ProfileSummary, ResponseError } from 'r
 import { MapApiRecipeToRecipe } from '@/types/recipe/recipe.mappers'
 import { recipeApiClient as api } from '@/utils/recipeApiClient'
 import type { PaginationState, Recipe } from '@/types/recipe/recipe'
-import { ref, watch, onMounted } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
 
@@ -24,6 +24,9 @@ const avatarUrl = ref<string | undefined>(undefined)
 const profileLoading = ref(true)
 const profileError = ref<string | null>(null)
 const requiresLogin = ref(false)
+const adminActionMessage = ref<string | null>(null)
+const deleteDialogOpen = ref(false)
+const makeAdminDialogOpen = ref(false)
 
 const recipes = ref<Recipe[]>([])
 const recipesLoading = ref(false)
@@ -35,6 +38,10 @@ const recipesPagination = ref<PaginationState>({
     hasNextPage: false,
     hasPreviousPage: false,
 })
+
+const canManageProfile = computed(
+    () => auth.isAdmin && !!profile.value && auth.currentUser?.id !== userId.value,
+)
 
 async function loadProfile() {
     profileLoading.value = true
@@ -156,6 +163,46 @@ async function requestRecipesPage(pageNumber: number) {
     })
 }
 
+function openDeleteDialog() {
+    if (!canManageProfile.value || auth.authLoading) return
+    adminActionMessage.value = null
+    deleteDialogOpen.value = true
+}
+
+function closeDeleteDialog() {
+    deleteDialogOpen.value = false
+}
+
+function openMakeAdminDialog() {
+    if (!canManageProfile.value || auth.authLoading) return
+    adminActionMessage.value = null
+    makeAdminDialogOpen.value = true
+}
+
+function closeMakeAdminDialog() {
+    makeAdminDialogOpen.value = false
+}
+
+async function confirmDeleteProfile() {
+    try {
+        await auth.deleteProfileById(userId.value)
+        deleteDialogOpen.value = false
+        await router.push({ name: 'Home' })
+    } catch {
+        // auth.authError is already set
+    }
+}
+
+async function confirmMakeAdmin() {
+    try {
+        await auth.makeUserAdminById(userId.value)
+        makeAdminDialogOpen.value = false
+        adminActionMessage.value = 'A felhasználó admin jogosultságot kapott.'
+    } catch {
+        // auth.authError is already set
+    }
+}
+
 watch(
     () => route.query.recipesPage,
     async () => {
@@ -210,6 +257,36 @@ onMounted(async () => {
 
         <template v-else-if="profile">
             <PublicProfileHeader :displayName="profile.displayName" :avatarUrl="avatarUrl" />
+            <div v-if="canManageProfile" class="mt-6 flex flex-wrap gap-3">
+                <button
+                    type="button"
+                    @click="openDeleteDialog"
+                    :disabled="auth.authLoading"
+                    class="rounded-lg bg-red-600 px-5 py-2 text-white transition hover:bg-red-700 disabled:opacity-50"
+                >
+                    Profil törlése
+                </button>
+                <button
+                    type="button"
+                    @click="openMakeAdminDialog"
+                    :disabled="auth.authLoading"
+                    class="rounded-lg border border-blue-300 bg-white px-5 py-2 text-blue-700 transition hover:bg-blue-50 disabled:opacity-50"
+                >
+                    Adminná tétel
+                </button>
+            </div>
+            <p
+                v-if="auth.authError"
+                class="mt-4 text-sm rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-red-700"
+            >
+                {{ auth.authError }}
+            </p>
+            <p
+                v-else-if="adminActionMessage"
+                class="mt-4 text-sm rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-emerald-700"
+            >
+                {{ adminActionMessage }}
+            </p>
 
             <div class="mt-10">
                 <h3 class="text-xl font-bold mb-4">Receptjei</h3>
@@ -236,6 +313,62 @@ onMounted(async () => {
                     :disabled="recipesLoading"
                     @pageChange="requestRecipesPage"
                 />
+            </div>
+
+            <div
+                v-if="deleteDialogOpen"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+            >
+                <div class="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                    <h2 class="text-lg font-semibold text-gray-900">Profil törlése</h2>
+                    <p class="mt-2 text-sm text-gray-600">
+                        Biztosan törölni szeretnéd ezt a profilt? Ez a művelet nem visszavonható.
+                    </p>
+                    <div class="mt-5 flex justify-end gap-2">
+                        <button
+                            @click="closeDeleteDialog"
+                            :disabled="auth.authLoading"
+                            class="rounded border px-4 py-2 hover:bg-gray-100 disabled:opacity-50"
+                        >
+                            Mégse
+                        </button>
+                        <button
+                            @click="confirmDeleteProfile"
+                            :disabled="auth.authLoading"
+                            class="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700 disabled:opacity-50"
+                        >
+                            {{ auth.authLoading ? 'Törlés...' : 'Igen, törlöm' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                v-if="makeAdminDialogOpen"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+            >
+                <div class="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                    <h2 class="text-lg font-semibold text-gray-900">Adminná tétel</h2>
+                    <p class="mt-2 text-sm text-gray-600">
+                        Biztosan admin jogosultságot szeretnél adni ennek a felhasználónak?
+                    </p>
+                    <div class="mt-5 flex justify-end gap-2">
+                        <button
+                            @click="closeMakeAdminDialog"
+                            :disabled="auth.authLoading"
+                            class="rounded border px-4 py-2 hover:bg-gray-100 disabled:opacity-50"
+                        >
+                            Mégse
+                        </button>
+                        <button
+                            @click="confirmMakeAdmin"
+                            :disabled="auth.authLoading"
+                            class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+                        >
+                            {{ auth.authLoading ? 'Mentés...' : 'Igen, admin legyen' }}
+                        </button>
+                    </div>
+                </div>
             </div>
         </template>
     </main>

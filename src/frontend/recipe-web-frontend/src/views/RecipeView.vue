@@ -43,12 +43,22 @@ const isOwnRecipe = computed(
 const canEditRecipe = computed(
     () => isOwnRecipe.value || (auth.currentUser?.roles?.includes('Admin') ?? false),
 )
+const canManageFeaturedRecipe = computed(() => auth.currentUser?.roles?.includes('Admin') ?? false)
+const isFeaturedRecipe = computed(
+    () => !!recipe.value && recipeStore.featuredRecipeId === recipe.value.id,
+)
 
 const deleteDialogOpen = ref(false)
+const featuredDialogOpen = ref(false)
 const isDeleting = ref(false)
+const isUpdatingFeatured = ref(false)
 
 function handleDeleteRecipe() {
     deleteDialogOpen.value = true
+}
+
+function handleFeatureRecipe() {
+    featuredDialogOpen.value = true
 }
 
 async function confirmDeleteRecipe() {
@@ -62,6 +72,19 @@ async function confirmDeleteRecipe() {
         alert('Nem sikerült törölni a receptet. Próbáld újra!')
     } finally {
         isDeleting.value = false
+    }
+}
+
+async function confirmFeatureRecipe() {
+    if (!recipe.value || isUpdatingFeatured.value) return
+    isUpdatingFeatured.value = true
+    try {
+        await recipeStore.setFeaturedRecipe(recipe.value.id)
+        featuredDialogOpen.value = false
+    } catch {
+        alert('Nem sikerült beállítani a kiemelt receptet. Próbáld újra!')
+    } finally {
+        isUpdatingFeatured.value = false
     }
 }
 
@@ -111,10 +134,11 @@ watch(
         <div v-if="!recipe" class="text-center py-20 text-gray-500">A recept nem található. 🫤</div>
 
         <div
-            v-if="recipe && canEditRecipe"
+            v-if="recipe && (canEditRecipe || canManageFeaturedRecipe)"
             class="max-w-6xl mx-auto px-4 mt-6 mb-4 flex justify-center gap-3"
         >
             <router-link
+                v-if="canEditRecipe"
                 :to="`/edit/${recipe.id}`"
                 class="border border-blue-400 text-blue-600 bg-blue-50 px-4 py-2 rounded hover:bg-blue-100 transition flex items-center gap-2 cursor-pointer"
             >
@@ -122,12 +146,23 @@ watch(
                 <span>Szerkesztés</span>
             </router-link>
             <button
+                v-if="canEditRecipe"
                 type="button"
                 class="border border-red-400 text-red-600 bg-red-50 px-4 py-2 rounded hover:bg-red-100 transition flex items-center gap-2 cursor-pointer"
                 @click="handleDeleteRecipe"
             >
                 <span>🗑️</span>
                 <span>Törlés</span>
+            </button>
+            <button
+                v-if="canManageFeaturedRecipe"
+                type="button"
+                :disabled="isFeaturedRecipe || isUpdatingFeatured"
+                class="border border-amber-400 text-amber-700 bg-amber-50 px-4 py-2 rounded hover:bg-amber-100 transition flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                @click="handleFeatureRecipe"
+            >
+                <span>⭐</span>
+                <span>{{ isFeaturedRecipe ? 'Ez a kiemelt recept' : 'Kiemelt receptté teszem' }}</span>
             </button>
         </div>
 
@@ -158,6 +193,36 @@ watch(
                         @click="confirmDeleteRecipe"
                     >
                         {{ isDeleting ? 'Törlés...' : 'Igen, törlöm' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div
+            v-if="featuredDialogOpen"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+        >
+            <div class="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                <h2 class="text-lg font-semibold text-gray-900">Kiemelt recept beállítása</h2>
+                <p class="mt-2 text-sm text-gray-600">
+                    Biztosan ezt a receptet szeretnéd beállítani kiemelt receptnek?
+                </p>
+                <div class="mt-5 flex justify-end gap-2">
+                    <button
+                        type="button"
+                        :disabled="isUpdatingFeatured"
+                        class="rounded border px-4 py-2 hover:bg-gray-100 cursor-pointer disabled:opacity-50"
+                        @click="featuredDialogOpen = false"
+                    >
+                        Mégse
+                    </button>
+                    <button
+                        type="button"
+                        :disabled="isUpdatingFeatured"
+                        class="rounded bg-amber-500 px-4 py-2 text-white hover:bg-amber-600 cursor-pointer disabled:opacity-50"
+                        @click="confirmFeatureRecipe"
+                    >
+                        {{ isUpdatingFeatured ? 'Mentés...' : 'Igen, legyen kiemelt' }}
                     </button>
                 </div>
             </div>

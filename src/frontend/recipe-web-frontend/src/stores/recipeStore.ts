@@ -232,6 +232,18 @@ export const useRecipeStore = defineStore('recipe', {
                 this.featuredRecipeLoading = false
             }
         },
+        async setFeaturedRecipe(id: string) {
+            this.featuredRecipeLoading = true
+            try {
+                await api.updateFeaturedRecipe({
+                    updateFeaturedRecipeRequest: { recipeId: id },
+                })
+                this.featuredRecipeId = id
+                await this.fetchFeaturedRecipe()
+            } finally {
+                this.featuredRecipeLoading = false
+            }
+        },
         async updateImage(id: string, image: File) {
             await api.updateRecipeImage({ id, image })
         },
