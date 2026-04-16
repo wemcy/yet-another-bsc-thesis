@@ -14,6 +14,12 @@ const config = new Configuration({ basePath: '/api', credentials: 'include' })
 const authApi = new AuthApi(config)
 const profileApi = new ProfileApi(config)
 
+interface AuthState {
+    currentUser: User | null
+    authLoading: boolean
+    authError: string | null
+}
+
 function mapLoginToUser(response: LoginResponse): User {
     return {
         id: response.id,
@@ -40,10 +46,10 @@ function mapProfileToUser(
 }
 
 export const useAuthStore = defineStore('auth', {
-    state: () => ({
-        currentUser: null as User | null,
+    state: (): AuthState => ({
+        currentUser: null,
         authLoading: false,
-        authError: null as string | null,
+        authError: null,
     }),
 
     actions: {

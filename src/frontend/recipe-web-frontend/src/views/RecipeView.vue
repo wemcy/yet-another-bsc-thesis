@@ -2,12 +2,13 @@
 import CommentsSection from '@/components/comments/CommentsSection.vue'
 import IngredientList from '@/components/recipe/IngredientList.vue'
 import RecipeHeader from '@/components/recipe/RecipeHeader.vue'
-import InstructionsList from '@/components/recipe/InstuctionList.vue'
+import InstructionsList from '@/components/recipe/InstructionList.vue'
 import AllergenList from '@/components/recipe/AllergenList.vue'
 import RecipeRating from '@/components/recipe/RecipeRating.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useRecipeStore } from '@/stores/recipeStore'
 import { useAuthStore } from '@/stores/authStore'
+import { getSingleRouteParam } from '@/utils/routeParams'
 import { ImageSize } from 'recipe-api-client'
 import { computed, ref, watch } from 'vue'
 
@@ -15,12 +16,15 @@ const route = useRoute()
 const router = useRouter()
 const recipeStore = useRecipeStore()
 const auth = useAuthStore()
-const recipe = computed(() => recipeStore.getById(route.params.id as string))
+const recipeId = computed(() => getSingleRouteParam(route.params, 'id'))
+const recipe = computed(() => {
+    const id = recipeId.value
+    return id ? recipeStore.getById(id) : undefined
+})
 const isRatingSubmitting = ref(false)
 
 async function updateRating(newRating: number) {
-    const idParam = route.params.id
-    const id = Array.isArray(idParam) ? idParam[0] : idParam
+    const id = recipeId.value
 
     if (!id || isRatingSubmitting.value) {
         return
@@ -30,7 +34,7 @@ async function updateRating(newRating: number) {
     try {
         await recipeStore.updateRating(id, newRating)
     } catch {
-        alert('Nem sikerult elmenteni az ertekelest. Probald ujra!')
+        alert('Nem sikerült elmenteni az értékelést. Próbáld újra!')
     } finally {
         isRatingSubmitting.value = false
     }
@@ -91,7 +95,8 @@ async function confirmFeatureRecipe() {
 watch(
     () => route.params.id,
     (id) => {
-        if (id) recipeStore.fetchRecipeById(id as string)
+        const nextId = Array.isArray(id) ? id[0] : id
+        if (typeof nextId === 'string' && nextId.length > 0) recipeStore.fetchRecipeById(nextId)
     },
     { immediate: true },
 )
@@ -162,7 +167,9 @@ watch(
                 @click="handleFeatureRecipe"
             >
                 <span>⭐</span>
-                <span>{{ isFeaturedRecipe ? 'Ez a kiemelt recept' : 'Kiemelt receptté teszem' }}</span>
+                <span>{{
+                    isFeaturedRecipe ? 'Ez a kiemelt recept' : 'Kiemelt receptté teszem'
+                }}</span>
             </button>
         </div>
 

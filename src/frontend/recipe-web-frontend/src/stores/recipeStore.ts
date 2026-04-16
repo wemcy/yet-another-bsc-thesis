@@ -2,11 +2,12 @@ import type {
     Comment,
     NewRecipeDraft,
     PaginatedComments,
-    PaginationState,
     Recipe,
     RecipeState,
 } from '@/types/recipe/recipe'
 import { MapApiRecipeToRecipe, MapRecipeToApiRecipe } from '@/types/recipe/recipe.mappers'
+import { createDefaultPaginationState, parsePaginationState } from '@/utils/pagination'
+import { isObject } from '@/utils/typeGuards'
 import { recipeApiClient as api } from '@/utils/recipeApiClient'
 import { defineStore } from 'pinia'
 
@@ -23,65 +24,15 @@ const createEmptyNewRecipeDraft = (): NewRecipeDraft => ({
 const getNewRecipeDraftStorageKey = (userId?: string | null) =>
     `new-recipe-draft:${userId ?? 'guest'}`
 
-const createDefaultPaginationState = (pageNumber: number, pageSize: number): PaginationState => ({
-    pageNumber,
-    pageSize,
-    totalCount: 0,
-    pageCount: 0,
-    hasNextPage: false,
-    hasPreviousPage: pageNumber > 0,
-})
-
-const parseBoolean = (value: unknown): boolean | undefined => {
-    if (typeof value === 'boolean') return value
-    return undefined
-}
-
-const parseNumber = (value: unknown): number | undefined => {
-    if (typeof value === 'number' && Number.isFinite(value)) return value
-    return undefined
-}
-
-const parsePaginationState = (
-    headerValue: string | null,
-    fallbackPageNumber: number,
-    fallbackPageSize: number,
-): PaginationState => {
-    if (!headerValue) {
-        return createDefaultPaginationState(fallbackPageNumber, fallbackPageSize)
-    }
-
-    try {
-        const raw = JSON.parse(headerValue) as Record<string, unknown>
-        const pageNumber =
-            parseNumber(raw.pageNumber) ?? parseNumber(raw.PageNumber) ?? fallbackPageNumber
-        const pageSize = parseNumber(raw.pageSize) ?? parseNumber(raw.PageSize) ?? fallbackPageSize
-        const totalCount = parseNumber(raw.totalCount) ?? parseNumber(raw.TotalCount) ?? 0
-        const pageCount = parseNumber(raw.pageCount) ?? parseNumber(raw.PageCount) ?? 0
-        const hasNextPage = parseBoolean(raw.hasNextPage) ?? parseBoolean(raw.HasNextPage) ?? false
-        const hasPreviousPage =
-            parseBoolean(raw.hasPreviousPage) ?? parseBoolean(raw.HasPreviousPage) ?? pageNumber > 0
-
-        return {
-            pageNumber,
-            pageSize,
-            totalCount,
-            pageCount,
-            hasNextPage,
-            hasPreviousPage,
-        }
-    } catch {
-        return createDefaultPaginationState(fallbackPageNumber, fallbackPageSize)
-    }
-}
-
-const mapApiCommentToComment = (apiComment: {
+type ApiRecipeComment = {
     id: string
     content: string
     createdAt: Date
     author: string
     authorId?: string
-}): Comment => ({
+}
+
+const mapApiCommentToComment = (apiComment: ApiRecipeComment): Comment => ({
     id: apiComment.id,
     authorId: apiComment.authorId ?? '',
     authorName: apiComment.author,
@@ -94,7 +45,7 @@ export const useRecipeStore = defineStore('recipe', {
         recipes: [],
         featuredRecipeId: null,
         showcaseRecipesIds: [],
-        ownRecipeIds: [] as string[],
+        ownRecipeIds: [],
         newRecipeDraft: createEmptyNewRecipeDraft(),
         showcaseRecipesLoading: false,
         featuredRecipeLoading: false,
@@ -128,21 +79,38 @@ export const useRecipeStore = defineStore('recipe', {
             }
 
             try {
-                const parsed = JSON.parse(rawDraft) as Partial<NewRecipeDraft>
+                const parsedRaw: unknown = JSON.parse(rawDraft)
+                const parsed = isObject(parsedRaw) ? parsedRaw : {}
+                const parsedIngredients = Array.isArray(parsed.ingredients)
+                    ? parsed.ingredients
+                    : []
+                const validIngredients = parsedIngredients.filter(
+                    (item): item is NewRecipeDraft['ingredients'][number] =>
+                        isObject(item) &&
+                        typeof item.name === 'string' &&
+                        typeof item.unitOfMeasurement === 'string' &&
+                        typeof item.quantity === 'number' &&
+                        Number.isFinite(item.quantity),
+                )
+                const parsedSteps = Array.isArray(parsed.steps)
+                    ? parsed.steps.filter((step): step is string => typeof step === 'string')
+                    : []
+                const parsedSelectedAllergens = Array.isArray(parsed.selectedAllergens)
+                    ? parsed.selectedAllergens.filter(
+                          (allergen): allergen is NewRecipeDraft['selectedAllergens'][number] =>
+                              typeof allergen === 'string',
+                      )
+                    : []
+
                 this.newRecipeDraft = {
                     title: typeof parsed.title === 'string' ? parsed.title : '',
                     description: typeof parsed.description === 'string' ? parsed.description : '',
                     ingredients:
-                        Array.isArray(parsed.ingredients) && parsed.ingredients.length > 0
-                            ? parsed.ingredients
+                        validIngredients.length > 0
+                            ? validIngredients
                             : [{ quantity: 0, unitOfMeasurement: '', name: '' }],
-                    steps:
-                        Array.isArray(parsed.steps) && parsed.steps.length > 0
-                            ? parsed.steps
-                            : [''],
-                    selectedAllergens: Array.isArray(parsed.selectedAllergens)
-                        ? parsed.selectedAllergens
-                        : [],
+                    steps: parsedSteps.length > 0 ? parsedSteps : [''],
+                    selectedAllergens: parsedSelectedAllergens,
                 }
             } catch {
                 this.newRecipeDraft = createEmptyNewRecipeDraft()

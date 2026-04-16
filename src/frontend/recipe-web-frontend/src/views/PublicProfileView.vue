@@ -5,7 +5,9 @@ import RecipeCardSkeleton from '@/components/recipe/RecipeCardSkeleton.vue'
 import RecipePagination from '@/components/recipe/RecipePagination.vue'
 import { ProfileApi, Configuration, type ProfileSummary, ResponseError } from 'recipe-api-client'
 import { MapApiRecipeToRecipe } from '@/types/recipe/recipe.mappers'
+import { parsePaginationState } from '@/utils/pagination'
 import { recipeApiClient as api } from '@/utils/recipeApiClient'
+import { getSingleRouteParam } from '@/utils/routeParams'
 import type { PaginationState, Recipe } from '@/types/recipe/recipe'
 import { computed, ref, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -17,7 +19,7 @@ const profileApi = new ProfileApi(config)
 const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
-const userId = ref(route.params.id as string)
+const userId = ref(getSingleRouteParam(route.params, 'id') ?? '')
 
 const profile = ref<ProfileSummary | null>(null)
 const avatarUrl = ref<string | undefined>(undefined)
@@ -84,57 +86,6 @@ function getRecipesPageFromQuery() {
     const raw = typeof value === 'string' ? Number.parseInt(value, 10) : NaN
     if (Number.isNaN(raw) || raw < 1) return 0
     return raw - 1
-}
-
-const parseBoolean = (value: unknown): boolean | undefined => {
-    if (typeof value === 'boolean') return value
-    return undefined
-}
-
-const parseNumber = (value: unknown): number | undefined => {
-    if (typeof value === 'number' && Number.isFinite(value)) return value
-    return undefined
-}
-
-const parsePaginationState = (
-    headerValue: string | null,
-    fallbackPageNumber: number,
-    fallbackPageSize: number,
-): PaginationState => {
-    if (!headerValue) {
-        return {
-            pageNumber: fallbackPageNumber,
-            pageSize: fallbackPageSize,
-            totalCount: 0,
-            pageCount: 0,
-            hasNextPage: false,
-            hasPreviousPage: fallbackPageNumber > 0,
-        }
-    }
-    try {
-        const raw = JSON.parse(headerValue) as Record<string, unknown>
-        return {
-            pageNumber:
-                parseNumber(raw.pageNumber) ?? parseNumber(raw.PageNumber) ?? fallbackPageNumber,
-            pageSize: parseNumber(raw.pageSize) ?? parseNumber(raw.PageSize) ?? fallbackPageSize,
-            totalCount: parseNumber(raw.totalCount) ?? parseNumber(raw.TotalCount) ?? 0,
-            pageCount: parseNumber(raw.pageCount) ?? parseNumber(raw.PageCount) ?? 0,
-            hasNextPage: parseBoolean(raw.hasNextPage) ?? parseBoolean(raw.HasNextPage) ?? false,
-            hasPreviousPage:
-                parseBoolean(raw.hasPreviousPage) ??
-                parseBoolean(raw.HasPreviousPage) ??
-                fallbackPageNumber > 0,
-        }
-    } catch {
-        return {
-            pageNumber: fallbackPageNumber,
-            pageSize: fallbackPageSize,
-            totalCount: 0,
-            pageCount: 0,
-            hasNextPage: false,
-            hasPreviousPage: fallbackPageNumber > 0,
-        }
-    }
 }
 
 async function loadRecipesPage(pageNumber: number) {
@@ -214,7 +165,8 @@ watch(
     () => route.params.id,
     async (newId) => {
         if (!newId) return
-        userId.value = newId as string
+        userId.value = Array.isArray(newId) ? (newId[0] ?? '') : newId
+        if (!userId.value) return
 
         if (auth.currentUser && auth.currentUser.id === userId.value) {
             router.replace({ name: 'Profile' })

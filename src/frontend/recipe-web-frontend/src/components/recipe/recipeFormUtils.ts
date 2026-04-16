@@ -3,7 +3,9 @@ import type { Ingredient } from '@/types/recipe/ingredient'
 
 type IngredientDraft = Ingredient
 
-const normalizeQuantity = (value: unknown) => {
+type QuantityInput = number | string | null | undefined
+
+const normalizeQuantity = (value: QuantityInput): number => {
     if (typeof value === 'number') return Number.isFinite(value) ? value : 0
     if (typeof value === 'string') {
         const normalized = Number(value.replace(',', '.'))
