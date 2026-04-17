@@ -3,6 +3,8 @@ import type { Recipe } from './recipe'
 import { MapApiAllergenToEnum, MapEnumToApiAllergen } from './allergen.mappers'
 
 export function MapApiRecipeToRecipe(apiRecipe: RecipeDTO): Recipe {
+    const imageRevision = (apiRecipe.updatedAt ?? apiRecipe.createdAt).toISOString()
+
     return {
         id: apiRecipe.id,
         authorId: apiRecipe.creatorAuthorId ?? '',
@@ -13,6 +15,7 @@ export function MapApiRecipeToRecipe(apiRecipe: RecipeDTO): Recipe {
         steps: apiRecipe.steps ?? [],
         allergens: Array.from(apiRecipe.allergens ?? []).map((a) => MapApiAllergenToEnum(a)),
         image: `/api/recipes/${apiRecipe.id}/image`,
+        imageRevision,
         rating: apiRecipe.averageRating,
     }
 }

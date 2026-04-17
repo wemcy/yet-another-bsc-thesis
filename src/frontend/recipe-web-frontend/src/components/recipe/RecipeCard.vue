@@ -4,7 +4,7 @@
         class="block bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition"
     >
         <img
-            :src="`${recipe.image}?size=${ImageSize.Thumbnail}`"
+            :src="buildRecipeImageUrl(recipe.image, recipe.imageRevision, ImageSize.Thumbnail)"
             :alt="recipe.title"
             class="w-full h-40 object-cover"
         />
@@ -37,6 +37,7 @@
 </template>
 <script setup lang="ts">
 import type { Recipe } from '@/types/recipe/recipe'
+import { buildRecipeImageUrl } from '@/utils/imageUrl'
 import { ImageSize } from 'recipe-api-client'
 import { useRouter } from 'vue-router'
 

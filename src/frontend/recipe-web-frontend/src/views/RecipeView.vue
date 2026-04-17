@@ -9,6 +9,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useRecipeStore } from '@/stores/recipeStore'
 import { useAuthStore } from '@/stores/authStore'
 import { getSingleRouteParam } from '@/utils/routeParams'
+import { buildRecipeImageUrl } from '@/utils/imageUrl'
 import { ImageSize } from 'recipe-api-client'
 import { computed, ref, watch } from 'vue'
 
@@ -129,7 +130,7 @@ watch(
                     @rate="updateRating"
                 />
                 <img
-                    :src="`${recipe.image}?size=${ImageSize.Large}`"
+                    :src="buildRecipeImageUrl(recipe.image, recipe.imageRevision, ImageSize.Large)"
                     alt="Image of the recipe"
                     class="w-full h-56 sm:h-64 object-cover rounded shadow"
                 />

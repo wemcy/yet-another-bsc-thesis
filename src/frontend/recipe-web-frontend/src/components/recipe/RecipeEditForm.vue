@@ -142,6 +142,8 @@ import { AllergenEnum, allergenList } from '@/types/recipe/allergens'
 import type { Recipe, RecipeFormErrors } from '@/types/recipe/recipe'
 import type { Ingredient } from '@/types/recipe/ingredient'
 import { normalizeIngredients, normalizeSteps, validateRecipeFields } from './recipeFormUtils'
+import { buildRecipeImageUrl } from '@/utils/imageUrl'
+import { ImageSize } from 'recipe-api-client'
 const { recipe } = defineProps<{ recipe: Recipe }>()
 const recipeStore = useRecipeStore()
 const router = useRouter()
@@ -167,7 +169,13 @@ watch(
             ingredients.value = [...newRecipe.ingredients]
             steps.value = [...newRecipe.steps]
             selectedAllergens.value = [...newRecipe.allergens]
-            imageUrl.value = newRecipe.image || null
+            if (!imageFile.value) {
+                imageUrl.value = buildRecipeImageUrl(
+                    newRecipe.image,
+                    newRecipe.imageRevision,
+                    ImageSize.Large,
+                )
+            }
         }
     },
     { immediate: true },
@@ -231,12 +239,14 @@ async function submit() {
                 steps: normalizedSteps,
                 allergens: selectedAllergens.value,
                 image: recipe.image,
+                imageRevision: recipe.imageRevision,
                 authorId: recipe.authorId,
                 authorName: recipe.authorName,
                 rating: recipe.rating,
             },
             imageFile.value,
         )
+        await recipeStore.fetchRecipeById(recipe.id)
         router.push({ name: 'Recipe', params: { id: recipe.id } })
     } catch {
         submitError.value = 'Nem sikerült menteni a receptet. Próbáld újra!'

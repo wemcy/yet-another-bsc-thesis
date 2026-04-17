@@ -1,16 +1,59 @@
 \chapter{Konfigurációs környezeti változók}\label{appx:config}
 \vspace*{-1.5\baselineskip}
+\newcommand{\confkey}[1]{\path{#1}}
+\newcommand{\confvalue}[1]{\path{#1}}
 \begin{table}[H]
     \centering
-    \begin{tabular}{|l|l|}
+    \footnotesize
+    \renewcommand{\arraystretch}{1.15}
+    \begin{adjustbox}{max width=\textwidth}
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{0.32\textwidth}|>{\raggedright\arraybackslash}p{0.20\textwidth}|>{\raggedright\arraybackslash}p{0.34\textwidth}|}
         \hline
-        Kulcs & Érték \\
+        Kulcs & Érték & Jelentés \\
         \hline
-        TODO & TODO \\
+        \multicolumn{3}{|l|}{\textbf{Kötelező beállítások}} \\
+        \hline
+        \confkey{APP_NAME} & \confvalue{my-recipe-app} & Az alkalmazás megjelenített neve. \\
+        \hline
+        \confkey{APP_HOST} & \confvalue{127.0.0.1} & A webszerver által figyelt hosztcím vagy IP-cím. \\
+        \hline
+        \confkey{APP_PORT} & \confvalue{9393} & Az alkalmazás hálózati portja. \\
+        \hline
+        \confkey{ADMIN_EMAIL} & \confvalue{recipe@example.com} & Az alapértelmezett adminisztrátori fiók e-mail-címe. \\
+        \hline
+        \confkey{ADMIN_DEFAULT_PASSWORD} & \confvalue{Admin123!} & Az adminisztrátori fiók kezdeti jelszava. \\
+        \hline
+        \confkey{DATABASE_USERNAME} & \confvalue{admin} & Az adatbázis-kapcsolathoz használt felhasználónév. \\
+        \hline
+        \confkey{DATABASE_PASSWORD} & \confvalue{admin} & Az adatbázis-kapcsolathoz tartozó jelszó. \\
+        \hline
+        \multicolumn{3}{|l|}{\textbf{Opcionális beállítások}} \\
+        \hline
+        \confkey{PROXY_TLS_ENABLED} & \confvalue{true} & Meghatározza, hogy a fordított proxy használ-e TLS-t. \\
+        \hline
+        \confkey{PROXY_TLS_CERTIFICATE_FILE} & \confvalue{tls.crt} & A TLS-tanúsítvány fájlneve vagy elérési útja. \\
+        \hline
+        \confkey{PROXY_TLS_CERTIFICATE_KEY_FILE} & \confvalue{tls.key} & A TLS-privát kulcs fájlneve vagy elérési útja. \\
+        \hline
+        \confkey{SIZE_OPTION_THUMBNAIL_HEIGHT} & \confvalue{50} & A miniatűrnézeti képmagasság pixelben. \\
+        \hline
+        \confkey{SIZE_OPTION_THUMBNAIL_WIDTH} & \confvalue{50} & A miniatűrnézeti képszélesség pixelben. \\
+        \hline
+        \confkey{SIZE_OPTION_MEDIUM_HEIGHT} & \confvalue{200} & A közepes méretű képmagasság pixelben. \\
+        \hline
+        \confkey{SIZE_OPTION_MEDIUM_WIDTH} & \confvalue{200} & A közepes méretű képszélesség pixelben. \\
+        \hline
+        \confkey{SIZE_OPTION_LARGE_HEIGHT} & \confvalue{500} & A nagy méretű képmagasság pixelben. \\
+        \hline
+        \confkey{SIZE_OPTION_LARGE_WIDTH} & \confvalue{500} & A nagy méretű képszélesség pixelben. \\
+        \hline
+        \multicolumn{3}{|l|}{\textbf{Lapozási beállítások}} \\
+        \hline
+        \confkey{PAGINATION_DEFAULT_PAGE_SIZE} & \confvalue{12} & Az egy oldalon megjelenített receptek alapértelmezett száma. \\
         \hline
     \end{tabular}
-    \caption{Konfigurációs változók (később kitöltendő)}
-    \todo[inline]{A táblázat sorait a végleges konfigurációs értékekkel kell feltölteni.}
+    \end{adjustbox}
+    \caption{Az alkalmazás által használt konfigurációs környezeti változók}
     \label{tab:config}
 \end{table}
 

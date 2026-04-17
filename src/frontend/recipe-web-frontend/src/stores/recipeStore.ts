@@ -216,14 +216,17 @@ export const useRecipeStore = defineStore('recipe', {
             await api.updateRecipeImage({ id, image })
         },
         async updateRecipeById(id: string, recipe: Omit<Recipe, 'id'>, image?: File | null) {
-            const response = await api.updateRecipeById({
+            await api.updateRecipeById({
                 id,
                 createRecipeRequest: MapRecipeToApiRecipe(recipe),
             })
-            const updated = MapApiRecipeToRecipe(response)
-            this.updateRecipe(updated)
             if (image) {
                 await this.updateImage(id, image)
+            }
+            await this.fetchRecipeById(id)
+            const updated = this.getById(id)
+            if (!updated) {
+                throw new Error('Updated recipe could not be loaded.')
             }
             return updated
         },
