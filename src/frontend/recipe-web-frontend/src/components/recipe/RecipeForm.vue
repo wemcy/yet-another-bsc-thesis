@@ -31,6 +31,7 @@
                 <input
                     v-model.number="ingredient.quantity"
                     type="number"
+                    step="any"
                     placeholder="Mennyiség"
                     class="w-1/4 border rounded px-2 py-1 bg-white shadow-sm"
                 />
