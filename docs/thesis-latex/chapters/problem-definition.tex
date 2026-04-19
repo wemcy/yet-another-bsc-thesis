@@ -16,7 +16,7 @@ A szerver futtatásához szükséges egy olyan környezet, amin futtatható a Do
 	\item Docker Compose v2.35 vagy frissebb verzió
 \end{itemize}
 
-Kliens oldalon egy modern webböngészőre van szükségünk, ami támogatja a HTML5-öt és a JavaScript-et:
+Kliens oldalon egy modern webböngészőre van szükségünk, ami támogatja a HTML5-öt és a JavaScriptet:
 \begin{itemize}
 	\item Mozilla Firefox legfrissebb verziója
 	\item Google Chrome legfrissebb verziója
@@ -25,7 +25,7 @@ Kliens oldalon egy modern webböngészőre van szükségünk, ami támogatja a H
 \end{itemize}
 
 \section{Telepítés}
-Az alkalmazást a korábban említett Docker\footnote{\url{https://docs.docker.com/desktop/}. Utolsó elérés: 2026.04.10.}, illetve Docker Compose\footnote{\url{https://docs.docker.com/compose/install/}. Utolsó elérés: 2026.04.10.} segítségével lehet telepíteni. Ennek köszönhetően egyetlen parancs kiadásávala a teljes rendszer elindítható különösebb beállítások nélkül.
+Az alkalmazást a korábban említett Docker\footnote{\url{https://docs.docker.com/desktop/}. Utolsó elérés: 2026.04.10.}, illetve Docker Compose\footnote{\url{https://docs.docker.com/compose/install/}. Utolsó elérés: 2026.04.10.} segítségével lehet telepíteni. Ennek köszönhetően egyetlen parancs kiadásával a teljes rendszer elindítható különösebb beállítások nélkül.
 
 \subsection{Telepítési útmutató}
 Miután a Docker és a Docker Compose telepítésre került, a projekt mappájába kell navigálni. Az itt található \texttt{docker-compose.yml} fájl segítségével indítható el a rendszer. Ez a fájl négy konténerből áll: egy PostgreSQL adatbázisból, a backend REST API-ból, a frontend szerverből és egy Nginx fordított proxyból.
@@ -34,7 +34,7 @@ A rendszer konfigurációja egy környezeti változókat tartalmazó fájlon ker
 
 Elindításához Linux és macOS rendszereken a \texttt{start.sh}, Windows rendszereken pedig a \texttt{start.ps1} scriptet kell futtatni, amely automatikusan elindítja a szükséges konténereket a konfigurációs fájl alapján. Beállítható az is, hogy a program biztonságos HTTPS kapcsolaton keresztül legyen elérhető, ehhez a konfigurációs fájlban meg kell adni a szükséges tanúsítványokat és kulcsokat.
 
-Az alap beállításokkal a rendszer a \texttt{http://localhost:9393} címen lesz elérhető, amit egy webböngészőben lehet megnyitni.
+Az alapbeállításokkal a rendszer a \texttt{http://localhost:9393} címen lesz elérhető, amit egy webböngészőben lehet megnyitni.
 
 \section{Funkciók}
 Az alkalmazásban két fajta felhasználói szerepkör van: adminisztrátor és normál felhasználó. Az oldalon regisztráció nélkül böngészhetőek a receptek. Bejelentkezés után a normál felhasználók hozzáférhetnek a közösségi funkciókhoz, kezelhetik saját receptjeiket, míg az adminisztrátorok további jogosultságokkal rendelkeznek, mint például a felhasználók kezelése.
@@ -55,7 +55,7 @@ A felhasználók saját profiljukat is kezelhetik, ahol megtekinthetik és szerk
 
 \section{Az alkalmazás használatának felépítése}
 
-Az alkalmazás fő eleme az oldal felső részén elhelyezkedő navigációs sáv. Ez a sáv minden oldalon elérhető, és lehetővé teszi a gyors hozzáférést a legfontosabb funkciókhoz. A sávban található egy keresőmező, amely azonnali keresést tesz lehetővé a receptek között, találatokat jelenít meg a kulcsszavak alapján szinte azonannal. Ezen kívül ebben a sávban helyezkednek el gombok a bejelentkezéshez, új recept létrehozásához és összes recept listázására is.
+Az alkalmazás fő eleme az oldal felső részén elhelyezkedő navigációs sáv. Ez a sáv minden oldalon elérhető, és lehetővé teszi a gyors hozzáférést a legfontosabb funkciókhoz. A sávban található egy keresőmező, amely azonnali keresést tesz lehetővé a receptek között, találatokat jelenít meg a kulcsszavak alapján szinte azonnal. Ezen kívül ebben a sávban helyezkednek el gombok a bejelentkezéshez, új recept létrehozásához és összes recept listázására is.
 
 \subsection{Kezdőoldal és receptlista}
 
@@ -70,13 +70,13 @@ A kezdőlapon két kiemelt elem található: egy kiemelt recept szekció, ahol e
 
 \subsection{Recept részletező oldal}
 
-Rögtön a recept címe, leírása és képe jelenik meg. A kép felett látható a recept értékelése, amely a korábban említett módón, csillagok formajában jelenik meg. A csillagokra kattintva a recept értékelésére van lehetőség, amely új értékelést ad a recepthez. Egy felhasználó csak egyszer értékelhet egy receptet, de korábbi értékelését módosíthatja.
+Rögtön a recept címe, leírása és képe jelenik meg. A kép felett látható a recept értékelése, amely a korábban említett módon, csillagok formájában jelenik meg. A csillagokra kattintva a recept értékelésére van lehetőség, amely új értékelést ad a recepthez. Egy felhasználó csak egyszer értékelhet egy receptet, de korábbi értékelését módosíthatja.
 
 A leírás alatt kap helyet a hozzávalók listája és az elkészítési útmutató. Könnyen áttekinthető formátumban jelennek meg, ahol a hozzávalók egy felsorolásban, míg az elkészítési útmutató egy számozott listában van megjelenítve. A kép alatt helyezkedik el az allergének listája is. 
 
 Ezek alatt található a komment szekció. A kommentek időrendben jelennek meg, a legfrissebb komment van legfelül. Minden kommentben látható a kommentelő neve, a komment szövege és időpontja. A kommentelési blokk legfelső részén jelenik meg a beviteli mező, ahol a felhasználók új kommentet írhatnak. Ez csak akkor kitölthető, ha a felhasználó be van jelentkezve. 
 
-Bejelentkezés után a kép alatt megjelenik kettő gomb, amely lehetővé teszi a recept szerkesztését illetve törlését, amennyiben a recept létrehozója vagy adminisztrátor vagyunk. A szerkesztés egy új oldalra navigál, ahol módosíthatjuk a recept adatait, hozzávalóit, elkészítési útmutatóját és képét. A törlés gomb megnyomásával egy felugró ablak jelenik meg, hogy biztosan szeretnénk-e törölni a receptet. 
+Bejelentkezés után a kép alatt megjelenik kettő gomb, amely lehetővé teszi a recept szerkesztését, illetve törlését, amennyiben a recept létrehozója vagy adminisztrátor vagyunk. A szerkesztés egy új oldalra navigál, ahol módosíthatjuk a recept adatait, hozzávalóit, elkészítési útmutatóját és képét. A törlés gomb megnyomásával egy felugró ablak jelenik meg, hogy biztosan szeretnénk-e törölni a receptet. 
 
 \begin{figure}[H]
 	\centering
@@ -87,7 +87,7 @@ Bejelentkezés után a kép alatt megjelenik kettő gomb, amely lehetővé teszi
 
 \subsection{Recept létrehozása és szerkesztése}
 
-A receptek létrehozásához illetve szerkesztéséhez egy ugyanúgy felépített oldalon van lehetőség.
+A receptek létrehozásához, illetve szerkesztéséhez egy ugyanúgy felépített oldalon van lehetőség.
 Ezen a felületen tudjuk megadni a recept címét, leírását, hozzávalókat, elkészítési útmutatót, illetve tudunk feltölteni képet. Itt tudjuk megadni manuálisan, hogy a recept milyen allergéneket tartalmaz. 
 Kötelező megadni a címet; leírást; legalább egy darab összetevőt, annak minden elemét; illetve egy elkészítési lépést. Kép feltöltése, illetve allergének megjelölése opcionális. Minden beküldendő adat a felületen ellenőrizve van, nem engedi az oldal, hogy hibás adatokkal küldjünk be receptet. A felületen egyértelműen fel van tüntetve, ha a recept készítése közben valamilyen hiba történik.
 
@@ -126,7 +126,7 @@ A navigációs sávban található a bejelentkezés gomb, ami átirányít a bej
 
 
 \subsection{Profiloldal}
-A profil nézeten minden adatot megtekinthetünk, ami hozzánk kapcsolódik. Más felhasználóknak csak a profilképet és becenevét látjuk. Saját profilunkon látjuk az email címünket, illetve csillagokkal jelezve a jelszót. A profil alatt megjelenik két gomb ha a saját profilunkat böngésszük: szerkesztés, törlés. Törlés esetén egy felugró ablak jelenik meg, ahol meg kell erősítenünk a törlési szándékot. Szerkesztés esetén minden korábban megadott adatot szerkeszthetünk a korábban említett ellenőrzésekkel. Mindenki profilszekciója alatt egy paginációval ellátott recept lista található, ami listázza a felhasználó receptjeit.
+A profil nézeten minden adatot megtekinthetünk, ami hozzánk kapcsolódik. Más felhasználóknak csak a profilképet és becenevét látjuk. Saját profilunkon látjuk az email címünket, illetve csillagokkal jelezve a jelszót. A profil alatt megjelenik két gomb, ha a saját profilunkat böngésszük: szerkesztés, törlés. Törlés esetén egy felugró ablak jelenik meg, ahol meg kell erősítenünk a törlési szándékot. Szerkesztés esetén minden korábban megadott adatot szerkeszthetünk a korábban említett ellenőrzésekkel. Mindenki profilszekciója alatt egy paginációval ellátott recept lista található, ami listázza a felhasználó receptjeit.
 
 \begin{figure}[H]
 	\centering
