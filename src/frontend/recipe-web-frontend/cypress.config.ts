@@ -7,9 +7,9 @@ export default defineConfig({
         supportFile: 'cypress/support/e2e.ts',
         // Override these via cypress.env.json or --env flags
         env: {
-            userEmail: 'test@example.com',
-            userPassword: 'TestPassword1',
-            userDisplayName: 'Teszt Felhasználó',
+            userEmail: 'recipe@example.com',
+            userPassword: 'Admin123!',
+            userDisplayName: 'Administrator',
         },
     },
 })

@@ -18,6 +18,7 @@ interface AuthState {
     currentUser: User | null
     authLoading: boolean
     authError: string | null
+    sessionRestored: boolean
 }
 
 function mapLoginToUser(response: LoginResponse): User {
@@ -50,6 +51,7 @@ export const useAuthStore = defineStore('auth', {
         currentUser: null,
         authLoading: false,
         authError: null,
+        sessionRestored: false,
     }),
 
     actions: {
@@ -101,6 +103,33 @@ export const useAuthStore = defineStore('auth', {
         updateUser(updates: Partial<User>) {
             if (this.currentUser) {
                 this.currentUser = { ...this.currentUser, ...updates }
+            }
+        },
+        async ensureSession() {
+            if (this.sessionRestored) return
+            await this.tryRestoreSession()
+        },
+        async tryRestoreSession() {
+            this.sessionRestored = true
+            try {
+                const [profileResult, imageResult] = await Promise.allSettled([
+                    profileApi.getOwnProfile(),
+                    profileApi.getOwnProfileImage(),
+                ])
+
+                if (profileResult.status === 'fulfilled') {
+                    const avatarUrl =
+                        imageResult.status === 'fulfilled'
+                            ? URL.createObjectURL(imageResult.value)
+                            : undefined
+                    this.currentUser = mapProfileToUser(
+                        profileResult.value,
+                        avatarUrl,
+                        this.currentUser?.roles,
+                    )
+                }
+            } catch {
+                // No active session — stay logged out silently
             }
         },
         async fetchOwnProfile() {

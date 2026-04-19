@@ -109,8 +109,8 @@ describe('Auth – Register', () => {
 
             cy.get('#register-name').type('Cypress Teszt')
             cy.get('#register-email').type(uniqueEmail)
-            cy.get('#register-password').type('Password123')
-            cy.get('#register-password-confirm').type('Password123')
+            cy.get('#register-password').type('Password123!')
+            cy.get('#register-password-confirm').type('Password123!')
             cy.contains('label', 'Elfogadom a feltételeket').find('input[type="checkbox"]').check()
             cy.contains('button[type="submit"]', 'Regisztráció').click()
             cy.url().should('not.include', '/login')

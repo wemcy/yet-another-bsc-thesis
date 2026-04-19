@@ -9,6 +9,7 @@ describe('Recipe Detail Page', () => {
 
     context('Recipe loaded successfully', () => {
         beforeEach(() => {
+            cy.login()
             // Navigate to the first available recipe from the listing page
             cy.visit('/recipes')
             cy.get('a[href*="/recipe/"]').first().click()
@@ -50,17 +51,17 @@ describe('Recipe Detail Page', () => {
                 cy.contains('h2', 'Hozzászólások').should('be.visible')
             })
 
-            it('shows the comment form', () => {
+            it('shows the comment form when logged in', () => {
                 cy.get('form').should('exist')
             })
         })
 
-        context('Edit / delete controls for guests', () => {
-            it('does not show an edit button for unauthenticated users', () => {
+        context('Edit / delete controls for non-owners', () => {
+            it('does not show an edit button for non-owners', () => {
                 cy.contains('a', 'Szerkesztés').should('not.exist')
             })
 
-            it('does not show a delete button for unauthenticated users', () => {
+            it('does not show a delete button for non-owners', () => {
                 cy.contains('button', 'Törlés').should('not.exist')
             })
         })

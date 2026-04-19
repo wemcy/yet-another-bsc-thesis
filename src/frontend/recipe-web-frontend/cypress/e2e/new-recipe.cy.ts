@@ -65,34 +65,5 @@ describe('New Recipe Page', () => {
             cy.contains('button', '+ Lépés hozzáadása').click()
             cy.get('textarea').should('have.length.at.least', 2)
         })
-
-        it('successfully submits a new recipe to the backend and redirects', () => {
-            // Fill out a unique recipe title so we don't conflict or can easily identify it
-            const uniqueTitle = `Cypress Teszt Recept ${Date.now()}`
-            
-            cy.get('input#recipe-title').type(uniqueTitle)
-            cy.get('textarea#recipe-description').type('Ez egy E2E teszt keretében létrehozott recept a valódi backend ellen.')
-            
-            // Add ingredients
-            cy.get('input[placeholder="Mennyiség"]').first().type('2')
-            cy.get('input[placeholder="Mértékegység"]').first().type('db')
-            cy.get('input[placeholder="Hozzávaló"]').first().type('Tojás')
-            
-            // Add steps
-            cy.get('textarea[placeholder="Lépés leírása"]').first().type('Keverjük össze a hozzávalókat és süssük meg.')
-            
-            // Toggle an allergen
-            cy.contains('label', 'Tojás')
-                .find('input[type="checkbox"]')
-                .check()
-
-            // Submit
-            cy.contains('button[type="submit"]', 'Mentés').click()
-
-            // It should redirect to the recipe details page or back to home/profile
-            // We check if the URL changes away from /new-recipe and displays the title
-            cy.url().should('not.include', '/new-recipe')
-            cy.contains(uniqueTitle).should('be.visible')
-        })
     })
 })

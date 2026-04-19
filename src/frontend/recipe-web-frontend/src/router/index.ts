@@ -53,8 +53,10 @@ const initRouter = () => {
         ],
     })
 
-    router.beforeEach((to) => {
+    router.beforeEach(async (to) => {
         const auth = useAuthStore()
+
+        await auth.ensureSession()
 
         if (to.meta.requiresAuth && !auth.isLoggedIn) {
             return {

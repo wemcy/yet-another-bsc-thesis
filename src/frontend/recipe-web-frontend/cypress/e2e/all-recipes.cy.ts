@@ -40,7 +40,7 @@ describe('All Recipes Page', () => {
         })
     })
 
-    context('Filter behaviour', () => {
+    context('Filter behavior', () => {
         beforeEach(() => {
             cy.visit('/recipes')
         })
@@ -87,21 +87,23 @@ describe('All Recipes Page', () => {
         })
 
         it('a checked include-allergen cannot simultaneously be checked as exclude', () => {
-            const glutenInclude = cy
-                .contains('h3', 'Kötelezően tartalmazza')
-                .parent()
-                .contains('label', 'Glutén')
-                .find('input[type="checkbox"]')
+            const getGlutenInclude = () =>
+                cy
+                    .contains('h3', 'Kötelezően tartalmazza')
+                    .parent()
+                    .contains('label', 'Glutén')
+                    .find('input[type="checkbox"]')
+            const getGlutenExclude = () =>
+                cy
+                    .contains('h3', 'Nem tartalmazhatja')
+                    .parent()
+                    .contains('label', 'Glutén')
+                    .find('input[type="checkbox"]')
 
-            const glutenExclude = cy
-                .contains('h3', 'Nem tartalmazhatja')
-                .parent()
-                .contains('label', 'Glutén')
-                .find('input[type="checkbox"]')
+            getGlutenInclude().check()
+            getGlutenExclude().check()
 
-            glutenInclude.check()
-            glutenExclude.check()
-            glutenInclude.should('not.be.checked')
+            getGlutenInclude().should('not.be.checked')
         })
 
         it('shows the empty-state message when the search returns no results', () => {
