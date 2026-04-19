@@ -7,6 +7,8 @@ server {
     listen ${PUBLIC_PORT} ssl;
     http2 on;
     server_name ${PUBLIC_HOST};
+    client_max_body_size 8M;
+
 
     ssl_certificate /etc/nginx/certs/${PROXY_TLS_CERTIFICATE_FILE};
     ssl_certificate_key /etc/nginx/certs/${PROXY_TLS_CERTIFICATE_KEY_FILE};
