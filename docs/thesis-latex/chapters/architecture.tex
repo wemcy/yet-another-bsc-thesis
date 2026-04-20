@@ -1,38 +1,20 @@
-﻿\chapter{Fejlesztői dokumentáció}
-\label{ch:architecture}
-
-Ez a fejezet a rendszer fejlesztői nézetű leírását adja: összefoglalja a tervezési szempontokat és követelményeket, bemutatja az alkalmazott módszereket és architektúrát, majd részletezi a megvalósítás, az üzemeltetés és a tesztelés folyamatát.
-
-\section{Tervezés}
-\label{sec:design}
+﻿\chapter{Fejlesztői dokumentáció}\label{ch:architecture}
+\section{Tervezés}\label{sec:design}
 
 \subsection{Feladat részletes leírása}
-
 % TODO: A feladat részletes leírása, a fejlesztői célok összefoglalása
+Az alkalmazás kettő fő részből áll: egy ASP.NET Core alapú backend szolgáltatásból, egy Vue és TypeScript alapú frontend egyoldalas alkalmazásból. Fontos hogy ezen részek önmagukban is megállják a helyüket, de együtt egy teljes funkcionalitást nyújtó rendszert alkotnak. Ennek megvalósásában az stabil API-kapcsolat, a jól definiált adatmodell, valamint a felhasználói élményre fókuszáló frontend kialakítása a fő célok közé tartozik. 
 
-\subsection{Funkcionális követelmények}
-\label{ch:requirements}
+\subsection{Funkcionális követelmények}\label{ch:requirements}
 
-A repositoryban szereplő use case dokumentációk alapján a rendszer követelményei néhány jól elhatárolható területre bonthatók. A dolgozat további részében ezekhez a csoportokhoz rendelhetőek az architekturális és implementációs döntések is.
+Funcionális követelmények tekintetében a projekt fő területei a következők:
 
-\begin{table}[H]
-	\centering
-	\begin{tabular}{ | m{0.28\textwidth} | m{0.62\textwidth} | }
-		\hline
-		\textbf{Terület} & \textbf{Tartalom} \\
-		\hline \hline
-		Felhasználó- és profilkezelés & Regisztráció, bejelentkezés, profil megjelenítése és módosítása. \\
-		\hline
-		Receptkezelés & Új recept létrehozása, szerkesztése, törlése, részletes receptnézet. \\
-		\hline
-		Keresés és szűrés & Receptlista böngészése, kulcsszavas keresés, allergénekhez és egyéb kritériumokhoz köthető szűrés. \\
-		\hline
-		Közösségi funkciók & Receptek értékelése, kommentek rögzítése és törlése. \\
-		\hline
-	\end{tabular}
-	\caption{A projekt fő funkcionális területei}
-	\label{tab:functional-areas}
-\end{table}
+\begin{itemize}
+	\item Felhasználó- és profilkezelés: regisztráció, bejelentkezés, profil megjelenítése és módosítása.
+	\item Receptkezelés: új recept létrehozása, szerkesztése, törlése, részletes receptnézet.
+	\item Keresés és szűrés: receptlista böngészése, kulcsszavas keresés, szűrés allergének alapján.
+	\item Közösségi funkciók: receptek értékelése, kommentek rögzítése és törlése.
+\end{itemize}
 
 \subsection{Nem funkcionális követelmények}
 

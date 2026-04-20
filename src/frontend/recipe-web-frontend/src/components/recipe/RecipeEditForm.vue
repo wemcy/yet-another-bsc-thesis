@@ -151,7 +151,9 @@ const router = useRouter()
 
 const title = ref<string>('')
 const description = ref<string>('')
-const ingredients = ref<Ingredient[]>([{ quantity: 0, unitOfMeasurement: '', name: '' }])
+const ingredients = ref<Ingredient[]>([
+    { quantity: 0, unitOfMeasurement: '', name: '', allergens: [] },
+])
 const imageFile = ref<File | null>(null)
 const imageUrl = ref<string | null>(null)
 
@@ -192,7 +194,7 @@ function handleImageChange(e: Event) {
 }
 
 function addIngredient() {
-    ingredients.value.push({ quantity: 0, unitOfMeasurement: '', name: '' })
+    ingredients.value.push({ quantity: 0, unitOfMeasurement: '', name: '', allergens: [] })
 }
 function removeIngredient(index: number) {
     ingredients.value.splice(index, 1)
@@ -236,7 +238,7 @@ async function submit() {
             {
                 title: title.value.trim(),
                 description: description.value.trim(),
-                ingredients: normalizedIngredients,
+                ingredients: <Ingredient[]>(<unknown>normalizedIngredients), // TODO REMOVE THIS CAST
                 steps: normalizedSteps,
                 allergens: selectedAllergens.value,
                 image: recipe.image,

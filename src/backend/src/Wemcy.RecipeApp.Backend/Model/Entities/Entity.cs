@@ -9,4 +9,8 @@ public abstract class Entity
 
     public DateTimeOffset UpdatedAt { get; set; }
 
+    public virtual void OnSave()
+    {
+
+    }
 }

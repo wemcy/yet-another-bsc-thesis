@@ -36,6 +36,11 @@ public class Recipe : Entity
         AverageRating = Ratings.Count > 0 ? Ratings.Average(r => r.Value) : 0;
     }
 
+    public void UpdateAllergens()
+    {
+        Allergens = Ingredients.Aggregate(AllergenType.None, (current, ingredient) => current | ingredient.Allergens);
+    }
+
     public Comment GetCommentById(Guid commentId)
     {
         var comment = Comments.SingleOrDefault(c => c.Id == commentId);
@@ -53,6 +58,11 @@ public class Recipe : Entity
         {
             rating.Value = newRating;
         }
+        UpdateAverageRating();
+    }
+    public override void OnSave()
+    {
+        UpdateAllergens();
         UpdateAverageRating();
     }
 }

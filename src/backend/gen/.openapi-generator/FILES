@@ -3,6 +3,7 @@
 ../src/Wemcy.RecipeApp.Backend.Api/Authentication/ApiAuthentication.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Controllers/AuthApi.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Controllers/HealthApi.cs
+../src/Wemcy.RecipeApp.Backend.Api/Controllers/IngredientsApi.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Controllers/ProfileApi.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Controllers/RecipesApi.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Converters/CustomEnumConverter.cs
@@ -11,6 +12,7 @@
 ../src/Wemcy.RecipeApp.Backend.Api/Models/AddUserRoleByIdRequest.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/Allergen.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/Comment.cs
+../src/Wemcy.RecipeApp.Backend.Api/Models/CreateIngredientSuggestionRequest.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/CreateRecipeRequest.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/ErrorResponse.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/HealthReport.cs
@@ -18,6 +20,7 @@
 ../src/Wemcy.RecipeApp.Backend.Api/Models/IdentityError.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/ImageSize.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/Ingredient.cs
+../src/Wemcy.RecipeApp.Backend.Api/Models/IngredientSuggestion.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/Login401Response.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/LoginRequest.cs
 ../src/Wemcy.RecipeApp.Backend.Api/Models/LoginResponse.cs

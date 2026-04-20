@@ -24,7 +24,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
     /// 
     /// </summary>
     [DataContract]
-    public class Ingredient : IEquatable<Ingredient>
+    public class CreateIngredientSuggestionRequest : IEquatable<CreateIngredientSuggestionRequest>
     {
         /// <summary>
         /// The name of the ingredient
@@ -33,22 +33,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         [Required]
         [DataMember(Name="name", EmitDefaultValue=false)]
         public string Name { get; set; }
-
-        /// <summary>
-        /// The quantity of the ingredient needed for the recipe
-        /// </summary>
-        /// <value>The quantity of the ingredient needed for the recipe</value>
-        [Required]
-        [DataMember(Name="quantity", EmitDefaultValue=true)]
-        public decimal Quantity { get; set; }
-
-        /// <summary>
-        /// The unit of measure for the ingredient quantity (e.g., grams, cups, tablespoons)
-        /// </summary>
-        /// <value>The unit of measure for the ingredient quantity (e.g., grams, cups, tablespoons)</value>
-        [Required]
-        [DataMember(Name="unitOfMeasurement", EmitDefaultValue=false)]
-        public string UnitOfMeasurement { get; set; }
 
         /// <summary>
         /// List of allergens present in the recipe
@@ -65,10 +49,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Ingredient {\n");
+            sb.Append("class CreateIngredientSuggestionRequest {\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  Quantity: ").Append(Quantity).Append("\n");
-            sb.Append("  UnitOfMeasurement: ").Append(UnitOfMeasurement).Append("\n");
             sb.Append("  Allergens: ").Append(Allergens).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -92,15 +74,15 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Ingredient)obj);
+            return obj.GetType() == GetType() && Equals((CreateIngredientSuggestionRequest)obj);
         }
 
         /// <summary>
-        /// Returns true if Ingredient instances are equal
+        /// Returns true if CreateIngredientSuggestionRequest instances are equal
         /// </summary>
-        /// <param name="other">Instance of Ingredient to be compared</param>
+        /// <param name="other">Instance of CreateIngredientSuggestionRequest to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(Ingredient other)
+        public bool Equals(CreateIngredientSuggestionRequest other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -110,16 +92,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     Name == other.Name ||
                     Name != null &&
                     Name.Equals(other.Name)
-                ) && 
-                (
-                    Quantity == other.Quantity ||
-                    
-                    Quantity.Equals(other.Quantity)
-                ) && 
-                (
-                    UnitOfMeasurement == other.UnitOfMeasurement ||
-                    UnitOfMeasurement != null &&
-                    UnitOfMeasurement.Equals(other.UnitOfMeasurement)
                 ) && 
                 (
                     Allergens == other.Allergens ||
@@ -141,10 +113,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                 // Suitable nullity checks etc, of course :)
                     if (Name != null)
                     hashCode = hashCode * 59 + Name.GetHashCode();
-                    
-                    hashCode = hashCode * 59 + Quantity.GetHashCode();
-                    if (UnitOfMeasurement != null)
-                    hashCode = hashCode * 59 + UnitOfMeasurement.GetHashCode();
                     if (Allergens != null)
                     hashCode = hashCode * 59 + Allergens.GetHashCode();
                 return hashCode;
@@ -154,12 +122,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(Ingredient left, Ingredient right)
+        public static bool operator ==(CreateIngredientSuggestionRequest left, CreateIngredientSuggestionRequest right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(Ingredient left, Ingredient right)
+        public static bool operator !=(CreateIngredientSuggestionRequest left, CreateIngredientSuggestionRequest right)
         {
             return !Equals(left, right);
         }

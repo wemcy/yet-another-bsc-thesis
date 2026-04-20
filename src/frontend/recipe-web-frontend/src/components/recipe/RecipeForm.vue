@@ -159,7 +159,9 @@ function handleImageChange(e: Event) {
 
 const title = ref<string>('')
 const description = ref<string>('')
-const ingredients = ref<Ingredient[]>([{ quantity: 0, unitOfMeasurement: '', name: '' }])
+const ingredients = ref<Ingredient[]>([
+    { quantity: 0, unitOfMeasurement: '', name: '', allergens: [] },
+])
 const steps = ref<string[]>([''])
 const selectedAllergens = ref<AllergenEnum[]>([])
 const errors = ref<RecipeFormErrors>({})
@@ -169,7 +171,7 @@ const submitError = ref<string | null>(null)
 const allergenOptions = allergenList
 
 function addIngredient() {
-    ingredients.value.push({ quantity: 0, unitOfMeasurement: '', name: '' })
+    ingredients.value.push({ quantity: 0, unitOfMeasurement: '', name: '', allergens: [] })
 }
 function removeIngredient(index: number) {
     ingredients.value.splice(index, 1)
@@ -185,7 +187,7 @@ function removeStep(index: number) {
 function resetForm() {
     title.value = ''
     description.value = ''
-    ingredients.value = [{ quantity: 0, unitOfMeasurement: '', name: '' }]
+    ingredients.value = [{ quantity: 0, unitOfMeasurement: '', name: '', allergens: [] }]
     steps.value = ['']
     selectedAllergens.value = []
     imageFile.value = null
@@ -222,7 +224,7 @@ async function submit() {
         authorName: authStore.userName,
         title: title.value.trim(),
         description: description.value.trim(),
-        ingredients: normalizedIngredients,
+        ingredients: <Ingredient[]>(<unknown>normalizedIngredients), // TODO REMOVE THIS CAST
         steps: normalizedSteps,
         allergens: selectedAllergens.value,
         image: imageUrl.value || '',

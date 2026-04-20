@@ -16,7 +16,7 @@ const commentsPageSize = 25
 const createEmptyNewRecipeDraft = (): NewRecipeDraft => ({
     title: '',
     description: '',
-    ingredients: [{ quantity: 0, unitOfMeasurement: '', name: '' }],
+    ingredients: [{ quantity: 0, unitOfMeasurement: '', name: '', allergens: [] }],
     steps: [''],
     selectedAllergens: [],
 })
@@ -108,7 +108,7 @@ export const useRecipeStore = defineStore('recipe', {
                     ingredients:
                         validIngredients.length > 0
                             ? validIngredients
-                            : [{ quantity: 0, unitOfMeasurement: '', name: '' }],
+                            : [{ quantity: 0, unitOfMeasurement: '', name: '', allergens: [] }],
                     steps: parsedSteps.length > 0 ? parsedSteps : [''],
                     selectedAllergens: parsedSelectedAllergens,
                 }
