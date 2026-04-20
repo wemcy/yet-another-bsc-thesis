@@ -30,7 +30,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// <summary>
         /// Create a new ingredient
         /// </summary>
-        /// <param name="ingredientSuggestion"></param>
+        /// <param name="createIngredientSuggestionRequest"></param>
         /// <response code="201">Ingredient created successfully</response>
         /// <response code="400">Invalid ingredient data supplied</response>
         /// <response code="401">No active session</response>
@@ -44,7 +44,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ProducesResponseType(statusCode: 400, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> CreateIngredient([FromBody]IngredientSuggestion ingredientSuggestion);
+        public abstract Task<IActionResult> CreateIngredient([FromBody]CreateIngredientSuggestionRequest createIngredientSuggestionRequest);
 
         /// <summary>
         /// Delete an existing ingredient suggestion
@@ -91,7 +91,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         /// Update an existing ingredient suggestion
         /// </summary>
         /// <param name="id">Unique identifier of the ingredient suggestion to update (UUID)</param>
-        /// <param name="ingredientSuggestion"></param>
+        /// <param name="createIngredientSuggestionRequest"></param>
         /// <response code="200">Ingredient suggestion updated successfully</response>
         /// <response code="400">Invalid ingredient suggestion data supplied</response>
         /// <response code="401">No active session</response>
@@ -107,6 +107,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Controllers
         [ProducesResponseType(statusCode: 401, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 403, type: typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404, type: typeof(ErrorResponse))]
-        public abstract Task<IActionResult> UpdateIngredient([FromRoute (Name = "id")][Required]Guid id, [FromBody]IngredientSuggestion ingredientSuggestion);
+        public abstract Task<IActionResult> UpdateIngredient([FromRoute (Name = "id")][Required]Guid id, [FromBody]CreateIngredientSuggestionRequest createIngredientSuggestionRequest);
     }
 }

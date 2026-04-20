@@ -96,7 +96,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/IngredientSuggestion"
+              "$ref": "#/components/schemas/CreateIngredientSuggestionRequest"
       responses:
         '201':
           description: Ingredient created successfully
@@ -175,7 +175,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/IngredientSuggestion"
+              "$ref": "#/components/schemas/CreateIngredientSuggestionRequest"
       responses:
         '200':
           description: Ingredient suggestion updated successfully
