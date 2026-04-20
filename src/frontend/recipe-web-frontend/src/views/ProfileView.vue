@@ -135,9 +135,9 @@ async function saveEdit() {
 
     try {
         await auth.updateOwnProfile({
-            name: profile.value.name,
+            displayName: profile.value.name,
             password: profile.value.password || null,
-            imageFile: imageFile.value,
+            profileImage: imageFile.value,
         })
         editing.value = false
         passwordConfirm.value = ''

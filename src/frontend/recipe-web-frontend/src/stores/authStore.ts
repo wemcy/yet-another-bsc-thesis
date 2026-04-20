@@ -31,18 +31,14 @@ function mapLoginToUser(response: LoginResponse): User {
     }
 }
 
-function mapProfileToUser(
-    response: Profile,
-    avatarUrl?: string,
-    existingRoles?: User['roles'],
-): User {
+function mapProfileToUser(response: Profile, existingRoles?: User['roles']): User {
     return {
         id: response.id,
         name: response.displayName,
         email: response.email,
         roles: existingRoles ?? [],
         registered: response.registeredAt.toISOString().slice(0, 10),
-        avatarUrl,
+        avatarUrl: '/api/profile/me/image',
     }
 }
 
@@ -96,9 +92,14 @@ export const useAuthStore = defineStore('auth', {
                 this.authLoading = false
             }
         },
-        logout() {
+        async logout() {
             this.currentUser = null
             this.authError = null
+            try {
+                await authApi.logout()
+            } catch {
+                // Even if logout API call fails, we still want to clear the local session
+            }
         },
         updateUser(updates: Partial<User>) {
             if (this.currentUser) {
@@ -106,28 +107,17 @@ export const useAuthStore = defineStore('auth', {
             }
         },
         async ensureSession() {
-            if (this.sessionRestored) return
             await this.tryRestoreSession()
         },
         async tryRestoreSession() {
-            this.sessionRestored = true
-            try {
-                const [profileResult, imageResult] = await Promise.allSettled([
-                    profileApi.getOwnProfile(),
-                    profileApi.getOwnProfileImage(),
-                ])
+            if (this.sessionRestored) {
+                return
+            }
 
-                if (profileResult.status === 'fulfilled') {
-                    const avatarUrl =
-                        imageResult.status === 'fulfilled'
-                            ? URL.createObjectURL(imageResult.value)
-                            : undefined
-                    this.currentUser = mapProfileToUser(
-                        profileResult.value,
-                        avatarUrl,
-                        this.currentUser?.roles,
-                    )
-                }
+            this.sessionRestored = true
+
+            try {
+                await this.fetchOwnProfile()
             } catch {
                 // No active session — stay logged out silently
             }
@@ -137,42 +127,23 @@ export const useAuthStore = defineStore('auth', {
             this.authError = null
 
             try {
-                const [profileResult, imageResult] = await Promise.allSettled([
-                    profileApi.getOwnProfile(),
-                    profileApi.getOwnProfileImage(),
-                ])
-
-                if (profileResult.status === 'fulfilled') {
-                    const avatarUrl =
-                        imageResult.status === 'fulfilled'
-                            ? URL.createObjectURL(imageResult.value)
-                            : this.currentUser?.avatarUrl
-                    this.currentUser = mapProfileToUser(
-                        profileResult.value,
-                        avatarUrl,
-                        this.currentUser?.roles,
-                    )
-                } else {
-                    this.authError = await toErrorMessage(profileResult.reason)
-                }
+                const profile = await profileApi.getOwnProfile()
+                this.currentUser = mapProfileToUser(profile, this.currentUser?.roles)
+            } catch (reason) {
+                this.authError = await toErrorMessage(reason)
             } finally {
                 this.authLoading = false
             }
         },
         async updateOwnProfile(params: {
-            name?: string
+            displayName?: string
             password?: string | null
-            imageFile?: File | null
+            profileImage?: File | null
         }) {
             this.authLoading = true
-            this.authError = null
-
             try {
-                await profileApi.updateOwnProfile({
-                    displayName: params.name ?? null,
-                    password: params.password || null,
-                    profileImage: params.imageFile ?? null,
-                })
+                this.authError = null
+                await profileApi.updateOwnProfile(params)
                 await this.fetchOwnProfile()
             } catch (error) {
                 this.authError = await toErrorMessage(error)
@@ -182,7 +153,7 @@ export const useAuthStore = defineStore('auth', {
             }
         },
         async deleteOwnProfile() {
-            if (!this.currentUser?.id) {
+            if (!this.isLoggedIn) {
                 this.authError = 'Nem található bejelentkezett felhasználó.'
                 return
             }
@@ -190,15 +161,8 @@ export const useAuthStore = defineStore('auth', {
             this.authLoading = true
             this.authError = null
 
-            try {
-                await profileApi.deleteProfileById({ id: this.currentUser.id })
-                this.logout()
-            } catch (error) {
-                this.authError = await toErrorMessage(error)
-                throw error
-            } finally {
-                this.authLoading = false
-            }
+            await this.deleteProfileById(this.getUserId!)
+            await this.logout()
         },
         async deleteProfileById(id: string) {
             this.authLoading = true
@@ -234,7 +198,7 @@ export const useAuthStore = defineStore('auth', {
     getters: {
         isLoggedIn: (state) => !!state.currentUser,
         isAdmin: (state) => state.currentUser?.roles?.includes('Admin') ?? false,
-        userName: (state) => state.currentUser?.name || 'Vendég',
-        getUserId: (state) => state.currentUser?.id || '1',
+        userName: (state) => state.currentUser?.name,
+        getUserId: (state) => state.currentUser?.id,
     },
 })

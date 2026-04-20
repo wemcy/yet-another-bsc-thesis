@@ -4,7 +4,7 @@
         class="block bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition"
     >
         <img
-            :src="buildRecipeImageUrl(recipe.image, recipe.imageRevision, ImageSize.Thumbnail)"
+            :src="buildRecipeImageUrl(recipe.image, recipe.imageRevision, ImageSize.Medium)"
             :alt="recipe.title"
             class="w-full h-40 object-cover"
         />

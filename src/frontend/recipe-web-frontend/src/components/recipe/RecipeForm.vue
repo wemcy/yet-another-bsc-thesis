@@ -220,8 +220,8 @@ async function submit() {
     const normalizedIngredients = normalizeIngredients(ingredients.value)
     const normalizedSteps = normalizeSteps(steps.value)
     const newRecipe: Omit<Recipe, 'id'> = {
-        authorId: authStore.getUserId,
-        authorName: authStore.userName,
+        authorId: authStore.getUserId ?? '1',
+        authorName: authStore.userName ?? 'Vendég',
         title: title.value.trim(),
         description: description.value.trim(),
         ingredients: <Ingredient[]>(<unknown>normalizedIngredients), // TODO REMOVE THIS CAST
