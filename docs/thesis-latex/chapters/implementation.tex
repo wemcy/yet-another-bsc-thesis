@@ -1,27 +1,39 @@
-﻿\section{Megvalositas}
+﻿\section{Megvalósítás}
 \label{ch:implementation}
+
+\subsection{Fejlesztési környezet és eszközök}
+
+% TODO: Használt IDE-k, eszközök, verziókezelés, csomagkezelők bemutatása
 
 \subsection{Backend}
 
-A backend ASP.NET Core alapokra epul, es kontrollerek, szolgaltatasok, repository-k, valamint adatbazis-kezelessel kapcsolatos komponensek kozmukodesebol all. A projektben megjelenik az Entity Framework Core hasznalata, az automatikus migraciofuttatas, a Swagger alapú API-leiras, valamint a hitelesitesi es jogosultsagkezelesi infrastruktura \cite{aspnetcore}.
+A backend ASP.NET Core alapokra épül, és kontrollerek, szolgáltatások, repository-k, valamint adatbázis-kezeléssel kapcsolatos komponensek közműködéséből áll. A projektben megjelenik az Entity Framework Core használata, az automatikus migrációfuttatás, a Swagger alapú API-leírás, valamint a hitelesítési és jogosultságkezelési infrastruktúra \cite{aspnetcore}.
 
-Ebben az alfejezetben erdemes majd reszletesen kiterni a kovetkezokre:
-
-\begin{itemize}
-	\item a fo entitasok es kapcsolatuk bemutatasa,
-	\item a repository es service retegek indoklasa,
-	\item a jogosultsagkezeles es a CRUD muveletek vedelme,
-	\item a lapozas, keresesi lehetosegek es hibakezeles megoldasa.
-\end{itemize}
+% TODO: Részletes kifejtés:
+% - a fő entitások és kapcsolatuk bemutatása
+% - a repository és service rétegek indoklása
+% - a jogosultságkezelés és a CRUD műveletek védelme
+% - a lapozás, keresési lehetőségek és hibakezelés megoldása
 
 \subsection{Frontend}
 
-A frontend Vue es TypeScript alapokra epulo egyoldalas alkalmazas. A komponensalapu felépítés, a kliensoldali routing, valamint az API klienssel valo integracio lehetove teszi, hogy a felhasznaloi folyamatok jol elkulonitheto modulokban jelenjenek meg \cite{vue}. A feluletnek kulonosen fontos szerepe van a receptlista, a reszletes receptnezet, a keresesi felulet, valamint a profil- es kommentfunkciok megjeleniteseben.
+A frontend Vue és TypeScript alapokra épülő egyoldalas alkalmazás. A komponensalapú felépítés, a kliensoldali routing, valamint az API klienssel való integráció lehetővé teszi, hogy a felhasználói folyamatok jól elkülöníthető modulokban jelenjenek meg \cite{vue}. A felületnek különösen fontos szerepe van a receptlista, a részletes receptnézet, a keresési felület, valamint a profil- és kommentfunkciók megjelenítésében.
 
-\subsection{API szerzodes es generalas}
+\subsection{API szerződés és generálás}
 
-Az OpenAPI specifikacio kulon erteket kepvisel a projektben, mert egyszerre tamogatja a backend dokumentalasat, a kliensoldali integraciot es a kovetkezetes interfeszek kialakitasat. A dolgozatban itt lehet bemutatni, hogy a specifikacio hogyan kapcsolodik a generalhato klienshez, es ez milyen modon csokkenti a frontend es backend kozotti elteresek kockazatat \cite{openapi}.
+Az OpenAPI specifikáció külön értéket képvisel a projektben, mert egyszerre támogatja a backend dokumentálását, a kliensoldali integrációt és a következetes interfészek kialakítását. A dolgozatban itt lehet bemutatni, hogy a specifikáció hogyan kapcsolódik a generálható klienshez, és ez milyen módon csökkenti a frontend és backend közötti eltérések kockázatát \cite{openapi}.
 
-\subsection{Konteneres futtatas}
+\subsection{Fejlesztés közben felmerült problémák}
 
-A repositoryban szereplo Dockerfile-ok es Docker Compose allomanyok arra utalnak, hogy a projekt fejlesztesehez es terjeszteshez konteneres workflow is rendelkezesre all. Ezt az alfejezetet erdemes majd arra hasznalni, hogy bemutasd a fo szolgaltatasok egyuttfutasanak modjat, valamint a fejlesztoi es publikacios konfiguraciok kozotti eltereseket \cite{docker}.
+% TODO: A fejlesztés során felmerült problémák és azok megoldásai
+
+\section{DevOps}
+\label{sec:devops}
+
+\subsection{Docker és konténeres futtatás}
+
+A repositoryban szereplő Dockerfile-ok és Docker Compose állományok arra utalnak, hogy a projekt fejlesztéséhez és terjesztéséhez konténeres workflow is rendelkezésre áll. Ebben az alfejezetben érdemes bemutatni a fő szolgáltatások együttfutásának módját, valamint a fejlesztői és publikációs konfigurációk közötti eltéréseket \cite{docker}.
+
+\subsection{CI/CD}
+
+% TODO: Folyamatos integráció és szállítás bemutatása, ha van ilyen a projektben
