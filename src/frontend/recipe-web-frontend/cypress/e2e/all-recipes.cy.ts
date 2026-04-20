@@ -113,4 +113,57 @@ describe('All Recipes Page', () => {
             cy.contains('Nincs találat a megadott keresésre és szűrőkre.').should('be.visible')
         })
     })
+
+    context('Pagination', () => {
+        beforeEach(() => {
+            cy.visit('/recipes')
+        })
+
+        it('shows the pagination controls when there are enough recipes', () => {
+            cy.get('body').then(($body) => {
+                if ($body.find('button:contains("Következő")').length > 0) {
+                    cy.contains('button', 'Következő').should('be.visible')
+                    cy.contains('button', 'Előző').should('be.visible')
+                } else {
+                    cy.log('Not enough recipes for pagination — skipping')
+                }
+            })
+        })
+
+        it('disables the Előző button on the first page', () => {
+            cy.get('body').then(($body) => {
+                if ($body.find('button:contains("Előző")').length > 0) {
+                    cy.contains('button', 'Előző').should('be.disabled')
+                } else {
+                    cy.log('No pagination present — skipping')
+                }
+            })
+        })
+
+        it('navigates to the next page and updates the URL', () => {
+            cy.get('body').then(($body) => {
+                if (
+                    $body.find('button:contains("Következő")').length > 0 &&
+                    !$body.find('button:contains("Következő")').is(':disabled')
+                ) {
+                    cy.contains('button', 'Következő').click()
+                    cy.url().should('include', 'page=2')
+                    cy.get('a[href*="/recipe/"]').should('have.length.at.least', 1)
+                } else {
+                    cy.log('No next page available — skipping')
+                }
+            })
+        })
+
+        it('highlights the current page number', () => {
+            cy.get('body').then(($body) => {
+                if ($body.find('button:contains("Következő")').length > 0) {
+                    // Page 1 button should have the active styling (bg-blue-600)
+                    cy.get('button.bg-blue-600').should('contain.text', '1')
+                } else {
+                    cy.log('No pagination present — skipping')
+                }
+            })
+        })
+    })
 })

@@ -47,6 +47,7 @@ const initRouter = () => {
                 name: 'EditRecipe',
                 component: EditRecipeView,
                 props: true,
+                meta: { requiresAuth: true },
             },
             { path: '/login', name: 'Login', component: LoginView },
             { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFoundView },

@@ -65,5 +65,39 @@ describe('New Recipe Page', () => {
             cy.contains('button', '+ Lépés hozzáadása').click()
             cy.get('textarea').should('have.length.at.least', 2)
         })
+
+        it('removes an ingredient row when the ✕ button is clicked', () => {
+            // Add one so we have at least 2
+            cy.contains('button', '+ Hozzávaló hozzáadása').click()
+            cy.get('input[placeholder="Hozzávaló"]').should('have.length.at.least', 2)
+            // Click last ✕ in the ingredients section
+            cy.contains('label', 'Hozzávalók').parent().find('button').contains('✕').last().click()
+            cy.get('input[placeholder="Hozzávaló"]').should('have.length', 1)
+        })
+
+        it('removes a step row when the ✕ button is clicked', () => {
+            cy.contains('button', '+ Lépés hozzáadása').click()
+            cy.contains('label', 'Elkészítési lépések')
+                .parent()
+                .find('textarea')
+                .should('have.length.at.least', 2)
+            cy.contains('label', 'Elkészítési lépések')
+                .parent()
+                .find('button')
+                .contains('✕')
+                .last()
+                .click()
+            cy.contains('label', 'Elkészítési lépések')
+                .parent()
+                .find('textarea')
+                .should('have.length', 1)
+        })
+
+        it('shows validation errors for missing description', () => {
+            cy.contains('label', 'Recept neve').parent().find('input').type('Teszt recept')
+            // Leave description empty, submit
+            cy.contains('button[type="submit"]', 'Mentés').click()
+            cy.contains('A leírás nem lehet üres.').should('be.visible')
+        })
     })
 })
