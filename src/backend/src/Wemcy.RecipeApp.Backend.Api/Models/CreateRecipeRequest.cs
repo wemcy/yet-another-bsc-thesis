@@ -43,13 +43,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public string? Description { get; set; }
 
         /// <summary>
-        /// List of allergens present in the recipe
-        /// </summary>
-        /// <value>List of allergens present in the recipe</value>
-        [DataMember(Name="allergens", EmitDefaultValue=false)]
-        public List<Allergen> Allergens { get; set; }
-
-        /// <summary>
         /// List of steps to prepare the recipe
         /// </summary>
         /// <value>List of steps to prepare the recipe</value>
@@ -73,7 +66,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             sb.Append("class CreateRecipeRequest {\n");
             sb.Append("  Title: ").Append(Title).Append("\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
-            sb.Append("  Allergens: ").Append(Allergens).Append("\n");
             sb.Append("  Steps: ").Append(Steps).Append("\n");
             sb.Append("  Ingredients: ").Append(Ingredients).Append("\n");
             sb.Append("}\n");
@@ -123,12 +115,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     Description.Equals(other.Description)
                 ) && 
                 (
-                    Allergens == other.Allergens ||
-                    Allergens != null &&
-                    other.Allergens != null &&
-                    Allergens.SequenceEqual(other.Allergens)
-                ) && 
-                (
                     Steps == other.Steps ||
                     Steps != null &&
                     other.Steps != null &&
@@ -156,8 +142,6 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     hashCode = hashCode * 59 + Title.GetHashCode();
                     if (Description != null)
                     hashCode = hashCode * 59 + Description.GetHashCode();
-                    if (Allergens != null)
-                    hashCode = hashCode * 59 + Allergens.GetHashCode();
                     if (Steps != null)
                     hashCode = hashCode * 59 + Steps.GetHashCode();
                     if (Ingredients != null)

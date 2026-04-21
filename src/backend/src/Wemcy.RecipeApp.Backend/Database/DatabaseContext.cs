@@ -71,10 +71,12 @@ public class DatabaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 
     private void UpdateEntities()
     {
-        var entries = ChangeTracker.Entries<Entity>();
+        var entries = ChangeTracker.Entries<Recipe>().ToList();
+
         foreach (var entry in entries)
         {
-            if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
+
+            if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.State == EntityState.Unchanged)
             {
                 entry.Entity.OnSave();
             }

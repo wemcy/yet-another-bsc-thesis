@@ -1287,8 +1287,6 @@ components:
         description:
           type: string
           description: Short textual summary of the recipe
-        allergens:
-          $ref: '#/components/schemas/AllergenList'
         steps:
           type: array
           description: List of steps to prepare the recipe

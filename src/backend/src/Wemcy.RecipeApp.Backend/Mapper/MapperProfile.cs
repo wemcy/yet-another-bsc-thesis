@@ -9,10 +9,7 @@ public class MapperProfile : Profile
 {
     public MapperProfile()
     {
-        CreateMap<CreateRecipeRequest, Recipe>()
-            .ForMember(
-                x => x.Allergens,
-                op => op.MapFrom(src => MapAllergensListToAllergen(src.Allergens)));
+        CreateMap<CreateRecipeRequest, Recipe>();
 
         CreateMap<Recipe, RecipeDTO>()
             .ForMember(dest => dest.Allergens, op => op.MapFrom(src => MappAllergenDTO(src.Allergens)));

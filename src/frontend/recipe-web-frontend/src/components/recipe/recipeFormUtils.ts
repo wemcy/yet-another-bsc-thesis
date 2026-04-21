@@ -1,7 +1,7 @@
 import type { RecipeFormErrors } from '@/types/recipe/recipe'
 import type { Ingredient } from '@/types/recipe/ingredient'
 
-type IngredientDraft = Omit<Ingredient, 'allergens'> //TODO this is not correct, but we don't have the UI for allergens yet, so we can ignore it for now
+type IngredientDraft = Ingredient
 
 type QuantityInput = number | string | null | undefined
 
@@ -19,15 +19,13 @@ const hasIngredientContent = (ingredient: IngredientDraft) =>
     ingredient.unitOfMeasurement.trim().length > 0 ||
     normalizeQuantity(ingredient.quantity) > 0
 
-export const normalizeIngredients = (
-    ingredients: IngredientDraft[], //TODO fix this
-) =>
+export const normalizeIngredients = (ingredients: IngredientDraft[]) =>
     ingredients
         .map((ingredient) => ({
             name: ingredient.name.trim(),
             unitOfMeasurement: ingredient.unitOfMeasurement.trim(),
             quantity: normalizeQuantity(ingredient.quantity),
-            allergenList: [], // TODO this is not correct
+            allergens: ingredient.allergens,
         }))
         .filter(hasIngredientContent)
 

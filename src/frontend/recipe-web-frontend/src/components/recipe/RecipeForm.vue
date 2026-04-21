@@ -47,6 +47,15 @@
                     placeholder="Hozzávaló"
                     class="w-full border rounded px-2 py-1 bg-white shadow-sm"
                 />
+                <select
+                    v-model="ingredient.allergens"
+                    multiple
+                    class="w-1/3 border rounded px-2 py-1 bg-white shadow-sm"
+                >
+                    <option v-for="allergen in allergenOptions" :key="allergen" :value="allergen">
+                        {{ allergen }}
+                    </option>
+                </select>
                 <button type="button" @click="removeIngredient(index)" class="text-red-500">
                     ✕
                 </button>
@@ -78,22 +87,6 @@
                 + Lépés hozzáadása
             </button>
             <p v-if="errors.steps" class="text-red-600 text-sm mt-1">{{ errors.steps }}</p>
-        </div>
-
-        <!-- Allergens -->
-        <div>
-            <label class="block font-semibold mb-2">Allergének</label>
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm text-gray-700">
-                <label v-for="item in allergenOptions" :key="item" class="flex items-center gap-2">
-                    <input
-                        type="checkbox"
-                        :value="item"
-                        v-model="selectedAllergens"
-                        class="accent-blue-600 bg-white shadow-sm"
-                    />
-                    {{ item }}
-                </label>
-            </div>
         </div>
 
         <!-- Image upload -->
@@ -142,7 +135,7 @@ import { useAuthStore } from '@/stores/authStore'
 import { normalizeIngredients, normalizeSteps, validateRecipeFields } from './recipeFormUtils'
 
 const recipeStore = useRecipeStore()
-const authStore = useAuthStore() // Assuming you have an auth store to get the authorId
+const authStore = useAuthStore()
 const router = useRouter()
 
 const imageFile = ref<File | null>(null)
@@ -224,7 +217,7 @@ async function submit() {
         authorName: authStore.userName ?? 'Vendég',
         title: title.value.trim(),
         description: description.value.trim(),
-        ingredients: <Ingredient[]>(<unknown>normalizedIngredients), // TODO REMOVE THIS CAST
+        ingredients: normalizedIngredients,
         steps: normalizedSteps,
         allergens: selectedAllergens.value,
         image: imageUrl.value || '',
