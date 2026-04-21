@@ -71,7 +71,7 @@ public class DatabaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 
     private void UpdateEntities()
     {
-        var entries = ChangeTracker.Entries<Recipe>().ToList();
+        var entries = ChangeTracker.Entries<Entity>().ToList();
 
         foreach (var entry in entries)
         {
