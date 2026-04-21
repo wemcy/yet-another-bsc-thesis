@@ -7,14 +7,14 @@ using Wemcy.RecipeApp.Backend.Search;
 
 namespace Wemcy.RecipeApp.Backend.Repository;
 
-public class IngredientSuggestionRepository(DatabaseContext databaseContext, IMapper mapper)
+public class IngredientSuggestionRepository(DatabaseContext databaseContext, IMapper mapper) : IIngredientSuggestionRepository
 {
     private readonly DatabaseContext _databaseContext = databaseContext;
     private readonly IMapper _mapper = mapper;
 
-    public  IAsyncEnumerable<T> ListIngredientsAs<T>( IQueryFilter<IngredientSuggestion> filter)
+    public IAsyncEnumerable<T> ListIngredientsAs<T>(IQueryFilter<IngredientSuggestion> filter)
     {
-        return  _databaseContext.IngredientSuggestions
+        return _databaseContext.IngredientSuggestions
             .AsNoTracking()
             .WithFilter(filter)
             .OrderByDescending(x => x.UpdatedAt)

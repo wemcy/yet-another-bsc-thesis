@@ -5,9 +5,9 @@ using Wemcy.RecipeApp.Backend.Services;
 
 namespace Wemcy.RecipeApp.Backend.Controllers
 {
-    public class IngredientsController(IngredientSuggestionService ingredientSuggestionService, IMapper mapper) : IngredientsApiController
+    public class IngredientsController(IIngredientSuggestionService ingredientSuggestionService, IMapper mapper) : IngredientsApiController
     {
-        private readonly IngredientSuggestionService _ingredientSuggestionService = ingredientSuggestionService;
+        private readonly IIngredientSuggestionService _ingredientSuggestionService = ingredientSuggestionService;
         private readonly IMapper _mapper = mapper;
 
 

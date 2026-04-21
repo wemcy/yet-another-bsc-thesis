@@ -4,12 +4,11 @@ using Wemcy.RecipeApp.Backend.Search;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class IngredientSuggestionService(IngredientSuggestionRepository ingredientSuggestionRepository, IMapper mapper)
+public class IngredientSuggestionService(IIngredientSuggestionRepository ingredientSuggestionRepository, IMapper mapper) : IIngredientSuggestionService
 {
     readonly IMapper _mapper = mapper;
 
-    private readonly IngredientSuggestionRepository _ingredientSuggestionRepository = ingredientSuggestionRepository;
-
+    private readonly IIngredientSuggestionRepository _ingredientSuggestionRepository = ingredientSuggestionRepository;
     public IAsyncEnumerable<T> SearchIngredientsAsAsync<T>(string name)
     {
         var search = new IngredientSuggestionSearch(name);
@@ -18,7 +17,7 @@ public class IngredientSuggestionService(IngredientSuggestionRepository ingredie
 
     public async Task<IngredientSuggestion> CreateIngredientAsync(IngredientSuggestion ingredientSuggestion)
     {
-        var newIngredient =  _ingredientSuggestionRepository.AddIngredient(ingredientSuggestion);
+        var newIngredient = _ingredientSuggestionRepository.AddIngredient(ingredientSuggestion);
         await _ingredientSuggestionRepository.SaveAsync();
         return newIngredient;
     }
@@ -27,7 +26,7 @@ public class IngredientSuggestionService(IngredientSuggestionRepository ingredie
     {
         var ingredient = await _ingredientSuggestionRepository.GetIngredientByIdAsync(id);
         _ingredientSuggestionRepository.DeleteIngredient(ingredient);
-         await _ingredientSuggestionRepository.SaveAsync();
+        await _ingredientSuggestionRepository.SaveAsync();
     }
 
     public async Task<IngredientSuggestion> GetIngredientByIdAsync(Guid id)
