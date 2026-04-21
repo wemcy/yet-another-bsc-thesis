@@ -17,6 +17,11 @@
             <li>
                 <router-link to="/new-recipe" class="hover:text-blue-600">Új recept</router-link>
             </li>
+            <li v-if="auth.isAdmin">
+                <router-link to="/admin/ingredients" class="hover:text-blue-600">
+                    Hozzávalók
+                </router-link>
+            </li>
         </ul>
 
         <!-- Jobb oldalon profil és auth akciók -->

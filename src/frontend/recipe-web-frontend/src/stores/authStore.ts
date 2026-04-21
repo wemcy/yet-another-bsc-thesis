@@ -21,6 +21,34 @@ interface AuthState {
     sessionRestored: boolean
 }
 
+const ROLE_STORAGE_KEY = 'recipe-app-user-roles'
+
+function readStoredRoles(): User['roles'] {
+    if (typeof window === 'undefined') return []
+
+    const raw = window.localStorage.getItem(ROLE_STORAGE_KEY)
+    if (!raw) return []
+
+    try {
+        const parsed = JSON.parse(raw)
+        return Array.isArray(parsed) ? (parsed as User['roles']) : []
+    } catch {
+        return []
+    }
+}
+
+function storeRoles(roles: User['roles']) {
+    if (typeof window === 'undefined') return
+
+    window.localStorage.setItem(ROLE_STORAGE_KEY, JSON.stringify(roles))
+}
+
+function clearStoredRoles() {
+    if (typeof window === 'undefined') return
+
+    window.localStorage.removeItem(ROLE_STORAGE_KEY)
+}
+
 function mapLoginToUser(response: LoginResponse): User {
     return {
         id: response.id,
@@ -54,6 +82,7 @@ export const useAuthStore = defineStore('auth', {
         login(user: User) {
             this.currentUser = user
             this.authError = null
+            storeRoles(user.roles)
         },
         async loginWithCredentials(email: string, password: string) {
             this.authLoading = true
@@ -65,10 +94,12 @@ export const useAuthStore = defineStore('auth', {
                 })
 
                 this.currentUser = mapLoginToUser(response)
+                storeRoles(this.currentUser.roles)
                 return this.currentUser
             } catch (error) {
                 this.currentUser = null
                 this.authError = await toErrorMessage(error)
+                clearStoredRoles()
                 throw error
             } finally {
                 this.authLoading = false
@@ -84,6 +115,7 @@ export const useAuthStore = defineStore('auth', {
                 })
 
                 this.currentUser = mapLoginToUser(response)
+                storeRoles(this.currentUser.roles)
                 return this.currentUser
             } catch (error) {
                 this.authError = await toErrorMessage(error)
@@ -95,6 +127,7 @@ export const useAuthStore = defineStore('auth', {
         async logout() {
             this.currentUser = null
             this.authError = null
+            clearStoredRoles()
             try {
                 await authApi.logout()
             } catch {
@@ -104,6 +137,7 @@ export const useAuthStore = defineStore('auth', {
         updateUser(updates: Partial<User>) {
             if (this.currentUser) {
                 this.currentUser = { ...this.currentUser, ...updates }
+                storeRoles(this.currentUser.roles)
             }
         },
         async ensureSession() {
@@ -125,7 +159,8 @@ export const useAuthStore = defineStore('auth', {
 
             try {
                 const profile = await profileApi.getOwnProfile()
-                this.currentUser = mapProfileToUser(profile, this.currentUser?.roles)
+                this.currentUser = mapProfileToUser(profile, this.currentUser?.roles ?? readStoredRoles())
+                storeRoles(this.currentUser.roles)
             } catch (reason) {
                 this.authError = await toErrorMessage(reason)
             } finally {
