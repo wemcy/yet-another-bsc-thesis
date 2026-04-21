@@ -35,6 +35,7 @@ const form = ref<IngredientFormState>({
 const canAccessPage = computed(() => auth.isAdmin)
 const isEditing = computed(() => !!form.value.id)
 const isSaveDisabled = computed(() => saveLoading.value || form.value.name.trim().length === 0)
+const isDeleteDisabled = computed(() => saveLoading.value || !form.value.id)
 
 function clearMessages() {
     actionError.value = null
@@ -140,6 +141,34 @@ async function saveIngredient() {
         if (refreshedMatch) {
             form.value.id = refreshedMatch.id
             selectedIngredientId.value = refreshedMatch.id
+        }
+    } catch (error) {
+        actionError.value = await toErrorMessage(error)
+    } finally {
+        saveLoading.value = false
+    }
+}
+
+async function deleteIngredient() {
+    if (!form.value.id) return
+
+    saveLoading.value = true
+    clearMessages()
+
+    try {
+        await ingredientApiClient.deleteIngredient({ id: form.value.id })
+        const deletedIngredientName = form.value.name.trim()
+
+        resetForm()
+        actionSuccess.value = deletedIngredientName
+            ? `"${deletedIngredientName}" hozzávaló törölve lett.`
+            : 'A hozzávaló törölve lett.'
+
+        if (searchTerm.value.trim()) {
+            await runSearch()
+        } else {
+            searchResults.value = []
+            searchHint.value = 'Keress rá egy hozzávalóra, majd válaszd ki a szerkesztéshez.'
         }
     } catch (error) {
         actionError.value = await toErrorMessage(error)
@@ -311,6 +340,15 @@ async function saveIngredient() {
                                 @click="resetForm"
                             >
                                 Űrlap ürítése
+                            </button>
+                            <button
+                                v-if="isEditing"
+                                type="button"
+                                :disabled="isDeleteDisabled"
+                                class="rounded-lg bg-red-600 px-5 py-2.5 text-white transition hover:bg-red-700 disabled:opacity-50"
+                                @click="deleteIngredient"
+                            >
+                                {{ saveLoading ? 'Törlés...' : 'Hozzávaló törlése' }}
                             </button>
                         </div>
                     </div>
