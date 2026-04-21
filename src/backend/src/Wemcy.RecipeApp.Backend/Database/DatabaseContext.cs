@@ -94,7 +94,7 @@ public class DatabaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 
     private void UpdateEntityTimestamps()
     {
-        var entries = ChangeTracker.Entries<Entity>();
+        var entries = ChangeTracker.Entries<Entity>().ToList();
         var now = DateTimeOffset.UtcNow;
 
         foreach (var entry in entries)
@@ -113,7 +113,7 @@ public class DatabaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 
     private void UpdateUserTimestamps()
     {
-        var entries = ChangeTracker.Entries<User>();
+        var entries = ChangeTracker.Entries<User>().ToList();
         var now = DateTimeOffset.UtcNow;
         foreach (var entry in entries)
         {
