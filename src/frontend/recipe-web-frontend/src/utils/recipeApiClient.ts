@@ -1,8 +1,15 @@
-import { Configuration, RecipeApiClient } from 'recipe-api-client'
+import { Configuration, RecipeApiClient, IngredientsApi } from 'recipe-api-client'
 
-export const recipeApiClient = new RecipeApiClient(
-    new Configuration({
-        basePath: '/api',
-        credentials: 'include',
-    }),
-)
+const config = new Configuration({
+    basePath: '/api',
+    credentials: 'include',
+})
+
+export const recipeApiClient = new RecipeApiClient(config)
+
+export const ingredientApiClient = new IngredientsApi(config)
+
+export default {
+    recipes: recipeApiClient,
+    ingredients: ingredientApiClient,
+}

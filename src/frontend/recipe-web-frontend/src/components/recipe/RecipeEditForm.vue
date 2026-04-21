@@ -45,21 +45,38 @@
                     placeholder="Egység"
                     class="w-1/4 border rounded px-2 py-1 bg-white shadow-sm"
                 />
+                <IngredientSuggestionAutocomplete
+                    v-model="ingredient.name"
+                    placeholder="Hozzávaló"
+                    class="w-full border rounded px-2 py-1 bg-white shadow-sm"
+                />
                 <input
                     v-model="ingredient.name"
                     type="text"
                     placeholder="Hozzávaló"
                     class="w-full border rounded px-2 py-1 bg-white shadow-sm"
                 />
-                <select
-                    v-model="ingredient.allergens"
-                    multiple
-                    class="w-1/3 border rounded px-2 py-1 bg-white shadow-sm"
-                >
-                    <option v-for="allergen in allergenOptions" :key="allergen" :value="allergen">
-                        {{ allergen }}
-                    </option>
-                </select>
+
+                <details class="relative w-64">
+                    <summary class="border rounded px-2 py-1 bg-white cursor-pointer">
+                        Allergének
+                    </summary>
+
+                    <div class="absolute bg-white border rounded shadow mt-1 p-2 z-10">
+                        <label
+                            v-for="allergen in allergenOptions"
+                            :key="allergen"
+                            class="flex items-center gap-2 text-sm"
+                        >
+                            <input
+                                type="checkbox"
+                                :value="allergen"
+                                v-model="ingredient.allergens"
+                            />
+                            {{ allergen }}
+                        </label>
+                    </div>
+                </details>
                 <button type="button" @click="removeIngredient(index)" class="text-red-500">
                     ✕
                 </button>
@@ -138,6 +155,7 @@ import type { Ingredient } from '@/types/recipe/ingredient'
 import { normalizeIngredients, normalizeSteps, validateRecipeFields } from './recipeFormUtils'
 import { buildRecipeImageUrl } from '@/utils/imageUrl'
 import { ImageSize } from 'recipe-api-client'
+import IngredientSuggestionAutocomplete from '@/components/search/IngredientSuggestionAutocomplete.vue'
 const { recipe } = defineProps<{ recipe: Recipe }>()
 const recipeStore = useRecipeStore()
 const router = useRouter()

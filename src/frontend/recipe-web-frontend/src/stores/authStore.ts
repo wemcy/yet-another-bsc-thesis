@@ -116,11 +116,8 @@ export const useAuthStore = defineStore('auth', {
 
             this.sessionRestored = true
 
-            try {
-                await this.fetchOwnProfile()
-            } catch {
-                // No active session — stay logged out silently
-            }
+            await this.fetchOwnProfile()
+            this.authError = null
         },
         async fetchOwnProfile() {
             this.authLoading = true
