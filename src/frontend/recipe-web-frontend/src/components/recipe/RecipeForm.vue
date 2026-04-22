@@ -41,11 +41,11 @@
                     placeholder="Egység"
                     class="w-1/4 border rounded px-2 py-1 bg-white shadow-sm"
                 />
-                <input
+                <IngredientSuggestionAutocomplete
                     v-model="ingredient.name"
-                    type="text"
-                    placeholder="Hozzávaló"
-                    class="w-full border rounded px-2 py-1 bg-white shadow-sm"
+                    v-model:allergens="ingredient.allergens"
+                    placeholder="Hozzávaló keresése"
+                    class="w-full"
                 />
                 <details class="relative w-64">
                     <summary class="border rounded px-2 py-1 bg-white cursor-pointer">
@@ -144,6 +144,7 @@ import type { Recipe, RecipeFormErrors } from '@/types/recipe/recipe'
 import type { Ingredient } from '@/types/recipe/ingredient'
 import { useAuthStore } from '@/stores/authStore'
 import { normalizeIngredients, normalizeSteps, validateRecipeFields } from './recipeFormUtils'
+import IngredientSuggestionAutocomplete from '@/components/search/IngredientSuggestionAutocomplete.vue'
 
 const recipeStore = useRecipeStore()
 const authStore = useAuthStore()

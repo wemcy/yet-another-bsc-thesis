@@ -47,14 +47,9 @@
                 />
                 <IngredientSuggestionAutocomplete
                     v-model="ingredient.name"
-                    placeholder="Hozzávaló"
-                    class="w-full border rounded px-2 py-1 bg-white shadow-sm"
-                />
-                <input
-                    v-model="ingredient.name"
-                    type="text"
-                    placeholder="Hozzávaló"
-                    class="w-full border rounded px-2 py-1 bg-white shadow-sm"
+                    v-model:allergens="ingredient.allergens"
+                    placeholder="Hozzávaló keresése"
+                    class="w-full"
                 />
 
                 <details class="relative w-64">
