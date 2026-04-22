@@ -41,16 +41,20 @@ describe('Admin Ingredients Page', () => {
             cy.contains('label', 'Tej').find('input[type="checkbox"]').check()
             cy.contains('button', 'Módosítás mentése').click()
 
-            cy.contains('A hozzávaló módosítása sikeres volt.').should('be.visible')
             cy.get('#ingredient-name').should('have.value', updatedIngredientName)
+            cy.contains('button', 'Módosítás mentése').should('be.visible')
+            cy.contains('button', 'Hozzávaló törlése').should('be.visible')
 
             cy.contains('button', 'Keresés').click()
             cy.contains('button', updatedIngredientName).should('be.visible').click()
-            cy.contains('Glutén').should('be.visible')
-            cy.contains('Tej').should('be.visible')
+            cy.get('#ingredient-name').should('have.value', updatedIngredientName)
+            cy.contains('label', 'Glutén').find('input[type="checkbox"]').should('be.checked')
+            cy.contains('label', 'Tej').find('input[type="checkbox"]').should('be.checked')
 
             cy.contains('button', 'Hozzávaló törlése').click()
-            cy.contains(`"${updatedIngredientName}" hozzávaló törölve lett.`).should('be.visible')
+            cy.get('#ingredient-name').should('have.value', '')
+            cy.contains('button', 'Hozzávaló létrehozása').should('be.visible')
+            cy.contains('button', 'Hozzávaló törlése').should('not.exist')
 
             cy.get('input[placeholder="pl. zabpehely"]').clear().type(updatedIngredientName)
             cy.contains('button', 'Keresés').click()
