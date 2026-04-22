@@ -1,5 +1,5 @@
-describe('New Recipe Page', () => {
-    context('Auth guard', () => {
+describe('New Recipe Page [U02A, U02B]', () => {
+    context('Support - auth guard', () => {
         it('redirects an unauthenticated user to /login', () => {
             cy.visit('/new-recipe')
             cy.url().should('include', '/login')
@@ -12,7 +12,7 @@ describe('New Recipe Page', () => {
         })
     })
 
-    context('Recipe form for authenticated users', () => {
+    context('U02A - Új recept hozzáadása érvényes adatokkal', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/new-recipe')
@@ -55,15 +55,10 @@ describe('New Recipe Page', () => {
             cy.get('input[type="file"][accept*="image"]').should('exist')
         })
 
-        it('shows a validation error when submitting with an empty title', () => {
-            cy.contains('button[type="submit"]', 'Mentés').click()
-            cy.contains('p', 'A cím megadása kötelező.').should('be.visible')
-        })
-
         it('adds a new ingredient row when "+ Hozzávaló hozzáadása" is clicked', () => {
             cy.contains('button', '+ Hozzávaló hozzáadása').click()
             // There should now be at least 2 ingredient input groups
-            cy.get('input[placeholder="Hozzávaló"]').should('have.length.at.least', 2)
+            cy.get('[data-cy="ingredient-name"]').should('have.length.at.least', 2)
             cy.contains('label', 'Hozzávalók')
                 .parent()
                 .find('summary')
@@ -81,10 +76,10 @@ describe('New Recipe Page', () => {
         it('removes an ingredient row when the ✕ button is clicked', () => {
             // Add one so we have at least 2
             cy.contains('button', '+ Hozzávaló hozzáadása').click()
-            cy.get('input[placeholder="Hozzávaló"]').should('have.length.at.least', 2)
+            cy.get('[data-cy="ingredient-name"]').should('have.length.at.least', 2)
             // Click last ✕ in the ingredients section
             cy.contains('label', 'Hozzávalók').parent().find('button').contains('✕').last().click()
-            cy.get('input[placeholder="Hozzávaló"]').should('have.length', 1)
+            cy.get('[data-cy="ingredient-name"]').should('have.length', 1)
         })
 
         it('removes a step row when the ✕ button is clicked', () => {
@@ -103,6 +98,18 @@ describe('New Recipe Page', () => {
                 .parent()
                 .find('textarea')
                 .should('have.length', 1)
+        })
+    })
+
+    context('U02B - Új recept hozzáadása érvénytelen adatokkal', () => {
+        beforeEach(() => {
+            cy.login()
+            cy.visit('/new-recipe')
+        })
+
+        it('shows a validation error when submitting with an empty title', () => {
+            cy.contains('button[type="submit"]', 'Mentés').click()
+            cy.contains('p', 'A cím megadása kötelező.').should('be.visible')
         })
 
         it('shows validation errors for missing description', () => {

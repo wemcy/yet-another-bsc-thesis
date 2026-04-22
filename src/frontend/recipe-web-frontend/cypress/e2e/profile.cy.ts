@@ -1,5 +1,5 @@
-describe('Profile Page', () => {
-    context('Auth guard', () => {
+describe('Profile Page [U08A, U09A, U09B]', () => {
+    context('Support - auth guard', () => {
         it('redirects an unauthenticated user to /login', () => {
             cy.visit('/profile')
             cy.url().should('include', '/login')
@@ -12,7 +12,7 @@ describe('Profile Page', () => {
         })
     })
 
-    context('Profile information display', () => {
+    context('U08A - Saját profil megtekintése', () => {
         beforeEach(() => {
             cy.login()
             cy.contains('nav a', 'ReceptApp').click() // ensure state
@@ -47,7 +47,7 @@ describe('Profile Page', () => {
         })
     })
 
-    context('Edit mode', () => {
+    context('U09A - Felhasználói profil frissítése', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/profile')
@@ -102,7 +102,7 @@ describe('Profile Page', () => {
         })
     })
 
-    context('Profile validation in edit mode', () => {
+    context('U09B - Felhasználói profil frissítése érvénytelen adatokkal', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/profile')
@@ -135,7 +135,7 @@ describe('Profile Page', () => {
         })
     })
 
-    context('Delete profile dialog', () => {
+    context('Support - delete profile dialog', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/profile')
@@ -159,7 +159,7 @@ describe('Profile Page', () => {
         })
     })
 
-    context('Own recipes section', () => {
+    context('Support - own recipes section', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/profile')

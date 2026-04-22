@@ -185,6 +185,7 @@ watch(
                 <h2 class="text-lg font-semibold text-gray-900">Allergén szűrő</h2>
                 <button
                     type="button"
+                    data-cy="clear-filters"
                     class="text-sm text-blue-600 hover:underline disabled:text-gray-400 disabled:no-underline"
                     :disabled="
                         searchTitle.trim().length === 0 &&
@@ -206,6 +207,7 @@ watch(
                 </label>
                 <input
                     id="recipe-title-filter"
+                    data-cy="recipe-title-filter"
                     v-model="searchTitle"
                     type="text"
                     placeholder="Például: gulyásleves"
@@ -256,6 +258,7 @@ watch(
             <div class="mt-4 flex justify-end">
                 <button
                     type="button"
+                    data-cy="apply-filters"
                     class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
                     :disabled="!hasPendingFilterChanges || paginationStore.allRecipesLoading"
                     @click="applyFilters"

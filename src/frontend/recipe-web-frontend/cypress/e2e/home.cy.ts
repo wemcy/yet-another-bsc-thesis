@@ -1,9 +1,9 @@
-describe('Home Page', () => {
+describe('Home Page [U05A support]', () => {
     beforeEach(() => {
         cy.visit('/')
     })
 
-    context('Hero section', () => {
+    context('Support - hero section', () => {
         it('displays the main heading', () => {
             cy.contains('h1', 'Fedezd fel a legjobb házias recepteket').should('be.visible')
         })
@@ -19,7 +19,7 @@ describe('Home Page', () => {
         })
     })
 
-    context('Showcase section', () => {
+    context('Support - showcase section', () => {
         it('displays the "Kiemelt receptek" heading', () => {
             cy.contains('h2', 'Kiemelt receptek').should('be.visible')
         })
@@ -29,14 +29,14 @@ describe('Home Page', () => {
         })
     })
 
-    context('Featured recipe', () => {
+    context('Support - featured recipe', () => {
         it('renders the featured recipe section', () => {
             // The featured recipe block renders once the API responds
             cy.get('main section, main article, main [class*="highlight"]').should('exist')
         })
     })
 
-    context('Navigation for guests', () => {
+    context('Support - navigation for guests', () => {
         it('shows the login button and not the logout button', () => {
             cy.contains('nav button', 'Belépés').should('be.visible')
             cy.contains('nav button', 'Kilépés').should('not.exist')

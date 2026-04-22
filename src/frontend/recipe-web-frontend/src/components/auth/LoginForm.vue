@@ -4,6 +4,7 @@
             <label for="login-email" class="block text-sm font-medium text-slate-700">E-mail</label>
             <input
                 id="login-email"
+                data-cy="login-email"
                 v-model.trim="email"
                 type="email"
                 autocomplete="email"
@@ -19,6 +20,7 @@
             >
             <input
                 id="login-password"
+                data-cy="login-password"
                 v-model="password"
                 type="password"
                 autocomplete="current-password"
@@ -30,6 +32,7 @@
 
         <label class="inline-flex items-center gap-2 text-sm text-slate-700">
             <input
+                data-cy="login-remember"
                 v-model="remember"
                 type="checkbox"
                 class="rounded border-slate-300 bg-white shadow-sm"
@@ -38,6 +41,7 @@
         </label>
 
         <button
+            data-cy="login-submit"
             type="submit"
             class="w-full rounded-lg bg-blue-600 text-white py-2.5 font-medium hover:bg-blue-700 transition"
         >

@@ -9,15 +9,15 @@
 	\begin{tabular}{|m{0.12\linewidth}|m{0.78\linewidth}|m{0.08\linewidth}|}
 		\hline
 		& \textbf{Leírás} & \textbf{Kód} \\\hline
-		GIVEN & A látogató nincs bejelentkezve és megnyitotta a regisztrációs oldalt. & \multirow{3}{*}{U01} \\\cline{1-2}
+		GIVEN & A látogató nincs bejelentkezve és megnyitotta a regisztrációs oldalt. & \multirow{3}{*}{U01A} \\\cline{1-2}
 		WHEN  & Kitölti a becenév, e-mail, jelszó és jelszó megerősítése mezőket, majd beküldi az űrlapot. & \\\cline{1-2}
 		THEN  & A rendszer létrehozza a fiókot, sikeres visszajelzést ad és automatikusan bejelentkezteti a felhasználót. & \\\hline
 
-		GIVEN & A látogató nincs bejelentkezve és olyan e-mail címmel tölti ki az űrlapot, amely már használatban van. & \multirow{3}{*}{U01a} \\\cline{1-2}
+		GIVEN & A látogató nincs bejelentkezve és olyan e-mail címmel tölti ki az űrlapot, amely már használatban van. & \multirow{3}{*}{U01B} \\\cline{1-2}
 		WHEN  & Beküldi a regisztrációs űrlapot. & \\\cline{1-2}
 		THEN  & Hibaüzenet: az e-mail cím már foglalt. & \\\hline
 
-		GIVEN & A látogató nincs bejelentkezve és az űrlapon érvénytelen e-mail címet vagy nem megfelelő jelszót ad meg. & \multirow{3}{*}{U01b} \\\cline{1-2}
+		GIVEN & A látogató nincs bejelentkezve és az űrlapon érvénytelen e-mail címet vagy nem megfelelő jelszót ad meg. & \multirow{3}{*}{U01C} \\\cline{1-2}
 		WHEN  & Beküldi az űrlapot. & \\\cline{1-2}
 		THEN  & Hibaüzenetek jelennek meg a hibás mezők mellett. & \\\hline
 	\end{tabular}
@@ -29,11 +29,11 @@
 	\begin{tabular}{|m{0.12\linewidth}|m{0.78\linewidth}|m{0.08\linewidth}|}
 		\hline
 		& \textbf{Leírás} & \textbf{Kód} \\\hline
-		GIVEN & A felhasználó be van jelentkezve és jogosult receptet létrehozni. & \multirow{3}{*}{U02} \\\cline{1-2}
+		GIVEN & A felhasználó be van jelentkezve és jogosult receptet létrehozni. & \multirow{3}{*}{U02A} \\\cline{1-2}
 		WHEN  & Megnyitja az "Új recept" oldalt, megadja a kötelező adatokat (cím, leírás, legalább egy hozzávaló és legalább egy elkészítési lépés), opcionálisan képet tölt fel, majd beküldi az űrlapot. & \\\cline{1-2}
 		THEN  & A rendszer ellenőrzi az adatokat, létrehozza a receptet és megjeleníti a recept részletező oldalát. & \\\hline
 
-		GIVEN & A felhasználó be van jelentkezve, de a recept űrlap hiányos vagy érvénytelen adatokat tartalmaz. & \multirow{3}{*}{U02a} \\\cline{1-2}
+		GIVEN & A felhasználó be van jelentkezve, de a recept űrlap hiányos vagy érvénytelen adatokat tartalmaz. & \multirow{3}{*}{U02B} \\\cline{1-2}
 		WHEN  & Beküldi az űrlapot. & \\\cline{1-2}
 		THEN  & A rendszer nem menti el a receptet, hibaüzeneteket jelenít meg és lehetőséget ad a javításra. & \\\hline
 	\end{tabular}
@@ -45,11 +45,11 @@
 	\begin{tabular}{|m{0.12\linewidth}|m{0.78\linewidth}|m{0.08\linewidth}|}
 		\hline
 		& \textbf{Leírás} & \textbf{Kód} \\\hline
-		GIVEN & A felhasználó eléri a webalkalmazást és megnyitotta a kereső- vagy receptlista felületet. & \multirow{3}{*}{U03} \\\cline{1-2}
+		GIVEN & A felhasználó eléri a webalkalmazást és megnyitotta a kereső- vagy receptlista felületet. & \multirow{3}{*}{U03A} \\\cline{1-2}
 		WHEN  & Keresési kulcsszavakat ad meg vagy allergén alapú szűrőket állít be. & \\\cline{1-2}
 		THEN  & A rendszer megjeleníti az illeszkedő recepteket. & \\\hline
 
-		GIVEN & A felhasználó olyan kulcsszót vagy szűrőfeltételt adott meg, amelyhez nem tartozik találat. & \multirow{3}{*}{U03a} \\\cline{1-2}
+		GIVEN & A felhasználó olyan kulcsszót vagy szűrőfeltételt adott meg, amelyhez nem tartozik találat. & \multirow{3}{*}{U03B} \\\cline{1-2}
 		WHEN  & A keresés lefut. & \\\cline{1-2}
 		THEN  & "Nincs találat" üzenet jelenik meg; a felhasználó módosíthatja a keresést. & \\\hline
 \end{tabular}
@@ -61,11 +61,11 @@
 	\begin{tabular}{|m{0.12\linewidth}|m{0.78\linewidth}|m{0.08\linewidth}|}
 		\hline
 		& \textbf{Leírás} & \textbf{Kód} \\\hline
-		GIVEN & A felhasználó be van jelentkezve, és megnyitotta egy recept részletező oldalát. & \multirow{3}{*}{U04} \\\cline{1-2}
+		GIVEN & A felhasználó be van jelentkezve, és megnyitotta egy recept részletező oldalát. & \multirow{3}{*}{U04A} \\\cline{1-2}
 		WHEN  & Kiválaszt egy 1 és 5 közötti értékelést. & \\\cline{1-2}
 		THEN  & A rendszer elmenti vagy frissíti a felhasználó értékelését, és frissíti az átlagértékelést. & \\\hline
 
-		GIVEN & A felhasználó be van jelentkezve, és korábban már értékelte a receptet. & \multirow{3}{*}{U04a} \\\cline{1-2}
+		GIVEN & A felhasználó be van jelentkezve, és korábban már értékelte a receptet. & \multirow{3}{*}{U04B} \\\cline{1-2}
 		WHEN  & Másik csillagértéket választ a recepthez. & \\\cline{1-2}
 		THEN  & A rendszer frissíti a korábbi értékelést, és az új átlagértékelést jeleníti meg. & \\\hline
 	\end{tabular}
@@ -77,11 +77,11 @@
 	\begin{tabular}{|m{0.12\linewidth}|m{0.78\linewidth}|m{0.08\linewidth}|}
 		\hline
 		& \textbf{Leírás} & \textbf{Kód} \\\hline
-		GIVEN & A felhasználó kiválaszt egy receptet a listából, a kezdőoldalról vagy a keresési találatok közül. & \multirow{3}{*}{U05} \\\cline{1-2}
+		GIVEN & A felhasználó kiválaszt egy receptet a listából, a kezdőoldalról vagy a keresési találatok közül. & \multirow{3}{*}{U05A} \\\cline{1-2}
 		WHEN  & Megnyitja a recept részletei oldalt. & \\\cline{1-2}
 		THEN  & A rendszer betölti és megjeleníti a recept teljes adatait (cím, leírás, hozzávalók, elkészítés, allergén információk, értékelések, hozzászólások). & \\\hline
 
-		GIVEN & A felhasználó olyan receptazonosítóra navigál, amelyhez nem tartozik létező recept. & \multirow{3}{*}{U05a} \\\cline{1-2}
+		GIVEN & A felhasználó olyan receptazonosítóra navigál, amelyhez nem tartozik létező recept. & \multirow{3}{*}{U05B} \\\cline{1-2}
 		WHEN  & Megnyitja a recept részletei oldalt. & \\\cline{1-2}
 		THEN  & Hibaüzenet és visszairányítás a receptlistához. & \\\hline
 	\end{tabular}
@@ -93,11 +93,11 @@
 	\begin{tabular}{|m{0.12\linewidth}|m{0.78\linewidth}|m{0.08\linewidth}|}
 		\hline
 		& \textbf{Leírás} & \textbf{Kód} \\\hline
-		GIVEN & A felhasználó be van jelentkezve, és a recept tulajdonosa vagy adminisztrátor. & \multirow{3}{*}{U06} \\\cline{1-2}
+		GIVEN & A felhasználó be van jelentkezve, és a recept tulajdonosa vagy adminisztrátor. & \multirow{3}{*}{U06A} \\\cline{1-2}
 		WHEN  & Megnyitja a szerkesztő űrlapot, módosítja az adatokat és beküldi. & \\\cline{1-2}
 		THEN  & A rendszer ellenőrzi és frissíti a receptet az adatbázisban, majd megjeleníti a módosított receptet. & \\\hline
 
-		GIVEN & A felhasználó jogosult a szerkesztésre, de érvénytelen vagy hiányos adatokat ad meg. & \multirow{3}{*}{U06a} \\\cline{1-2}
+		GIVEN & A felhasználó jogosult a szerkesztésre, de érvénytelen vagy hiányos adatokat ad meg. & \multirow{3}{*}{U06B} \\\cline{1-2}
 		WHEN  & Beküldi a módosításokat. & \\\cline{1-2}
 		THEN  & A rendszer nem menti el a módosításokat, hibaüzeneteket jelenít meg és lehetőséget ad a javításra. & \\\hline
 	\end{tabular}
@@ -109,11 +109,11 @@
 	\begin{tabular}{|m{0.12\linewidth}|m{0.78\linewidth}|m{0.08\linewidth}|}
 		\hline
 		& \textbf{Leírás} & \textbf{Kód} \\\hline
-		GIVEN & A felhasználó be van jelentkezve, és a recept tulajdonosa vagy adminisztrátor. & \multirow{3}{*}{U07} \\\cline{1-2}
+		GIVEN & A felhasználó be van jelentkezve, és a recept tulajdonosa vagy adminisztrátor. & \multirow{3}{*}{U07A} \\\cline{1-2}
 		WHEN  & Kiválasztja a törlés opciót és megerősíti a műveletet. & \\\cline{1-2}
 		THEN  & A rendszer törli a receptet és frissíti a listát; megerősítést jelenít meg. & \\\hline
 
-		GIVEN & A felhasználó be van jelentkezve, és jogosult a recept törlésére. & \multirow{3}{*}{U07a} \\\cline{1-2}
+		GIVEN & A felhasználó be van jelentkezve, és jogosult a recept törlésére. & \multirow{3}{*}{U07B} \\\cline{1-2}
 		WHEN  & Elindítja a törlést, de a megerősítő ablakban megszakítja a műveletet. & \\\cline{1-2}
 		THEN  & A rendszer megszakítja a törlést, a recept megmarad. & \\\hline
 	\end{tabular}
@@ -125,11 +125,11 @@
 	\begin{tabular}{|m{0.12\linewidth}|m{0.78\linewidth}|m{0.08\linewidth}|}
 		\hline
 		& \textbf{Leírás} & \textbf{Kód} \\\hline
-		GIVEN & A felhasználó be van jelentkezve. & \multirow{3}{*}{U08} \\\cline{1-2}
+		GIVEN & A felhasználó be van jelentkezve. & \multirow{3}{*}{U08A} \\\cline{1-2}
 		WHEN  & Megnyitja a saját profiloldalát. & \\\cline{1-2}
 		THEN  & A rendszer megjeleníti a saját adatait (becenév, e-mail, profilkép, létrehozott receptek listája), valamint a profilhoz tartozó műveleteket. & \\\hline
 
-		GIVEN & A felhasználó be van jelentkezve, és egy másik felhasználó profilját nyitja meg. & \multirow{3}{*}{U08a} \\\cline{1-2}
+		GIVEN & A felhasználó be van jelentkezve, és egy másik felhasználó profilját nyitja meg. & \multirow{3}{*}{U08B} \\\cline{1-2}
 		WHEN  & Megnyitja a másik felhasználó profiloldalát. & \\\cline{1-2}
 		THEN  & A rendszer csak a nyilvános adatokat jeleníti meg (becenév, profilkép, létrehozott receptek listája). & \\\hline
 	\end{tabular}
@@ -141,11 +141,11 @@
 	\begin{tabular}{|m{0.12\linewidth}|m{0.78\linewidth}|m{0.08\linewidth}|}
 		\hline
 		& \textbf{Leírás} & \textbf{Kód} \\\hline
-		GIVEN & A felhasználó be van jelentkezve és megnyitotta a saját profil szerkesztő felületét. & \multirow{3}{*}{U09} \\\cline{1-2}
+		GIVEN & A felhasználó be van jelentkezve és megnyitotta a saját profil szerkesztő felületét. & \multirow{3}{*}{U09A} \\\cline{1-2}
 		WHEN  & Módosítja adatait és beküldi az űrlapot. & \\\cline{1-2}
 		THEN  & A rendszer ellenőrzi és frissíti a profiladatokat, majd megerősítést jelenít meg. & \\\hline
 
-		GIVEN & A felhasználó be van jelentkezve, de érvénytelen bemenetet ad meg (pl. hibás e-mail formátum). & \multirow{3}{*}{U09a} \\\cline{1-2}
+		GIVEN & A felhasználó be van jelentkezve, de érvénytelen bemenetet ad meg (pl. hibás e-mail formátum). & \multirow{3}{*}{U09B} \\\cline{1-2}
 		WHEN  & Beküldi a módosításokat. & \\\cline{1-2}
 		THEN  & A rendszer nem menti el a módosításokat, hibaüzenetet jelenít meg, a felhasználó javíthatja az adatokat. & \\\hline
 	\end{tabular}
@@ -157,11 +157,11 @@
 	\begin{tabular}{|m{0.12\linewidth}|m{0.78\linewidth}|m{0.08\linewidth}|}
 		\hline
 		& \textbf{Leírás} & \textbf{Kód} \\\hline
-		GIVEN & A felhasználó be van jelentkezve, és megnyitotta egy recept részletező oldalát, ahol elérhető a hozzászólásmező. & \multirow{3}{*}{U10} \\\cline{1-2}
+		GIVEN & A felhasználó be van jelentkezve, és megnyitotta egy recept részletező oldalát, ahol elérhető a hozzászólásmező. & \multirow{3}{*}{U10A} \\\cline{1-2}
 		WHEN  & Beír egy hozzászólást és beküldi. & \\\cline{1-2}
 		THEN  & A rendszer elmenti a hozzászólást és megjeleníti azt a recept oldalon. & \\\hline
 
-		GIVEN & A felhasználó be van jelentkezve, de üres vagy érvénytelen hozzászólást adott meg. & \multirow{3}{*}{U10a} \\\cline{1-2}
+		GIVEN & A felhasználó be van jelentkezve, de üres vagy érvénytelen hozzászólást adott meg. & \multirow{3}{*}{U10B} \\\cline{1-2}
 		WHEN  & Megpróbálja beküldeni. & \\\cline{1-2}
 		THEN  & A rendszer nem menti el a hozzászólást, hibaüzenet jelenik meg, a felhasználó javíthatja a bejegyzést. & \\\hline
 	\end{tabular}
@@ -173,11 +173,11 @@
 	\begin{tabular}{|m{0.12\linewidth}|m{0.78\linewidth}|m{0.08\linewidth}|}
 		\hline
 		& \textbf{Leírás} & \textbf{Kód} \\\hline
-		GIVEN & Az adminisztrátor be van jelentkezve, és a hozzászólás létezik. & \multirow{3}{*}{U11} \\\cline{1-2}
+		GIVEN & Az adminisztrátor be van jelentkezve, és a hozzászólás létezik. & \multirow{3}{*}{U11A} \\\cline{1-2}
 		WHEN  & Kiválasztja a törlés opciót és megerősíti. & \\\cline{1-2}
 		THEN  & A rendszer törli a hozzászólást és eltávolítja a megjelenítésből. & \\\hline
 
-		GIVEN & Az adminisztrátor be van jelentkezve, és egy létező hozzászólás törlését kezdeményezte. & \multirow{3}{*}{U11a} \\\cline{1-2}
+		GIVEN & Az adminisztrátor be van jelentkezve, és egy létező hozzászólás törlését kezdeményezte. & \multirow{3}{*}{U11B} \\\cline{1-2}
 		WHEN  & A megerősítő ablakban megszakítja a törlést. & \\\cline{1-2}
 		THEN  & A hozzászólás megmarad. & \\\hline
 	\end{tabular}
@@ -189,15 +189,15 @@
 	\begin{tabular}{|m{0.12\linewidth}|m{0.78\linewidth}|m{0.08\linewidth}|}
 		\hline
 		& \textbf{Leírás} & \textbf{Kód} \\\hline
-		GIVEN & Az adminisztrátor be van jelentkezve, és megnyitotta az összetevőkezelő felületet. & \multirow{3}{*}{U12} \\\cline{1-2}
+		GIVEN & Az adminisztrátor be van jelentkezve, és megnyitotta az összetevőkezelő felületet. & \multirow{3}{*}{U12A} \\\cline{1-2}
 		WHEN  & Egy összetevő nevére keres. & \\\cline{1-2}
 		THEN  & A rendszer megjeleníti a találatokat, és a kiválasztott összetevő adatait betölti a szerkesztő részbe. & \\\hline
 
-		GIVEN & Az adminisztrátor be van jelentkezve, de üres keresőkifejezést ad meg. & \multirow{3}{*}{U12a} \\\cline{1-2}
+		GIVEN & Az adminisztrátor be van jelentkezve, de üres keresőkifejezést ad meg. & \multirow{3}{*}{U12B} \\\cline{1-2}
 		WHEN  & Keresést indít. & \\\cline{1-2}
 		THEN  & A rendszer nem indít érvénytelen keresést, és megfelelő visszajelzést jelenít meg. & \\\hline
 
-		GIVEN & Az adminisztrátor be van jelentkezve, és egy meglévő összetevő szerkesztő nézetét látja. & \multirow{3}{*}{U12b} \\\cline{1-2}
+		GIVEN & Az adminisztrátor be van jelentkezve, és egy meglévő összetevő szerkesztő nézetét látja. & \multirow{3}{*}{U12C} \\\cline{1-2}
 		WHEN  & Módosítja az összetevő alap allergén információit és elmenti a változtatásokat. & \\\cline{1-2}
 		THEN  & A rendszer érvényesíti és elmenti a módosításokat, majd frissíti a megjelenített adatokat. & \\\hline
 	\end{tabular}

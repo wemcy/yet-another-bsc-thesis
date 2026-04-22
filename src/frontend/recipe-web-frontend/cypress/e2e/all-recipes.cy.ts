@@ -1,5 +1,5 @@
-describe('All Recipes Page', () => {
-    context('Page structure', () => {
+describe('All Recipes Page [U03A, U03B]', () => {
+    context('U03A - Recept keresése találatokkal', () => {
         beforeEach(() => {
             cy.visit('/recipes')
         })
@@ -13,15 +13,15 @@ describe('All Recipes Page', () => {
         })
 
         it('has a title search input', () => {
-            cy.get('#recipe-title-filter').should('be.visible')
+            cy.get('[data-cy="recipe-title-filter"]').should('be.visible')
         })
 
         it('has an "Apply filter" button that is initially disabled', () => {
-            cy.contains('button', 'Szűrő alkalmazása').should('be.disabled')
+            cy.get('[data-cy="apply-filters"]').should('be.disabled')
         })
 
         it('has a "Clear filters" button that is initially disabled', () => {
-            cy.contains('button', 'Szűrők törlése').should('be.disabled')
+            cy.get('[data-cy="clear-filters"]').should('be.disabled')
         })
 
         it('displays allergen checkboxes in the "must include" section', () => {
@@ -38,34 +38,28 @@ describe('All Recipes Page', () => {
         it('shows recipe cards from the backend', () => {
             cy.get('a[href*="/recipe/"]').should('have.length.at.least', 1)
         })
-    })
-
-    context('Filter behavior', () => {
-        beforeEach(() => {
-            cy.visit('/recipes')
-        })
 
         it('enables the Apply button after typing in the title field', () => {
-            cy.get('#recipe-title-filter').type('teszt')
-            cy.contains('button', 'Szűrő alkalmazása').should('not.be.disabled')
+            cy.get('[data-cy="recipe-title-filter"]').type('teszt')
+            cy.get('[data-cy="apply-filters"]').should('not.be.disabled')
         })
 
         it('enables the Clear button after typing in the title field', () => {
-            cy.get('#recipe-title-filter').type('teszt')
-            cy.contains('button', 'Szűrők törlése').should('not.be.disabled')
+            cy.get('[data-cy="recipe-title-filter"]').type('teszt')
+            cy.get('[data-cy="clear-filters"]').should('not.be.disabled')
         })
 
         it('updates the URL with the title query param after applying the filter', () => {
-            cy.get('#recipe-title-filter').type('gulyás')
-            cy.contains('button', 'Szűrő alkalmazása').click()
+            cy.get('[data-cy="recipe-title-filter"]').type('gulyás')
+            cy.get('[data-cy="apply-filters"]').click()
             cy.url().should('include', 'title=guly%C3%A1s')
         })
 
         it('clears the title field and disables the Clear button after clicking "Szűrők törlése"', () => {
-            cy.get('#recipe-title-filter').type('gulyás')
-            cy.contains('button', 'Szűrők törlése').click()
-            cy.get('#recipe-title-filter').should('have.value', '')
-            cy.contains('button', 'Szűrők törlése').should('be.disabled')
+            cy.get('[data-cy="recipe-title-filter"]').type('gulyás')
+            cy.get('[data-cy="clear-filters"]').click()
+            cy.get('[data-cy="recipe-title-filter"]').should('have.value', '')
+            cy.get('[data-cy="clear-filters"]').should('be.disabled')
         })
 
         it('enables the Apply button after toggling an include-allergen checkbox', () => {
@@ -105,16 +99,22 @@ describe('All Recipes Page', () => {
 
             getGlutenInclude().should('not.be.checked')
         })
+    })
+
+    context('U03B - Recept keresése találat nélkül', () => {
+        beforeEach(() => {
+            cy.visit('/recipes')
+        })
 
         it('shows the empty-state message when the search returns no results', () => {
             // An intentionally nonsensical search string that should never match real recipes
-            cy.get('#recipe-title-filter').type('xyzzyplughcypress999')
-            cy.contains('button', 'Szűrő alkalmazása').click()
+            cy.get('[data-cy="recipe-title-filter"]').type('xyzzyplughcypress999')
+            cy.get('[data-cy="apply-filters"]').click()
             cy.contains('Nincs találat a megadott keresésre és szűrőkre.').should('be.visible')
         })
     })
 
-    context('Pagination', () => {
+    context('Support - pagination', () => {
         beforeEach(() => {
             cy.visit('/recipes')
         })

@@ -1,4 +1,4 @@
-describe('Public Profile Page', () => {
+describe('Public Profile Page [U08B]', () => {
     // Helper: get the test user's ID by registering/fetching via API
     function getTestUserId(): Cypress.Chainable<string> {
         const email = Cypress.env('testUserEmail')
@@ -26,7 +26,7 @@ describe('Public Profile Page', () => {
     // Navigate to a public profile via Vue Router (no full page reload)
     // so the Pinia store retains the admin roles from the login response.
     function navigateToPublicProfile(userId: string) {
-        cy.get('#app').then(($el) => {
+        cy.get('[data-cy="app-root"]').then(($el) => {
             const app = ($el[0] as any).__vue_app__
             const router = app.config.globalProperties.$router
             router.push(`/profile/${userId}`)
@@ -34,7 +34,7 @@ describe('Public Profile Page', () => {
         cy.url().should('include', `/profile/${userId}`)
     }
 
-    context('Profile display for another user', () => {
+    context('U08B - Másik felhasználó profiljának megtekintése', () => {
         let testUserId: string
 
         before(() => {
@@ -70,7 +70,7 @@ describe('Public Profile Page', () => {
         })
     })
 
-    context('Redirect when visiting own public profile', () => {
+    context('Support - redirect when visiting own public profile', () => {
         it('redirects to /profile when the logged-in user visits their own public profile', () => {
             // Login as admin, get admin ID, then visit /profile/<adminId>
             cy.request({
@@ -90,7 +90,7 @@ describe('Public Profile Page', () => {
         })
     })
 
-    context('Error states', () => {
+    context('Support - error states', () => {
         it('shows an error message for a non-existent user', () => {
             cy.login()
             cy.visit('/profile/00000000-0000-0000-0000-000000000000')
@@ -98,7 +98,7 @@ describe('Public Profile Page', () => {
         })
     })
 
-    context('Admin controls on public profile', () => {
+    context('Support - admin controls on public profile', () => {
         let testUserId: string
 
         before(() => {
@@ -148,7 +148,7 @@ describe('Public Profile Page', () => {
         })
     })
 
-    context('Non-admin cannot see admin controls', () => {
+    context('Support - non-admin cannot see admin controls', () => {
         it('does not show admin buttons for a regular user', () => {
             // Get admin ID to visit their profile as a regular user
             cy.request({
