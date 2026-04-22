@@ -45,3 +45,14 @@ jobs:
           BUILDX_NO_DEFAULT_ATTESTATIONS: 1
         shell: pwsh
         run: ./publish.ps1
+      - name: Generate release artifacts
+        shell: pwsh
+        run: ./scripts/generate_artifacts.ps1
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          files: |
+            release/release.zip
+            release/source.zip
