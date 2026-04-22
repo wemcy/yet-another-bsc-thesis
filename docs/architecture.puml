@@ -1,0 +1,37 @@
+@startuml
+' High-level architecture diagram generated from docker-compose
+skinparam componentStyle rectangle
+skinparam packagePadding 30
+skinparam nodePadding 20
+skinparam nodesep 60
+skinparam ranksep 40
+skinparam defaultFontSize 12
+top to bottom direction
+skinparam linetype ortho
+skinparam ArrowColor #333333
+
+package "Docker Compose" {
+  node "Proxy" as Proxy
+  node "Frontend" as Frontend
+  node "Backend" as Backend
+  database "Postgres 17" as DB
+  node "Adminer" as Adminer
+
+  folder "Volumes" {
+    storage "recipe_db_data" as VolDB
+    storage "recipe_images" as VolImg
+  }
+}
+
+actor "Browser / Client" as Client
+
+Client -> Proxy : HTTP(S)
+Proxy --> Frontend : Statikus elemek
+Proxy --> Backend : Proxy API
+Frontend --> Backend : API
+Backend --> DB : SQL
+Adminer --> DB : DB admin
+
+DB --> VolDB : Adatbázis
+Backend --> VolImg : Képek
+@enduml
