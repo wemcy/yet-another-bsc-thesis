@@ -2,6 +2,7 @@
 \vspace*{-1.5\baselineskip}
 \newcommand{\confkey}[1]{\path{#1}}
 \newcommand{\confvalue}[1]{\path{#1}}
+
 \begin{table}[H]
     \centering
     \footnotesize
@@ -10,8 +11,6 @@
     \begin{tabular}{|>{\raggedright\arraybackslash}p{0.32\textwidth}|>{\raggedright\arraybackslash}p{0.20\textwidth}|>{\raggedright\arraybackslash}p{0.34\textwidth}|}
         \hline
         Kulcs & Érték & Jelentés \\
-        \hline
-        \multicolumn{3}{|l|}{\textbf{Kötelező beállítások}} \\
         \hline
         \confkey{APP_NAME} & \confvalue{my-recipe-app} & Az alkalmazás megjelenített neve. \\
         \hline
@@ -27,7 +26,20 @@
         \hline
         \confkey{DATABASE_PASSWORD} & \confvalue{admin} & Az adatbázis-kapcsolathoz tartozó jelszó. \\
         \hline
-        \multicolumn{3}{|l|}{\textbf{Opcionális beállítások}} \\
+    \end{tabular}
+    \end{adjustbox}
+    \caption{A rendszer működéséhez szükséges kötelező konfigurációs környezeti változók}
+    \label{tab:config-required}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \renewcommand{\arraystretch}{1.15}
+    \begin{adjustbox}{max width=\textwidth}
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{0.32\textwidth}|>{\raggedright\arraybackslash}p{0.20\textwidth}|>{\raggedright\arraybackslash}p{0.34\textwidth}|}
+        \hline
+        Kulcs & Érték & Jelentés \\
         \hline
         \confkey{PROXY_TLS_ENABLED} & \confvalue{true} & Meghatározza, hogy a fordított proxy használ-e TLS-t. \\
         \hline
@@ -53,7 +65,7 @@
         \hline
     \end{tabular}
     \end{adjustbox}
-    \caption{Az alkalmazás által használt konfigurációs környezeti változók}
-    \label{tab:config}
+    \caption{A rendszerhez tartozó opcionális konfigurációs környezeti változók}
+    \label{tab:config-optional}
 \end{table}
 

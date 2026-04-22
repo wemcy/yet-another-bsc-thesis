@@ -30,7 +30,7 @@ Az alkalmazást a korábban említett Docker\footnote{\url{https://docs.docker.c
 \subsection{Telepítési útmutató}
 Miután a Docker és a Docker Compose telepítésre került, a projekt mappájába kell navigálni. Az itt található \texttt{docker-compose.yml} fájl segítségével indítható el a rendszer. Ez a fájl négy konténerből áll: egy PostgreSQL adatbázisból, a backend REST API-ból, a frontend szerverből és egy Nginx fordított proxyból.
 
-A rendszer konfigurációja egy környezeti változókat tartalmazó fájlon keresztül történik, amelyben a működéshez szükséges beállítások adhatóak meg. Az elérhető konfigurációs opciókat az \ref{tab:config}~táblázat tartalmazza.
+A rendszer konfigurációja egy környezeti változókat tartalmazó fájlon keresztül történik, amelyben a működéshez szükséges beállítások adhatóak meg. Az elérhető konfigurációs opciókat a \ref{tab:config-required}. és \ref{tab:config-optional}.~táblázat tartalmazza.
 
 Elindításához Linux és macOS rendszereken a \texttt{start.sh}, Windows rendszereken pedig a \texttt{start.ps1} scriptet kell futtatni, amely automatikusan elindítja a szükséges konténereket a konfigurációs fájl alapján. Beállítható az is, hogy a program biztonságos HTTPS kapcsolaton keresztül legyen elérhető, ehhez a konfigurációs fájlban meg kell adni a szükséges tanúsítványokat és kulcsokat.
 
