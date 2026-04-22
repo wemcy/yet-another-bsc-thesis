@@ -1650,5 +1650,3 @@ components:
         message:
           type: string
           description: A human-readable error message describing what went wrong.
-
-

@@ -32,28 +32,72 @@ A rendszerrel szemben a nem funkcionális követelmények a következők:
 \subsection{Felhasználói esetek}
 
 % TODO: Use case diagram és leírások, a követelmények és a megvalósított funkciók tételes összerendelése
-Az alábbi ábrán jól látható a rendszer főbb funkciói és azok kapcsolatai. A diagramon a főbb szereplők (felhasználó, adminisztrátor) és azok interakciói jelennek meg a rendszer különböző részeivel.
+Az alábbi ábrán jól látható a rendszer főbb funkciói és azok kapcsolatai. A diagramon a főbb szereplők (felhasználó, adminisztrátor) és azok interakciói jelennek meg a rendszer különböző részeivel. Minden adminisztrátor egyben az alap felhasználó funkcióival is rendelkezik, ez külön nincs feltüntetve a diagramon a könnyebb átláthatóság érdekében.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{usecases.png}
+	\caption{Felhasználói esetek diagramja}\label{fig:usecase-diagram}
+\end{figure}
+
+A felhasználói történetek a~\ref{ch:stories} függelékben találhatóak meg. Részletesen, táblázatban összefoglalva.
+
 \subsection{Architekturális áttekintés}
 
 A projekt réteges, webalkalmazás-jellegű architektúrára épül. A felhasználó egy böngészőben futó kliensalkalmazással lép kapcsolatba, amely HTTP hívásokon keresztül éri el a backend szolgáltatást. A backend végzi az üzleti logika, az adatelérés, a hitelesítéshez kapcsolódó folyamatok, valamint az API-dokumentáció kiszolgálásának fő részét. Az adatok perzisztálását egy relációs adatbázis biztosítja~\cite{vue,aspnetcore,postgresql}.
 
+
+
 A fő komponensek:
 
 \begin{itemize}
-	\item Frontend: Vue alapú egyoldalas alkalmazás, amely a felhasználói folyamatokat és az oldalak közti navigációt kezeli.
+	\item Frontend: Vue 3 alapú egyoldalas alkalmazás, amely a felhasználói folyamatokat és az oldalak közti navigációt kezeli.
 	\item API kliens: OpenAPI alapján generálható klienscsomag, amely a frontend és a backend közötti szerződést teszi követhetővé.
-	\item Backend: ASP.NET Core Web API, amely kontroller-, szolgáltatás- és repository-szintű felelősségekre tagolódik.
-	\item Adatbázis: PostgreSQL kompatibilis adatbázis, amelyet az alkalmazás entitásaihoz és kapcsolataihoz igazított séma szolgál ki.
-	\item Infrastruktúra: Docker Compose alapú helyi futtatási környezet, amely támogatja a fejlesztést és a rendszer összeépítését \cite{docker}.
+	\item Backend: ASP.NET Core Web API, amely kontroller-, szolgáltatás- és repository-szintű felelősségekre tagolódik
+	\item Adatbázis: PostgreSQL  adatbázis, amely a receptek, kommentek, felhasználói adatok és egyéb kapcsolódó információk tárolásáért felelős.
+	\item Proxy: Nginx alapú reverse proxy, amely a frontend és a backend szolgáltatásokat egyetlen végpont alá helyezi
+	\item Adminer: könnyű adatbázis-kezelő eszköz, adatbázis tartalmának gyors áttekintését és módosítását teszi lehetővé
+	\item Docker volumes: az adatbázis adatai és a képeket egy-egy megosztott kötetben tároljuk.
 \end{itemize}
 
 
-
-% TODO: Architektúraábra elhelyezése (böngésző, reverse proxy, backend, adatbázis, autentikáció)
-
 \subsection{REST API tervezés}
 
-% TODO: API endpoint-ok áttekintése, OpenAPI specifikáció bemutatása, a backend dokumentálásának és a kliensoldali integrációnak a kapcsolata
+Az alkalmazás tervezésénél fontos szempont volt, hogy a backend és a frontend önmagukban is teljes értékű, jól működő komponensek legyenek. Ennek eléréséhez elengedhetetlen, hogy a két rendszer jól dokumentált és következetes kommunikációt folytasson egymással. Ez lehetővé teszi a frontend és a backend párhuzamos fejlesztését, valamint azt, hogy a komponensek külön-külön is könnyen tesztelhetők legyenek.
+
+Erre a problémára a Representational State Transfer (REST) API tervezési megközelítés nyújt megoldást, amely egy széles körben alkalmazott szabvány a webes szolgáltatások kialakításában. A REST API-k használata biztosítja a frontend és a backend közötti egyszerű, egységes és hatékony kommunikációt.
+
+A megközelítés alkalmazása számos előnnyel jár: támogatja a rendszer skálázhatóságát, megkönnyíti a tesztelést, valamint lehetővé teszi a komponensek egymástól független fejlesztését és karbantartását. A backend szolgáltatás nem függ közvetlenül a frontend implementációjától, így a két réteg lazán csatolt módon működik együtt.
+
+További előny, hogy a rendszer könnyen kiterjeszthető más platformokra is. Amennyiben a jövőben mobilalkalmazás vagy egyéb kliens kerül bevezetésre, ezek ugyanazt az API-t használhatják, így elegendő csupán a megjelenítési réteget az adott platformhoz igazítani.
+
+Előnyök mellett sajnos hátrányokkal is jár. REST API-k tervezése időigényes lehet, különösen összetett üzleti logika esetén. Emellett növeli komplexitást, több eszközt kell használni fejlesztéshez és több programozási nyelvet kell ismerni.
+
+Az api leírására az OpenAPI specifikációt választottam. Ez egy széles körben használt szabvány, amely lehetővé teszi a REST API-k részletes dokumentálását. A HTTP végpontok leírása a követekezőképpen néz ki:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{recipes-endpoints.png}
+	\caption{Receptek HTTP végpontjai}\label{fig:recipe-endpoints-diagram}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{ingredients-endpoints.png}
+	\caption{Hozzávalók HTTP végpontjai}\label{fig:ingredients-endpoints-diagram}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{profile-endpoints.png}
+	\caption{Felhasználói profil HTTP végpontjai}\label{fig:profile-endpoints-diagram}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{auth-endpoints.png}
+	\caption{Hitelesítési HTTP végpontok}\label{fig:auth-endpoints-diagram}
+\end{figure}
 
 \subsection{Adatbázisterv}
 
