@@ -1,11 +1,20 @@
-﻿\chapter{Osszegzes}\label{ch:summary}
+﻿\chapter{Összegzés  }\label{ch:summary}
 
-Ez a dolgozat egy receptkezelo webalkalmazas tervezesi es megvalositasi folyamatanak dokumentalasara keszul. A vegleges valtozatban ennek a fejezetnek ossze kell foglalnia, hogy mely kovetelmenyek teljesultek, milyen architekturalis dontesek bizonyultak helyesnek, es mely teruleteken maradt hely tovabbi fejlesztesre.
+Összességében úgy érzem, sikerült minden fontosabb követelményt megvalósítanom. Először dolgoztam ASP.NET Core rendszerrel, így a backend fejlesztése különösen tanulságos volt számomra. Sokat fejlődött a generikus kód írási képességem is. A szigorú alapkövetelményeknek köszönhetően könnyedén tudtam bővíteni a a rendszert funkciókkal.
 
-\section{Elert eredmenyek}
+Lefontosabb célkitőzésem azt volt, hogy a szofter nagyon könnyedén indítható legyen helyi környezetben, minimális külső függőséggel. A szakdolgozat írás közben ismerkedtem meg jobban a GitHub, GitHub Actions és a Docker használatával, így a fejlesztői környezet kialakítása során ezekre a technológiákra támaszkodtam. Ennek köszönhetően a kód felhőben tárolva, bizonságosan verziókezelve van. A GitHub Actions segítségével pedig egy teljesen automatizált build és tesztelési folyamatot hoztam létre.
 
-Ebben a reszben erdemes majd roviden felsorolni a legfontosabb elkeszult funkciokat, peldaul a receptkezelesi folyamatokat, a keresesi lehetosegeket, a felhasznaloi profilkezeles tamogatasat, valamint az API-dokumentacio es a konteneres futtatas jelenletet.
+Szeretnék köszönetet nyílvántítani Kovács Sándor Márknak a folyamatos támogatásért, a hasznos tanácsokért és a szakmai útmutatásért. Sok időmbe telt, mire megírtam ezt a dolgozatot, és a segítsége nélkül nem lett volna lehetséges. Köszönöm a türelmét és a biztatását páromnak, volt csoportársaimnak és barátaimnak, akik végig mellettem álltak, és segítettek megtartani a motivációmat.
 
-\section{Tovabbi fejlesztesi lehetosegek}
+\section{További fejlesztési lehetőségek}
 
-Tipikus tovabblepesi irany lehet a terheles alatti viselkedes reszletesebb elemzese, a keresesi funkcionalitas tovabbi finomitasa, fejlettebb kepekhez vagy mediataralomhoz kapcsolodo tamogatas, illetve a jogosultsagkezeles es adminisztracios funkciok bovítese.
+A webalkalmazás jelenlegi állapotában is teljes funkcionalitást nyújt, azonban számos lehetőség van a további fejlesztésre. Néhány lehetséges irány:
+\begin{itemize}
+    \item E-mail szolgáltatás integrálása a regisztráció és jelszó visszaállítás folyamatába.
+    \item Közösségi média integráció, például Google vagy Facebook bejelentkezés.
+    \item Cimkézés és kategorizálás a receptekhez, hogy könnyebben lehessen keresni és szűrni őket.
+    \item Receptajánló rendszer fejlesztése, amely a felhasználói preferenciák és korábbi aktivitás alapján ajánl recepteket.
+    \item Mobilalkalmazás fejlesztése a webalkalmazás mellett
+    \item Keresési és szűrési funkciók továbbfejlesztése, például összetettebb szűrők
+    
+\end{itemize}

@@ -31,7 +31,6 @@ A rendszerrel szemben a nem funkcionális követelmények a következők:
 
 \subsection{Felhasználói esetek}
 
-% TODO: Use case diagram és leírások, a követelmények és a megvalósított funkciók tételes összerendelése
 Az alábbi ábrán jól látható a rendszer főbb funkciói és azok kapcsolatai. A diagramon a főbb szereplők (felhasználó, adminisztrátor) és azok interakciói jelennek meg a rendszer különböző részeivel. Minden adminisztrátor egyben az alap felhasználó funkcióival is rendelkezik, ez külön nincs feltüntetve a diagramon a könnyebb átláthatóság érdekében.
 
 \begin{figure}[H]
@@ -42,11 +41,60 @@ Az alábbi ábrán jól látható a rendszer főbb funkciói és azok kapcsolata
 
 A felhasználói történetek a~\ref{ch:stories} függelékben találhatóak meg. Részletesen, táblázatban összefoglalva.
 
+\subsection{Felhasználói felület terve}
+
+A felhasználói felület vázát DrawIO segítségével készítettem el. Fontos szempont volt, hogy ezek a tervek kellő rugalmasságot biztosítsanak, így a későbbiekben könnyen igazíthatók legyenek a felhasználói igényekhez. A végleges megvalósítás kisebb mértékben eltérhet a kezdeti tervektől, azonban az alapvető struktúra és a főbb komponensek elrendezése megmaradt. Egy oldal felépítése és a főbb komponensek elhelyezése a következőképpen alakul:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{layout-wireframe.png}
+	\caption{Oldal elrendezés vázlata}\label{fig:layout-wireframe}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{navigation-wireframe.png}
+	\caption{Navigációs sáv vázlata}\label{fig:navigation-bar}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{footer-wireframe.png}
+	\caption{Lábléc vázlata}\label{fig:footer-wireframe}
+\end{figure}
+
+A receptek részletes nézetének vázlatát a~\ref{fig:recipe-detail-wireframe} ábrán látható. Ez az oldal különösen fontos, hiszen itt jelenik meg a recept összes információja és az értékelések is.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{recipe-wireframe.png}
+	\caption{Recept részletes nézet vázlata}\label{fig:recipe-detail-wireframe}
+\end{figure}
+
+A profil oldal vázlata a~\ref{fig:profile-wireframe} ábrán, míg a kiemelt receptek oldal vázlata a~\ref{fig:featured-wireframe} ábrán látható.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{profile-wireframe.png}
+	\caption{Profil oldal vázlata}\label{fig:profile-wireframe}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{landing-site-wireframe.png}
+	\caption{Kiemelt receptek és recept kirakat oldal vázlata}\label{fig:featured-wireframe}
+\end{figure}
+
+
 \subsection{Architekturális áttekintés}
 
 A projekt réteges, webalkalmazás-jellegű architektúrára épül. A felhasználó egy böngészőben futó kliensalkalmazással lép kapcsolatba, amely HTTP hívásokon keresztül éri el a backend szolgáltatást. A backend végzi az üzleti logika, az adatelérés, a hitelesítéshez kapcsolódó folyamatok, valamint az API-dokumentáció kiszolgálásának fő részét. Az adatok perzisztálását egy relációs adatbázis biztosítja~\cite{vue,aspnetcore,postgresql}.
 
-
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{architecture.png}
+	\caption{Rendszer architektúrája}\label{fig:architecture-diagram}
+\end{figure}
 
 A fő komponensek:
 
@@ -60,6 +108,13 @@ A fő komponensek:
 	\item Docker volumes: az adatbázis adatai és a képeket egy-egy megosztott kötetben tároljuk.
 \end{itemize}
 
+\subsection{Backend architekturális döntések}
+
+A backend architektúra réteges felépítésű. A kontroller réteg felelős a HTTP kérések fogadásáért, a válaszok visszaküldéséért, valamint a bemeneti adatok validálásáért. A szolgáltatásréteg tartalmazza az üzleti logikát, és a kontroller által meghívott műveleteket hajtja végre. A repository réteg az adatbázis-műveletekért felel, elválasztva az adatkezelést az üzleti logikától. Az adatok egy entitásmodell segítségével kerülnek reprezentálásra, amelyeket relációs adatbázisban tárolunk. Ez a megközelítés elősegíti a kód tisztaságát, a felelősségek elkülönítését és a rendszer karbantarthatóságát.
+
+\subsection{Frontend architekturális döntések}
+
+A frontend architektúra komponensalapú felépítést követ. A Vue 3 keretrendszer használata lehetővé teszi újrafelhasználható, paraméterezhető komponensek létrehozását. A felület nézetkomponensekre van bontva, amelyek az egyes oldalak megjelenítéséért felelősek. A közös elemek, mint például a navigációs sáv és a lábléc, külön komponensként vannak definiálva. Az állapotkezelést egy központi store (Pinia) biztosítja, amely lehetővé teszi az adatok megosztását a különböző komponensek között. A frontend a backenddel REST API-n keresztül kommunikál. Ez a megközelítés biztosítja a frontend és a backend közötti laza csatolást, valamint megkönnyíti a fejlesztést és a tesztelést.
 
 \subsection{REST API tervezés}
 
@@ -77,32 +132,24 @@ Az api leírására az OpenAPI specifikációt választottam. Ez egy széles kö
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{recipes-endpoints.png}
+	\includegraphics[width=0.9\textwidth]{recipes-endpoints.png}
 	\caption{Receptek HTTP végpontjai}\label{fig:recipe-endpoints-diagram}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{ingredients-endpoints.png}
+	\includegraphics[width=0.9\textwidth]{ingredients-endpoints.png}
 	\caption{Hozzávalók HTTP végpontjai}\label{fig:ingredients-endpoints-diagram}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{profile-endpoints.png}
+	\includegraphics[width=0.9\textwidth]{profile-endpoints.png}
 	\caption{Felhasználói profil HTTP végpontjai}\label{fig:profile-endpoints-diagram}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{auth-endpoints.png}
+	\includegraphics[width=0.9\textwidth]{auth-endpoints.png}
 	\caption{Hitelesítési HTTP végpontok}\label{fig:auth-endpoints-diagram}
 \end{figure}
-
-\subsection{Adatbázisterv}
-
-% TODO: ER diagram, fő entitások és kapcsolataik, Entity Framework Core migrációk
-
-\subsection{Felhasználói felület terve}
-
-% TODO: Wireframe-ek, a felhasználói felület terveinek bemutatása, a fő oldalak és folyamatok áttekintése
