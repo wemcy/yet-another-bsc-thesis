@@ -64,6 +64,187 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/RecipeSummary"
+  "/ingredients/":
+    get:
+      tags:
+      - Ingredients
+      summary: Search ingredients by name 
+      operationId: searchIngredients
+      parameters:
+        - name: name
+          in: query
+          description: The name or part of the name to search for
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of ingredients matching the search criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/IngredientSuggestion"
+    post:
+      tags:
+      - Ingredients
+      summary: Create a new ingredient
+      operationId: createIngredient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CreateIngredientSuggestionRequest"
+      responses:
+        '201':
+          description: Ingredient created successfully
+          headers:
+            Location:
+              description: URL of the newly created resource
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Ingredient"
+        400:
+          description: Invalid ingredient data supplied
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        401:
+          description: No active session
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        403:
+          description: Not authorized to create ingredients
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+      security:
+        - cookieAuth: []
+
+  "/ingredients/{id}":
+    get:
+      tags:
+      - Ingredients
+      summary: Get ingredient by ID
+      parameters:
+        - name: id
+          in: path
+          description: Unique identifier of the ingredient to query (UUID)
+          required: true
+          schema:
+            type: string
+            format: uuid
+      operationId: getIngredientById
+      responses:
+        '200':
+          description: Ingredient retrieved successfully
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Ingredient"
+        404:
+          description: Ingredient not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+    put:
+      tags:
+      - Ingredients
+      summary: Update an existing ingredient suggestion
+      operationId: updateIngredient
+      parameters:
+        - name: id
+          in: path
+          description: Unique identifier of the ingredient suggestion to update (UUID)
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CreateIngredientSuggestionRequest"
+      responses:
+        '200':
+          description: Ingredient suggestion updated successfully
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Ingredient"
+        400:
+          description: Invalid ingredient suggestion data supplied
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        401:
+          description: No active session
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        403:
+          description: Not authorized to update ingredient suggestions
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        404:
+          description: Ingredient suggestion not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+      security:
+        - cookieAuth: []
+    delete:
+      tags:
+      - Ingredients
+      summary: Delete an existing ingredient suggestion
+      operationId: deleteIngredient
+      parameters:
+        - name: id
+          in: path
+          description: Unique identifier of the ingredient to delete (UUID)
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Ingredient suggestion deleted successfully
+        401:
+          description: No active session
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        403:
+          description: Not authorized to delete ingredient suggestions
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        404:
+          description: Ingredient suggestion not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+      security:
+        - cookieAuth: []
   "/auth/register":
     post:
       tags:
@@ -1106,8 +1287,6 @@ components:
         description:
           type: string
           description: Short textual summary of the recipe
-        allergens:
-          $ref: '#/components/schemas/AllergenList'
         steps:
           type: array
           description: List of steps to prepare the recipe
@@ -1124,6 +1303,7 @@ components:
         - thumbnail
         - medium
         - large
+        
     PaginationMetadata:
       type: object
       properties:
@@ -1256,13 +1436,46 @@ components:
         - SULPHURDIOXIDE
         - LUPIN
         - MOLLUSCS
-    
+    CreateIngredientSuggestionRequest:
+      type: object
+      required:
+        - name
+        - allergens
+      properties:
+        name:
+          type: string
+          description: The name of the ingredient
+          nullable: false
+        allergens:
+          $ref: '#/components/schemas/AllergenList'
+          description: List of allergens present in this ingredient (if any)
+          nullable: false
+    IngredientSuggestion:
+      type: object
+      required:
+        - name
+        - allergens
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier of the ingredient suggestion
+        name:
+          type: string
+          description: The name of the ingredient
+          nullable: false
+        allergens:
+          $ref: '#/components/schemas/AllergenList'
+          description: List of allergens present in this ingredient (if any)
+          nullable: false
     Ingredient:
       type: object
       required:
         - name
         - quantity
         - unitOfMeasurement
+        - allergens
       properties:
         name:
           type: string
@@ -1275,6 +1488,10 @@ components:
         unitOfMeasurement:
           type: string
           description: The unit of measure for the ingredient quantity (e.g., grams, cups, tablespoons)
+          nullable: false
+        allergens:
+          $ref: '#/components/schemas/AllergenList'
+          description: List of allergens present in this ingredient (if any)
           nullable: false
     Comment:
       type: object
@@ -1433,5 +1650,3 @@ components:
         message:
           type: string
           description: A human-readable error message describing what went wrong.
-
-

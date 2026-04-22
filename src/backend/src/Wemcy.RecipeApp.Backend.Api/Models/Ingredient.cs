@@ -51,6 +51,14 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
         public string UnitOfMeasurement { get; set; }
 
         /// <summary>
+        /// List of allergens present in the recipe
+        /// </summary>
+        /// <value>List of allergens present in the recipe</value>
+        [Required]
+        [DataMember(Name="allergens", EmitDefaultValue=false)]
+        public List<Allergen> Allergens { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -61,6 +69,7 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Quantity: ").Append(Quantity).Append("\n");
             sb.Append("  UnitOfMeasurement: ").Append(UnitOfMeasurement).Append("\n");
+            sb.Append("  Allergens: ").Append(Allergens).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -111,6 +120,12 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     UnitOfMeasurement == other.UnitOfMeasurement ||
                     UnitOfMeasurement != null &&
                     UnitOfMeasurement.Equals(other.UnitOfMeasurement)
+                ) && 
+                (
+                    Allergens == other.Allergens ||
+                    Allergens != null &&
+                    other.Allergens != null &&
+                    Allergens.SequenceEqual(other.Allergens)
                 );
         }
 
@@ -130,6 +145,8 @@ namespace Wemcy.RecipeApp.Backend.Api.Models
                     hashCode = hashCode * 59 + Quantity.GetHashCode();
                     if (UnitOfMeasurement != null)
                     hashCode = hashCode * 59 + UnitOfMeasurement.GetHashCode();
+                    if (Allergens != null)
+                    hashCode = hashCode * 59 + Allergens.GetHashCode();
                 return hashCode;
             }
         }

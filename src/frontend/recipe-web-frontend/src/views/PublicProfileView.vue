@@ -5,9 +5,11 @@ import RecipeCardSkeleton from '@/components/recipe/RecipeCardSkeleton.vue'
 import RecipePagination from '@/components/recipe/RecipePagination.vue'
 import { ProfileApi, Configuration, type ProfileSummary, ResponseError } from 'recipe-api-client'
 import { MapApiRecipeToRecipe } from '@/types/recipe/recipe.mappers'
+import { parsePaginationState } from '@/utils/pagination'
 import { recipeApiClient as api } from '@/utils/recipeApiClient'
+import { getSingleRouteParam } from '@/utils/routeParams'
 import type { PaginationState, Recipe } from '@/types/recipe/recipe'
-import { ref, watch, onMounted } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
 
@@ -17,13 +19,16 @@ const profileApi = new ProfileApi(config)
 const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
-const userId = ref(route.params.id as string)
+const userId = ref(getSingleRouteParam(route.params, 'id') ?? '')
 
 const profile = ref<ProfileSummary | null>(null)
 const avatarUrl = ref<string | undefined>(undefined)
 const profileLoading = ref(true)
 const profileError = ref<string | null>(null)
 const requiresLogin = ref(false)
+const adminActionMessage = ref<string | null>(null)
+const deleteDialogOpen = ref(false)
+const makeAdminDialogOpen = ref(false)
 
 const recipes = ref<Recipe[]>([])
 const recipesLoading = ref(false)
@@ -35,6 +40,10 @@ const recipesPagination = ref<PaginationState>({
     hasNextPage: false,
     hasPreviousPage: false,
 })
+
+const canManageProfile = computed(
+    () => auth.isAdmin && !!profile.value && auth.currentUser?.id !== userId.value,
+)
 
 async function loadProfile() {
     profileLoading.value = true
@@ -79,57 +88,6 @@ function getRecipesPageFromQuery() {
     return raw - 1
 }
 
-const parseBoolean = (value: unknown): boolean | undefined => {
-    if (typeof value === 'boolean') return value
-    return undefined
-}
-
-const parseNumber = (value: unknown): number | undefined => {
-    if (typeof value === 'number' && Number.isFinite(value)) return value
-    return undefined
-}
-
-const parsePaginationState = (
-    headerValue: string | null,
-    fallbackPageNumber: number,
-    fallbackPageSize: number,
-): PaginationState => {
-    if (!headerValue) {
-        return {
-            pageNumber: fallbackPageNumber,
-            pageSize: fallbackPageSize,
-            totalCount: 0,
-            pageCount: 0,
-            hasNextPage: false,
-            hasPreviousPage: fallbackPageNumber > 0,
-        }
-    }
-    try {
-        const raw = JSON.parse(headerValue) as Record<string, unknown>
-        return {
-            pageNumber:
-                parseNumber(raw.pageNumber) ?? parseNumber(raw.PageNumber) ?? fallbackPageNumber,
-            pageSize: parseNumber(raw.pageSize) ?? parseNumber(raw.PageSize) ?? fallbackPageSize,
-            totalCount: parseNumber(raw.totalCount) ?? parseNumber(raw.TotalCount) ?? 0,
-            pageCount: parseNumber(raw.pageCount) ?? parseNumber(raw.PageCount) ?? 0,
-            hasNextPage: parseBoolean(raw.hasNextPage) ?? parseBoolean(raw.HasNextPage) ?? false,
-            hasPreviousPage:
-                parseBoolean(raw.hasPreviousPage) ??
-                parseBoolean(raw.HasPreviousPage) ??
-                fallbackPageNumber > 0,
-        }
-    } catch {
-        return {
-            pageNumber: fallbackPageNumber,
-            pageSize: fallbackPageSize,
-            totalCount: 0,
-            pageCount: 0,
-            hasNextPage: false,
-            hasPreviousPage: fallbackPageNumber > 0,
-        }
-    }
-}
-
 async function loadRecipesPage(pageNumber: number) {
     recipesLoading.value = true
     try {
@@ -156,6 +114,46 @@ async function requestRecipesPage(pageNumber: number) {
     })
 }
 
+function openDeleteDialog() {
+    if (!canManageProfile.value || auth.authLoading) return
+    adminActionMessage.value = null
+    deleteDialogOpen.value = true
+}
+
+function closeDeleteDialog() {
+    deleteDialogOpen.value = false
+}
+
+function openMakeAdminDialog() {
+    if (!canManageProfile.value || auth.authLoading) return
+    adminActionMessage.value = null
+    makeAdminDialogOpen.value = true
+}
+
+function closeMakeAdminDialog() {
+    makeAdminDialogOpen.value = false
+}
+
+async function confirmDeleteProfile() {
+    try {
+        await auth.deleteProfileById(userId.value)
+        deleteDialogOpen.value = false
+        await router.push({ name: 'Home' })
+    } catch {
+        // auth.authError is already set
+    }
+}
+
+async function confirmMakeAdmin() {
+    try {
+        await auth.makeUserAdminById(userId.value)
+        makeAdminDialogOpen.value = false
+        adminActionMessage.value = 'A felhasználó admin jogosultságot kapott.'
+    } catch {
+        // auth.authError is already set
+    }
+}
+
 watch(
     () => route.query.recipesPage,
     async () => {
@@ -167,7 +165,8 @@ watch(
     () => route.params.id,
     async (newId) => {
         if (!newId) return
-        userId.value = newId as string
+        userId.value = Array.isArray(newId) ? (newId[0] ?? '') : newId
+        if (!userId.value) return
 
         if (auth.currentUser && auth.currentUser.id === userId.value) {
             router.replace({ name: 'Profile' })
@@ -210,6 +209,36 @@ onMounted(async () => {
 
         <template v-else-if="profile">
             <PublicProfileHeader :displayName="profile.displayName" :avatarUrl="avatarUrl" />
+            <div v-if="canManageProfile" class="mt-6 flex flex-wrap gap-3">
+                <button
+                    type="button"
+                    @click="openDeleteDialog"
+                    :disabled="auth.authLoading"
+                    class="rounded-lg bg-red-600 px-5 py-2 text-white transition hover:bg-red-700 disabled:opacity-50"
+                >
+                    Profil törlése
+                </button>
+                <button
+                    type="button"
+                    @click="openMakeAdminDialog"
+                    :disabled="auth.authLoading"
+                    class="rounded-lg border border-blue-300 bg-white px-5 py-2 text-blue-700 transition hover:bg-blue-50 disabled:opacity-50"
+                >
+                    Adminná tétel
+                </button>
+            </div>
+            <p
+                v-if="auth.authError"
+                class="mt-4 text-sm rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-red-700"
+            >
+                {{ auth.authError }}
+            </p>
+            <p
+                v-else-if="adminActionMessage"
+                class="mt-4 text-sm rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-emerald-700"
+            >
+                {{ adminActionMessage }}
+            </p>
 
             <div class="mt-10">
                 <h3 class="text-xl font-bold mb-4">Receptjei</h3>
@@ -236,6 +265,62 @@ onMounted(async () => {
                     :disabled="recipesLoading"
                     @pageChange="requestRecipesPage"
                 />
+            </div>
+
+            <div
+                v-if="deleteDialogOpen"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+            >
+                <div class="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                    <h2 class="text-lg font-semibold text-gray-900">Profil törlése</h2>
+                    <p class="mt-2 text-sm text-gray-600">
+                        Biztosan törölni szeretnéd ezt a profilt? Ez a művelet nem visszavonható.
+                    </p>
+                    <div class="mt-5 flex justify-end gap-2">
+                        <button
+                            @click="closeDeleteDialog"
+                            :disabled="auth.authLoading"
+                            class="rounded border px-4 py-2 hover:bg-gray-100 disabled:opacity-50"
+                        >
+                            Mégse
+                        </button>
+                        <button
+                            @click="confirmDeleteProfile"
+                            :disabled="auth.authLoading"
+                            class="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700 disabled:opacity-50"
+                        >
+                            {{ auth.authLoading ? 'Törlés...' : 'Igen, törlöm' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                v-if="makeAdminDialogOpen"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+            >
+                <div class="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                    <h2 class="text-lg font-semibold text-gray-900">Adminná tétel</h2>
+                    <p class="mt-2 text-sm text-gray-600">
+                        Biztosan admin jogosultságot szeretnél adni ennek a felhasználónak?
+                    </p>
+                    <div class="mt-5 flex justify-end gap-2">
+                        <button
+                            @click="closeMakeAdminDialog"
+                            :disabled="auth.authLoading"
+                            class="rounded border px-4 py-2 hover:bg-gray-100 disabled:opacity-50"
+                        >
+                            Mégse
+                        </button>
+                        <button
+                            @click="confirmMakeAdmin"
+                            :disabled="auth.authLoading"
+                            class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+                        >
+                            {{ auth.authLoading ? 'Mentés...' : 'Igen, admin legyen' }}
+                        </button>
+                    </div>
+                </div>
             </div>
         </template>
     </main>

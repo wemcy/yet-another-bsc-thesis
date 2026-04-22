@@ -26,4 +26,14 @@ public class DefaultRecipies
             Ratings = []
         };
     }
+
+    public static IEnumerable<IngredientSuggestion> GetDefaultIngredientSuggestions()
+    {
+        yield return new IngredientSuggestion
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            Name = "liszt",
+            Allergens = AllergenType.Gluten
+        };
+    }
 }

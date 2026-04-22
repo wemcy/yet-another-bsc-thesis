@@ -16,7 +16,7 @@
             ></textarea>
             <button
                 type="submit"
-                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition disabled:opacity-50"
+                class="bg-blue-600 text-white px-6 py-2.5 rounded hover:bg-blue-700 transition disabled:opacity-50 w-full sm:w-auto"
                 :disabled="!message.trim()"
             >
                 Hozzászólás küldése

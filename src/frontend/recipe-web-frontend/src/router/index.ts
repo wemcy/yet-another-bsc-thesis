@@ -8,6 +8,7 @@ import NewRecipeView from '@/views/NewRecipeView.vue'
 import AllRecipesView from '@/views/AllRecipesView.vue'
 import EditRecipeView from '@/views/EditRecipeView.vue'
 import LoginView from '@/views/LoginView.vue'
+import AdminIngredientsView from '@/views/AdminIngredientsView.vue'
 import { useAuthStore } from '@/stores/authStore'
 
 const initRouter = () => {
@@ -47,20 +48,33 @@ const initRouter = () => {
                 name: 'EditRecipe',
                 component: EditRecipeView,
                 props: true,
+                meta: { requiresAuth: true },
+            },
+            {
+                path: '/admin/ingredients',
+                name: 'AdminIngredients',
+                component: AdminIngredientsView,
+                meta: { requiresAuth: true, requiresAdmin: true },
             },
             { path: '/login', name: 'Login', component: LoginView },
             { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFoundView },
         ],
     })
 
-    router.beforeEach((to) => {
+    router.beforeEach(async (to) => {
         const auth = useAuthStore()
+
+        await auth.ensureSession()
 
         if (to.meta.requiresAuth && !auth.isLoggedIn) {
             return {
                 name: 'Login',
                 query: { redirect: to.fullPath },
             }
+        }
+
+        if (to.meta.requiresAdmin && !auth.isAdmin) {
+            return { name: 'Home' }
         }
 
         return true

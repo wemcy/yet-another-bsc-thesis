@@ -212,6 +212,51 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                     b.ToTable("Images");
                 });
 
+            modelBuilder.Entity("Wemcy.RecipeApp.Backend.Model.Entities.IngredientSuggestion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Allergens")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<NpgsqlTsVector>("NameSearchVector")
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("tsvector")
+                        .HasAnnotation("Npgsql:TsVectorConfig", "english")
+                        .HasAnnotation("Npgsql:TsVectorProperties", new[] { "Name" });
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NameSearchVector");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("NameSearchVector"), "GIN");
+
+                    b.ToTable("IngredientSuggestions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                            Allergens = 2,
+                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "liszt",
+                            UpdatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        });
+                });
+
             modelBuilder.Entity("Wemcy.RecipeApp.Backend.Model.Entities.Rating", b =>
                 {
                     b.Property<Guid>("Id")
@@ -513,7 +558,7 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                         .HasForeignKey("ImageId");
 
                     b.HasOne("Wemcy.RecipeApp.Backend.Model.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("Recipes")
                         .HasForeignKey("UserId");
 
                     b.OwnsMany("Wemcy.RecipeApp.Backend.Model.Entities.Ingredient", "Ingredients", b1 =>
@@ -526,6 +571,9 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                                 .HasColumnType("integer");
 
                             NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
+
+                            b1.Property<int>("Allergens")
+                                .HasColumnType("integer");
 
                             b1.Property<string>("Name")
                                 .IsRequired()
@@ -576,6 +624,11 @@ namespace Wemcy.RecipeApp.Backend.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Ratings");
+                });
+
+            modelBuilder.Entity("Wemcy.RecipeApp.Backend.Model.Entities.User", b =>
+                {
+                    b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
         }

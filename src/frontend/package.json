@@ -8,6 +8,11 @@
       "@vue/compiler-dom": "3.5.31",
       "@vue/compiler-sfc": "3.5.31",
       "@vue/compiler-ssr": "3.5.31"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@tailwindcss/oxide",
+      "cypress",
+      "esbuild"
+    ]
   }
 }

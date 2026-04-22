@@ -2,21 +2,21 @@
 
 \section{Felhasznált módszerek röviden}
 
-\todo{Megírnit hogyan epul fel az app roviden}
+Az alkalmazás egy webalapú receptkezelő rendszer, amely kliens-szerver architektúrán épül fel. A frontend egy Vue.js\footnote{\url{https://vuejs.org/}. Utolsó elérés: 2026.04.10.} alapú egyoldalas alkalmazás, amely a böngészőben fut. A backend egy ASP.NET Core\footnote{\url{https://dotnet.microsoft.com/en-us/apps/aspnet}. Utolsó elérés: 2026.04.10.} Web API, amely a kéréseket kezeli és az üzleti logikát valósítja meg. Az adatok tárolása PostgreSQL\footnote{\url{https://www.postgresql.org/}. Utolsó elérés: 2026.04.10.} adatbázisban történik. A frontend és a backend közötti kommunikációt egy Nginx\footnote{\url{https://nginx.org/}. Utolsó elérés: 2026.04.10.} fordított proxy koordinálja. Az egész rendszer konténerizált környezetben fut.
 
 \section{Rendszerkövetelmények}
 
-A szerver futattasához szüksegés egy olyan környezet, amin futtatható a Docker\footnote{\url{https://www.docker.com/}. Utolsó elérés: 2026.04.10.}. Emiatt az alabbi követelmények szükségesek:
+A szerver futtatásához szükséges egy olyan környezet, amin futtatható a Docker\footnote{\url{https://www.docker.com/}. Utolsó elérés: 2026.04.10.}. Emiatt az alábbi követelmények szükségesek:
 \begin{itemize}
 	\item 64 bit-es Windows 11 vagy Linux operációs rendszer ami támogatja a Docker futtatását
 	\item Legalább 4 GB RAM, ajánlott 8 GB 
 	\item Legalább 10 GB szabad tárhely
 	\item Hálózati kapcsolat
 	\item Docker Desktop v4.40 vagy frissebb verzió
-	\item Docker-compose v2.35 vagy frissebb verzió
+	\item Docker Compose v2.35 vagy frissebb verzió
 \end{itemize}
 
-Kliens oldalon egy modern webböngészőre van szükségünk, ami támogatja a HTML5-öt és a JavaScript-et:
+Kliens oldalon egy modern webböngészőre van szükségünk, ami támogatja a HTML5-öt és a JavaScriptet:
 \begin{itemize}
 	\item Mozilla Firefox legfrissebb verziója
 	\item Google Chrome legfrissebb verziója
@@ -25,93 +25,134 @@ Kliens oldalon egy modern webböngészőre van szükségünk, ami támogatja a H
 \end{itemize}
 
 \section{Telepítés}
-Az alkalmazást a korábban említett Docker\footnote{\url{https://docs.docker.com/desktop/}. Utolsó elérés: 2026.04.10.}, illetve Docker Compose\footnote{\url{https://docs.docker.com/compose/install/}. Utolsó elérés: 2026.04.10.} segítségével lehet telepíteni. Ennek köszönhetően egyetlen parancs kiadásával a teljes rendszer, különösebb beállítások nélkül elindítható.
+Az alkalmazást a korábban említett Docker\footnote{\url{https://docs.docker.com/desktop/}. Utolsó elérés: 2026.04.10.}, illetve Docker Compose\footnote{\url{https://docs.docker.com/compose/install/}. Utolsó elérés: 2026.04.10.} segítségével lehet telepíteni. Ennek köszönhetően egyetlen parancs kiadásával a teljes rendszer elindítható különösebb beállítások nélkül.
 
 \subsection{Telepítési útmutató}
-Miután a Docker és a Docker Compose telepítésre került, fájkezelőben a projekt mappájába kell navigálni. Azt itt található \texttt{docker-compose.yml} fájl segítségével indítható el a rendszert. Ez a fájl négy konténerből áll: egy PostgreSQL\footnote{\url{https://www.postgresql.org/}. Utolsó elérés: 2026.04.10.} adatbázisból, a backend REST API-ból, a frontend szerverből és egy Nginx\footnote{\url{https://nginx.org/}. Utolsó elérés: 2026.04.10.} fordított proxyból.
+Miután a Docker és a Docker Compose telepítésre került, a projekt mappájába kell navigálni. Az itt található \texttt{docker-compose.yml} fájl segítségével indítható el a rendszer. Ez a fájl négy konténerből áll: egy PostgreSQL adatbázisból, a backend REST API-ból, a frontend szerverből és egy Nginx fordított proxyból.
 
-A rendszer konfigurációja egy environment fájlon keresztül történik, amelyben a működéshez szükséges környezeti változók adhatók meg. Az elérhető konfigurációs opciókat az \ref{tab:config}~táblázat tartalmazza.
+A rendszer konfigurációja egy környezeti változókat tartalmazó fájlon keresztül történik, amelyben a működéshez szükséges beállítások adhatóak meg. Az elérhető konfigurációs opciókat a \ref{tab:config-required}. és \ref{tab:config-optional}.~táblázat tartalmazza.
 
 Elindításához Linux és macOS rendszereken a \texttt{start.sh}, Windows rendszereken pedig a \texttt{start.ps1} scriptet kell futtatni, amely automatikusan elindítja a szükséges konténereket a konfigurációs fájl alapján. Beállítható az is, hogy a program biztonságos HTTPS kapcsolaton keresztül legyen elérhető, ehhez a konfigurációs fájlban meg kell adni a szükséges tanúsítványokat és kulcsokat.
 
-Az alap beállításokkal a rendszer a \texttt{http://localhost:9393} címen lesz elérhető, amit egy webböngészőben lehet megnyitni.
+Az alapbeállításokkal a rendszer a \texttt{http://localhost:9393} címen lesz elérhető, amit egy webböngészőben lehet megnyitni.
 
 \section{Funkciók}
-Az alkalmazásban két fajta felhasználói szerepkör van: adminisztrátor és normál felhasználó. Az oldalon a regisztráció nélkül böngészhetően a receptek. Bejelentkezés után a normál felhasználók hozzáférhetnek a közösségi funkciókhoz, kezelhetik saját receptjeiket, míg az adminisztrátorok további jogosultságokkal rendelkeznek, például a felhasználók kezeléséhez.
-
+Az alkalmazásban két fajta felhasználói szerepkör van: adminisztrátor és normál felhasználó. Az oldalon regisztráció nélkül böngészhetőek a receptek. Bejelentkezés után a normál felhasználók hozzáférhetnek a közösségi funkciókhoz, kezelhetik saját receptjeiket, míg az adminisztrátorok további jogosultságokkal rendelkeznek, mint például a felhasználók kezelése.
 \subsection{Receptkezelés}
-A felület könnyen lehetővé teszi a felhasználók számára, hogy létrehozzanak, szerkeszthessenek és törölhessenek recepteket. Minden recepthez megadható egy cím, leírás, hozzávalók listája és elkészítési útmutató. Egy képet is feltölthetnek a recepthez. 
+A felület lehetővé teszi a felhasználók számára, hogy könnyedén létrehozzanak, szerkeszthessenek és törölhessenek recepteket. Minden recepthez megadható egy cím, leírás, hozzávalók listája és elkészítési útmutató. Egy képet is feltölthetnek a recepthez. 
 
 \subsection{Közösségi funkciók}
 
-A regisztrált felhasználók értékelhetik és kommentelhetik a recepteket. Az értékelése egytől ötig terjedő skálán történik, amelyek csillag formájában jellennek meg. A receptekhez kommenteket is lehet írni, amelyeket a receptek alatt lehet megtekinteni. 
+A regisztrált felhasználók értékelhetik és kommentelhetik a recepteket. Az értékelés egytől ötig terjedő skálán történik, amelyek csillag formájában jelennek meg. A receptekhez kommenteket is lehet írni, amelyeket a receptek alatt lehet megtekinteni. 
 \subsection{Keresés}
 
-Az alkalmazás lehetőséget biztosít a receptek közötti keresésre. A keresőmezőbe kulcsszavakat lehet beírni, amelyek alapján a rendszer megjeleníti a releváns recepteket. Emellett a receptek szűkíthetőek allergének alapján, így a felhasználók könnyedén megtalálhatjak a számukra megfelelő recepteket.
+Az alkalmazás lehetőséget biztosít a receptek közötti keresésre. A keresőmezőbe kulcsszavakat lehet beírni, amelyek alapján a rendszer megjeleníti a releváns recepteket. Emellett a recepttalálatok allergének alapján tovább szűkíthetőek, így a felhasználók könnyedén megtalálhatják a számukra megfelelő recepteket.
 
 \subsection{Profilkezelés}
 
-A felhasználók saját profiljukat is kezelhetik, ahol megtekinthetik és szerkeszthetik profilképüket, adataikat, valamint megváltoztathatják jelszavukat. A profilban láthatóak az  általuk létrehozott receptek is, amelyeket könnyen elérhetnek és szerkeszthetnek. Mindenkinek van egy publikus profilja, amit bármelyik bejelentkezett felhasználó elérhez. 
+A felhasználók saját profiljukat is kezelhetik, ahol megtekinthetik és szerkeszthetik profilképüket, adataikat, valamint megváltoztathatják jelszavukat. A profilban láthatóak az általuk létrehozott receptek is, amelyeket könnyen elérhetnek és szerkeszthetnek. Minden profil publikus, amit bármelyik bejelentkezett felhasználó megtekinthet. 
 
-\subsection{Adminisztrátor funkciók}
-
-Az adminisztrátorok hozzáférnek az oldalon több funkcióhoz, mint a normál felhasználók. Az adminisztrátorok kezelhetik a felhasználókat, például törölhetnek vagy módosíthatnak fiókokat. Emellett az adminisztrátorok moderálhatják a recepteket és a kommenteket, biztosítva ezzel a közösségi tartalom minőségét.
 
 \section{Az alkalmazás használatának felépítése}
 
-Az alkalmazás fő eleme az oldal felső részén elhelyezkedő navigációs sáv. Ez a sáv minden oldalon elérhető, és lehetővé teszi a gyors hozzáférést a legfontosabb funkciókhoz. A sávban található egy keresőmező, amely azonnali keresést tesz lehetővé a receptek között, találatokat jelenít meg a kulcsszavak alapján szinte azonannal. Enek kívül ebben a sávban helyezkednek el gombok a bejelentkezéshez, új recept létrehozásához és összes recept listázására is.
+Az alkalmazás fő eleme az oldal felső részén elhelyezkedő navigációs sáv. Ez a sáv minden oldalon elérhető, és lehetővé teszi a gyors hozzáférést a legfontosabb funkciókhoz. A sávban található egy keresőmező, amely azonnali keresést tesz lehetővé a receptek között, találatokat jelenít meg a kulcsszavak alapján szinte azonnal. Ezen kívül ebben a sávban helyezkednek el gombok a bejelentkezéshez, új recept létrehozásához és összes recept listázására is.
 
 \subsection{Kezdőoldal és receptlista}
 
-A kezdőlapon két kiemelt elem található: egy kiemelt recept szekció, ahol egy előre meghatározott recept jelenik meg, valamint egy recept kirakat, ahol minden nap hat véletlenszerű recept jelenik meg. A kiemelt receptnek láthatjuk a címét, egy rövid leírást és egy képet, valamint a recept értékelését. A recept kirakatban szintén megjelenik a cím, egy rövid leírás és egy kép, de az értékelés nem látható. Mindkét szekcióban a receptek kattinthatóak, így a részletes oldalra navigálhatunk.
+A kezdőlapon két kiemelt elem található: egy kiemelt recept szekció, ahol egy előre meghatározott recept jelenik meg, valamint egy recept kirakat, ahol minden nap hat véletlenszerű recept jelenik meg. A kiemelt receptnek láthatjuk a címét, egy rövid leírást és egy képet, valamint a recept értékelését. A recept kirakatban szintén megjelenik a cím, egy rövid leírás és egy kép, de az értékelés nem látható. Mindkét szekcióban kattinthatóak a receptek, így a részletes oldalra navigálhatunk.
+
+\begin{figure}[H]
+	\centering
+	% \includegraphics[width=\textwidth]{images/home-page.png}
+	\fbox{\parbox{0.9\textwidth}{\centering Kép helye: kezdőoldal és receptlista nézet}}
+	\caption{A kezdőoldal és a receptlista megjelenése}\label{fig:home-page}
+\end{figure}
 
 \subsection{Recept részletező oldal}
 
-Rögtön a recept címe, leírása és képe jelenik meg. A kép felett látható a recept értékelése, amely a korrábban említett csillagok formájában jelenik meg. A csillagokra kattinttva a recept értékélesére van lehetőség, amely új értékélést ad a recepthez. Egy felhasználó csak egyszer értékelhet egy receptet, de korábbi értékelését módosíthatja.
+Rögtön a recept címe, leírása és képe jelenik meg. A kép felett látható a recept értékelése, amely a korábban említett módon, csillagok formájában jelenik meg. A csillagokra kattintva a recept értékelésére van lehetőség, amely új értékelést ad a recepthez. Egy felhasználó csak egyszer értékelhet egy receptet, de korábbi értékelését módosíthatja.
 
-A leírás alatt kap helyet a hozzávalók listája és elkészítési útmutató. Könnyen áttekinthető formátumban jelennek meg,a hol a hozzávalók egy felsorolásban, míg az elkészítési útmutató egy számozott listában van megjelenítve. A kép alatt helyezkedik el allergének listája. 
+A leírás alatt kap helyet a hozzávalók listája és az elkészítési útmutató. Könnyen áttekinthető formátumban jelennek meg, ahol a hozzávalók egy felsorolásban, míg az elkészítési útmutató egy számozott listában van megjelenítve. A kép alatt helyezkedik el az allergének listája is. 
 
-Ezek alatt található a komment szekció. A kommentek időrendben jelennek meg, a legfrissebb komment van legfelül. Minden kommentben látható a kommentelő neve, komment szövege és időpontja. A kommentelési blokk legfelső részén jelenik meg a beviteli mező, ahol a felhasználók új kommentet írhatnak. Ez csak akkor kitölthető, ha a felhasználó be van jelentkezve. 
+Ezek alatt található a komment szekció. A kommentek időrendben jelennek meg, a legfrissebb komment van legfelül. Minden kommentben látható a kommentelő neve, a komment szövege és időpontja. A kommentelési blokk legfelső részén jelenik meg a beviteli mező, ahol a felhasználók új kommentet írhatnak. Ez csak akkor kitölthető, ha a felhasználó be van jelentkezve. 
 
-Bejelentkezés után a kép alatt kettő megjelenik kettő gomb, amely lehetővé teszi a recept szerkesztését illetve törlését, amennyiben a recept létrehozója vagy adminisztrátor vagyunk. A szerkesztés a gomb egy új oldalra navigál, ahol módosíthatjuk a recept adatait, hozzávalóit, elkészítési útmutatóját és képét. A törlés gomb megnyomásával egy felugró ablak jelenik meg, hogy biztosan szeretnénk-e törölni a receptet. 
+Bejelentkezés után a kép alatt megjelenik kettő gomb, amely lehetővé teszi a recept szerkesztését, illetve törlését, amennyiben a recept létrehozója vagy adminisztrátor vagyunk. A szerkesztés egy új oldalra navigál, ahol módosíthatjuk a recept adatait, hozzávalóit, elkészítési útmutatóját és képét. A törlés gomb megnyomásával egy felugró ablak jelenik meg, hogy biztosan szeretnénk-e törölni a receptet. 
+
+\begin{figure}[H]
+	\centering
+	% \includegraphics[width=\textwidth]{images/recipe-details.png}
+	\fbox{\parbox{0.9\textwidth}{\centering Kép helye: recept részletező oldal}}
+	\caption{A recept részletező oldal felépítése}\label{fig:recipe-details}
+\end{figure}
 
 \subsection{Recept létrehozása és szerkesztése}
 
-	Ezen az oldalon tudjunk szerkeszteni recepteket. 
-	% \item Kötelező és opcionális mezők
-	% \item Kép feltöltése
-	% \item Mentés és módosítás folyamata
-	% \item Hibakezelés és ellenőrzések
+A receptek létrehozására, illetve szerkesztésére egy ugyanúgy felépített oldalon van lehetőség.
+Ezen a felületen tudjuk megadni a recept címét, leírását, hozzávalókat, elkészítési útmutatót, illetve tudunk feltölteni képet. A rendszer minden hozzávalóhoz automatikusan megpróbálja kitalálni, hogy milyen allergén információk tartoznak hozzá, de ezeket a felhasználó manuálisan is módosíthatja. 
+Kötelező megadni a címet; leírást; legalább egy darab összetevőt, annak minden elemét; illetve egy elkészítési lépést. Kép feltöltése, illetve további allergének megjelölése opcionális. A hozzávalókhoz megadott allergének alapján készül el a recepthez az allergénlista. Minden beküldendő adat a felületen ellenőrizve van, nem engedi az oldal, hogy hibás adatokkal küldjünk be receptet. A felületen egyértelműen fel van tüntetve, ha a recept készítése közben valamilyen hiba történik.
 
+\begin{figure}[H]
+	\centering
+	% \includegraphics[width=\textwidth]{images/recipe-editor.png}
+	\fbox{\parbox{0.9\textwidth}{\centering Kép helye: recept létrehozása és szerkesztése oldal}}
+	\caption{A recept létrehozására és szerkesztésére szolgáló felület}\label{fig:recipe-editor}
+\end{figure}
 
 \subsection{Keresés és szűrés}
 
+Az oldal két keresési lehetőséget ad a felhasználónak. Ennek az egyik implementációja a navigációs sávban helyezkedik el. A másik részletesebb keresőt a recepteket listázó oldalon találjuk. 
 
+A navigációs sávban egy már ismert kereső helyezkedik el. Itt a recept címei alapján gyorskeresés történik. Amint a felhasználó elkezd beírni legalább 3 karaktert, az oldal találatokat jelenít meg egy leugró ablakban. Ez úgy lett kialakítva, hogy gyors, szinte azonnali legyen a találatok megjelenítése. A kereső megjeleníti azt is, ha nincs találat.
+
+A másik, összetettebb keresőnél a recept címe mellett allergének alapján lehet szűrni a recepteket. Külön részt kapott, ahol megjelölhetjük azt, hogy mely allergének legyenek benne a keresendő receptekben, illetve melyek maradjanak ki. Ezután az oldalon a csak ezen beállítások alapján leszűrt recepteket böngészhetjük, oldalakba rendezve. Az oldalak közötti váltást a lap alján megjelenő paginációval lehet megvalósítani.
+
+\begin{figure}[H]
+	\centering
+	% \includegraphics[width=\textwidth]{images/search-and-filter.png}
+	\fbox{\parbox{0.9\textwidth}{\centering Kép helye: keresés és szűrés felület}}
+	\caption{A keresési és szűrési lehetőségek megjelenése}\label{fig:search-and-filter}
+\end{figure}
 
 \subsection{Bejelentkezés és regisztráció}
-\begin{itemize}
-	\item A két oldal szerepe
-	\item Megadandó adatok
-	\item Sikeres és sikertelen műveletek eredménye
-	\item Belépés utáni elérhető funkciók
-\end{itemize}
+
+A navigációs sávban található a bejelentkezés gomb, ami átirányít a bejelentkezés és regisztrációs felületre. Itt már regisztrált felhasználók jelentkezhetnek be email cím és jelszó megadásával. Az oldal felső részén szereplő regisztráció fül megnyomásával lehet a regisztrációs űrlapot megjeleníteni. Meg kell adni a becenevet, email címet, jelszót és jelszónak a megerősítését a regisztrációhoz. Sikeres regisztráció után a felület azonnal be is jelentkeztet minket. Bármilyen hiba esetén az űrlap jelzi, hogy mely mezőkben megadott adattal van probléma. Bejelentkezés után lehet létrehozni receptet, kommentelni receptekhez, értékelni receptet és megtekinteni mások profilját.
+
+\begin{figure}[H]
+	\centering
+	% \includegraphics[width=\textwidth]{images/login-register.png}
+	\fbox{\parbox{0.9\textwidth}{\centering Kép helye: bejelentkezési és regisztrációs felület}}
+	\caption{A bejelentkezési és regisztrációs oldal}\label{fig:login-register}
+\end{figure}
+
 
 \subsection{Profiloldal}
-\begin{itemize}
-	\item Milyen felhasználói adatok láthatók
-	\item Milyen adatok módosíthatók
-	\item Profilkép kezelése
-	\item Saját receptek elérése
-\end{itemize}
+A profil nézeten minden adatot megtekinthetünk, ami hozzánk kapcsolódik. Más felhasználóknak csak a profilképet és becenevét látjuk. Saját profilunkon látjuk az email címünket, illetve csillagokkal jelezve a jelszót. A profil alatt megjelenik két gomb, ha a saját profilunkat böngésszük: szerkesztés, törlés. Törlés esetén egy felugró ablak jelenik meg, ahol meg kell erősítenünk a törlési szándékot. Szerkesztés esetén minden korábban megadott adatot szerkeszthetünk a korábban említett ellenőrzésekkel. Mindenki profilszekciója alatt egy paginációval ellátott recept lista található, ami listázza a felhasználó receptjeit.
 
+\begin{figure}[H]
+	\centering
+	% \includegraphics[width=\textwidth]{images/profile-page.png}
+	\fbox{\parbox{0.9\textwidth}{\centering Kép helye: profiloldal}}
+	\caption{A profiloldal felépítése}\label{fig:profile-page}
+\end{figure}
 
+\subsection{Adminisztrációs funkciók}
 
-\subsection{Adminisztrációs felület}
-\begin{itemize}
-	\item Kik használhatják
-	\item Felhasználók kezelése
-	\item Receptek moderálása
-	\item Kommentek moderálása
-	\item Adminisztrátori műveletek következményei
-\end{itemize}
+Az oldalon jelen lévő adminisztrációs funkciók legtöbb esetben külön felületet nem kaptak, hanem néhány korábban említett oldal bővül ki új funkciókkal. A receptek alatt tudnak törölni kommenteket, illetve az adott receptet kiemelheti a főoldalra a ``Kiemelt receptté teszem'' gombbal. Emellett az adminisztrátor minden receptet és felhasználót törölhet az oldalról. Profil nézetben más felhasználóknak adminisztrátori jogot tudnak adni.
+
+Emelett az adminisztrátorok egy külön hozzávalók oldalon tudják kezelni a hozzávalók alap allergénjeit. Ezen az oldalon egy hozzávaló keresőmező található, ahol a hozzávalók neve alapján lehet keresni. A felület két részből áll: egy kereső, illetve egy szerkesztő rész. A keresőmezőbe beírva a hozzávaló nevét, megjelennek a találatok egy listában. A találatok között lehet váltani, és a kiválasztott hozzávaló adatai megjelennek a szerkesztő részben. Itt módosítható a hozzávaló alap allergénjei, illetve új allergének is hozzáadhatóak, illetve meglévők törölhetőek.
+
+\begin{figure}[H]
+	\centering
+	% \includegraphics[width=\textwidth]{images/ingredients-page.png}
+	\fbox{\parbox{0.9\textwidth}{\centering Kép helye: hozzávalók oldal}}
+	\caption{A hozzávalók oldal felépítése}\label{fig:ingredients-page}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	% \includegraphics[width=\textwidth]{images/admin-functions.png}
+	\fbox{\parbox{0.9\textwidth}{\centering Kép helye: adminisztrációs funkciók megjelenése}}
+	\caption{Az adminisztrációs funkciók megjelenése az alkalmazásban}\label{fig:admin-functions}
+\end{figure}
+
 

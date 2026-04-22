@@ -130,7 +130,10 @@ watch(
     { deep: true },
 )
 function onPasswordConfirmInput(e: Event) {
-    const value = (e.target as HTMLInputElement)?.value ?? ''
-    emit('updatePasswordConfirm', value)
+    if (!(e.target instanceof HTMLInputElement)) {
+        emit('updatePasswordConfirm', '')
+        return
+    }
+    emit('updatePasswordConfirm', e.target.value)
 }
 </script>

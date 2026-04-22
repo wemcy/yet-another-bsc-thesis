@@ -49,10 +49,12 @@ builder.Services
 builder.Services.AddScoped<IRecipeService, RecipeService>()
                 .AddScoped<IRecipeRepository, RecipeRepository>()
                 .AddScoped<IImageRepository, ImageRepository>()
+                .AddScoped<IIngredientSuggestionRepository, IngredientSuggestionRepository>()
                 .AddScoped<IImageService, ImageService>()
                 .AddScoped<IImageStorageService, ImageStorageService>()
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IAuthService, AuthService>()
+                .AddScoped<IIngredientSuggestionService, IngredientSuggestionService>()
                 .AddScoped<IShowcaseRecipeService, ShowcaseRecipeService>()
                 .AddScoped<IRecipeShowcaseRepository, RecipeShowcaseRepository>()
                 .AddSingleton<IAuthorizationHandler, RecipeAuthorizationHandler>()
@@ -85,7 +87,7 @@ await app.EnsureDefaultShowcasesCreated();
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost,
-    KnownNetworks = { },
+    KnownIPNetworks = { },
     KnownProxies = { }
 });
 

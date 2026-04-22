@@ -9,10 +9,7 @@ public class MapperProfile : Profile
 {
     public MapperProfile()
     {
-        CreateMap<CreateRecipeRequest, Recipe>()
-            .ForMember(
-                x => x.Allergens,
-                op => op.MapFrom(src => MapAllergensListToAllergen(src.Allergens)));
+        CreateMap<CreateRecipeRequest, Recipe>();
 
         CreateMap<Recipe, RecipeDTO>()
             .ForMember(dest => dest.Allergens, op => op.MapFrom(src => MappAllergenDTO(src.Allergens)));
@@ -20,9 +17,14 @@ public class MapperProfile : Profile
         CreateMap<Ingredient, Api.Models.Ingredient>()
             .ForMember(dest => dest.Quantity,
                 opt => opt.MapFrom(src => Convert.ToDecimal(src.Quantity)))
+            .ForMember(dest => dest.Allergens, op => op.MapFrom(src => MappAllergenDTO(src.Allergens)))
             .ReverseMap()
             .ForMember(dest => dest.Quantity,
-                opt => opt.MapFrom(src => Convert.ToDouble(src.Quantity)));
+                opt => opt.MapFrom(src => Convert.ToDouble(src.Quantity)))
+            .ForMember(
+                x => x.Allergens,
+                op => op.MapFrom(src => MapAllergensListToAllergen(src.Allergens)));
+        ;
 
         CreateMap<Comment, Api.Models.Comment>()
             .ForMember(
@@ -41,6 +43,14 @@ public class MapperProfile : Profile
         CreateMap< User, Api.Models.ProfileSummary>();
 
         CreateMap<string, Api.Models.UserRole?>().ConvertUsing(src => MapStringToUserRole(src));
+
+        CreateMap<IngredientSuggestion, Api.Models.IngredientSuggestion>()
+            .ForMember(dest => dest.Allergens, op => op.MapFrom(src => MappAllergenDTO(src.Allergens)));
+
+        CreateMap<Api.Models.CreateIngredientSuggestionRequest, IngredientSuggestion>()
+            .ForMember(
+                x => x.Allergens,
+                op => op.MapFrom(src => MapAllergensListToAllergen(src.Allergens)));
 
     }
     private static AllergenType? MapAllergensListToAllergen(IList<Allergen>? src)

@@ -6,12 +6,48 @@ import {
     Configuration,
     type LoginResponse,
     type Profile,
+    UserRole,
 } from 'recipe-api-client'
 import { toErrorMessage } from '../utils/identityErrors'
 
 const config = new Configuration({ basePath: '/api', credentials: 'include' })
 const authApi = new AuthApi(config)
 const profileApi = new ProfileApi(config)
+
+interface AuthState {
+    currentUser: User | null
+    authLoading: boolean
+    authError: string | null
+    sessionRestored: boolean
+}
+
+const ROLE_STORAGE_KEY = 'recipe-app-user-roles'
+
+function readStoredRoles(): User['roles'] {
+    if (typeof window === 'undefined') return []
+
+    const raw = window.localStorage.getItem(ROLE_STORAGE_KEY)
+    if (!raw) return []
+
+    try {
+        const parsed = JSON.parse(raw)
+        return Array.isArray(parsed) ? (parsed as User['roles']) : []
+    } catch {
+        return []
+    }
+}
+
+function storeRoles(roles: User['roles']) {
+    if (typeof window === 'undefined') return
+
+    window.localStorage.setItem(ROLE_STORAGE_KEY, JSON.stringify(roles))
+}
+
+function clearStoredRoles() {
+    if (typeof window === 'undefined') return
+
+    window.localStorage.removeItem(ROLE_STORAGE_KEY)
+}
 
 function mapLoginToUser(response: LoginResponse): User {
     return {
@@ -23,32 +59,30 @@ function mapLoginToUser(response: LoginResponse): User {
     }
 }
 
-function mapProfileToUser(
-    response: Profile,
-    avatarUrl?: string,
-    existingRoles?: User['roles'],
-): User {
+function mapProfileToUser(response: Profile, existingRoles?: User['roles']): User {
     return {
         id: response.id,
         name: response.displayName,
         email: response.email,
         roles: existingRoles ?? [],
         registered: response.registeredAt.toISOString().slice(0, 10),
-        avatarUrl,
+        avatarUrl: '/api/profile/me/image',
     }
 }
 
 export const useAuthStore = defineStore('auth', {
-    state: () => ({
-        currentUser: null as User | null,
+    state: (): AuthState => ({
+        currentUser: null,
         authLoading: false,
-        authError: null as string | null,
+        authError: null,
+        sessionRestored: false,
     }),
 
     actions: {
         login(user: User) {
             this.currentUser = user
             this.authError = null
+            storeRoles(user.roles)
         },
         async loginWithCredentials(email: string, password: string) {
             this.authLoading = true
@@ -60,10 +94,12 @@ export const useAuthStore = defineStore('auth', {
                 })
 
                 this.currentUser = mapLoginToUser(response)
+                storeRoles(this.currentUser.roles)
                 return this.currentUser
             } catch (error) {
                 this.currentUser = null
                 this.authError = await toErrorMessage(error)
+                clearStoredRoles()
                 throw error
             } finally {
                 this.authLoading = false
@@ -79,6 +115,7 @@ export const useAuthStore = defineStore('auth', {
                 })
 
                 this.currentUser = mapLoginToUser(response)
+                storeRoles(this.currentUser.roles)
                 return this.currentUser
             } catch (error) {
                 this.authError = await toErrorMessage(error)
@@ -87,56 +124,58 @@ export const useAuthStore = defineStore('auth', {
                 this.authLoading = false
             }
         },
-        logout() {
+        async logout() {
             this.currentUser = null
             this.authError = null
+            clearStoredRoles()
+            try {
+                await authApi.logout()
+            } catch {
+                // Even if logout API call fails, we still want to clear the local session
+            }
         },
         updateUser(updates: Partial<User>) {
             if (this.currentUser) {
                 this.currentUser = { ...this.currentUser, ...updates }
+                storeRoles(this.currentUser.roles)
             }
+        },
+        async ensureSession() {
+            await this.tryRestoreSession()
+        },
+        async tryRestoreSession() {
+            if (this.sessionRestored) {
+                return
+            }
+
+            this.sessionRestored = true
+
+            await this.fetchOwnProfile()
+            this.authError = null
         },
         async fetchOwnProfile() {
             this.authLoading = true
             this.authError = null
 
             try {
-                const [profileResult, imageResult] = await Promise.allSettled([
-                    profileApi.getOwnProfile(),
-                    profileApi.getOwnProfileImage(),
-                ])
-
-                if (profileResult.status === 'fulfilled') {
-                    const avatarUrl =
-                        imageResult.status === 'fulfilled'
-                            ? URL.createObjectURL(imageResult.value)
-                            : this.currentUser?.avatarUrl
-                    this.currentUser = mapProfileToUser(
-                        profileResult.value,
-                        avatarUrl,
-                        this.currentUser?.roles,
-                    )
-                } else {
-                    this.authError = await toErrorMessage(profileResult.reason)
-                }
+                const profile = await profileApi.getOwnProfile()
+                this.currentUser = mapProfileToUser(profile, this.currentUser?.roles ?? readStoredRoles())
+                storeRoles(this.currentUser.roles)
+            } catch (reason) {
+                this.authError = await toErrorMessage(reason)
             } finally {
                 this.authLoading = false
             }
         },
         async updateOwnProfile(params: {
-            name?: string
+            displayName?: string
             password?: string | null
-            imageFile?: File | null
+            profileImage?: File | null
         }) {
             this.authLoading = true
-            this.authError = null
-
             try {
-                await profileApi.updateOwnProfile({
-                    displayName: params.name ?? null,
-                    password: params.password || null,
-                    profileImage: params.imageFile ?? null,
-                })
+                this.authError = null
+                await profileApi.updateOwnProfile(params)
                 await this.fetchOwnProfile()
             } catch (error) {
                 this.authError = await toErrorMessage(error)
@@ -146,7 +185,7 @@ export const useAuthStore = defineStore('auth', {
             }
         },
         async deleteOwnProfile() {
-            if (!this.currentUser?.id) {
+            if (!this.isLoggedIn) {
                 this.authError = 'Nem található bejelentkezett felhasználó.'
                 return
             }
@@ -154,9 +193,31 @@ export const useAuthStore = defineStore('auth', {
             this.authLoading = true
             this.authError = null
 
+            await this.deleteProfileById(this.getUserId!)
+            await this.logout()
+        },
+        async deleteProfileById(id: string) {
+            this.authLoading = true
+            this.authError = null
+
             try {
-                await profileApi.deleteProfileById({ id: this.currentUser.id })
-                this.logout()
+                await profileApi.deleteProfileById({ id })
+            } catch (error) {
+                this.authError = await toErrorMessage(error)
+                throw error
+            } finally {
+                this.authLoading = false
+            }
+        },
+        async makeUserAdminById(id: string) {
+            this.authLoading = true
+            this.authError = null
+
+            try {
+                await profileApi.addUserRoleById({
+                    id,
+                    addUserRoleByIdRequest: { role: UserRole.Admin },
+                })
             } catch (error) {
                 this.authError = await toErrorMessage(error)
                 throw error
@@ -169,7 +230,7 @@ export const useAuthStore = defineStore('auth', {
     getters: {
         isLoggedIn: (state) => !!state.currentUser,
         isAdmin: (state) => state.currentUser?.roles?.includes('Admin') ?? false,
-        userName: (state) => state.currentUser?.name || 'Vendég',
-        getUserId: (state) => state.currentUser?.id || '1',
+        userName: (state) => state.currentUser?.name,
+        getUserId: (state) => state.currentUser?.id,
     },
 })

@@ -2,7 +2,7 @@
     <section class="max-w-6xl mx-auto px-4 py-10">
         <div class="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row">
             <img
-                :src="`${recipe.image}?size=${ImageSize.Large}`"
+                :src="buildRecipeImageUrl(recipe.image, recipe.imageRevision, ImageSize.Large)"
                 :alt="recipe.title"
                 class="w-full md:w-1/2 h-64 object-cover"
             />
@@ -40,6 +40,7 @@
 
 <script setup lang="ts">
 import type { Recipe } from '@/types/recipe/recipe'
+import { buildRecipeImageUrl } from '@/utils/imageUrl'
 import { ImageSize } from 'recipe-api-client'
 
 defineProps<{

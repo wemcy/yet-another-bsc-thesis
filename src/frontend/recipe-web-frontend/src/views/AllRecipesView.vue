@@ -8,6 +8,7 @@ import { AllergenEnum, allergenList } from '@/types/recipe/allergens'
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { Allergen as ApiAllergen } from 'recipe-api-client'
+import type { LocationQueryValue } from 'vue-router'
 
 const paginationStore = useRecipePaginationStore()
 const pageSize = 27
@@ -58,10 +59,11 @@ const hasAppliedFilters = computed(
         appliedExcludeAllergens.value.length > 0,
 )
 
-function parseAllergenQueryParam(param: unknown): AllergenEnum[] {
-    if (typeof param !== 'string' || param.trim() === '') return []
+function parseAllergenQueryParam(param: LocationQueryValue | LocationQueryValue[]): AllergenEnum[] {
+    const rawParam = Array.isArray(param) ? param[0] : param
+    if (typeof rawParam !== 'string' || rawParam.trim() === '') return []
 
-    const uniqueApiValues = [...new Set(param.split(',').map((value) => value.trim()))].filter(
+    const uniqueApiValues = [...new Set(rawParam.split(',').map((value) => value.trim()))].filter(
         (value): value is ApiAllergen => validApiAllergens.has(value as ApiAllergen),
     )
 

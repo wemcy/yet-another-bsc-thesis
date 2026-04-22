@@ -122,7 +122,8 @@ function cancelEdit() {
 }
 
 function handleImageChange(e: Event) {
-    const file = (e.target as HTMLInputElement)?.files?.[0]
+    if (!(e.target instanceof HTMLInputElement)) return
+    const file = e.target.files?.[0]
     if (file) {
         imageFile.value = file
         imageUrl.value = URL.createObjectURL(file)
@@ -134,9 +135,9 @@ async function saveEdit() {
 
     try {
         await auth.updateOwnProfile({
-            name: profile.value.name,
+            displayName: profile.value.name,
             password: profile.value.password || null,
-            imageFile: imageFile.value,
+            profileImage: imageFile.value,
         })
         editing.value = false
         passwordConfirm.value = ''

@@ -8,6 +8,7 @@ using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Repository;
 using Wemcy.RecipeApp.Backend.Search;
 using Wemcy.RecipeApp.Backend.Security;
+using Wemcy.RecipeApp.Backend.Utils;
 using Comment = Wemcy.RecipeApp.Backend.Model.Entities.Comment;
 using Recipe = Wemcy.RecipeApp.Backend.Model.Entities.Recipe;
 
@@ -22,6 +23,9 @@ public class RecipeService(IRecipeRepository recipeRepository, IImageService ima
 
     public async Task<Recipe> CreateRecipeAsync(Recipe recipe)
     {
+        recipe.Title = TextNormalizer.Normalize(recipe.Title)!;
+        recipe.Description = TextNormalizer.Normalize(recipe.Description)!;
+        recipe.Steps = TextNormalizer.NormalizeList(recipe.Steps);
         recipe.User = await _userService.GetCurrentUserAsync();
         await _userService.EnsureCurrentUserCanAsync(Operations.Create, recipe);
         return await this._recipeRepository.CreateRecipeAsync(recipe);
@@ -71,7 +75,7 @@ public class RecipeService(IRecipeRepository recipeRepository, IImageService ima
     {
         var currentUser = await _userService.GetCurrentUserAsync();
         var recipe = await this._recipeRepository.GetRecipeByIdAsync(id);
-        recipe.Comments.Add(new Comment() { Content = content, User = currentUser });
+        recipe.Comments.Add(new Comment() { Content = TextNormalizer.Normalize(content)!, User = currentUser });
         await this._recipeRepository.SaveAsync();
     }
 
@@ -88,6 +92,9 @@ public class RecipeService(IRecipeRepository recipeRepository, IImageService ima
         var recipe = await this._recipeRepository.GetRecipeByIdAsync(id);
         await _userService.EnsureCurrentUserCanAsync(Operations.Update, recipe);
         _mapper.Map(createRecipeRequest, recipe);
+        recipe.Title = TextNormalizer.Normalize(recipe.Title)!;
+        recipe.Description = TextNormalizer.Normalize(recipe.Description)!;
+        recipe.Steps = TextNormalizer.NormalizeList(recipe.Steps);
         await this._recipeRepository.SaveAsync();
         return recipe;
     }

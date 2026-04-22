@@ -35,6 +35,7 @@
                 <input
                     v-model.number="ingredient.quantity"
                     type="number"
+                    step="any"
                     placeholder="Mennyiség"
                     class="w-1/4 border rounded px-2 py-1 bg-white shadow-sm"
                 />
@@ -44,12 +45,33 @@
                     placeholder="Egység"
                     class="w-1/4 border rounded px-2 py-1 bg-white shadow-sm"
                 />
-                <input
+                <IngredientSuggestionAutocomplete
                     v-model="ingredient.name"
-                    type="text"
-                    placeholder="Hozzávaló"
-                    class="w-full border rounded px-2 py-1 bg-white shadow-sm"
+                    v-model:allergens="ingredient.allergens"
+                    placeholder="Hozzávaló keresése"
+                    class="w-full"
                 />
+
+                <details class="relative w-64">
+                    <summary class="border rounded px-2 py-1 bg-white cursor-pointer">
+                        Allergének
+                    </summary>
+
+                    <div class="absolute bg-white border rounded shadow mt-1 p-2 z-10">
+                        <label
+                            v-for="allergen in allergenOptions"
+                            :key="allergen"
+                            class="flex items-center gap-2 text-sm"
+                        >
+                            <input
+                                type="checkbox"
+                                :value="allergen"
+                                v-model="ingredient.allergens"
+                            />
+                            {{ allergen }}
+                        </label>
+                    </div>
+                </details>
                 <button type="button" @click="removeIngredient(index)" class="text-red-500">
                     ✕
                 </button>
@@ -81,22 +103,6 @@
                 + Lépés hozzáadása
             </button>
             <p v-if="errors.steps" class="text-red-600 text-sm mt-1">{{ errors.steps }}</p>
-        </div>
-
-        <!-- Allergens -->
-        <div>
-            <label class="block font-semibold mb-2">Allergének</label>
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm text-gray-700">
-                <label v-for="item in allergenOptions" :key="item" class="flex items-center gap-2">
-                    <input
-                        type="checkbox"
-                        :value="item"
-                        v-model="selectedAllergens"
-                        class="accent-blue-600 bg-white shadow-sm"
-                    />
-                    {{ item }}
-                </label>
-            </div>
         </div>
 
         <!-- Image upload -->
@@ -142,13 +148,18 @@ import { AllergenEnum, allergenList } from '@/types/recipe/allergens'
 import type { Recipe, RecipeFormErrors } from '@/types/recipe/recipe'
 import type { Ingredient } from '@/types/recipe/ingredient'
 import { normalizeIngredients, normalizeSteps, validateRecipeFields } from './recipeFormUtils'
+import { buildRecipeImageUrl } from '@/utils/imageUrl'
+import { ImageSize } from 'recipe-api-client'
+import IngredientSuggestionAutocomplete from '@/components/search/IngredientSuggestionAutocomplete.vue'
 const { recipe } = defineProps<{ recipe: Recipe }>()
 const recipeStore = useRecipeStore()
 const router = useRouter()
 
 const title = ref<string>('')
 const description = ref<string>('')
-const ingredients = ref<Ingredient[]>([{ quantity: 0, unitOfMeasurement: '', name: '' }])
+const ingredients = ref<Ingredient[]>([
+    { quantity: 0, unitOfMeasurement: '', name: '', allergens: [] },
+])
 const imageFile = ref<File | null>(null)
 const imageUrl = ref<string | null>(null)
 
@@ -167,14 +178,21 @@ watch(
             ingredients.value = [...newRecipe.ingredients]
             steps.value = [...newRecipe.steps]
             selectedAllergens.value = [...newRecipe.allergens]
-            imageUrl.value = newRecipe.image || null
+            if (!imageFile.value) {
+                imageUrl.value = buildRecipeImageUrl(
+                    newRecipe.image,
+                    newRecipe.imageRevision,
+                    ImageSize.Large,
+                )
+            }
         }
     },
     { immediate: true },
 )
 
 function handleImageChange(e: Event) {
-    const file = (e.target as HTMLInputElement)?.files?.[0]
+    if (!(e.target instanceof HTMLInputElement)) return
+    const file = e.target.files?.[0]
     if (file) {
         imageFile.value = file
         imageUrl.value = URL.createObjectURL(file)
@@ -182,7 +200,7 @@ function handleImageChange(e: Event) {
 }
 
 function addIngredient() {
-    ingredients.value.push({ quantity: 0, unitOfMeasurement: '', name: '' })
+    ingredients.value.push({ quantity: 0, unitOfMeasurement: '', name: '', allergens: [] })
 }
 function removeIngredient(index: number) {
     ingredients.value.splice(index, 1)
@@ -226,16 +244,18 @@ async function submit() {
             {
                 title: title.value.trim(),
                 description: description.value.trim(),
-                ingredients: normalizedIngredients,
+                ingredients: normalizedIngredients, // TODO REMOVE THIS CAST
                 steps: normalizedSteps,
                 allergens: selectedAllergens.value,
                 image: recipe.image,
+                imageRevision: recipe.imageRevision,
                 authorId: recipe.authorId,
                 authorName: recipe.authorName,
                 rating: recipe.rating,
             },
             imageFile.value,
         )
+        await recipeStore.fetchRecipeById(recipe.id)
         router.push({ name: 'Recipe', params: { id: recipe.id } })
     } catch {
         submitError.value = 'Nem sikerült menteni a receptet. Próbáld újra!'

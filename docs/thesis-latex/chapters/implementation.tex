@@ -1,27 +1,52 @@
-﻿\section{Megvalositas}
-\label{ch:implementation}
+﻿\section{Megvalósítás}\label{ch:implementation}
 
+\subsection{Fejlesztési környezet és eszközök}
+
+Fejlesztői környezetnek több szoftvert és eszközt is használtam. A backend fejlesztéséhez Visual Studiot használtam, frontendhez Visual Studio Code-ot. Ezek a szoftverek könnyedén hozzáférést biztosítanak a szükséges bővítményekhez, mint például az Entity Framework Core eszközei, a Vue támogatás, valamint a Docker integráció.
+
+A fejlesztéshez szükséges a már korábban említett Docker, Docker Compose, ami a konténerizációval a rendszer futtatásához szükséges.
+
+Verziókezéléshez Git-en keresztül történik, a repository pedig a GitHubon található.
+
+A backendben a függőségek NuGet csomagkezelővel vannak kezelve. ASP.NET Core 10-re épül a projekt, és olyan csomagokat használ, mint az Entity Framework Core, valamint a Microsoft Identity platformhoz kapcsolódó csomagok.
+
+Frontend oldalon a Vite és a Vue 3 használata mellett TypeScript is jelen van, ami a típusbiztonságot és a fejlesztési élményt javítja. A csomagok pnpm-en keresztül vannak kezelve, és a package.json fájlban vannak felsorolva. A project egyéb részén is pnpm van használva, például a frontend build és tesztelési parancsoknál.
+
+E2E teszteléshez Cypress-t történik, amely a frontend és backend integrációját teszteli. 
+
+A REST API specifikáció alapján OpenAPI Generator CLI generál egy frontend API klienst, és egy backend projectet, hogy a fejlesztés során a backend és frontend szinkronban legyenek. Ehhez szükséges Java 17 vagy annak újabb verziója.
+
+Az adatbázis megtekintéséhez Adminer van bekötve a konténeres környezetbe, amely egy könnyen használható webes adatbázis-kezelő eszköz.
+
+A könnyű fejlesztés érdekében a legtöbb gyakran használt parancs, mint például a build, a tesztelés, vagy a konténeres futtatás, PowerShell szkriptek segítségével van automatizálva, amelyek a repository gyökerében találhatók.
 \subsection{Backend}
 
-A backend ASP.NET Core alapokra epul, es kontrollerek, szolgaltatasok, repository-k, valamint adatbazis-kezelessel kapcsolatos komponensek kozmukodesebol all. A projektben megjelenik az Entity Framework Core hasznalata, az automatikus migraciofuttatas, a Swagger alapú API-leiras, valamint a hitelesitesi es jogosultsagkezelesi infrastruktura \cite{aspnetcore}.
+A backend ASP.NET Core alapokra épül, és kontrollerek, szolgáltatások, repository-k, valamint adatbázis-kezeléssel kapcsolatos komponensek közműködéséből áll. A projektben megjelenik az Entity Framework Core használata, az automatikus migrációfuttatás, a Swagger alapú API-leírás, valamint a hitelesítési és jogosultságkezelési infrastruktúra.
 
-Ebben az alfejezetben erdemes majd reszletesen kiterni a kovetkezokre:
-
-\begin{itemize}
-	\item a fo entitasok es kapcsolatuk bemutatasa,
-	\item a repository es service retegek indoklasa,
-	\item a jogosultsagkezeles es a CRUD muveletek vedelme,
-	\item a lapozas, keresesi lehetosegek es hibakezeles megoldasa.
-\end{itemize}
+% TODO: Részletes kifejtés:
+% - a fő entitások és kapcsolatuk bemutatása
+% - a repository és service rétegek indoklása
+% - a jogosultságkezelés és a CRUD műveletek védelme
+% - a lapozás, keresési lehetőségek és hibakezelés megoldása
 
 \subsection{Frontend}
 
-A frontend Vue es TypeScript alapokra epulo egyoldalas alkalmazas. A komponensalapu felépítés, a kliensoldali routing, valamint az API klienssel valo integracio lehetove teszi, hogy a felhasznaloi folyamatok jol elkulonitheto modulokban jelenjenek meg \cite{vue}. A feluletnek kulonosen fontos szerepe van a receptlista, a reszletes receptnezet, a keresesi felulet, valamint a profil- es kommentfunkciok megjeleniteseben.
+A frontend Vue és TypeScript alapokra épülő egyoldalas alkalmazás. A komponensalapú felépítés, a kliensoldali routing, valamint az API klienssel való integráció lehetővé teszi, hogy a felhasználói folyamatok jól elkülöníthető modulokban jelenjenek meg \cite{vue}. A felületnek különösen fontos szerepe van a receptlista, a részletes receptnézet, a keresési felület, valamint a profil- és kommentfunkciók megjelenítésében.
 
-\subsection{API szerzodes es generalas}
+\subsection{API szerződés és generálás}
 
-Az OpenAPI specifikacio kulon erteket kepvisel a projektben, mert egyszerre tamogatja a backend dokumentalasat, a kliensoldali integraciot es a kovetkezetes interfeszek kialakitasat. A dolgozatban itt lehet bemutatni, hogy a specifikacio hogyan kapcsolodik a generalhato klienshez, es ez milyen modon csokkenti a frontend es backend kozotti elteresek kockazatat \cite{openapi}.
+Az OpenAPI specifikáció külön értéket képvisel a projektben, mert egyszerre támogatja a backend dokumentálását, a kliensoldali integrációt és a következetes interfészek kialakítását. A dolgozatban itt lehet bemutatni, hogy a specifikáció hogyan kapcsolódik a generálható klienshez, és ez milyen módon csökkenti a frontend és backend közötti eltérések kockázatát \cite{openapi}.
 
-\subsection{Konteneres futtatas}
+\subsection{Fejlesztés közben felmerült problémák}
 
-A repositoryban szereplo Dockerfile-ok es Docker Compose allomanyok arra utalnak, hogy a projekt fejlesztesehez es terjeszteshez konteneres workflow is rendelkezesre all. Ezt az alfejezetet erdemes majd arra hasznalni, hogy bemutasd a fo szolgaltatasok egyuttfutasanak modjat, valamint a fejlesztoi es publikacios konfiguraciok kozotti eltereseket \cite{docker}.
+% TODO: A fejlesztés során felmerült problémák és azok megoldásai
+
+\section{DevOps}\label{sec:devops}
+
+\subsection{Docker és konténeres futtatás}
+
+A repositoryban szereplő Dockerfile-ok és Docker Compose állományok arra utalnak, hogy a projekt fejlesztéséhez és terjesztéséhez konténeres workflow is rendelkezésre áll. Ebben az alfejezetben érdemes bemutatni a fő szolgáltatások együttfutásának módját, valamint a fejlesztői és publikációs konfigurációk közötti eltéréseket \cite{docker}.
+
+\subsection{CI/CD}
+
+% TODO: Folyamatos integráció és szállítás bemutatása, ha van ilyen a projektben

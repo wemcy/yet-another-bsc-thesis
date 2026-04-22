@@ -1,4 +1,5 @@
 import { ResponseError } from 'recipe-api-client'
+import { isObject, isString } from '@/utils/typeGuards'
 
 interface IdentityError {
     code: string
@@ -29,11 +30,15 @@ const IDENTITY_ERROR_MESSAGES: Record<string, string> = {
 }
 
 function isIdentityErrorArray(body: unknown): body is IdentityError[] {
-    return Array.isArray(body) && body.length > 0 && 'code' in body[0]
+    return (
+        Array.isArray(body) &&
+        body.length > 0 &&
+        body.every((item) => isObject(item) && isString(item.code) && isString(item.description))
+    )
 }
 
 function isErrorObject(body: unknown): body is { error: string } {
-    return typeof body === 'object' && body !== null && 'error' in body && typeof (body as { error: unknown }).error === 'string'
+    return isObject(body) && isString(body.error)
 }
 
 function translateIdentityErrors(errors: IdentityError[]): string {

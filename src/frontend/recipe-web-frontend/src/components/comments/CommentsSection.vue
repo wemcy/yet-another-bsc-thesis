@@ -1,5 +1,5 @@
 <template>
-    <section class="max-w-6xl mx-auto px-4 py-10 mt-10 border-t pt-6">
+    <section class="max-w-6xl mx-auto px-4 py-8 sm:py-10 mt-8 sm:mt-10 border-t pt-6">
         <h2 class="text-xl font-semibold mb-4">Hozzászólások</h2>
 
         <CommentForm @submit="handleSubmitComment" />

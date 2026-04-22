@@ -17,6 +17,3 @@
 
 # Build output directory
 build/
-
-# Ignore generated PDF in source root
-elteikthesis_hu.pdf

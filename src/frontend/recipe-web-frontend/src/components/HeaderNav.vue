@@ -17,6 +17,11 @@
             <li>
                 <router-link to="/new-recipe" class="hover:text-blue-600">Új recept</router-link>
             </li>
+            <li v-if="auth.isAdmin">
+                <router-link to="/admin/ingredients" class="hover:text-blue-600">
+                    Hozzávalók
+                </router-link>
+            </li>
         </ul>
 
         <!-- Jobb oldalon profil és auth akciók -->
@@ -27,7 +32,7 @@
                     <span class="font-medium">{{ auth.currentUser.name }}</span>
                 </router-link>
                 <button
-                    @click="handleLogout"
+                    @click="logout"
                     class="border border-gray-300 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
                 >
                     Kilépés
@@ -35,7 +40,7 @@
             </template>
             <template v-else>
                 <button
-                    @click="dummyLogin"
+                    @click="login"
                     class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
                 >
                     Belépés
@@ -54,11 +59,11 @@ import { useRouter } from 'vue-router'
 const auth = useAuthStore()
 const router = useRouter()
 
-function dummyLogin() {
+function login() {
     router.push('/login')
 }
 
-function handleLogout() {
+function logout() {
     auth.logout()
     router.push('/login')
 }

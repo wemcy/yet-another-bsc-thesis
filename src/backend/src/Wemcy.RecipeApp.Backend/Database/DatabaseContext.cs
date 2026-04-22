@@ -12,6 +12,8 @@ public class DatabaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<Image> Images { get; set; }
 
+    public DbSet<IngredientSuggestion> IngredientSuggestions { get; set; }
+
     public DatabaseContext(DbContextOptions options) : base(options)
     {
 
@@ -39,6 +41,17 @@ public class DatabaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
             entity.ToTable(t => t.HasCheckConstraint("CK_RecipeShowcase_Singleton", "\"Id\" = 1"));
             entity.HasData(new RecipeShowcase { Id = RecipeShowcase.SingletonId });
         });
+        modelBuilder.Entity<IngredientSuggestion>(entity =>
+        {
+            entity.HasKey(i => i.Id);
+            entity.Property(i => i.Id)
+                  .ValueGeneratedOnAdd();
+            entity.Property(r => r.Allergens)
+                  .HasConversion<int>();
+            entity.HasGeneratedTsVectorColumn(x => x.NameSearchVector, "english", x => x.Name).HasIndex(x => x.NameSearchVector).HasMethod("GIN");
+            entity.HasData(DefaultRecipies.GetDefaultIngredientSuggestions());
+
+        });
     }
 
 
@@ -52,19 +65,36 @@ public class DatabaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         UpdateEntityTimestamps();
         UpdateUserTimestamps();
+        UpdateEntities();
         return base.SaveChanges();
+    }
+
+    private void UpdateEntities()
+    {
+        var entries = ChangeTracker.Entries<Entity>().ToList();
+
+        foreach (var entry in entries)
+        {
+
+            if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.State == EntityState.Unchanged)
+            {
+                entry.Entity.OnSave();
+            }
+        }
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         UpdateEntityTimestamps();
         UpdateUserTimestamps();
+        UpdateEntities();
+
         return await base.SaveChangesAsync(cancellationToken);
     }
 
     private void UpdateEntityTimestamps()
     {
-        var entries = ChangeTracker.Entries<Entity>();
+        var entries = ChangeTracker.Entries<Entity>().ToList();
         var now = DateTimeOffset.UtcNow;
 
         foreach (var entry in entries)
@@ -83,7 +113,7 @@ public class DatabaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 
     private void UpdateUserTimestamps()
     {
-        var entries = ChangeTracker.Entries<User>();
+        var entries = ChangeTracker.Entries<User>().ToList();
         var now = DateTimeOffset.UtcNow;
         foreach (var entry in entries)
         {
