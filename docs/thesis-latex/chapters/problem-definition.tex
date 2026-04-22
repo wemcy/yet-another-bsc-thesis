@@ -87,9 +87,9 @@ Bejelentkezés után a kép alatt megjelenik kettő gomb, amely lehetővé teszi
 
 \subsection{Recept létrehozása és szerkesztése}
 
-A receptek létrehozásához, illetve szerkesztéséhez egy ugyanúgy felépített oldalon van lehetőség.
-Ezen a felületen tudjuk megadni a recept címét, leírását, hozzávalókat, elkészítési útmutatót, illetve tudunk feltölteni képet. Itt tudjuk megadni manuálisan, hogy a recept milyen allergéneket tartalmaz. 
-Kötelező megadni a címet; leírást; legalább egy darab összetevőt, annak minden elemét; illetve egy elkészítési lépést. Kép feltöltése, illetve allergének megjelölése opcionális. Minden beküldendő adat a felületen ellenőrizve van, nem engedi az oldal, hogy hibás adatokkal küldjünk be receptet. A felületen egyértelműen fel van tüntetve, ha a recept készítése közben valamilyen hiba történik.
+A receptek létrehozására, illetve szerkesztésére egy ugyanúgy felépített oldalon van lehetőség.
+Ezen a felületen tudjuk megadni a recept címét, leírását, hozzávalókat, elkészítési útmutatót, illetve tudunk feltölteni képet. A rendszer minden hozzávalóhoz automatikusan megpróbálja kitalálni, hogy milyen allergén információk tartoznak hozzá, de ezeket a felhasználó manuálisan is módosíthatja. 
+Kötelező megadni a címet; leírást; legalább egy darab összetevőt, annak minden elemét; illetve egy elkészítési lépést. Kép feltöltése, illetve további allergének megjelölése opcionális. A hozzávalókhoz megadott allergének alapján készül el a recepthez az allergénlista. Minden beküldendő adat a felületen ellenőrizve van, nem engedi az oldal, hogy hibás adatokkal küldjünk be receptet. A felületen egyértelműen fel van tüntetve, ha a recept készítése közben valamilyen hiba történik.
 
 \begin{figure}[H]
 	\centering
@@ -137,7 +137,16 @@ A profil nézeten minden adatot megtekinthetünk, ami hozzánk kapcsolódik. Má
 
 \subsection{Adminisztrációs funkciók}
 
-Az oldalon jelen lévő adminisztrációs funkciók külön felületet nem kaptak, hanem néhány korábban említett oldal bővül ki új funkciókkal. A receptek alatt tudnak törölni kommenteket, illetve az adott receptet kiemelheti a főoldalra a ``Kiemelt receptté teszem'' gombbal. Emellett az adminisztrátor minden receptet és felhasználót törölhet az oldalról. Profil nézetben más felhasználóknak adminisztrátori jogot tudnak adni.
+Az oldalon jelen lévő adminisztrációs funkciók legtöbb esetben külön felületet nem kaptak, hanem néhány korábban említett oldal bővül ki új funkciókkal. A receptek alatt tudnak törölni kommenteket, illetve az adott receptet kiemelheti a főoldalra a ``Kiemelt receptté teszem'' gombbal. Emellett az adminisztrátor minden receptet és felhasználót törölhet az oldalról. Profil nézetben más felhasználóknak adminisztrátori jogot tudnak adni.
+
+Emelett az adminisztrátorok egy külön hozzávalók oldalon tudják kezelni a hozzávalók alap allergénjeit. Ezen az oldalon egy hozzávaló keresőmező található, ahol a hozzávalók neve alapján lehet keresni. A felület két részből áll: egy kereső, illetve egy szerkesztő rész. A keresőmezőbe beírva a hozzávaló nevét, megjelennek a találatok egy listában. A találatok között lehet váltani, és a kiválasztott hozzávaló adatai megjelennek a szerkesztő részben. Itt módosítható a hozzávaló alap allergénjei, illetve új allergének is hozzáadhatóak, illetve meglévők törölhetőek.
+
+\begin{figure}[H]
+	\centering
+	% \includegraphics[width=\textwidth]{images/ingredients-page.png}
+	\fbox{\parbox{0.9\textwidth}{\centering Kép helye: hozzávalók oldal}}
+	\caption{A hozzávalók oldal felépítése}\label{fig:ingredients-page}
+\end{figure}
 
 \begin{figure}[H]
 	\centering
