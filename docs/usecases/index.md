@@ -1,5 +1,6 @@
 # Usecases
 
+* [System Diagrams](./diagrams.md)
 * [Use Case 1 User Registration](./001.md)
 * [Use Case 2 Add New Recipe](./002.md)
 * [Use Case 3 Search Recipes](./003.md)
@@ -11,3 +12,4 @@
 * [Use Case 9 Update User Profile](./009.md)
 * [Use Case 10 Add Comment to Recipe](./010.md)
 * [Use Case 11 Delete Comment on Recipe](./011.md)
+* [Use Case 12 Manage Ingredients](./012.md)

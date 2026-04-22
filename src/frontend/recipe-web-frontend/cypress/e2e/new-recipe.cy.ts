@@ -40,9 +40,14 @@ describe('New Recipe Page', () => {
             cy.contains('button', '+ Lépés hozzáadása').should('be.visible')
         })
 
-        it('has an "Allergének" section with checkboxes', () => {
-            cy.contains('label', 'Allergének').should('be.visible')
-            cy.contains('label', 'Glutén').should('exist')
+        it('shows an allergen dropdown on each ingredient row', () => {
+            cy.contains('label', 'Hozzávalók')
+                .parent()
+                .find('summary')
+                .should('have.length.at.least', 1)
+                .each(($summary) => {
+                    cy.wrap($summary).should('contain.text', 'Allergének')
+                })
         })
 
         it('has a file upload input for the recipe image', () => {
@@ -59,6 +64,13 @@ describe('New Recipe Page', () => {
             cy.contains('button', '+ Hozzávaló hozzáadása').click()
             // There should now be at least 2 ingredient input groups
             cy.get('input[placeholder="Hozzávaló"]').should('have.length.at.least', 2)
+            cy.contains('label', 'Hozzávalók')
+                .parent()
+                .find('summary')
+                .should('have.length.at.least', 2)
+                .each(($summary) => {
+                    cy.wrap($summary).should('contain.text', 'Allergének')
+                })
         })
 
         it('adds a new step row when "+ Lépés hozzáadása" is clicked', () => {

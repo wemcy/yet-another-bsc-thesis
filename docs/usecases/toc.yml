@@ -2,14 +2,10 @@
 items:
 - name: Usecases
   href: index.md
+- name: System Diagrams
+  href: diagrams.md
 - name: Use Case 1 User Registration
   href: 001.md
-- name: Use Case 10 Reset Password
-  href: 010.md
-- name: Use Case 11 Add Comment to Recipe
-  href: 011.md
-- name: Use Case 12 Delete Comment on Recipe
-  href: 012.md
 - name: Use Case 2 Add New Recipe
   href: 002.md
 - name: Use Case 3 Search Recipes
@@ -26,3 +22,9 @@ items:
   href: 008.md
 - name: Use Case 9 Update User Profile
   href: 009.md
+- name: Use Case 10 Add Comment to Recipe
+  href: 010.md
+- name: Use Case 11 Delete Comment on Recipe
+  href: 011.md
+- name: Use Case 12 Manage Ingredients
+  href: 012.md

@@ -59,8 +59,14 @@ describe('Edit Recipe Page', () => {
                 .should('not.be.empty')
         })
 
-        it('has the allergen checkboxes section', () => {
-            cy.contains('label', 'Allergének').should('be.visible')
+        it('shows allergen dropdowns on ingredient rows', () => {
+            cy.contains('label', 'Hozzávalók')
+                .parent()
+                .find('summary')
+                .should('have.length.at.least', 1)
+                .each(($summary) => {
+                    cy.wrap($summary).should('contain.text', 'Allergének')
+                })
         })
 
         it('has an image upload input', () => {
@@ -95,6 +101,13 @@ describe('Edit Recipe Page', () => {
                 const countBefore = $before.length
                 cy.contains('button', '+ Hozzávaló hozzáadása').click()
                 cy.get('input[placeholder="Hozzávaló"]').should('have.length', countBefore + 1)
+                cy.contains('label', 'Hozzávalók')
+                    .parent()
+                    .find('summary')
+                    .should('have.length', countBefore + 1)
+                    .each(($summary) => {
+                        cy.wrap($summary).should('contain.text', 'Allergének')
+                    })
             })
         })
 
