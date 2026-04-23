@@ -1,15 +1,26 @@
 ﻿\section{Tesztelés}\label{ch:testing}
 
-A projektben a validáció több szinten értelmezhető. Egyrészt igazolni kell, hogy a rendszer a definiált use case-ek alapján működőképes. Másrészt technikai oldalról is be kell mutatni, hogy a frontend, a backend és az API-kapcsolat stabilan együtt tud működni.
+Az időkorlátok miatt a tesztelés során az end-to-end tesztek kerültek előtérbe, mivel ezek biztosítják a legnagyobb lefedettséget a teljes alkalmazás működésére. A unit tesztek bevezetése a jövőbeni fejlesztések során tervezett.
 
-\subsection{Unit tesztek}
+\subsection{E2E tesztelés}
 
-% TODO: Backend és frontend oldali egységtesztek bemutatása, tesztelési keretrendszerek, lefedettség
+Az end-to-end tesztek a Cypress keretrendszer segítségével lettek megvalósítva. A Cypress egy modern, JavaScript-alapú tesztelési eszköz, amely lehetővé teszi a fejlesztők számára, hogy könnyedén írjanak és futtassanak teszteket a webalkalmazások működésének ellenőrzésére. A Cypress használata során a tesztek szintén TypeScript-ben íródtak, ami biztosítja a típusosságot és a jobb fejlesztői élményt. 
 
-\subsection{Integrációs tesztek}
 
-% TODO: API- és integrációs ellenőrzések, a komponensek együttműködésének tesztelése
+Az E2E teszelés célja, hogy a teljes alkalmazás működését tesztelje, úgy, hogy a tesztek valódi felhasználói interakciókat szimulálnak, például gombnyomásokat, űrlapkitöltéseket és navigációt. Ez lehetővé teszi a fejlesztők számára, hogy biztosak legyenek abban, hogy az alkalmazás minden része megfelelően működik együtt, és hogy a felhasználói élmény zökkenőmentes. Egy példa egy ilyen tesztre az alkalmazában a következő:
 
-\subsection{Manuális tesztelés}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{home-test.png}
+	\caption{Példa E2E teszt a kezdőlapon}\label{fig:hometest}
+\end{figure}
 
-% TODO: Manuális use case validáció, fejlesztői és demonstrációs környezetben végzett végponti kipróbálás, képernyőmentések, táblázatos eredmények, hibaesetek dokumentálása
+A telejes alkalmazásra vonatkozó E2E tesztek lefedik a legfontosabb funkciókat, mint például a regisztráció, bejelentkezés, receptek megtekintése, létrehozása, szerkesztése, hozzávalók szerekesztése és adminisztrációs műveletek. Minden teszt meg van jelölve, melyik felhasználó esetet teszteli. Ezeket a~\ref{ch:stories} függelékben találhatóak.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{all-test-run.png}
+	\caption{Az E2E teszt futtatásának eredményei}\label{fig:all-test-run}
+\end{figure}
+
+A Cypress lehetőséget ad egy interaktív félületen keresztül megtekinteni a tesztek futását, ahol részeletes láthatjuk mely tesztek futottak le sikeresen, melyek nem, és ha egy teszt nem sikerült, akkor a hiba okát is megmutatja.
