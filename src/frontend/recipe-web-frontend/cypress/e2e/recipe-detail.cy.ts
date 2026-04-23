@@ -1,5 +1,5 @@
 describe('Recipe Detail Page [U04A, U04B, U05A, U05B, U07A, U07B, U10A, U10B]', () => {
-    context('U05B - Nem létező recept részleteinek megnyitása', () => {
+    context('U05B - Non-existent recipe details', () => {
         it('shows the "not found" message when the recipe does not exist', () => {
             // Use a well-formed but non-existent ID
             cy.visit('/recipe/00000000-0000-0000-0000-000000000000')
@@ -7,7 +7,7 @@ describe('Recipe Detail Page [U04A, U04B, U05A, U05B, U07A, U07B, U10A, U10B]', 
         })
     })
 
-    context('U05A - Recept részleteinek megtekintése', () => {
+    context('U05A - View recipe details', () => {
         beforeEach(() => {
             cy.login()
             // Navigate to the first available recipe from the listing page
@@ -54,7 +54,7 @@ describe('Recipe Detail Page [U04A, U04B, U05A, U05B, U07A, U07B, U10A, U10B]', 
         })
     })
 
-    context('U10A - Hozzászólás hozzáadása', () => {
+    context('U10A - Add comment', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/recipes')
@@ -79,20 +79,20 @@ describe('Recipe Detail Page [U04A, U04B, U05A, U05B, U07A, U07B, U10A, U10B]', 
         })
     })
 
-    context('U10B - Érvénytelen hozzászólás kezelése', () => {
+    context('U10B - Invalid comment handling', () => {
         beforeEach(() => {
             cy.visit('/recipes')
             cy.get('a[href*="/recipe/"]').first().click()
             cy.url().should('include', '/recipe/')
         })
 
-        it('shows "Jelentkezz be a hozzászóláshoz!" instead of the comment form for guests', () => {
+        it('shows the sign-in prompt instead of the comment form for guests', () => {
             cy.contains('Jelentkezz be a hozzászóláshoz!').should('be.visible')
             cy.get('textarea[placeholder="Írd meg a véleményed..."]').should('not.exist')
         })
     })
 
-    context('U04A - Recept értékelése', () => {
+    context('U04A - Rate recipe', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/recipes')
@@ -106,7 +106,7 @@ describe('Recipe Detail Page [U04A, U04B, U05A, U05B, U07A, U07B, U10A, U10B]', 
         })
     })
 
-    context('U04B - Korábbi receptértékelés frissítése', () => {
+    context('U04B - Update previous rating', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/recipes')
@@ -122,7 +122,7 @@ describe('Recipe Detail Page [U04A, U04B, U05A, U05B, U07A, U07B, U10A, U10B]', 
         })
     })
 
-    context('U07A - Recept törlése megerősítéssel', () => {
+    context('U07A - Delete recipe with confirmation', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/profile')
@@ -145,7 +145,7 @@ describe('Recipe Detail Page [U04A, U04B, U05A, U05B, U07A, U07B, U10A, U10B]', 
         })
     })
 
-    context('U07B - Recept törlésének megszakítása', () => {
+    context('U07B - Abort recipe deletion', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/profile')
@@ -153,7 +153,7 @@ describe('Recipe Detail Page [U04A, U04B, U05A, U05B, U07A, U07B, U10A, U10B]', 
             cy.url().should('include', '/recipe/')
         })
 
-        it('closes the delete dialog when "Mégse" is clicked', () => {
+        it('closes the delete dialog when "Cancel" is clicked', () => {
             cy.contains('button', 'Törlés').click()
             cy.contains('button', 'Mégse').click()
             cy.contains('Recept törlése').should('not.exist')

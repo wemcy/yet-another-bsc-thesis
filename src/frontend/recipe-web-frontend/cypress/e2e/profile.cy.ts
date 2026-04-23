@@ -12,14 +12,14 @@ describe('Profile Page [U08A, U09A, U09B]', () => {
         })
     })
 
-    context('U08A - Saját profil megtekintése', () => {
+    context('U08A - View own profile', () => {
         beforeEach(() => {
             cy.login()
             cy.contains('nav a', 'ReceptApp').click() // ensure state
             cy.visit('/profile')
         })
 
-        it('displays the Név (name) label and value', () => {
+        it('displays the Name label and value', () => {
             cy.contains('label', 'Név').should('be.visible')
             cy.contains('p', Cypress.env('userDisplayName')).should('be.visible')
         })
@@ -34,20 +34,20 @@ describe('Profile Page [U08A, U09A, U09B]', () => {
             cy.contains('p', '********').should('be.visible')
         })
 
-        it('displays the Regisztráció dátuma label', () => {
+        it('displays the Registration date label', () => {
             cy.contains('label', 'Regisztráció dátuma').should('be.visible')
         })
 
-        it('shows the Szerkesztés (edit) button', () => {
+        it('shows the Edit button', () => {
             cy.contains('button', 'Szerkesztés').should('be.visible')
         })
 
-        it('shows the Profil törlése (delete profile) button', () => {
+        it('shows the Delete Profile button', () => {
             cy.contains('button', 'Profil törlése').should('be.visible')
         })
     })
 
-    context('U09A - Felhasználói profil frissítése', () => {
+    context('U09A - Update user profile', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/profile')
@@ -86,23 +86,23 @@ describe('Profile Page [U08A, U09A, U09B]', () => {
             cy.get('input[type="file"][accept*="image"]').should('exist')
         })
 
-        it('shows Mentés (save) and Mégse (cancel) buttons', () => {
+        it('shows Save and Cancel buttons', () => {
             cy.contains('button', 'Mentés').should('be.visible')
             cy.contains('button', 'Mégse').should('be.visible')
         })
 
-        it('hides the Szerkesztés button in edit mode', () => {
+        it('hides the Edit button in edit mode', () => {
             cy.contains('button', 'Szerkesztés').should('not.exist')
         })
 
-        it('cancels editing and restores view mode when Mégse is clicked', () => {
+        it('cancels editing and restores view mode when Cancel is clicked', () => {
             cy.contains('button', 'Mégse').click()
             cy.contains('button', 'Szerkesztés').should('be.visible')
             cy.contains('p', Cypress.env('userDisplayName')).should('be.visible')
         })
     })
 
-    context('U09B - Felhasználói profil frissítése érvénytelen adatokkal', () => {
+    context('U09B - Update user profile with invalid data', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/profile')
@@ -147,13 +147,13 @@ describe('Profile Page [U08A, U09A, U09B]', () => {
             cy.contains('Biztosan törölni szeretnéd a profilodat?').should('be.visible')
         })
 
-        it('closes the dialog when Mégse is clicked', () => {
+        it('closes the dialog when Cancel is clicked', () => {
             cy.contains('button', 'Profil törlése').click()
             cy.contains('button', 'Mégse').click()
             cy.contains('Biztosan törölni szeretnéd a profilodat?').should('not.exist')
         })
 
-        it('shows the Igen, törlöm confirmation button', () => {
+        it('shows the Yes, delete confirmation button', () => {
             cy.contains('button', 'Profil törlése').click()
             cy.contains('button', 'Igen, törlöm').should('be.visible')
         })
@@ -165,7 +165,7 @@ describe('Profile Page [U08A, U09A, U09B]', () => {
             cy.visit('/profile')
         })
 
-        it('displays the "Saját receptjeim" heading', () => {
+        it('displays the "My Recipes" heading', () => {
             cy.contains('h3', 'Saját receptjeim').should('be.visible')
         })
 

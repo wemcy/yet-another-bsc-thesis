@@ -8,7 +8,7 @@ describe('Home Page [U05A support]', () => {
             cy.contains('h1', 'Fedezd fel a legjobb házias recepteket').should('be.visible')
         })
 
-        it('displays the subtitle with allergén mention', () => {
+        it('displays the subtitle mentioning allergens', () => {
             cy.contains('allergénszűrővel').should('be.visible')
         })
 
@@ -20,7 +20,7 @@ describe('Home Page [U05A support]', () => {
     })
 
     context('Support - showcase section', () => {
-        it('displays the "Kiemelt receptek" heading', () => {
+        it('displays the "Featured recipes" heading', () => {
             cy.contains('h2', 'Kiemelt receptek').should('be.visible')
         })
 

@@ -8,40 +8,40 @@ describe('Admin Features [U07A, U07B, U11A, U11B]', () => {
         cy.url().should('include', '/recipe/')
     }
 
-    context('U07A - Recept törlése megerősítéssel adminisztrátorként', () => {
+    context('U07A - Delete recipe with confirmation (admin)', () => {
         beforeEach(() => {
             cy.login()
             navigateToFirstRecipe()
         })
 
-        it('shows the Szerkesztés (edit) link', () => {
+        it('shows the Edit link', () => {
             cy.contains('a', 'Szerkesztés').should('be.visible')
         })
 
-        it('shows the Törlés (delete recipe) button', () => {
+        it('shows the Delete button', () => {
             // The first 'Törlés' button in the action bar (not inside a dialog)
             cy.contains('button', 'Törlés').first().should('be.visible')
         })
 
-        it('shows the "Kiemelt receptté teszem" or "Ez a kiemelt recept" button', () => {
+        it('shows the "Make featured" or "This is featured" button', () => {
             cy.contains('button', /Kiemelt receptté teszem|Ez a kiemelt recept/).should(
                 'be.visible',
             )
         })
 
-        it('opens the delete confirmation dialog when clicking Törlés', () => {
+        it('opens the delete confirmation dialog when clicking Delete', () => {
             cy.contains('button', 'Törlés').first().click()
             cy.contains('Biztosan törölni szeretnéd ezt a receptet?').should('be.visible')
         })
     })
 
-    context('U07B - Recept törlésének megszakítása adminisztrátorként', () => {
+    context('U07B - Abort recipe deletion (admin)', () => {
         beforeEach(() => {
             cy.login()
             navigateToFirstRecipe()
         })
 
-        it('closes the dialog when clicking Mégse', () => {
+        it('closes the dialog when clicking Cancel', () => {
             cy.contains('button', 'Törlés').first().click()
             cy.contains('button', 'Mégse').click()
             cy.contains('Biztosan törölni szeretnéd ezt a receptet?').should('not.exist')
@@ -65,7 +65,7 @@ describe('Admin Features [U07A, U07B, U11A, U11B]', () => {
             )
         })
 
-        it('closes the featured recipe dialog when clicking Mégse', () => {
+        it('closes the featured recipe dialog when clicking Cancel', () => {
             cy.contains('button', 'Kiemelt receptté teszem').first().click()
             cy.contains('button', 'Mégse').click()
             cy.contains('Biztosan ezt a receptet szeretnéd beállítani kiemelt receptnek?').should(
@@ -74,13 +74,13 @@ describe('Admin Features [U07A, U07B, U11A, U11B]', () => {
         })
     })
 
-    context('U11A - Hozzászólás törlése adminisztrátorként', () => {
+    context('U11A - Delete comment (admin)', () => {
         beforeEach(() => {
             cy.login()
             navigateToFirstRecipe()
         })
 
-        it('shows a Törlés button on comments when comments exist', () => {
+        it('shows a Delete button on comments when comments exist', () => {
             cy.get('body').then(($body) => {
                 if ($body.text().includes('Még nincs hozzászólás')) {
                     cy.log('No comments on this recipe — skipping assertion')
@@ -96,7 +96,7 @@ describe('Admin Features [U07A, U07B, U11A, U11B]', () => {
         })
     })
 
-    context('U11B - Hozzászólás törlésének megszakítása adminisztrátorként', () => {
+    context('U11B - Abort comment deletion (admin)', () => {
         beforeEach(() => {
             cy.login()
             navigateToFirstRecipe()
@@ -128,7 +128,7 @@ describe('Admin Features [U07A, U07B, U11A, U11B]', () => {
             cy.contains('button', /Kiemelt receptté teszem|Ez a kiemelt recept/).should('not.exist')
         })
 
-        it('does not show a Törlés button on comments', () => {
+        it('does not show a Delete button on comments', () => {
             cy.get('body').then(($body) => {
                 if ($body.text().includes('Még nincs hozzászólás')) {
                     cy.log('No comments on this recipe — skipping assertion')

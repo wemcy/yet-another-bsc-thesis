@@ -12,30 +12,30 @@ describe('New Recipe Page [U02A, U02B]', () => {
         })
     })
 
-    context('U02A - Új recept hozzáadása érvényes adatokkal', () => {
+    context('U02A - Add new recipe with valid data', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/new-recipe')
         })
 
-        it('displays the "Új recept hozzáadása" heading', () => {
+        it('displays the "Add New Recipe" heading', () => {
             cy.contains('h1', 'Új recept hozzáadása').should('be.visible')
         })
 
-        it('has a "Recept neve" input field', () => {
+        it('has a "Recipe name" input field', () => {
             cy.contains('label', 'Recept neve').should('be.visible')
         })
 
-        it('has a "Leírás" textarea', () => {
+        it('has a "Description" textarea', () => {
             cy.contains('label', 'Leírás').should('be.visible')
         })
 
-        it('has an "Hozzávalók" section with an add button', () => {
+        it('has an "Ingredients" section with an add button', () => {
             cy.contains('label', 'Hozzávalók').should('be.visible')
             cy.contains('button', '+ Hozzávaló hozzáadása').should('be.visible')
         })
 
-        it('has an "Elkészítési lépések" section with an add button', () => {
+        it('has a "Preparation steps" section with an add button', () => {
             cy.contains('label', 'Elkészítési lépések').should('be.visible')
             cy.contains('button', '+ Lépés hozzáadása').should('be.visible')
         })
@@ -55,7 +55,7 @@ describe('New Recipe Page [U02A, U02B]', () => {
             cy.get('input[type="file"][accept*="image"]').should('exist')
         })
 
-        it('adds a new ingredient row when "+ Hozzávaló hozzáadása" is clicked', () => {
+        it('adds a new ingredient row when "+ Add ingredient" is clicked', () => {
             cy.contains('button', '+ Hozzávaló hozzáadása').click()
             // There should now be at least 2 ingredient input groups
             cy.get('[data-cy="ingredient-name"]').should('have.length.at.least', 2)
@@ -68,7 +68,7 @@ describe('New Recipe Page [U02A, U02B]', () => {
                 })
         })
 
-        it('adds a new step row when "+ Lépés hozzáadása" is clicked', () => {
+        it('adds a new step row when "+ Add step" is clicked', () => {
             cy.contains('button', '+ Lépés hozzáadása').click()
             cy.get('textarea').should('have.length.at.least', 2)
         })
@@ -101,7 +101,7 @@ describe('New Recipe Page [U02A, U02B]', () => {
         })
     })
 
-    context('U02B - Új recept hozzáadása érvénytelen adatokkal', () => {
+    context('U02B - Add new recipe with invalid data', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/new-recipe')
