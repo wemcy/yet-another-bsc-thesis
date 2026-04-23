@@ -10,7 +10,9 @@ function parseArgs(argv) {
         insecure: true,
         exportPath: null,
         limit: null,
-        apiBaseUrl: process.env.API_BASE_URL ?? 'http://localhost:5173/api',
+        apiBaseUrl: process.env.API_BASE_URL ?? 'https://localhost:9393/api',
+        adminEmail: process.env.ADMIN_EMAIL ?? "recipe@example.com" ?? null,
+        adminPassword: process.env.ADMIN_PASSWORD ?? "Admin123!" ?? null,
         file: 'scripts/seed-data/recipes.json',
     }
 
@@ -43,6 +45,24 @@ function parseArgs(argv) {
 
         if (arg === '--api-base-url') {
             options.apiBaseUrl = argv[index + 1] ?? options.apiBaseUrl
+            index += 1
+            continue
+        }
+
+        if (arg === '--email') {
+            options.adminEmail = argv[index + 1] ?? options.adminEmail
+            index += 1
+            continue
+        }
+
+        if (arg === '--password') {
+            options.adminPassword = argv[index + 1] ?? options.adminPassword
+            index += 1
+            continue
+        }
+
+        if (arg === '--cookie') {
+            options.authCookie = argv[index + 1] ?? options.authCookie
             index += 1
             continue
         }
@@ -123,6 +143,37 @@ async function maybeExportDataset(dataset, exportPath) {
     console.log(`Dataset exported to ${resolvedPath}`)
 }
 
+async function loginAndGetCookie(apiBaseUrl, email, password) {
+    const response = await fetch(`${apiBaseUrl}/auth/login`, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+            email,
+            password,
+        }),
+    })
+
+    if (!response.ok) {
+        const body = await response.text()
+        throw new Error(`Login failed with ${response.status}: ${body}`)
+    }
+
+    const cookieHeaders =
+        typeof response.headers.getSetCookie === 'function'
+            ? response.headers.getSetCookie()
+            : [response.headers.get('set-cookie')].filter(Boolean)
+
+    const sessionCookie = cookieHeaders.map((value) => value.split(';')[0]).join('; ')
+
+    if (!sessionCookie) {
+        throw new Error('Login succeeded, but no session cookie was returned.')
+    }
+
+    return sessionCookie
+}
+
 async function searchRecipe(apiBaseUrl, title) {
     const url = new URL(`${apiBaseUrl}/recipes`)
     url.searchParams.set('title', title)
@@ -134,11 +185,12 @@ async function searchRecipe(apiBaseUrl, title) {
     return []
 }
 
-async function createRecipe(apiBaseUrl, recipe) {
+async function createRecipe(apiBaseUrl, recipe, cookie) {
     const response = await fetch(`${apiBaseUrl}/recipes/`, {
         method: 'POST',
         headers: {
             'content-type': 'application/json',
+            ...(cookie ? { cookie } : {}),
         },
         body: JSON.stringify(recipe),
     })
@@ -149,13 +201,16 @@ async function createRecipe(apiBaseUrl, recipe) {
     return response.json()
 }
 
-async function uploadImage(apiBaseUrl, recipeId, imagePath) {
+async function uploadImage(apiBaseUrl, recipeId, imagePath, cookie) {
     const form = new FormData()
     const stream = fsSync.createReadStream(imagePath)
     form.append('image', stream, path.basename(imagePath))
 
     const response = await fetch(`${apiBaseUrl}/recipes/${recipeId}/image`, {
         method: 'PUT',
+        headers: {
+            ...(cookie ? { cookie } : {}),
+        },
         body: form,
     })
 
@@ -169,6 +224,15 @@ async function seedRecipes(dataset, options) {
     let created = 0
     let skipped = 0
 
+    let authCookie = options.authCookie
+    if (!authCookie) {
+        if (options.adminEmail && options.adminPassword) {
+            authCookie = await loginAndGetCookie(options.apiBaseUrl, options.adminEmail, options.adminPassword)
+        } else {
+            throw new Error('Missing admin authentication. Provide --cookie or --email and --password, or set AUTH_COOKIE/ADMIN_EMAIL/ADMIN_PASSWORD env vars')
+        }
+    }
+
     for (const [index, recipe] of dataset.entries()) {
         try {
             const existing = await searchRecipe(options.apiBaseUrl, recipe.title)
@@ -179,14 +243,14 @@ async function seedRecipes(dataset, options) {
                 continue
             }
 
-            const createdRecipe = await createRecipe(options.apiBaseUrl, recipe)
+            const createdRecipe = await createRecipe(options.apiBaseUrl, recipe, authCookie)
             created += 1
             console.log(`[${index + 1}/${dataset.length}] create ${recipe.title} -> ${createdRecipe.id}`)
 
             if (recipe.image && typeof recipe.image === 'string') {
                 const imagePath = path.resolve(process.cwd(), recipe.image)
                 if (fsSync.existsSync(imagePath)) {
-                    await uploadImage(options.apiBaseUrl, createdRecipe.id, imagePath)
+                    await uploadImage(options.apiBaseUrl, createdRecipe.id, imagePath, authCookie)
                     console.log(`  uploaded image ${recipe.image}`)
                 } else {
                     console.log(`  image not found ${imagePath}, skipping upload`)

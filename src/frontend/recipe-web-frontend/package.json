@@ -14,8 +14,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "seed:ingredients": "node scripts/seed-common-ingredients.mjs",
-    "seed:ingredients:dry": "node scripts/seed-common-ingredients.mjs --dry-run",
-    "seed:ingredients:insecure": "node scripts/seed-common-ingredients.mjs --insecure",
+    "seed:recipes": "node scripts/seed-recipes.mjs",
     "lint": "eslint . --fix",
     "format": "prettier --write src/"
   },
