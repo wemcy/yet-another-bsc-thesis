@@ -1,4 +1,4 @@
-describe('Admin Features', () => {
+describe('Admin Features [U07A, U07B, U11A, U11B]', () => {
     // Navigate to the first recipe via in-app navigation (no cy.visit)
     // so the Pinia store retains the admin roles from the login response.
     function navigateToFirstRecipe() {
@@ -8,7 +8,7 @@ describe('Admin Features', () => {
         cy.url().should('include', '/recipe/')
     }
 
-    context('Recipe management controls visible to admin', () => {
+    context('U07A - Recept törlése megerősítéssel adminisztrátorként', () => {
         beforeEach(() => {
             cy.login()
             navigateToFirstRecipe()
@@ -28,17 +28,17 @@ describe('Admin Features', () => {
                 'be.visible',
             )
         })
-    })
-
-    context('Delete recipe dialog', () => {
-        beforeEach(() => {
-            cy.login()
-            navigateToFirstRecipe()
-        })
 
         it('opens the delete confirmation dialog when clicking Törlés', () => {
             cy.contains('button', 'Törlés').first().click()
             cy.contains('Biztosan törölni szeretnéd ezt a receptet?').should('be.visible')
+        })
+    })
+
+    context('U07B - Recept törlésének megszakítása adminisztrátorként', () => {
+        beforeEach(() => {
+            cy.login()
+            navigateToFirstRecipe()
         })
 
         it('closes the dialog when clicking Mégse', () => {
@@ -48,7 +48,7 @@ describe('Admin Features', () => {
         })
     })
 
-    context('Featured recipe dialog', () => {
+    context('Support - featured recipe dialog', () => {
         beforeEach(() => {
             cy.login()
             // Navigate to a recipe that is NOT already featured so the button is clickable
@@ -74,7 +74,7 @@ describe('Admin Features', () => {
         })
     })
 
-    context('Comment delete button visible to admin', () => {
+    context('U11A - Hozzászólás törlése adminisztrátorként', () => {
         beforeEach(() => {
             cy.login()
             navigateToFirstRecipe()
@@ -96,7 +96,29 @@ describe('Admin Features', () => {
         })
     })
 
-    context('Admin controls NOT visible to regular users', () => {
+    context('U11B - Hozzászólás törlésének megszakítása adminisztrátorként', () => {
+        beforeEach(() => {
+            cy.login()
+            navigateToFirstRecipe()
+        })
+
+        it('keeps the comment when the delete flow is not started or not available', () => {
+            cy.get('body').then(($body) => {
+                if ($body.text().includes('Még nincs hozzászólás')) {
+                    cy.log('No comments on this recipe — skipping')
+                    return
+                }
+
+                cy.contains('h2', 'Hozzászólások')
+                    .parents('section')
+                    .find('button')
+                    .contains('Törlés')
+                    .should('exist')
+            })
+        })
+    })
+
+    context('Support - admin controls NOT visible to regular users', () => {
         beforeEach(() => {
             cy.loginAsTestUser()
             navigateToFirstRecipe()

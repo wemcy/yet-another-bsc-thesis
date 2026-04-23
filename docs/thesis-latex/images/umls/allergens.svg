@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    color-interpolation="auto" color-rendering="auto" fill="rgb(0,0,0)" fill-opacity="0"
+    font-family="'Dialog'" font-size="12px" font-style="normal" font-weight="normal" height="269"
+    image-rendering="auto" shape-rendering="auto" stroke="rgb(0,0,0)" stroke-dasharray="none"
+    stroke-dashoffset="0" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10"
+    stroke-opacity="0" stroke-width="1" text-rendering="auto" viewbox="0 0 103 269" width="103"><!--Generated
+    by the Batik Graphics2D SVG Generator-->
+    <defs id="genericDefs" />
+    <g>
+        <defs id="defs1">
+            <clipPath clipPathUnits="userSpaceOnUse" id="b4f6c09b-a25c-47ab-967f-59821b665176">
+                <path d="M-7 -7 L108 -7 L108 274 L-7 274 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="35f7c1ec-6dc6-4b4d-a0d5-9ea799ba08f7">
+                <path d="M-7 -7 L108 -7 L108 274 L-7 274 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="7c5836ba-7fe0-43b9-b33a-8dfebae53728">
+                <path d="M-7 -7 L108 -7 L108 274 L-7 274 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="b8c83891-476e-42e6-bac9-0cae95ddc61d">
+                <path d="M0 0 L0 233 L97 233 L97 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="0d0dad12-e955-4558-88b6-0edd4b34f561">
+                <path d="M0 0 L0 30 L97 30 L97 0 Z" />
+            </clipPath>
+        </defs>
+        <g fill="white" fill-opacity="1" stroke="white" stroke-opacity="1"
+            text-rendering="geometricPrecision">
+            <rect height="269" stroke="none" width="103" x="0" y="0" />
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;AllergenType&quot;,&quot;modelType&quot;:&quot;Class&quot;}"
+            hyper="" model-id="shape-L.u7nbmDIQzgdhc_"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="rgb(122,207,245)"
+                stroke-opacity="1" text-rendering="geometricPrecision" transform="translate(2,2)">
+                <rect clip-path="url(#35f7c1ec-6dc6-4b4d-a0d5-9ea799ba08f7)" height="263"
+                    stroke="none" width="97" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="black"
+                stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="0"
+                stroke-opacity="1" text-rendering="geometricPrecision" transform="translate(2,2)">
+                <rect clip-path="url(#35f7c1ec-6dc6-4b4d-a0d5-9ea799ba08f7)" fill="none"
+                    height="263" width="97" x="0" y="0" />
+                <line clip-path="url(#35f7c1ec-6dc6-4b4d-a0d5-9ea799ba08f7)" fill="none" x1="0"
+                    x2="97" y1="30" y2="30" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,32)">
+            <text clip-path="url(#b8c83891-476e-42e6-bac9-0cae95ddc61d)" stroke="none" x="2"
+                xml:space="preserve" y="14">None</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,32)">
+            <text clip-path="url(#b8c83891-476e-42e6-bac9-0cae95ddc61d)" stroke="none" x="2"
+                xml:space="preserve" y="29">Gluten</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,32)">
+            <text clip-path="url(#b8c83891-476e-42e6-bac9-0cae95ddc61d)" stroke="none" x="2"
+                xml:space="preserve" y="44">Crustaceans</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,32)">
+            <text clip-path="url(#b8c83891-476e-42e6-bac9-0cae95ddc61d)" stroke="none" x="2"
+                xml:space="preserve" y="59">Eggs</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,32)">
+            <text clip-path="url(#b8c83891-476e-42e6-bac9-0cae95ddc61d)" stroke="none" x="2"
+                xml:space="preserve" y="74">Fish</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,32)">
+            <text clip-path="url(#b8c83891-476e-42e6-bac9-0cae95ddc61d)" stroke="none" x="2"
+                xml:space="preserve" y="89">Peanuts</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,32)">
+            <text clip-path="url(#b8c83891-476e-42e6-bac9-0cae95ddc61d)" stroke="none" x="2"
+                xml:space="preserve" y="104">Soybeans</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,32)">
+            <text clip-path="url(#b8c83891-476e-42e6-bac9-0cae95ddc61d)" stroke="none" x="2"
+                xml:space="preserve" y="119">Milk</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,32)">
+            <text clip-path="url(#b8c83891-476e-42e6-bac9-0cae95ddc61d)" stroke="none" x="2"
+                xml:space="preserve" y="134">Nuts</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,32)">
+            <text clip-path="url(#b8c83891-476e-42e6-bac9-0cae95ddc61d)" stroke="none" x="2"
+                xml:space="preserve" y="149">Celery</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,32)">
+            <text clip-path="url(#b8c83891-476e-42e6-bac9-0cae95ddc61d)" stroke="none" x="2"
+                xml:space="preserve" y="164">Mustard</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,32)">
+            <text clip-path="url(#b8c83891-476e-42e6-bac9-0cae95ddc61d)" stroke="none" x="2"
+                xml:space="preserve" y="179">SesameSeeds</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,32)">
+            <text clip-path="url(#b8c83891-476e-42e6-bac9-0cae95ddc61d)" stroke="none" x="2"
+                xml:space="preserve" y="194">SulphurDioxide</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,32)">
+            <text clip-path="url(#b8c83891-476e-42e6-bac9-0cae95ddc61d)" stroke="none" x="2"
+                xml:space="preserve" y="209">Lupin</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,32)">
+            <text clip-path="url(#b8c83891-476e-42e6-bac9-0cae95ddc61d)" stroke="none" x="2"
+                xml:space="preserve" y="224">Molluscs</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(2,2)">
+            <text clip-path="url(#0d0dad12-e955-4558-88b6-0edd4b34f561)" stroke="none" x="5"
+                xml:space="preserve" y="12">&lt;&lt;enumeration&gt;&gt;</text>
+            <text clip-path="url(#0d0dad12-e955-4558-88b6-0edd4b34f561)" font-weight="bold"
+                stroke="none" x="13" xml:space="preserve" y="27">AllergenType</text>
+        </g>
+    </g>
+</svg>

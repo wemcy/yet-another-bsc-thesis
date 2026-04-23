@@ -4,6 +4,7 @@
             <label for="register-name" class="block text-sm font-medium text-slate-700">Név</label>
             <input
                 id="register-name"
+                data-cy="register-name"
                 v-model.trim="name"
                 type="text"
                 autocomplete="name"
@@ -19,6 +20,7 @@
             >
             <input
                 id="register-email"
+                data-cy="register-email"
                 v-model.trim="email"
                 type="email"
                 autocomplete="email"
@@ -34,6 +36,7 @@
             >
             <input
                 id="register-password"
+                data-cy="register-password"
                 v-model="password"
                 type="password"
                 autocomplete="new-password"
@@ -49,6 +52,7 @@
             >
             <input
                 id="register-password-confirm"
+                data-cy="register-password-confirm"
                 v-model="passwordConfirm"
                 type="password"
                 autocomplete="new-password"
@@ -62,6 +66,7 @@
 
         <label class="inline-flex items-center gap-2 text-sm text-slate-700">
             <input
+                data-cy="register-accept-terms"
                 v-model="acceptedTerms"
                 type="checkbox"
                 class="rounded border-slate-300 bg-white shadow-sm"
@@ -71,6 +76,7 @@
         <p v-if="errors.acceptedTerms" class="text-sm text-red-600">{{ errors.acceptedTerms }}</p>
 
         <button
+            data-cy="register-submit"
             type="submit"
             class="w-full rounded-lg bg-slate-900 text-white py-2.5 font-medium hover:bg-slate-800 transition"
         >

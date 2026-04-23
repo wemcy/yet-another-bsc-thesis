@@ -1,8 +1,8 @@
-describe('Admin Ingredients Page', () => {
+describe('Admin Ingredients Page [U12A, U12B, U12C]', () => {
     const ingredientName = `Cypress Ingredient ${Date.now()}`
     const updatedIngredientName = `${ingredientName} Updated`
 
-    context('Access control', () => {
+    context('Support - access control', () => {
         it('redirects an unauthenticated user to /login', () => {
             cy.visit('/admin/ingredients')
             cy.url().should('include', '/login')
@@ -16,48 +16,108 @@ describe('Admin Ingredients Page', () => {
         })
     })
 
-    context('Ingredient management', () => {
+    context('U12A - Összetevő keresése és betöltése', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/admin/ingredients')
             cy.contains('h1', 'Hozzávalók kezelése').should('be.visible')
         })
 
-        it('creates, updates, searches, and deletes an ingredient', () => {
-            cy.get('#ingredient-name').type(ingredientName)
+        it('searches for an ingredient and loads it into the editor', () => {
+            cy.get('[data-cy="admin-ingredient-name"]').type(ingredientName)
             cy.contains('label', 'Glutén').find('input[type="checkbox"]').check()
             cy.contains('button', 'Hozzávaló létrehozása').click()
 
-            cy.get('#ingredient-name').should('have.value', ingredientName)
+            cy.get('[data-cy="admin-ingredient-search"]').clear().type(ingredientName)
+            cy.get('[data-cy="admin-search-button"]').click()
+            cy.get('[data-cy="admin-ingredient-result"]')
+                .contains(ingredientName)
+                .should('be.visible')
+                .click()
+
+            cy.contains('betöltve szerkesztésre.').should('be.visible')
+            cy.get('[data-cy="admin-ingredient-name"]').should('have.value', ingredientName)
             cy.contains('button', 'Módosítás mentése').should('be.visible')
             cy.contains('button', 'Hozzávaló törlése').should('be.visible')
             cy.contains('button', ingredientName).should('be.visible')
+        })
+    })
 
-            cy.contains('button', 'Keresés').click()
-            cy.contains('button', ingredientName).should('be.visible').click()
+    context('U12B - Üres összetevő keresés kezelése', () => {
+        beforeEach(() => {
+            cy.login()
+            cy.visit('/admin/ingredients')
+            cy.contains('h1', 'Hozzávalók kezelése').should('be.visible')
+        })
 
-            cy.contains('betöltve szerkesztésre.').should('be.visible')
-            cy.get('#ingredient-name').clear().type(updatedIngredientName)
+        it('does not run a meaningful search for an empty query and shows feedback', () => {
+            cy.get('[data-cy="admin-ingredient-search"]').clear()
+            cy.get('[data-cy="admin-search-button"]').click()
+
+            cy.contains('Adj meg legalább egy karaktert a kereséshez.').should('be.visible')
+        })
+    })
+
+    context('U12C - Összetevő allergén információinak módosítása', () => {
+        beforeEach(() => {
+            cy.login()
+            cy.visit('/admin/ingredients')
+            cy.contains('h1', 'Hozzávalók kezelése').should('be.visible')
+
+            cy.get('[data-cy="admin-ingredient-name"]').type(ingredientName)
+            cy.contains('label', 'Glutén').find('input[type="checkbox"]').check()
+            cy.contains('button', 'Hozzávaló létrehozása').click()
+            cy.get('[data-cy="admin-ingredient-search"]').clear().type(ingredientName)
+            cy.get('[data-cy="admin-search-button"]').click()
+            cy.get('[data-cy="admin-ingredient-result"]')
+                .contains(ingredientName)
+                .should('be.visible')
+                .click()
+        })
+
+        it('updates an existing ingredient and refreshes the displayed data', () => {
+            cy.get('[data-cy="admin-ingredient-name"]').clear().type(updatedIngredientName)
             cy.contains('label', 'Tej').find('input[type="checkbox"]').check()
             cy.contains('button', 'Módosítás mentése').click()
 
-            cy.get('#ingredient-name').should('have.value', updatedIngredientName)
+            cy.get('[data-cy="admin-ingredient-name"]').should('have.value', updatedIngredientName)
             cy.contains('button', 'Módosítás mentése').should('be.visible')
             cy.contains('button', 'Hozzávaló törlése').should('be.visible')
 
-            cy.contains('button', 'Keresés').click()
-            cy.contains('button', updatedIngredientName).should('be.visible').click()
-            cy.get('#ingredient-name').should('have.value', updatedIngredientName)
+            cy.get('[data-cy="admin-search-button"]').click()
+            cy.get('[data-cy="admin-ingredient-result"]')
+                .contains(updatedIngredientName)
+                .should('be.visible')
+                .click()
+            cy.get('[data-cy="admin-ingredient-name"]').should('have.value', updatedIngredientName)
             cy.contains('label', 'Glutén').find('input[type="checkbox"]').should('be.checked')
             cy.contains('label', 'Tej').find('input[type="checkbox"]').should('be.checked')
+        })
+    })
 
-            cy.contains('button', 'Hozzávaló törlése').click()
-            cy.get('#ingredient-name').should('have.value', '')
-            cy.contains('button', 'Hozzávaló létrehozása').should('be.visible')
-            cy.contains('button', 'Hozzávaló törlése').should('not.exist')
+    context('Support - cleanup', () => {
+        beforeEach(() => {
+            cy.login()
+            cy.visit('/admin/ingredients')
+            cy.contains('h1', 'Hozzávalók kezelése').should('be.visible')
 
-            cy.get('input[placeholder="pl. zabpehely"]').clear().type(updatedIngredientName)
-            cy.contains('button', 'Keresés').click()
+            cy.get('[data-cy="admin-ingredient-search"]').clear().type(updatedIngredientName)
+            cy.get('[data-cy="admin-search-button"]').click()
+        })
+
+        it('deletes the temporary ingredient and verifies it no longer appears in search', () => {
+            cy.contains('button', updatedIngredientName).then(($button) => {
+                if ($button.length > 0) {
+                    cy.wrap($button).click()
+                    cy.contains('button', 'Hozzávaló törlése').click()
+                    cy.get('[data-cy="admin-ingredient-name"]').should('have.value', '')
+                    cy.contains('button', 'Hozzávaló létrehozása').should('be.visible')
+                    cy.contains('button', 'Hozzávaló törlése').should('not.exist')
+                }
+            })
+
+            cy.get('[data-cy="admin-ingredient-search"]').clear().type(updatedIngredientName)
+            cy.get('[data-cy="admin-search-button"]').click()
             cy.contains('Nincs találat erre a keresésre.').should('be.visible')
         })
     })

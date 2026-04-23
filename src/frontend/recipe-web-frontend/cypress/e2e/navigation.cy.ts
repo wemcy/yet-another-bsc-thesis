@@ -1,9 +1,9 @@
-describe('Navigation', () => {
+describe('Navigation [support]', () => {
     beforeEach(() => {
         cy.visit('/')
     })
 
-    context('Brand / logo', () => {
+    context('Support - brand / logo', () => {
         it('shows the "ReceptApp" brand link', () => {
             cy.contains('nav a', 'ReceptApp').should('be.visible')
         })
@@ -15,7 +15,7 @@ describe('Navigation', () => {
         })
     })
 
-    context('Main navigation links', () => {
+    context('Support - main navigation links', () => {
         it('has a "Receptek" link pointing to /recipes', () => {
             cy.contains('nav a', 'Receptek').should('have.attr', 'href', '/recipes')
         })
@@ -30,7 +30,7 @@ describe('Navigation', () => {
         })
     })
 
-    context('Guest state', () => {
+    context('Support - guest state', () => {
         it('shows a "Belépés" button when not logged in', () => {
             cy.contains('nav button', 'Belépés').should('be.visible')
         })
@@ -55,7 +55,7 @@ describe('Navigation', () => {
         })
     })
 
-    context('Authenticated state', () => {
+    context('Support - authenticated state', () => {
         beforeEach(() => {
             cy.login()
         })

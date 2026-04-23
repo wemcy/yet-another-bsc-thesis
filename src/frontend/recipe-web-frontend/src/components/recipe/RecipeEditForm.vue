@@ -8,7 +8,6 @@
                 type="text"
                 class="w-full border rounded px-4 py-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-            <p v-if="errors.title" class="text-red-600 text-sm mt-1">{{ errors.title }}</p>
         </div>
 
         <!-- Description -->
@@ -17,12 +16,9 @@
             <textarea
                 v-model="description"
                 class="w-full border rounded px-4 py-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                rows="3"
             ></textarea>
-            <p v-if="errors.description" class="text-red-600 text-sm mt-1">
-                {{ errors.description }}
-            </p>
         </div>
+
         <div>
             <label class="block font-semibold mb-2">Értékelés</label>
             <div class="text-lg">{{ recipe.rating }} ⭐</div>
@@ -37,12 +33,14 @@
                     type="number"
                     step="any"
                     placeholder="Mennyiség"
+                    data-cy="ingredient-quantity"
                     class="w-1/4 border rounded px-2 py-1 bg-white shadow-sm"
                 />
                 <input
                     v-model="ingredient.unitOfMeasurement"
                     type="text"
                     placeholder="Egység"
+                    data-cy="ingredient-unit"
                     class="w-1/4 border rounded px-2 py-1 bg-white shadow-sm"
                 />
                 <IngredientSuggestionAutocomplete
@@ -50,6 +48,7 @@
                     v-model:allergens="ingredient.allergens"
                     placeholder="Hozzávaló keresése"
                     class="w-full"
+                    data-cy="ingredient-name"
                 />
 
                 <details class="relative w-64">

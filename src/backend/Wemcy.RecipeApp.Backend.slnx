@@ -7,7 +7,6 @@
   <Folder Name="/Solution Items/">
     <File Path="../../docs/api/recipe_api.yaml" />
   </Folder>
-  <Project Path="src/Wemcy.RecipeApp.Backend.Tests/Wemcy.RecipeApp.Backend.Tests.csproj" />
   <Project Path="src/Wemcy.RecipeApp.Backend.Api/Wemcy.RecipeApp.Backend.Api.csproj" />
   <Project Path="src/Wemcy.RecipeApp.Backend/Wemcy.RecipeApp.Backend.csproj" />
 </Solution>

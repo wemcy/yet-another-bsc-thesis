@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    color-interpolation="auto" color-rendering="auto" fill="rgb(0,0,0)" fill-opacity="0"
+    font-family="'Dialog'" font-size="12px" font-style="normal" font-weight="normal" height="198"
+    image-rendering="auto" shape-rendering="auto" stroke="rgb(0,0,0)" stroke-dasharray="none"
+    stroke-dashoffset="0" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10"
+    stroke-opacity="0" stroke-width="1" text-rendering="auto" viewbox="0 0 492 198" width="492"><!--Generated
+    by the Batik Graphics2D SVG Generator-->
+    <defs id="genericDefs" />
+    <g>
+        <defs id="defs1">
+            <clipPath clipPathUnits="userSpaceOnUse" id="6ca78aa8-06d5-4a45-a9bd-e5ce4fa6fb52">
+                <path d="M-7 -7 L497 -7 L497 203 L-7 203 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="4baa753f-220c-470f-b0ab-cdb580cd3da8">
+                <path d="M-7 -7 L497 -7 L497 203 L-7 203 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="06d52ceb-c212-41bf-aa4f-524f62b755bd">
+                <path d="M-7 -7 L497 -7 L497 203 L-7 203 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="1721f86b-c516-497d-a0a4-f4100e6894e5">
+                <path d="M0 0 L0 177 L486 177 L486 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="8fbc4f55-aea2-403b-b682-2a991a1e6604">
+                <path d="M0 0 L0 15 L486 15 L486 0 Z" />
+            </clipPath>
+        </defs>
+        <g fill="white" fill-opacity="1" stroke="white" stroke-opacity="1"
+            text-rendering="geometricPrecision">
+            <rect height="198" stroke="none" width="492" x="0" y="0" />
+        </g>
+        <g
+            data="{&quot;name&quot;:&quot;DatabaseContext&quot;,&quot;modelType&quot;:&quot;Class&quot;}"
+            hyper="" model-id="shape-qeu7nbmDIQzgdhUe"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="rgb(122,207,245)"
+                stroke-opacity="1" text-rendering="geometricPrecision" transform="translate(2,2)">
+                <rect clip-path="url(#4baa753f-220c-470f-b0ab-cdb580cd3da8)" height="192"
+                    stroke="none" width="486" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="black"
+                stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="0"
+                stroke-opacity="1" text-rendering="geometricPrecision" transform="translate(2,2)">
+                <rect clip-path="url(#4baa753f-220c-470f-b0ab-cdb580cd3da8)" fill="none"
+                    height="192" width="486" x="0" y="0" />
+                <line clip-path="url(#4baa753f-220c-470f-b0ab-cdb580cd3da8)" fill="none" x1="0"
+                    x2="486" y1="15" y2="15" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,17)">
+            <text clip-path="url(#1721f86b-c516-497d-a0a4-f4100e6894e5)" stroke="none" x="2"
+                xml:space="preserve" y="14">+Recipes : DbSet&lt;Recipe&gt;</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,17)">
+            <text clip-path="url(#1721f86b-c516-497d-a0a4-f4100e6894e5)" stroke="none" x="2"
+                xml:space="preserve" y="29">+Images : DbSet&lt;Image&gt;</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,17)">
+            <text clip-path="url(#1721f86b-c516-497d-a0a4-f4100e6894e5)" stroke="none" x="2"
+                xml:space="preserve" y="44">+IngredientSuggestions : DbSet&lt;IngredientSuggestion&gt;</text>
+            <line clip-path="url(#1721f86b-c516-497d-a0a4-f4100e6894e5)" fill="none"
+                stroke-linecap="butt" stroke-linejoin="bevel" stroke-miterlimit="0" x1="0" x2="486"
+                y1="49" y2="49" />
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,17)">
+            <text clip-path="url(#1721f86b-c516-497d-a0a4-f4100e6894e5)" stroke="none" x="2"
+                xml:space="preserve" y="63">+DatabaseContext(options : DbContextOptions)</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,17)">
+            <text clip-path="url(#1721f86b-c516-497d-a0a4-f4100e6894e5)" stroke="none" x="2"
+                xml:space="preserve" y="78">+SaveChanges() : override int</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,17)">
+            <text clip-path="url(#1721f86b-c516-497d-a0a4-f4100e6894e5)" stroke="none" x="2"
+                xml:space="preserve" y="93">+SaveChangesAsync(cancellationToken : CancellationToken = default) : override async Task&lt;int&gt;</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,17)">
+            <text clip-path="url(#1721f86b-c516-497d-a0a4-f4100e6894e5)" stroke="none" x="2"
+                xml:space="preserve" y="108">#OnModelCreating(modelBuilder : ModelBuilder) : override void</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,17)">
+            <text clip-path="url(#1721f86b-c516-497d-a0a4-f4100e6894e5)" stroke="none" x="2"
+                xml:space="preserve" y="123">-UpdateEntities() : void</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,17)">
+            <text clip-path="url(#1721f86b-c516-497d-a0a4-f4100e6894e5)" stroke="none" x="2"
+                xml:space="preserve" y="138">-UpdateEntityTimestamps() : void</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,17)">
+            <text clip-path="url(#1721f86b-c516-497d-a0a4-f4100e6894e5)" stroke="none" x="2"
+                xml:space="preserve" y="153">-UpdateUserTimestamps() : void</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            font-weight="bold" image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(2,2)">
+            <text clip-path="url(#8fbc4f55-aea2-403b-b682-2a991a1e6604)" stroke="none" x="198"
+                xml:space="preserve" y="12">DatabaseContext</text>
+        </g>
+    </g>
+</svg>

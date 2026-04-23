@@ -1,23 +1,15 @@
-describe('Edit Recipe Page', () => {
-    context('Navigation to edit page', () => {
-        it('navigates to the edit page from a recipe the user owns', () => {
-            cy.login()
-            // Navigate to own recipe via profile
-            cy.visit('/profile')
-            cy.get('a[href*="/recipe/"]').first().click()
-            cy.url().should('include', '/recipe/')
-            cy.contains('a', 'Szerkesztés').click()
-            cy.url().should('include', '/edit/')
-        })
-    })
-
-    context('Edit form structure', () => {
+describe('Edit Recipe Page [U06A, U06B]', () => {
+    context('U06A - Recept szerkesztése érvényes adatokkal', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/profile')
             cy.get('a[href*="/recipe/"]').first().click()
             cy.url().should('include', '/recipe/')
             cy.contains('a', 'Szerkesztés').click()
+            cy.url().should('include', '/edit/')
+        })
+
+        it('navigates to the edit page from a recipe the user owns', () => {
             cy.url().should('include', '/edit/')
         })
 
@@ -46,7 +38,7 @@ describe('Edit Recipe Page', () => {
         })
 
         it('has at least one ingredient row pre-filled', () => {
-            cy.get('input[placeholder="Hozzávaló"]').first().invoke('val').should('not.be.empty')
+            cy.get('[data-cy="ingredient-name"]').first().invoke('val').should('not.be.empty')
         })
 
         it('has at least one step row pre-filled', () => {
@@ -84,23 +76,12 @@ describe('Edit Recipe Page', () => {
         it('has a Mégse (cancel) button', () => {
             cy.contains('button', 'Mégse').should('be.visible')
         })
-    })
-
-    context('Edit form interactions', () => {
-        beforeEach(() => {
-            cy.login()
-            cy.visit('/profile')
-            cy.get('a[href*="/recipe/"]').first().click()
-            cy.url().should('include', '/recipe/')
-            cy.contains('a', 'Szerkesztés').click()
-            cy.url().should('include', '/edit/')
-        })
 
         it('adds a new ingredient row when "+ Hozzávaló hozzáadása" is clicked', () => {
-            cy.get('input[placeholder="Hozzávaló"]').then(($before) => {
+            cy.get('[data-cy="ingredient-name"]').then(($before) => {
                 const countBefore = $before.length
                 cy.contains('button', '+ Hozzávaló hozzáadása').click()
-                cy.get('input[placeholder="Hozzávaló"]').should('have.length', countBefore + 1)
+                cy.get('[data-cy="ingredient-name"]').should('have.length', countBefore + 1)
                 cy.contains('label', 'Hozzávalók')
                     .parent()
                     .find('summary')
@@ -114,7 +95,7 @@ describe('Edit Recipe Page', () => {
         it('removes an ingredient row when the ✕ button is clicked', () => {
             // First add one so we have at least 2
             cy.contains('button', '+ Hozzávaló hozzáadása').click()
-            cy.get('input[placeholder="Hozzávaló"]').then(($before) => {
+            cy.get('[data-cy="ingredient-name"]').then(($before) => {
                 const countBefore = $before.length
                 // Click the last remove button
                 cy.contains('label', 'Hozzávalók')
@@ -123,7 +104,7 @@ describe('Edit Recipe Page', () => {
                     .contains('✕')
                     .last()
                     .click()
-                cy.get('input[placeholder="Hozzávaló"]').should('have.length', countBefore - 1)
+                cy.get('[data-cy="ingredient-name"]').should('have.length', countBefore - 1)
             })
         })
 
@@ -168,7 +149,7 @@ describe('Edit Recipe Page', () => {
         })
     })
 
-    context('Edit form validation', () => {
+    context('U06B - Recept szerkesztése érvénytelen adatokkal', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/profile')

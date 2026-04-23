@@ -25,9 +25,16 @@ Cypress.Commands.add(
     'login',
     (email = Cypress.env('userEmail'), password = Cypress.env('userPassword')) => {
         cy.visit('/login')
-        cy.get('#login-email').type(email)
-        cy.get('#login-password').type(password)
-        cy.contains('button[type="submit"]', 'Bejelentkezés').click()
+
+        // Support both the new `data-cy` attributes and the legacy `id` selectors.
+        // This makes the helper resilient if the running app hasn't been rebuilt yet.
+        const emailSelector = '[data-cy="login-email"], #login-email'
+        const passwordSelector = '[data-cy="login-password"], #login-password'
+        const submitSelector = '[data-cy="login-submit"], button[type="submit"]'
+
+        cy.get(emailSelector, { timeout: 10000 }).should('exist').type(email)
+        cy.get(passwordSelector).type(password)
+        cy.get(submitSelector).click()
         cy.url().should('not.include', '/login')
     },
 )

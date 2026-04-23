@@ -8,25 +8,28 @@ using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
 using Wemcy.RecipeApp.Backend.Security;
 using Wemcy.RecipeApp.Backend.Services;
 
-namespace Wemcy.RecipeApp.Backend.Controllers;
-
-public class AuthController(IAuthService authService) : AuthApiController
+namespace Wemcy.RecipeApp.Backend.Controllers
 {
-    public async override Task<IActionResult> Register([FromBody] Api.Models.RegisterRequest registerRequest)
+    public class AuthController(IAuthService authService) : AuthApiController
     {
-        await authService.RegisterAsync(registerRequest.Email, registerRequest.Password, registerRequest.DisplayName);
-        var user = await authService.LoginAsync(registerRequest.Email, registerRequest.Password);
-        return Ok(user);
+        public async override Task<IActionResult> Register([FromBody] Api.Models.RegisterRequest registerRequest)
+        {
+            await authService.RegisterAsync(registerRequest.Email, registerRequest.Password, registerRequest.DisplayName);
+            var user = await authService.LoginAsync(registerRequest.Email, registerRequest.Password);
+            return Ok(user);
+        }
+
+        public async override Task<IActionResult> Login([FromBody] Api.Models.LoginRequest loginRequest)
+        {
+            var result = await authService.LoginAsync(loginRequest.Email, loginRequest.Password);
+            return Ok(result);
+        }
+        public async override Task<IActionResult> Logout()
+        {
+            await authService.LogoutAsync();
+            return NoContent();
+        }
     }
 
-    public async override Task<IActionResult> Login([FromBody] Api.Models.LoginRequest loginRequest)
-    {
-        var result = await authService.LoginAsync(loginRequest.Email, loginRequest.Password);
-        return Ok(result);
-    }
-    public async override Task<IActionResult> Logout()
-    {
-        await authService.LogoutAsync();
-        return NoContent();
-    }
 }
+

@@ -1,6 +1,7 @@
 <template>
     <router-link
         :to="{ name: 'Recipe', params: { id: recipe.id } }"
+        data-cy="recipe-link"
         class="block bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition"
     >
         <img

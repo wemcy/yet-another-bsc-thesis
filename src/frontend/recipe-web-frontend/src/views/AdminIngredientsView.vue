@@ -60,6 +60,7 @@ const canAccessPage = computed(() => auth.isAdmin)
                 >
                     <div class="flex flex-col gap-3 sm:flex-row">
                         <input
+                            data-cy="admin-ingredient-search"
                             v-model="searchTerm"
                             type="text"
                             placeholder="pl. zabpehely"
@@ -67,6 +68,7 @@ const canAccessPage = computed(() => auth.isAdmin)
                             @keyup.enter="adminIngredientsStore.runSearch"
                         />
                         <button
+                            data-cy="admin-search-button"
                             type="button"
                             :disabled="searchLoading"
                             class="rounded-lg bg-blue-600 px-5 py-2.5 text-white transition hover:bg-blue-700 disabled:opacity-50"
@@ -85,6 +87,7 @@ const canAccessPage = computed(() => auth.isAdmin)
                         <button
                             v-for="result in searchResults"
                             :key="result.id"
+                            data-cy="admin-ingredient-result"
                             type="button"
                             class="w-full rounded-lg border px-4 py-3 text-left transition"
                             :class="
@@ -130,6 +133,7 @@ const canAccessPage = computed(() => auth.isAdmin)
                                     </p>
                                 </div>
                                 <button
+                                    data-cy="admin-ingredient-delete"
                                     type="button"
                                     :disabled="isDeleteDisabled"
                                     class="rounded-lg bg-red-600 px-5 py-2.5 text-white transition hover:bg-red-700 disabled:opacity-50"
@@ -149,6 +153,7 @@ const canAccessPage = computed(() => auth.isAdmin)
                             </label>
                             <input
                                 id="ingredient-name"
+                                data-cy="admin-ingredient-name"
                                 v-model="form.name"
                                 type="text"
                                 placeholder="Add meg a hozzávaló nevét"
@@ -184,6 +189,7 @@ const canAccessPage = computed(() => auth.isAdmin)
 
                         <div class="flex flex-wrap gap-3">
                             <button
+                                data-cy="admin-ingredient-save"
                                 type="button"
                                 :disabled="isSaveDisabled"
                                 class="rounded-lg bg-blue-600 px-5 py-2.5 text-white transition hover:bg-blue-700 disabled:opacity-50"
