@@ -1,0 +1,69 @@
+[
+  {
+    "title": "Gazpacho",
+    "description": "Hideg spanyol zöldségleves",
+    "steps": [
+      "A száraz kenyeret 5 percig vízben áztatjuk; kinyomkodjuk.",
+      "Az összes zöldséget kenyérrel, fokhagymával, olívaolajjal és sherryecettel turmixoljuk.",
+      "Sóval és borssal ízesítjük."
+    ],
+    "ingredients": [
+      { "name": "Érett paradicsom", "quantity": 1, "unitOfMeasurement": "kg", "allergens": [] },
+      { "name": "Uborka", "quantity": 1, "unitOfMeasurement": "db", "allergens": [] },
+      { "name": "Olívaolaj", "quantity": 80, "unitOfMeasurement": "ml", "allergens": [] }
+    ]
+  },
+  {
+    "title": "Vajcsirke (Butter Chicken)",
+    "description": "Enyhe, krémes paradicsomos indiai curry omlós csirkével.",
+    "steps": [
+      "A csirkehúst joghurtban, citromlében, chiliporban és kurkumában 1 órát pácoljuk.",
+      "Grillen vagy serpenyőben pirosra sütjük.",
+      "A paradicsomos szósszal összefőzzük és tejszínnel krémesítjük."
+    ],
+    "ingredients": [
+      { "name": "Csirkecomb", "quantity": 600, "unitOfMeasurement": "g", "allergens": [] },
+      { "name": "Paradicsompüré", "quantity": 400, "unitOfMeasurement": "g", "allergens": [] },
+      { "name": "Tejszín", "quantity": 150, "unitOfMeasurement": "ml", "allergens": ["MILK"] }
+    ]
+  },
+  {
+    "title": "Shakshuka",
+    "description": "Fűszeres paradicsomos-paprikás szószban sült tojás — közel-keleti klasszikus.",
+    "steps": [
+      "Olívaolajat hevítünk, megdinszteljük a hagymát és paprikát.",
+      "Hozzáadjuk a fokhagymát, köményt, paprikát és chilit; pár percig pirítjuk.",
+      "Ráöntjük a darált paradicsomot, kis mélyedéseket formálunk és beletörjük a tojásokat."
+    ],
+    "ingredients": [
+      { "name": "Tojás", "quantity": 6, "unitOfMeasurement": "db", "allergens": ["EGGS"] },
+      { "name": "Darált paradicsom", "quantity": 400, "unitOfMeasurement": "g", "allergens": [] }
+    ]
+  },
+  {
+    "title": "Japán ramen",
+    "description": "Gazdag sertés alapleves ramen chashuval, lágy tojással és norival.",
+    "steps": [
+      "Sertéscsontokat, fokhagymát és gyömbért hosszú ideig főzünk az alapléhez.",
+      "A tésztát megfőzzük és az alaplével tálaljuk.",
+      "Chashuval és lágy tojással díszítjük."
+    ],
+    "ingredients": [
+      { "name": "Ramen tészta", "quantity": 400, "unitOfMeasurement": "g", "allergens": ["GLUTEN"] },
+      { "name": "Sertéscsont", "quantity": 1, "unitOfMeasurement": "kg", "allergens": [] }
+    ]
+  },
+  {
+    "title": "Guacamole",
+    "description": "Friss avokádókrém lime-mal, korianderrel és csípős paprikával.",
+    "steps": [
+      "Az avokádó húsát kikanalazzuk és villával összetörjük.",
+      "Hozzáadjuk a lime levet, aprított koriandert és chilipaprikát.",
+      "Sóval ízesítve azonnal tálaljuk."
+    ],
+    "ingredients": [
+      { "name": "Érett avokádó", "quantity": 3, "unitOfMeasurement": "db", "allergens": [] },
+      { "name": "Lime", "quantity": 1, "unitOfMeasurement": "db", "allergens": [] }
+    ]
+  }
+]
