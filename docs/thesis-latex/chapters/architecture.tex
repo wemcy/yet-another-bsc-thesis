@@ -127,7 +127,7 @@ További előny, hogy a rendszer könnyen kiterjeszthető más platformokra is. 
 
 Előnyök mellett sajnos hátrányokkal is jár. REST API-k tervezése időigényes lehet, különösen összetett üzleti logika esetén. Emellett növeli komplexitást, több eszközt kell használni fejlesztéshez és több programozási nyelvet kell ismerni.
 
-Az api leírására az OpenAPI specifikációt választottam. Ez egy széles körben használt szabvány, amely lehetővé teszi a REST API-k részletes dokumentálását. A HTTP végpontok leírása a követekezőképpen néz ki:
+Az api leírására az OpenAPI specifikációval lett megvalósítva. Ez egy széles körben használt szabvány, amely lehetővé teszi a REST API-k részletes dokumentálását. A HTTP végpontok leírása a követekezőképpen néz ki:
 
 \begin{figure}[H]
 	\centering
@@ -152,3 +152,9 @@ Az api leírására az OpenAPI specifikációt választottam. Ez egy széles kö
 	\includegraphics[width=0.9\textwidth]{auth-endpoints.png}
 	\caption{Hitelesítési HTTP végpontok}\label{fig:auth-endpoints-diagram}
 \end{figure}
+
+
+\subsection{Adatbázis}
+
+Az adatbázis tervezése során a fő szempont az volt, hogy minél kevesebb interakció törénjen az adatbázissal natív SQL nyelven írt lekérdezésekkel.  Ennek megoldására az Entity Framework  (továbbiakban EF) keretrendszert használj a backend. Az EF egy objektum-relációs leképező (ORM) eszköz, amely lehetővé teszi, hogy a fejlesztők C\# osztályokkal dolgozzanak, miközben az adatok relációs adatbázisban tárolódnak. Ennek köszönhetően az adatok kapcsolatait és a lekérdeséseket is a C\# kódon keresztül lehet kezelni, anélkül, hogy közvetlenül SQL-t kellene írni. Ennek köszönhetően az adatbázis struktúrája típusos, jól karbantartható. A kapcsolatokat a nyelv megszokott kulcsszavaival lehet kezelni. 
+

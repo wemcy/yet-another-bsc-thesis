@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    color-interpolation="auto" color-rendering="auto" fill="rgb(0,0,0)" fill-opacity="0"
+    font-family="'Dialog'" font-size="12px" font-style="normal" font-weight="normal" height="465"
+    image-rendering="auto" shape-rendering="auto" stroke="rgb(0,0,0)" stroke-dasharray="none"
+    stroke-dashoffset="0" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="10"
+    stroke-opacity="0" stroke-width="1" text-rendering="auto" viewbox="0 0 445 465" width="445"><!--Generated
+    by the Batik Graphics2D SVG Generator-->
+    <defs id="genericDefs" />
+    <g>
+        <defs id="defs1">
+            <clipPath clipPathUnits="userSpaceOnUse" id="5a86f5a5-36f9-4cc6-a04b-c0bb0afbb7ba">
+                <path d="M-7 -7 L163 -7 L163 98 L-7 98 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="130c7be5-e49e-4faf-b63c-fab7213e8e74">
+                <path d="M-7 -7 L163 -7 L163 98 L-7 98 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="405b96db-c817-4024-9e21-03933eaeb506">
+                <path d="M-7 -7 L163 -7 L163 98 L-7 98 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="45a2a482-d815-4071-9313-f6f1273f1db2">
+                <path d="M0 0 L0 72 L152 72 L152 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="b8fac14d-26b3-4fc9-b0d0-ed6c74d6929c">
+                <path d="M0 0 L0 15 L152 15 L152 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="05f77900-6cfb-41c0-ad8f-31f1d9ce5199">
+                <path d="M-7 -7 L174 -7 L174 94 L-7 94 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="82d9844b-cd1b-4f97-b5fd-41fc41dfa277">
+                <path d="M-7 -7 L174 -7 L174 94 L-7 94 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="cf25123f-fee1-45e6-88bd-315b34e3b248">
+                <path d="M-7 -7 L174 -7 L174 94 L-7 94 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="454e8177-c967-41ea-b0bf-3bdd232762ab">
+                <path d="M0 0 L0 68 L163 68 L163 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="e806bd78-c3ad-4618-90bf-56734f0017ba">
+                <path d="M0 0 L0 15 L163 15 L163 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="8d23f0d9-5929-41d5-bd53-c85e8b5b1f6f">
+                <path d="M-7 -7 L142 -7 L142 94 L-7 94 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="00521abc-23b4-47b0-b528-1c651b82e051">
+                <path d="M-7 -7 L142 -7 L142 94 L-7 94 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="dd922f45-d8d5-4d54-86bf-ae57278b0079">
+                <path d="M-7 -7 L142 -7 L142 94 L-7 94 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="6abfa94a-21dd-4df9-96b0-7ba6379f65cf">
+                <path d="M0 0 L0 53 L131 53 L131 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="f365468c-41f9-4f8f-8f2f-e95fb7b75dc0">
+                <path d="M0 0 L0 30 L131 30 L131 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="5047a14c-8fc2-44be-ae95-d807ff2372c1">
+                <path d="M-7 -7 L123 -7 L123 79 L-7 79 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="a56c3131-c4a0-4e37-8cb4-fbd039d76399">
+                <path d="M-7 -7 L123 -7 L123 79 L-7 79 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="997f911c-0d2a-4caa-b0cc-fd11c85437e2">
+                <path d="M-7 -7 L123 -7 L123 79 L-7 79 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="b8d4e428-3075-4ec5-94b1-ba655644ec4a">
+                <path d="M0 0 L0 53 L112 53 L112 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="695730ab-6d0d-42fb-8b4e-5c00cc646b7b">
+                <path d="M0 0 L0 15 L112 15 L112 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="40e0b7e0-8ffd-4f52-9b66-ceb124aec23a">
+                <path d="M-7 -7 L213 -7 L213 323 L-7 323 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="551debd7-d0c2-4b9c-bee3-ce406c6f6bd8">
+                <path d="M-7 -7 L213 -7 L213 323 L-7 323 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="df65f003-7733-4695-9278-08bae284e819">
+                <path d="M-7 -7 L213 -7 L213 323 L-7 323 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="2727598f-1aff-465f-ba4e-d016800bd960">
+                <path d="M0 0 L0 282 L202 282 L202 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="3525d12a-4536-479a-807a-f89a9f3e763a">
+                <path d="M0 0 L0 30 L202 30 L202 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="2f3d7a1f-f615-41fd-9de6-8cf1a48781a9">
+                <path d="M-7 -7 L91 -7 L91 91 L-7 91 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="5d17c5d8-8692-4ff3-8f50-9a238d5e12ac">
+                <path d="M-7 -7 L91 -7 L91 91 L-7 91 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="c48ef2fe-6736-4fcb-ae03-4c1dbf3da1a6">
+                <path d="M0 0 L0 80 L80 80 L80 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="ee309baa-b80f-433b-8442-b95485741056">
+                <path d="M-7 -7 L75 -7 L75 75 L-7 75 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="a08648b4-958f-4767-b76a-72a67e43a9da">
+                <path d="M-7 -7 L75 -7 L75 75 L-7 75 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="504dcb61-d988-466e-a3cb-13a418eacc97">
+                <path d="M0 0 L0 64 L64 64 L64 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="8b5e879e-a9f0-4326-9637-6db56d1762f3">
+                <path d="M-7 -7 L73 -7 L73 73 L-7 73 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="d782b491-0462-4b18-89bf-e754ffb57392">
+                <path d="M-7 -7 L73 -7 L73 73 L-7 73 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="551a0156-4770-465a-bcb0-95be1048804b">
+                <path d="M0 0 L0 62 L62 62 L62 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="fa68017e-8cab-46a4-bb45-5357b62d1914">
+                <path d="M-7 -7 L73 -7 L73 73 L-7 73 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="c3c2fd99-d31c-4156-a410-7409d8273000">
+                <path d="M0 0 L0 62 L62 62 L62 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="f311cef8-9a82-49ba-94ff-8a32c8847513">
+                <path d="M-7 -7 L79 -7 L79 79 L-7 79 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="5ad5c730-5dc8-4f6b-a370-d28d600b9d4c">
+                <path d="M-7 -7 L79 -7 L79 79 L-7 79 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="3114116e-cc97-4ca8-917f-88826437ecfd">
+                <path d="M0 0 L0 68 L68 68 L68 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="5c017e7c-a27a-4dba-a4a2-39b53f13ff2c">
+                <path d="M-7 -7 L61 -7 L61 61 L-7 61 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="75fc43fa-d953-463a-99e3-9e60a2a98edb">
+                <path d="M-7 -7 L61 -7 L61 61 L-7 61 L-7 -7 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="4a13e53b-cf06-4871-97d2-73a8ed23851c">
+                <path d="M0 0 L0 50 L50 50 L50 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="d4b558f3-891b-407e-ad09-8bee64cf0a04">
+                <path d="M0 0 L104 0 L104 146 L0 146 L0 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="31d0fbba-f1b6-4c20-9dde-8e6096c3c50f">
+                <path d="M0 0 L0 146 L104 146 L104 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="c1e510a8-a7f3-40b6-9147-d113de19ed12">
+                <path d="M0 0 L192 0 L192 104 L0 104 L0 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="7e808498-21ef-4aa8-9df0-4bc32ed11f9b">
+                <path d="M0 0 L0 104 L192 104 L192 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="6dbe2407-a3a9-4b8f-8fd7-ff3792862b68">
+                <path d="M0 0 L176 0 L176 104 L0 104 L0 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="1681d909-c4b3-4908-aa1c-772d17a17d10">
+                <path d="M0 0 L0 104 L176 104 L176 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="39df8956-7a6e-45a1-b0cc-8f6af405215e">
+                <path d="M0 0 L176 0 L176 104 L0 104 L0 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="6f00f29c-9e6d-4ac6-aa3c-e7d68138e1f4">
+                <path d="M0 0 L0 104 L176 104 L176 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="aecefd35-b15e-4bd5-926c-d1c7cdb4006c">
+                <path d="M0 0 L192 0 L192 104 L0 104 L0 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="0d3de653-0b0d-46c4-81f7-ee4462895a24">
+                <path d="M0 0 L0 104 L192 104 L192 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="de416419-29c4-4b98-bd1a-fc3adeaa463a">
+                <path d="M0 0 L192 0 L192 104 L0 104 L0 0 Z" />
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="98d15d94-faf2-4ef3-b6fe-2064fec1156b">
+                <path d="M0 0 L0 104 L192 104 L192 0 Z" />
+            </clipPath>
+        </defs>
+        <g fill="white" fill-opacity="1" stroke="white" stroke-opacity="1"
+            text-rendering="geometricPrecision">
+            <rect height="465" stroke="none" width="445" x="0" y="0" />
+        </g>
+        <g data="{&quot;name&quot;:&quot;Entity&quot;,&quot;modelType&quot;:&quot;Class&quot;}"
+            hyper="" model-id="shape-Geu7nbmDIQzgdhU3"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="rgb(122,207,245)"
+                stroke-opacity="1" text-rendering="geometricPrecision" transform="translate(27,2)">
+                <rect clip-path="url(#130c7be5-e49e-4faf-b63c-fab7213e8e74)" height="87"
+                    stroke="none" width="152" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="black"
+                stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="0"
+                stroke-opacity="1" text-rendering="geometricPrecision" transform="translate(27,2)">
+                <rect clip-path="url(#130c7be5-e49e-4faf-b63c-fab7213e8e74)" fill="none" height="87"
+                    width="152" x="0" y="0" />
+                <line clip-path="url(#130c7be5-e49e-4faf-b63c-fab7213e8e74)" fill="none" x1="0"
+                    x2="152" y1="15" y2="15" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,27,17)">
+            <text clip-path="url(#45a2a482-d815-4071-9313-f6f1273f1db2)" stroke="none" x="2"
+                xml:space="preserve" y="14">+Id : Guid</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,27,17)">
+            <text clip-path="url(#45a2a482-d815-4071-9313-f6f1273f1db2)" stroke="none" x="2"
+                xml:space="preserve" y="29">+CreatedAt : DateTimeOffset</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,27,17)">
+            <text clip-path="url(#45a2a482-d815-4071-9313-f6f1273f1db2)" stroke="none" x="2"
+                xml:space="preserve" y="44">+UpdatedAt : DateTimeOffset</text>
+            <line clip-path="url(#45a2a482-d815-4071-9313-f6f1273f1db2)" fill="none"
+                stroke-linecap="butt" stroke-linejoin="bevel" stroke-miterlimit="0" x1="0" x2="152"
+                y1="49" y2="49" />
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,27,17)">
+            <text clip-path="url(#45a2a482-d815-4071-9313-f6f1273f1db2)" stroke="none" x="2"
+                xml:space="preserve" y="63">+OnSave()</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            font-weight="bold" image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(27,2)">
+            <text clip-path="url(#b8fac14d-26b3-4fc9-b0d0-ed6c74d6929c)" stroke="none" x="60"
+                xml:space="preserve" y="12">Entity</text>
+        </g>
+        <g data="{&quot;name&quot;:&quot;User&quot;,&quot;modelType&quot;:&quot;Class&quot;}"
+            hyper="" model-id="shape-c.u7nbmDIQzgdhZ9"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="rgb(122,207,245)"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(278,109)">
+                <rect clip-path="url(#82d9844b-cd1b-4f97-b5fd-41fc41dfa277)" height="83"
+                    stroke="none" width="163" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="black"
+                stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="0"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(278,109)">
+                <rect clip-path="url(#82d9844b-cd1b-4f97-b5fd-41fc41dfa277)" fill="none" height="83"
+                    width="163" x="0" y="0" />
+                <line clip-path="url(#82d9844b-cd1b-4f97-b5fd-41fc41dfa277)" fill="none" x1="0"
+                    x2="163" y1="15" y2="15" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,278,124)">
+            <text clip-path="url(#454e8177-c967-41ea-b0bf-3bdd232762ab)" stroke="none" x="2"
+                xml:space="preserve" y="14">+DisplayName : string</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,278,124)">
+            <text clip-path="url(#454e8177-c967-41ea-b0bf-3bdd232762ab)" stroke="none" x="2"
+                xml:space="preserve" y="29">+RegisteredAt : DateTimeOffset</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,278,124)">
+            <text clip-path="url(#454e8177-c967-41ea-b0bf-3bdd232762ab)" stroke="none" x="2"
+                xml:space="preserve" y="44">+Image : required Image</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,278,124)">
+            <text clip-path="url(#454e8177-c967-41ea-b0bf-3bdd232762ab)" stroke="none" x="2"
+                xml:space="preserve" y="59">+Recipes : IList&lt;Recipe&gt;</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            font-weight="bold" image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(278,109)">
+            <text clip-path="url(#e806bd78-c3ad-4618-90bf-56734f0017ba)" stroke="none" x="68"
+                xml:space="preserve" y="12">User</text>
+        </g>
+        <g data="{&quot;name&quot;:&quot;Comment&quot;,&quot;modelType&quot;:&quot;Class&quot;}"
+            hyper="" model-id="shape-Keu7nbmDIQzgdhUR"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="rgb(122,207,245)"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(294,254)">
+                <rect clip-path="url(#00521abc-23b4-47b0-b528-1c651b82e051)" height="83"
+                    stroke="none" width="131" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="black"
+                stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="0"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(294,254)">
+                <rect clip-path="url(#00521abc-23b4-47b0-b528-1c651b82e051)" fill="none" height="83"
+                    width="131" x="0" y="0" />
+                <line clip-path="url(#00521abc-23b4-47b0-b528-1c651b82e051)" fill="none" x1="0"
+                    x2="131" y1="30" y2="30" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,294,284)">
+            <text clip-path="url(#6abfa94a-21dd-4df9-96b0-7ba6379f65cf)" stroke="none" x="2"
+                xml:space="preserve" y="14">+Recipe : Recipe</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,294,284)">
+            <text clip-path="url(#6abfa94a-21dd-4df9-96b0-7ba6379f65cf)" stroke="none" x="2"
+                xml:space="preserve" y="29">+Content : required string</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,294,284)">
+            <text clip-path="url(#6abfa94a-21dd-4df9-96b0-7ba6379f65cf)" stroke="none" x="2"
+                xml:space="preserve" y="44">+User : required User</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(294,254)">
+            <text clip-path="url(#f365468c-41f9-4f8f-8f2f-e95fb7b75dc0)" stroke="none" x="32"
+                xml:space="preserve" y="12">&lt;&lt;Typedef&gt;&gt;</text>
+            <text clip-path="url(#f365468c-41f9-4f8f-8f2f-e95fb7b75dc0)" font-weight="bold"
+                stroke="none" x="40" xml:space="preserve" y="27">Comment</text>
+        </g>
+        <g data="{&quot;name&quot;:&quot;Rating&quot;,&quot;modelType&quot;:&quot;Class&quot;}"
+            hyper="" model-id="shape-w.u7nbmDIQzgdhYZ"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="rgb(122,207,245)"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(294,377)">
+                <rect clip-path="url(#a56c3131-c4a0-4e37-8cb4-fbd039d76399)" height="68"
+                    stroke="none" width="112" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="black"
+                stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="0"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(294,377)">
+                <rect clip-path="url(#a56c3131-c4a0-4e37-8cb4-fbd039d76399)" fill="none" height="68"
+                    width="112" x="0" y="0" />
+                <line clip-path="url(#a56c3131-c4a0-4e37-8cb4-fbd039d76399)" fill="none" x1="0"
+                    x2="112" y1="15" y2="15" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,294,392)">
+            <text clip-path="url(#b8d4e428-3075-4ec5-94b1-ba655644ec4a)" stroke="none" x="2"
+                xml:space="preserve" y="14">+Recipe : Recipe</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,294,392)">
+            <text clip-path="url(#b8d4e428-3075-4ec5-94b1-ba655644ec4a)" stroke="none" x="2"
+                xml:space="preserve" y="29">+Value : required int</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,294,392)">
+            <text clip-path="url(#b8d4e428-3075-4ec5-94b1-ba655644ec4a)" stroke="none" x="2"
+                xml:space="preserve" y="44">+User : required User</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            font-weight="bold" image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(294,377)">
+            <text clip-path="url(#695730ab-6d0d-42fb-8b4e-5c00cc646b7b)" stroke="none" x="38"
+                xml:space="preserve" y="12">Rating</text>
+        </g>
+        <g data="{&quot;name&quot;:&quot;Recipe&quot;,&quot;modelType&quot;:&quot;Class&quot;}"
+            hyper="" model-id="shape-w.u7nbmDIQzgdhYh"
+            style="pointer-events: auto; cursor: pointer;">
+            <g fill="rgb(122,207,245)" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="rgb(122,207,245)"
+                stroke-opacity="1" text-rendering="geometricPrecision" transform="translate(2,133)">
+                <rect clip-path="url(#551debd7-d0c2-4b9c-bee3-ce406c6f6bd8)" height="312"
+                    stroke="none" width="202" x="0" y="0" />
+            </g>
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                font-weight="bold" image-rendering="optimizeQuality" stroke="black"
+                stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="0"
+                stroke-opacity="1" text-rendering="geometricPrecision" transform="translate(2,133)">
+                <rect clip-path="url(#551debd7-d0c2-4b9c-bee3-ce406c6f6bd8)" fill="none"
+                    height="312" width="202" x="0" y="0" />
+                <line clip-path="url(#551debd7-d0c2-4b9c-bee3-ce406c6f6bd8)" fill="none" x1="0"
+                    x2="202" y1="30" y2="30" />
+            </g>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="14">+Title : required string</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="29">+Description : required string</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="44">+User : User</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="59">+Steps : required IList&lt;string&gt;</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="74">+Ingredients : required IList&lt;Ingredient&gt;</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="89">+AverageRating : double</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="104">+Allergens : required AllergenType</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="119">+Image : required Image</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="134">+Ratings : required IList&lt;Rating&gt;</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="149">+Comments : required IList&lt;Comment&gt;</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="164">+TitleSearchVector : NpgsqlTsVector</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="179">+CreatorDisplayName : string</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="194">+CreatorAuthorId : Guid</text>
+            <line clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" fill="none"
+                stroke-linecap="butt" stroke-linejoin="bevel" stroke-miterlimit="0" x1="0" x2="202"
+                y1="199" y2="199" />
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="213">+UpdateAverageRating()</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="228">+UpdateAllergens()</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="243">+GetCommentById()</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="258">+Rate()</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="matrix(1,0,0,1,2,163)">
+            <text clip-path="url(#2727598f-1aff-465f-ba4e-d016800bd960)" stroke="none" x="2"
+                xml:space="preserve" y="273">+OnSave()</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(2,133)">
+            <text clip-path="url(#3525d12a-4536-479a-807a-f89a9f3e763a)" stroke="none" x="67"
+                xml:space="preserve" y="12">&lt;&lt;Typedef&gt;&gt;</text>
+            <text clip-path="url(#3525d12a-4536-479a-807a-f89a9f3e763a)" font-weight="bold"
+                stroke="none" x="81" xml:space="preserve" y="27">Recipe</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(246,202)">
+            <text clip-path="url(#c48ef2fe-6736-4fcb-ae03-4c1dbf3da1a6)" stroke="none" x="10"
+                xml:space="preserve" y="44">+Comments</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(228,357)">
+            <text clip-path="url(#504dcb61-d988-466e-a3cb-13a418eacc97)" stroke="none" x="10"
+                xml:space="preserve" y="36">+Ratings</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(194,399)">
+            <text clip-path="url(#551a0156-4770-465a-bcb0-95be1048804b)" stroke="none" x="10"
+                xml:space="preserve" y="35">+Recipe</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(213,284)">
+            <text clip-path="url(#c3c2fd99-d31c-4156-a410-7409d8273000)" stroke="none" x="10"
+                xml:space="preserve" y="35">+Recipe</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(196,128)">
+            <text clip-path="url(#3114116e-cc97-4ca8-917f-88826437ecfd)" stroke="none" x="10"
+                xml:space="preserve" y="38">+Recipes</text>
+        </g>
+        <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+            image-rendering="optimizeQuality" stroke="black" stroke-opacity="1"
+            text-rendering="geometricPrecision" transform="translate(222,110)">
+            <text clip-path="url(#4a13e53b-cf06-4871-97d2-73a8ed23851c)" stroke="none" x="10"
+                xml:space="preserve" y="29">+User</text>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;Generalization&quot;}" hyper=""
+            model-id="connector-MRu7nbmDIQzgdhm9" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(53,40)">
+                <line clip-path="url(#31d0fbba-f1b6-4c20-9dde-8e6096c3c50f)" fill="none" x1="50"
+                    x2="50" y1="50" y2="92" />
+                <polygon clip-path="url(#31d0fbba-f1b6-4c20-9dde-8e6096c3c50f)" fill="white"
+                    points=" 50 50 44 62 56 62" stroke="none" />
+                <polygon clip-path="url(#31d0fbba-f1b6-4c20-9dde-8e6096c3c50f)" fill="none"
+                    points=" 50 50 44 62 56 62" />
+            </g>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;Dependency&quot;}" hyper=""
+            model-id="connector-8Ru7nbmDIQzgdhnD" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-dasharray="5"
+                stroke-dashoffset="1" stroke-linecap="butt" stroke-linejoin="round"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(155,216)">
+                <line clip-path="url(#7e808498-21ef-4aa8-9df0-4bc32ed11f9b)" fill="none" x1="50"
+                    x2="138" y1="50" y2="50" />
+                <line clip-path="url(#7e808498-21ef-4aa8-9df0-4bc32ed11f9b)" fill="none"
+                    stroke-dasharray="none" stroke-dashoffset="0" x1="138" x2="126" y1="50" y2="44" />
+                <line clip-path="url(#7e808498-21ef-4aa8-9df0-4bc32ed11f9b)" fill="none"
+                    stroke-dasharray="none" stroke-dashoffset="0" x1="138" x2="126" y1="50" y2="56" />
+            </g>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;Dependency&quot;}" hyper=""
+            model-id="connector-8Ru7nbmDIQzgdhnE" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-dasharray="5"
+                stroke-dashoffset="1" stroke-linecap="butt" stroke-linejoin="round"
+                stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(155,126)">
+                <line clip-path="url(#1681d909-c4b3-4908-aa1c-772d17a17d10)" fill="none" x1="50"
+                    x2="122" y1="50" y2="50" />
+                <line clip-path="url(#1681d909-c4b3-4908-aa1c-772d17a17d10)" fill="none"
+                    stroke-dasharray="none" stroke-dashoffset="0" x1="122" x2="110" y1="50" y2="44" />
+                <line clip-path="url(#1681d909-c4b3-4908-aa1c-772d17a17d10)" fill="none"
+                    stroke-dasharray="none" stroke-dashoffset="0" x1="122" x2="110" y1="50" y2="56" />
+            </g>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;Association&quot;}" hyper=""
+            model-id="connector-8Ru7nbmDIQzgdhm." style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(155,100)">
+                <line clip-path="url(#6f00f29c-9e6d-4ac6-aa3c-e7d68138e1f4)" fill="none" x1="50"
+                    x2="92" y1="50" y2="50" />
+                <polygon clip-path="url(#6f00f29c-9e6d-4ac6-aa3c-e7d68138e1f4)"
+                    points=" 116 50 104 44 92 50 104 56" stroke="none" />
+                <polygon clip-path="url(#6f00f29c-9e6d-4ac6-aa3c-e7d68138e1f4)" fill="none"
+                    points=" 116 50 104 44 92 50 104 56" />
+                <circle clip-path="url(#6f00f29c-9e6d-4ac6-aa3c-e7d68138e1f4)" cx="53.2" cy="50"
+                    r="3.2" stroke="none" />
+                <circle clip-path="url(#6f00f29c-9e6d-4ac6-aa3c-e7d68138e1f4)" cx="118.8" cy="50"
+                    r="3.2" stroke="none" />
+            </g>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;Association&quot;}" hyper=""
+            model-id="connector-thu7nbmDIQzgdhko" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(155,239)">
+                <line clip-path="url(#0d3de653-0b0d-46c4-81f7-ee4462895a24)" fill="none" x1="138"
+                    x2="80" y1="50" y2="50" />
+                <polygon clip-path="url(#0d3de653-0b0d-46c4-81f7-ee4462895a24)"
+                    points=" 56 50 68 56 80 50 68 44" stroke="none" />
+                <polygon clip-path="url(#0d3de653-0b0d-46c4-81f7-ee4462895a24)" fill="none"
+                    points=" 56 50 68 56 80 50 68 44" />
+                <circle clip-path="url(#0d3de653-0b0d-46c4-81f7-ee4462895a24)" cx="134.8" cy="50"
+                    r="3.2" stroke="none" />
+                <circle clip-path="url(#0d3de653-0b0d-46c4-81f7-ee4462895a24)" cx="53.2" cy="50"
+                    r="3.2" stroke="none" />
+            </g>
+        </g>
+        <g data="{&quot;modelType&quot;:&quot;Association&quot;}" hyper=""
+            model-id="connector-0Ru7nbmDIQzgdhm4" style="pointer-events: auto; cursor: pointer;">
+            <g fill="black" fill-opacity="1" font-family="sans-serif" font-size="11px"
+                image-rendering="optimizeQuality" stroke="black" stroke-linecap="butt"
+                stroke-linejoin="round" stroke-opacity="1" text-rendering="geometricPrecision"
+                transform="translate(155,361)">
+                <line clip-path="url(#98d15d94-faf2-4ef3-b6fe-2064fec1156b)" fill="none" x1="138"
+                    x2="80" y1="50" y2="50" />
+                <polygon clip-path="url(#98d15d94-faf2-4ef3-b6fe-2064fec1156b)"
+                    points=" 56 50 68 56 80 50 68 44" stroke="none" />
+                <polygon clip-path="url(#98d15d94-faf2-4ef3-b6fe-2064fec1156b)" fill="none"
+                    points=" 56 50 68 56 80 50 68 44" />
+                <circle clip-path="url(#98d15d94-faf2-4ef3-b6fe-2064fec1156b)" cx="134.8" cy="50"
+                    r="3.2" stroke="none" />
+                <circle clip-path="url(#98d15d94-faf2-4ef3-b6fe-2064fec1156b)" cx="53.2" cy="50"
+                    r="3.2" stroke="none" />
+            </g>
+        </g>
+    
+    </g>
+</svg>
