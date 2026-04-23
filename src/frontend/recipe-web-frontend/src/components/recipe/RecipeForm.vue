@@ -269,10 +269,10 @@ onMounted(() => {
     title.value = draft.title
     description.value = draft.description
     ingredients.value = (Array.isArray(draft.ingredients) ? draft.ingredients : []).map((i) => ({
-        quantity: (i as any).quantity ?? 0,
-        unitOfMeasurement: (i as any).unitOfMeasurement ?? '',
-        name: (i as any).name ?? '',
-        allergens: Array.isArray((i as any).allergens) ? [...(i as any).allergens] : [],
+        quantity: i.quantity ?? 0,
+        unitOfMeasurement: i.unitOfMeasurement ?? '',
+        name: i.name ?? '',
+        allergens: Array.isArray(i.allergens) ? [...i.allergens] : [],
     }))
     ingredientKeys.value = ingredients.value.map(() => genUid())
     steps.value = Array.isArray(draft.steps) ? [...draft.steps] : ['']

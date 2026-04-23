@@ -8,6 +8,7 @@
                 type="text"
                 class="w-full border rounded px-4 py-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
+            <p v-if="errors.title" class="text-red-600 text-sm mt-1">{{ errors.title }}</p>
         </div>
 
         <!-- Description -->
@@ -17,6 +18,9 @@
                 v-model="description"
                 class="w-full border rounded px-4 py-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
             ></textarea>
+            <p v-if="errors.description" class="text-red-600 text-sm mt-1">
+                {{ errors.description }}
+            </p>
         </div>
 
         <div>
@@ -184,10 +188,10 @@ watch(
             ingredients.value = (
                 Array.isArray(newRecipe.ingredients) ? newRecipe.ingredients : []
             ).map((i) => ({
-                quantity: (i as any).quantity ?? 0,
-                unitOfMeasurement: (i as any).unitOfMeasurement ?? '',
-                name: (i as any).name ?? '',
-                allergens: Array.isArray((i as any).allergens) ? [...(i as any).allergens] : [],
+                quantity: i.quantity ?? 0,
+                unitOfMeasurement: i.unitOfMeasurement ?? '',
+                name: i.name ?? '',
+                allergens: Array.isArray(i.allergens) ? [...i.allergens] : [],
             }))
             ingredientKeys.value = ingredients.value.map(() => genUid())
             steps.value = Array.isArray(newRecipe.steps) ? [...newRecipe.steps] : ['']
