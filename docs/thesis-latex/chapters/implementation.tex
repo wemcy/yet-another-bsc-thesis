@@ -18,35 +18,123 @@ A REST API specifikáció alapján OpenAPI Generator CLI generál egy frontend A
 
 Az adatbázis megtekintéséhez Adminer van bekötve a konténeres környezetbe, amely egy könnyen használható webes adatbázis-kezelő eszköz.
 
-A könnyű fejlesztés érdekében a legtöbb gyakran használt parancs, mint például a build, a tesztelés, vagy a konténeres futtatás, PowerShell szkriptek segítségével van automatizálva.
+A könnyű fejlesztés érdekében a legtöbb gyakran használt parancs, mint például a build,tesztelés vagy a konténeres futtatás, PowerShell szkriptek segítségével van automatizálva.
 \subsection{Backend}
 
-A backend ASP.NET Core alapokra épül, és kontrollerek, szolgáltatások, repository-k, valamint adatbázis-kezeléssel kapcsolatos komponensek közműködéséből áll. A projektben megjelenik az Entity Framework Core használata, az automatikus migrációfuttatás, a Swagger alapú API-leírás, valamint a hitelesítési és jogosultságkezelési infrastruktúra.
+Az ASP.NET Core alapú rendszer erősen kihasználja a függőségi injektálást. Lehetővé teszi, hogy ne kelljen manuálisan példányosítani a szolgáltatásokat, hanem a keretrendszer automatikusan kezelei azokat. Emellett könnyen kicserélhetővé teszi a különböző implementációkat, például a repository rétegben, ahol az adatbázis műveletek történnek. Később például egy új adatbázis bevezetése esetén csak a repository réteg implementációját kell megváltoztatni, a szolgáltatás réteg és a kontroller réteg változatlan maradhat. A legtöbb ábrán ennek köszönhetően nem a valós implementációk vannak megjelenítve, hanem az osztályok általános interfészei.
 
-% TODO: Részletes kifejtés:
-% - a fő entitások és kapcsolatuk bemutatása
-% - a repository és service rétegek indoklása
-% - a jogosultságkezelés és a CRUD műveletek védelme
-% - a lapozás, keresési lehetőségek és hibakezelés megoldása
+\subsubsection{Kontroller réteg}
+
+Az applikáció kontrollerei a REST API végpontjait valósítják meg. Ezek felelősek a HTTP kérések fogadásáért, a beérkezett adatok validalásáért, valamint a szolgáltatás rétég meghívásáért. Minden beérkezett adat struktúrát át kell alakítania a rétegnek, hogy utána a belső szolgáltatások az elvárt formában kapják meg az adatot. A kontrollererben történik az adminisztrációs jogosultságok ellenőrzése is.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{umls/controllers.jpg}
+	\caption{Kontroller réteg UML diagramja}\label{fig:controllers-diagram}
+\end{figure}
+
+\subsubsection{Szolgáltatás réteg}
+
+A szolgáltatás rétek a backend logikájának központi helye. Itt hajtódnak végre azon üzleti logikák, amelyek a különböző műveletekhez szükségesek, például a receptek létrehozása, módosítása, vagy a kommentek kezelése.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{umls/services.jpg}
+	\caption{Szolgáltatás réteg UML diagramja}\label{fig:services-diagram}
+\end{figure}
+
+A szolgáltatás rétegben történik meg a receptekhez kapcsolódó jogosultságok ellenőrzése is, hogy csak azok a műveletek hajtódjanak végre, amelyekhez a felhasználónak megfelelő jogosultsága van. Ezen szolgáltatások általában a repository rétegben definiált műveleteket hívják meg, ami az adat perzisztálását végzi. 
+
+\subsubsection{Repository réteg}
+
+A mentést, betöltést és törlést a repository réteg végzi, amely C\# nyelven írt SQL lekérdezéseket hajt végre. Itt történnek meg az adatbázis műveletek. Ez a réteg nem tartalmazhat üzleti logikát, csak az adatok perzisztálsával és lekérdezésével kapcsolatos műveleteket hajthat végre. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{umls/repos.jpg}
+	\caption{Repository réteg UML diagramja}\label{fig:repositories-diagram}
+\end{figure}
+
+\subsubsection{Modell réteg}
+
+Az adatbázisban reprezentált adatok struktúráját az entitások definiálják.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{umls/entities.jpg}
+	\caption{Modell réteg UML diagramja}\label{fig:entities-diagram}
+\end{figure}
+
+Az ábrán jól láthatóak a különböző entitások közötti kapcsolatok, például a User és a Recipe között, amely egy felhasználó több receptet is létrehozhat, vagy a Recipe és a Comment között, ahol egy recepthez több komment is tartozhat. Az EF létrehozza a szükséges segédtáblákat a kapcsolatok kezeléséhez.
+
+
+\subsubsection{Keresés és szűrés}
+
+Egyik legfontosabb tényező fejlesztés során azt volt, hogy a keresés milliszekundumok alatt történjen meg. Az allergének emiatt bitflagként vannak tárolva. Ennek köszönhetően óriási teljesítménybeli előnyre lehet szert tenni. Akár több millió recept között is gyorsan meg lehet találni azokat, amelyek az adott allergén szűrőnek megfelelnek. A szűrés implementációja a~\ref{lst:recipe-filter} kódrészletben látható.
+
+\begin{lstlisting}[style=csharp, caption={Receptszűrés megvalósítása}, label={lst:recipe-filter}]
+public IQueryable<Recipe> ApplyFilters(IQueryable<Recipe> query)
+{
+    return query
+        .ConditionalWhere(HasIncludeFilter, x => (x.Allergens & IncludeAllergens) != AllergenType.None)
+        .ConditionalWhere(HasExcludeFilter, x => (x.Allergens & ExcludeAllergens) == AllergenType.None);
+}
+\end{lstlisting}
+
+A kódban is jól látható, hogy a szűrést a bit műveleteket végzik el. Ennek köszönhetően a kód gyorsan hajtódik végre, még nagy adatmennyiség esetén is. Ezt még az adatbázis lekérdezés struktúrájával is tovább lehet optimalizálni azzal, hogy elsőként csak a szűrés feltételeit hajtjuk végre. Ez a megközelítés lehetővé teszi, hogy a szűrés SQL szinten kerüljön végrehajtásra, elkerülve a felesleges adatok memóriába töltését.
+
+Kereséseket megvalósításhoz indexek vannak használva az adatbázisban. Ezek a beállítások alapján előre generál olyan szöveg indexeket, amelyek alapján később gyorsan lehet keresni.
+
+\subsubsection{Felhasználó kezelés}
+
+A felhasználókezelés megvalósításához a Microsoft Identity platformot használja a backend. Ez egy beépített megoldás, amely lehetővé teszi a felhasználók regisztrációját, bejelentkezését, valamint a jogosultságok kezelését. Ez jól integrálható az ASP.NET Core és EF rendszerrel, és lehetővé teszi a biztonságos autentikáció és autorizáció megvalósítását. 
+
 
 \subsection{Frontend}
 
-A frontend Vue és TypeScript alapokra épülő egyoldalas alkalmazás. A komponensalapú felépítés, a kliensoldali routing, valamint az API klienssel való integráció lehetővé teszi, hogy a felhasználói folyamatok jól elkülöníthető modulokban jelenjenek meg \cite{vue}. A felületnek különösen fontos szerepe van a receptlista, a részletes receptnézet, a keresési felület, valamint a profil- és kommentfunkciók megjelenítésében.
+% TODO: Képek a frontend struktúrájáról, komponensekről, állapotkezelésről, stb.
+\subsubsection{Routing}
+
+% TODO: Képek a routing struktúrájáról, például egy diagram a különböző oldalak és azok kapcsolatairól.
+
+\subsubsection{State management}
+
+% TODO Képek a state management struktúrájáról, például egy diagram a különböző állapotok és azok kapcsolatairól.
+
+\subsubsection{Komponensek}
+
+% TODO Képek a komponensekről, például egy diagram a különböző komponensek és azok kapcsolatairól.
+
 
 \subsection{API szerződés és generálás}
 
-Az OpenAPI specifikáció külön értéket képvisel a projektben, mert egyszerre támogatja a backend dokumentálását, a kliensoldali integrációt és a következetes interfészek kialakítását. A dolgozatban itt lehet bemutatni, hogy a specifikáció hogyan kapcsolódik a generálható klienshez, és ez milyen módon csökkenti a frontend és backend közötti eltérések kockázatát \cite{openapi}.
+Az OpenAPI specifikáció külön értéket képvisel a projektben. Ennek köszönhetően a backend olyan interfészeket és modelleket generál, amelyek könnyedén implementálhatóak és függőséget alakít ki specifikáció és kód között. Hasonlóan frontenden is teljesül ez, egy olyan kész kliens generálható belőle, amit ezután be lehet importálni a frontendbe. Ennek használta nagyon egyszerű és könnyen kezelhető.\cite{openapi}.
 
 \subsection{Fejlesztés közben felmerült problémák}
 
-% TODO: A fejlesztés során felmerült problémák és azok megoldásai
+Fejlesztés közben több olyan probléma is előrkerült, amelyek megoldása nem volt triviális.
+Ezek közül néhány:
+\begin{itemize}
+    \item A backend használt LinQ nevezetű kiegészítő segítségévél SQL lekérdezeséket lehet írni funkcionális stílusban. Ehhez több olyan extenstion függvény is készült, amelyek generikus típus behelyettesítést  használnak. Ezek megírása és végig gondolása nem volt egyszerű, de a végeredmény egy könnyen használható és újrahasználható kódrészlet lett, amely jelentősen csökkenti a kódismétlést és javítja a kód olvashatóságát.
+    \item Az alkalmazás írásának megkezdéséhez, az egész konténerizációs környezet beállítása és a fejlesztési workflow kialakítása szükség volt. Ez magában foglal több olyan elemet, amivel még soha sem kellet foglalkozni, mint például Docker Copose, vagy a korábban említett GitHub Actions, melyek használta nagy nahézséget okozott.
+    \item CORS és autentikációs problémák is felmerültek a frontend és backend közötti kommunikáció során, különösen a fejlesztési környezetben, ahol a két komponens különböző portokon futott.
+    \item A fejlesztés során előfordultak kisebb hibák és inkompatibilitások a különböző könyvtárak és eszközök verziói között, amelyeket folyamatosan kezelni kellett.
+\end{itemize}
 
 \section{DevOps}\label{sec:devops}
 
-\subsection{Docker és konténeres futtatás}
+A DevOps megoldások célja a rendszer egyszerű indíthatóságának és reprodukálhatóságának biztosítása. Az alkalmaz több olyan eszközt és megoldást használ amelyek megkönnyítik a fejlesztést.
 
-A repositoryban szereplő Dockerfile-ok és Docker Compose állományok arra utalnak, hogy a projekt fejlesztéséhez és terjesztéséhez konténeres workflow is rendelkezésre áll. Ebben az alfejezetben érdemes bemutatni a fő szolgáltatások együttfutásának módját, valamint a fejlesztői és publikációs konfigurációk közötti eltéréseket \cite{docker}.
+\subsubsection{Docker és konténeres futtatás}
+
+Docker használata lehetővé teszi, hogy a fejlesztési és éles környezetek között konzisztens legyen a futtatási környezet. A Docker Compose segítségével könnyedén definiálható és futtatható a teljes alkalmazás, beleértve a backend szolgáltatást, a frontend alkalmazást, valamint az adatbázist és az Adminer-t is.
+
+Emellett a szoftver ún.\ volume-kat használ, amelyek lehetővé teszik, hogy két indítás között ne vesszen el adat. Ezekben vannak tárolva az adatbázis fájlok illetve képek.
+
+\subsubsection{NgInx}
+
+Az Nginx egy könnyű és nagy teljesítményű web szerver, amelyet a frontend alkalmazás kiszolgálására használunk. Az Nginx konfigurációja lehetővé teszi a statikus fájlok gyors kiszolgálását, valamint a backend API-k felé történő proxyzást, így a frontend és backend közötti kommunikáció zökkenőmentes.
 
 \subsection{CI/CD}
 
-% TODO: Folyamatos integráció és szállítás bemutatása, ha van ilyen a projektben
+Project feljesztéséhez github repository van használva, amelyben a GitHub Actions segítségével egy CI/CD pipeline van definiálva. Ez a pipeline automatikusan lefut minden merge esetén. Sikeres tesztelés után előállít egy zip fájlt, ami tartalmazza azokat a fájlokat amit szükségesek a rendzser futtatásához. Emellett minden egyes eleméből keszít egy docker image-t. Ezek GitHub Packages-ben vannak tárolva, és a Docker Compose fájlban ezekre hivatkozva lehet futtatni a rendszert. 

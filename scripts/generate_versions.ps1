@@ -14,11 +14,13 @@ dotnet tool run dotnet-gitversion /verbosity Verbose /output dotenv > $target
 dotnet tool run dotnet-gitversion /verbosity Verbose /updateprojectfiles
 
 $version = dotnet tool run dotnet-gitversion /output json /showvariable FullSemVer
+Write-Output "VERSION=$version" >> $env:GITHUB_ENV
 
 pnpm recursive exec -- pnpm version $version
 
 
+
 if ($env:CI -eq 'true') {
-    git tag $version
-    git push origin tag $version
+    git tag $version 
+    git push origin $version 
 }

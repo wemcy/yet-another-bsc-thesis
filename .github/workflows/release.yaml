@@ -51,8 +51,8 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          tag: env
-          name: Release ${{ github.ref_name }}
-          files: |
-            release/release.zip
-            release/source.zip
+          tag: ${{ env.VERSION }}
+          name: Release ${{ env.VERSION }}
+          artifacts: "release/release.zip,release/source.zip"
+          allowUpdates: true
+          replacesArtifacts: true

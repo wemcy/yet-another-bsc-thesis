@@ -588,3 +588,21 @@
 		\setcounter{page}{\value{conpageno}}
 	}
 }
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstdefinestyle{csharp}{
+    language=[Sharp]C,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{gray},
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=5pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single
+}

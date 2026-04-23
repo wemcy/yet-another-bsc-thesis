@@ -35,7 +35,7 @@ describe('Admin Ingredients Page [U12A, U12B, U12C]', () => {
                 .should('be.visible')
                 .click()
 
-            cy.contains('betöltve szerkesztésre.').should('be.visible')
+            cy.contains(' jelenleg szerkesztés alatt áll.').should('be.visible')
             cy.get('[data-cy="admin-ingredient-name"]').should('have.value', ingredientName)
             cy.contains('button', 'Módosítás mentése').should('be.visible')
             cy.contains('button', 'Hozzávaló törlése').should('be.visible')
