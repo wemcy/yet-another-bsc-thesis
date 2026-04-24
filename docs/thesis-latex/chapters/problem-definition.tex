@@ -2,11 +2,11 @@
 
 \section{Felhasznált módszerek röviden}
 
-Az alkalmazás egy webalapú receptkezelő rendszer, amely kliens-szerver architektúrán épül fel. A frontend egy Vue.js\footnote{\url{https://vuejs.org/}. Utolsó elérés: 2026.04.10.} alapú egyoldalas alkalmazás, amely a böngészőben fut. A backend egy ASP.NET Core\footnote{\url{https://dotnet.microsoft.com/en-us/apps/aspnet}. Utolsó elérés: 2026.04.10.} Web API, amely a kéréseket kezeli és az üzleti logikát valósítja meg. Az adatok tárolása PostgreSQL\footnote{\url{https://www.postgresql.org/}. Utolsó elérés: 2026.04.10.} adatbázisban történik. A frontend és a backend közötti kommunikációt egy Nginx\footnote{\url{https://nginx.org/}. Utolsó elérés: 2026.04.10.} fordított proxy koordinálja. Az egész rendszer konténerizált környezetben fut.
+Az alkalmazás egy webalapú receptkezelő rendszer, amely kliens-szerver architektúrán épül fel. A frontend egy Vue.js\footnote{\url{https://vuejs.org/}. Utolsó elérés: 2026.04.22.} alapú egyoldalas alkalmazás, amely a böngészőben fut. A backend egy ASP.NET Core\footnote{\url{https://dotnet.microsoft.com/en-us/apps/aspnet}. Utolsó elérés: 2026.04.22.} Web API, amely a kéréseket kezeli és az üzleti logikát valósítja meg. Az adatok tárolása PostgreSQL\footnote{\url{https://www.postgresql.org/}. Utolsó elérés: 2026.04.22.} adatbázisban történik. A frontend és a backend közötti kommunikációt egy Nginx\footnote{\url{https://nginx.org/}. Utolsó elérés: 2026.04.22.} fordított proxy koordinálja. Az egész rendszer konténerizált környezetben fut.
 
 \section{Rendszerkövetelmények}
 
-A szerver futtatásához szükséges egy olyan környezet, amin futtatható a Docker\footnote{\url{https://www.docker.com/}. Utolsó elérés: 2026.04.10.}. Emiatt az alábbi követelmények szükségesek:
+A szerver futtatásához szükséges egy olyan környezet, amin futtatható a Docker\footnote{\url{https://www.docker.com/}. Utolsó elérés: 2026.04.22.}. Emiatt az alábbi követelmények szükségesek:
 \begin{itemize}
 	\item 64 bit-es Windows 11 vagy Linux operációs rendszer ami támogatja a Docker futtatását
 	\item Legalább 4 GB RAM, ajánlott 8 GB 
@@ -25,12 +25,12 @@ Kliens oldalon egy modern webböngészőre van szükségünk, ami támogatja a H
 \end{itemize}
 
 \section{Telepítés}
-Az alkalmazást a korábban említett Docker\footnote{\url{https://docs.docker.com/desktop/}. Utolsó elérés: 2026.04.10.}, illetve Docker Compose\footnote{\url{https://docs.docker.com/compose/install/}. Utolsó elérés: 2026.04.10.} segítségével lehet telepíteni. Ennek köszönhetően egyetlen parancs kiadásával a teljes rendszer elindítható különösebb beállítások nélkül.
+Az alkalmazást a korábban említett Docker, illetve Docker Compose\footnote{\url{https://docs.docker.com/compose/install/}. Utolsó elérés: 2026.04.22.} segítségével lehet telepíteni. Ennek köszönhetően egyetlen parancs kiadásával a teljes rendszer elindítható különösebb beállítások nélkül.
 
 \subsection{Telepítési útmutató}
 Miután a Docker és a Docker Compose telepítésre került, a projekt mappájába kell navigálni. Az itt található \texttt{docker-compose.yml} fájl segítségével indítható el a rendszer. Ez a fájl négy konténerből áll: egy PostgreSQL adatbázisból, a backend REST API-ból, a frontend szerverből és egy Nginx fordított proxyból.
 
-A rendszer konfigurációja egy környezeti változókat tartalmazó fájlon keresztül történik, amelyben a működéshez szükséges beállítások adhatóak meg. Az elérhető konfigurációs opciókat a \ref{tab:config-required}. és \ref{tab:config-optional}.~táblázat tartalmazza.
+A rendszer konfigurációja egy környezeti változókat tartalmazó fájlon keresztül történik, amelyben a működéshez szükséges beállítások adhatóak meg. Az elérhető konfigurációs opciókat a \ref{tab:config-required}. és \ref{tab:config-optional}.táblázat tartalmazza.
 
 Elindításához Linux és macOS rendszereken a \texttt{start.sh}, Windows rendszereken pedig a \texttt{start.ps1} scriptet kell futtatni, amely automatikusan elindítja a szükséges konténereket a konfigurációs fájl alapján. Beállítható az is, hogy a program biztonságos HTTPS kapcsolaton keresztül legyen elérhető, ehhez a konfigurációs fájlban meg kell adni a szükséges tanúsítványokat és kulcsokat.
 
@@ -60,7 +60,7 @@ Az alkalmazás fő eleme az oldal felső részén elhelyezkedő navigációs sá
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{images/navbar.png}
-	\caption{A navigigációs sáv}\label{fig:navbar}
+	\caption{A navigációs sáv}\label{fig:navbar}
 \end{figure}
 
 \subsection{Kezdőoldal és receptlista}
@@ -91,7 +91,7 @@ A leírás alatt kap helyet a hozzávalók listája és az elkészítési útmut
 Ezek alatt található a komment szekció. A kommentek időrendben jelennek meg, a legfrissebb komment van legfelül. Minden kommentben látható a kommentelő neve, a komment szövege és időpontja. A kommentelési blokk legfelső részén jelenik meg a beviteli mező, ahol a felhasználók új kommentet írhatnak. Ez csak akkor kitölthető, ha a felhasználó be van jelentkezve. 
 
 
-Bejelentkezés után a kép alatt megjelenik kettő gomb, amely lehetővé teszi a recept szerkesztését, illetve törlését, amennyiben a recept létrehozója vagy adminisztrátor vagyunk. A szerkesztés egy új oldalra navigál, ahol módosíthatjuk a recept adatait, hozzávalóit, elkészítési útmutatóját és képét. A törlés gomb megnyomásával egy felugró ablak jelenik meg, hogy biztosan szeretnénk-e törölni a receptet. 
+Bejelentkezés után a kép alatt megjelenik két gomb, amely lehetővé teszi a recept szerkesztését, illetve törlését, amennyiben a recept létrehozója vagy adminisztrátor vagyunk. A szerkesztés egy új oldalra navigál, ahol módosíthatjuk a recept adatait, hozzávalóit, elkészítési útmutatóját és képét. A törlés gomb megnyomásával egy felugró ablak jelenik meg, hogy biztosan szeretnénk-e törölni a receptet. 
 
 \begin{figure}[H]
 	\centering

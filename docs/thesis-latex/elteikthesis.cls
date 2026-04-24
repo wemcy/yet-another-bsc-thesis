@@ -595,14 +595,14 @@
 \lstdefinestyle{csharp}{
     language=[Sharp]C,
     basicstyle=\ttfamily\small,
-    keywordstyle=\color{blue},
-    stringstyle=\color{red},
-    commentstyle=\color{gray},
+    breaklines=true,
+    breakatwhitespace=true,
+    keepspaces=true,
     numbers=left,
     numberstyle=\tiny,
-    stepnumber=1,
-    numbersep=5pt,
-    showstringspaces=false,
-    breaklines=true,
-    frame=single
+    basicstyle=\ttfamily\small,
+    captionpos=b,
+    aboveskip=10pt,
+    belowskip=10pt,
+    float,
 }
