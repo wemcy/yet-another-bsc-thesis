@@ -1,13 +1,15 @@
 ﻿\section{Tesztelés}\label{ch:testing}
 
-Az időkorlátok miatt a tesztelés során az end-to-end tesztek kerültek előtérbe, mivel ezek biztosítják a legnagyobb lefedettséget a teljes alkalmazás működésére. A unit tesztek bevezetése a jövőbeni fejlesztések során tervezett.
+A tesztelési stratégia kialakításánál a teljes rendszer működésének ellenőrzése volt a fő szempont. Ennek megfelelően az end-to-end (továbbiakban E2E) tesztek kerültek előtérbe, mivel ezek képesek a frontend és backend komponensek együttes működését vizsgálni.
+
+Ez a megközelítés különösen előnyös olyan webalkalmazások esetében, ahol több réteg szoros együttműködése szükséges. Az E2E tesztek így magas szintű lefedettséget biztosítanak a legfontosabb funkcionális folyamatokra.
 
 \subsection{E2E tesztelés}
 
-Az end-to-end tesztek a Cypress keretrendszer segítségével lettek megvalósítva. A Cypress egy modern, JavaScript-alapú tesztelési eszköz, amely lehetővé teszi a fejlesztők számára, hogy könnyedén írjanak és futtassanak teszteket a webalkalmazások működésének ellenőrzésére. A Cypress használata során a tesztek szintén TypeScript-ben íródtak, ami biztosítja a típusosságot és a jobb fejlesztői élményt. 
+Az end-to-end tesztek a Cypress keretrendszer segítségével lettek megvalósítva. A Cypress egy modern, JavaScript-alapú tesztelési eszköz, amely lehetővé teszi a fejlesztők számára, hogy könnyedén írjanak és futtassanak teszteket a webalkalmazások működésének ellenőrzésére. A Cypress használata során a tesztek TypeScript-ben íródtak, ami biztosítja a típusosságot és a jobb fejlesztői élményt. 
 
 
-Az E2E teszelés célja, hogy a teljes alkalmazás működését tesztelje, úgy, hogy a tesztek valódi felhasználói interakciókat szimulálnak, például gombnyomásokat, űrlapkitöltéseket és navigációt. Ez lehetővé teszi a fejlesztők számára, hogy biztosak legyenek abban, hogy az alkalmazás minden része megfelelően működik együtt, és hogy a felhasználói élmény zökkenőmentes. Egy példa egy ilyen tesztre az alkalmazában a következő:
+Az E2E tesztelés célja, hogy a teljes alkalmazás működését tesztelje, úgy, hogy a tesztek valódi felhasználói interakciókat szimulálnak, például gombnyomásokat, űrlapkitöltéseket és navigációt. Ez lehetővé teszi a fejlesztők számára, hogy biztosak legyenek abban, hogy az alkalmazás minden része megfelelően működik együtt, és hogy a felhasználói élmény zökkenőmentes. Egy példa egy ilyen tesztre az alkalmazásban a következő:
 
 \begin{figure}[H]
 	\centering
@@ -15,7 +17,7 @@ Az E2E teszelés célja, hogy a teljes alkalmazás működését tesztelje, úgy
 	\caption{Példa E2E teszt a kezdőlapon}\label{fig:hometest}
 \end{figure}
 
-A telejes alkalmazásra vonatkozó E2E tesztek lefedik a legfontosabb funkciókat, mint például a regisztráció, bejelentkezés, receptek megtekintése, létrehozása, szerkesztése, hozzávalók szerekesztése és adminisztrációs műveletek. Minden teszt meg van jelölve, melyik felhasználó esetet teszteli. Ezeket a~\ref{ch:stories} függelékben találhatóak.
+A telejes alkalmazásra vonatkozó E2E tesztek lefedik a legfontosabb funkciókat, mint például a regisztráció, bejelentkezés, receptek megtekintése, létrehozása, szerkesztése, hozzávalók szerekesztése és adminisztrációs műveletek. Minden teszt megkapta a felhasználói eset kódját, így könnyedén visszaellenőrizhető, hogy mely folyamatokkal van probléma hiba esetén. Ezek a~\ref{ch:stories} függelékben találhatók.
 
 \begin{figure}[H]
 	\centering
@@ -23,4 +25,4 @@ A telejes alkalmazásra vonatkozó E2E tesztek lefedik a legfontosabb funkcióka
 	\caption{Az E2E teszt futtatásának eredményei}\label{fig:all-test-run}
 \end{figure}
 
-A Cypress lehetőséget ad egy interaktív félületen keresztül megtekinteni a tesztek futását, ahol részeletes láthatjuk mely tesztek futottak le sikeresen, melyek nem, és ha egy teszt nem sikerült, akkor a hiba okát is megmutatja. Egyben ez felület több böngészőben is tesz lehetővé tesztelést, így biztosítva a kompatibilitást különböző környezetekben. Ez különösen fontos egy webalkalmazás esetében, ahol a felhasználók különböző böngészőket és eszközöket használhatnak. 
+A Cypress lehetőséget ad egy interaktív félületen keresztül megtekinteni a tesztek futását, ahol részletesen láthatjuk, hogy mely tesztek futottak le sikeresen, melyek nem, és ha egy teszt nem sikerült, akkor a hiba okát is megmutatja. Egyben ez a felület több böngészőben lehetővé teszi tesztelést, így biztosítva a kompatibilitást különböző környezetekben. Ez különösen fontos egy webalkalmazás esetében, ahol a felhasználók különböző böngészőket és eszközöket használhatnak. 
