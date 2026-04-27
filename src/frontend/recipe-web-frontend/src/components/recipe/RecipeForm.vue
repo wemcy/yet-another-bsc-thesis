@@ -24,7 +24,11 @@
         <!-- Ingredients -->
         <div>
             <label class="block font-semibold mb-2">Hozzávalók</label>
-            <div v-for="(ingredient, index) in ingredients" :key="index" class="flex gap-2 mb-2">
+            <div
+                v-for="(ingredient, index) in ingredients"
+                :key="ingredientKeys[index]"
+                class="flex gap-2 mb-2"
+            >
                 <input
                     v-model.number="ingredient.quantity"
                     type="number"
@@ -175,10 +179,15 @@ const submitError = ref<string | null>(null)
 
 const allergenOptions = allergenList
 
+const genUid = () => `ing-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`
+const ingredientKeys = ref<string[]>(ingredients.value.map(() => genUid()))
+
 function addIngredient() {
     ingredients.value.push({ quantity: 0, unitOfMeasurement: '', name: '', allergens: [] })
+    ingredientKeys.value.push(genUid())
 }
 function removeIngredient(index: number) {
+    ingredientKeys.value.splice(index, 1)
     ingredients.value.splice(index, 1)
 }
 
@@ -193,6 +202,7 @@ function resetForm() {
     title.value = ''
     description.value = ''
     ingredients.value = [{ quantity: 0, unitOfMeasurement: '', name: '', allergens: [] }]
+    ingredientKeys.value = ingredients.value.map(() => genUid())
     steps.value = ['']
     selectedAllergens.value = []
     imageFile.value = null
@@ -258,9 +268,17 @@ onMounted(() => {
     const draft = recipeStore.loadNewRecipeDraft(authStore.currentUser?.id)
     title.value = draft.title
     description.value = draft.description
-    ingredients.value = draft.ingredients
-    steps.value = draft.steps
-    selectedAllergens.value = draft.selectedAllergens
+    ingredients.value = (Array.isArray(draft.ingredients) ? draft.ingredients : []).map((i) => ({
+        quantity: i.quantity ?? 0,
+        unitOfMeasurement: i.unitOfMeasurement ?? '',
+        name: i.name ?? '',
+        allergens: Array.isArray(i.allergens) ? [...i.allergens] : [],
+    }))
+    ingredientKeys.value = ingredients.value.map(() => genUid())
+    steps.value = Array.isArray(draft.steps) ? [...draft.steps] : ['']
+    selectedAllergens.value = Array.isArray(draft.selectedAllergens)
+        ? [...draft.selectedAllergens]
+        : []
 })
 
 watch(
@@ -270,9 +288,14 @@ watch(
             {
                 title: title.value,
                 description: description.value,
-                ingredients: ingredients.value,
-                steps: steps.value,
-                selectedAllergens: selectedAllergens.value,
+                ingredients: ingredients.value.map((i) => ({
+                    name: i.name,
+                    unitOfMeasurement: i.unitOfMeasurement,
+                    quantity: i.quantity,
+                    allergens: Array.isArray(i.allergens) ? [...i.allergens] : [],
+                })),
+                steps: [...steps.value],
+                selectedAllergens: [...selectedAllergens.value],
             },
             authStore.currentUser?.id,
         )

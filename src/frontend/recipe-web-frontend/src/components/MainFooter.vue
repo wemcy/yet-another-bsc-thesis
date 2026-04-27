@@ -1,4 +1,3 @@
-ChatGPT said: Persze, itt a magyarított verzió: vue Copy Edit
 <template>
     <footer class="bg-gray-100 text-gray-700 py-6 px-4 mt-10">
         <div

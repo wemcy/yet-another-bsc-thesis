@@ -1,5 +1,5 @@
 describe('Edit Recipe Page [U06A, U06B]', () => {
-    context('U06A - Recept szerkesztése érvényes adatokkal', () => {
+    context('U06A - Edit recipe with valid data', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/profile')
@@ -13,11 +13,11 @@ describe('Edit Recipe Page [U06A, U06B]', () => {
             cy.url().should('include', '/edit/')
         })
 
-        it('displays the "Recept szerkesztése" heading', () => {
+        it('displays the "Edit Recipe" heading', () => {
             cy.contains('h1', 'Recept szerkesztése').should('be.visible')
         })
 
-        it('has a pre-populated "Recept neve" input', () => {
+        it('has a pre-populated "Recipe name" input', () => {
             cy.contains('label', 'Recept neve')
                 .parent()
                 .find('input')
@@ -25,7 +25,7 @@ describe('Edit Recipe Page [U06A, U06B]', () => {
                 .should('not.be.empty')
         })
 
-        it('has a pre-populated "Leírás" textarea', () => {
+        it('has a pre-populated "Description" textarea', () => {
             cy.contains('label', 'Leírás')
                 .parent()
                 .find('textarea')
@@ -69,15 +69,15 @@ describe('Edit Recipe Page [U06A, U06B]', () => {
             cy.get('img[alt="Preview"]').should('exist')
         })
 
-        it('has a Mentés (save) submit button', () => {
+        it('has a Save submit button', () => {
             cy.contains('button[type="submit"]', 'Mentés').should('be.visible')
         })
 
-        it('has a Mégse (cancel) button', () => {
+        it('has a Cancel button', () => {
             cy.contains('button', 'Mégse').should('be.visible')
         })
 
-        it('adds a new ingredient row when "+ Hozzávaló hozzáadása" is clicked', () => {
+        it('adds a new ingredient row when "+ Add ingredient" is clicked', () => {
             cy.get('[data-cy="ingredient-name"]').then(($before) => {
                 const countBefore = $before.length
                 cy.contains('button', '+ Hozzávaló hozzáadása').click()
@@ -108,7 +108,7 @@ describe('Edit Recipe Page [U06A, U06B]', () => {
             })
         })
 
-        it('adds a new step row when "+ Lépés hozzáadása" is clicked', () => {
+        it('adds a new step row when "+ Add step" is clicked', () => {
             cy.contains('label', 'Elkészítési lépések')
                 .parent()
                 .find('textarea')
@@ -142,14 +142,14 @@ describe('Edit Recipe Page [U06A, U06B]', () => {
                 })
         })
 
-        it('navigates back to the recipe when Mégse is clicked', () => {
+        it('navigates back to the recipe when Cancel is clicked', () => {
             cy.contains('button', 'Mégse').click()
             cy.url().should('include', '/recipe/')
             cy.url().should('not.include', '/edit/')
         })
     })
 
-    context('U06B - Recept szerkesztése érvénytelen adatokkal', () => {
+    context('U06B - Edit recipe with invalid data', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/profile')

@@ -1,0 +1,199 @@
+[
+  {
+    "title": "Gazpacho",
+    "description": "Hideg spanyol zöldségleves",
+    "steps": [
+      "A száraz kenyeret 5 percig vízben áztatjuk; kinyomkodjuk.",
+      "Az összes zöldséget kenyérrel, fokhagymával, olívaolajjal és sherryecettel turmixoljuk.",
+      "Sóval és borssal ízesítjük."
+    ],
+    "ingredients": [
+      { "name": "Érett paradicsom", "quantity": 1, "unitOfMeasurement": "kg", "allergens": [] },
+      { "name": "Uborka", "quantity": 1, "unitOfMeasurement": "db", "allergens": [] },
+      { "name": "Olívaolaj", "quantity": 80, "unitOfMeasurement": "ml", "allergens": [] }
+    ]
+  },
+  {
+    "title": "Vajcsirke (Butter Chicken)",
+    "description": "Enyhe, krémes paradicsomos indiai curry omlós csirkével.",
+    "steps": [
+      "A csirkehúst joghurtban, citromlében, chiliporban és kurkumában 1 órát pácoljuk.",
+      "Grillen vagy serpenyőben pirosra sütjük.",
+      "A paradicsomos szósszal összefőzzük és tejszínnel krémesítjük."
+    ],
+    "ingredients": [
+      { "name": "Csirkecomb", "quantity": 600, "unitOfMeasurement": "g", "allergens": [] },
+      { "name": "Paradicsompüré", "quantity": 400, "unitOfMeasurement": "g", "allergens": [] },
+      { "name": "Tejszín", "quantity": 150, "unitOfMeasurement": "ml", "allergens": ["MILK"] }
+    ]
+  },
+  {
+    "title": "Shakshuka",
+    "description": "Fűszeres paradicsomos-paprikás szószban sült tojás — közel-keleti klasszikus.",
+    "steps": [
+      "Olívaolajat hevítünk, megdinszteljük a hagymát és paprikát.",
+      "Hozzáadjuk a fokhagymát, köményt, paprikát és chilit; pár percig pirítjuk.",
+      "Ráöntjük a darált paradicsomot, kis mélyedéseket formálunk és beletörjük a tojásokat."
+    ],
+    "ingredients": [
+      { "name": "Tojás", "quantity": 6, "unitOfMeasurement": "db", "allergens": ["EGGS"] },
+      { "name": "Darált paradicsom", "quantity": 400, "unitOfMeasurement": "g", "allergens": [] }
+    ]
+  },
+  {
+    "title": "Japán ramen",
+    "description": "Gazdag sertés alapleves ramen chashuval, lágy tojással és norival.",
+    "steps": [
+      "Sertéscsontokat, fokhagymát és gyömbért hosszú ideig főzünk az alapléhez.",
+      "A tésztát megfőzzük és az alaplével tálaljuk.",
+      "Chashuval és lágy tojással díszítjük."
+    ],
+    "ingredients": [
+      {
+        "name": "Ramen tészta",
+        "quantity": 400,
+        "unitOfMeasurement": "g",
+        "allergens": ["GLUTEN"]
+      },
+      { "name": "Sertéscsont", "quantity": 1, "unitOfMeasurement": "kg", "allergens": [] }
+    ]
+  },
+  {
+    "title": "Guacamole",
+    "description": "Friss avokádókrém lime-mal, korianderrel és csípős paprikával.",
+    "steps": [
+      "Az avokádó húsát kikanalazzuk és villával összetörjük.",
+      "Hozzáadjuk a lime levet, aprított koriandert és chilipaprikát.",
+      "Sóval ízesítve azonnal tálaljuk."
+    ],
+    "ingredients": [
+      { "name": "Érett avokádó", "quantity": 3, "unitOfMeasurement": "db", "allergens": [] },
+      { "name": "Lime", "quantity": 1, "unitOfMeasurement": "db", "allergens": [] }
+    ]
+  },
+  {
+    "title": "Palacsinta",
+    "description": "Hagyományos magyar palacsinta, vékony tésztából sütve.",
+    "steps": [
+      "A lisztet, tojást, tejet és egy csipet sót simára keverjük.",
+      "Kevés olajon vékony palacsintákat sütünk mindkét oldalán aranybarnára.",
+      "Töltelékkel vagy porcukorral tálaljuk."
+    ],
+    "ingredients": [
+      { "name": "Liszt", "quantity": 250, "unitOfMeasurement": "g", "allergens": ["GLUTEN"] },
+      { "name": "Tojás", "quantity": 3, "unitOfMeasurement": "db", "allergens": ["EGGS"] },
+      { "name": "Tej", "quantity": 400, "unitOfMeasurement": "ml", "allergens": ["MILK"] },
+      { "name": "Olaj", "quantity": 2, "unitOfMeasurement": "ek", "allergens": [] }
+    ]
+  },
+  {
+    "title": "Pad Thai",
+    "description": "Thaj serpenyős tészta mogyoróval, tojással és tamarind szósszal.",
+    "steps": [
+      "A rizstésztát áztatjuk, majd villásra főzzük.",
+      "Serpenyőben pirítjuk a tofut (vagy garnélát), hozzáadjuk a szószt és tésztát.",
+      "Beletörjük a tojást, megszórjuk tört földimogyoróval és friss lime-al tálaljuk."
+    ],
+    "ingredients": [
+      { "name": "Rizstészta", "quantity": 300, "unitOfMeasurement": "g", "allergens": [] },
+      { "name": "Tofu", "quantity": 200, "unitOfMeasurement": "g", "allergens": ["SOYBEANS"] },
+      {
+        "name": "Garnéla",
+        "quantity": 200,
+        "unitOfMeasurement": "g",
+        "allergens": ["CRUSTACEANS"]
+      },
+      { "name": "Tojás", "quantity": 2, "unitOfMeasurement": "db", "allergens": ["EGGS"] },
+      {
+        "name": "Földimogyoró",
+        "quantity": 50,
+        "unitOfMeasurement": "g",
+        "allergens": ["PEANUTS"]
+      },
+      { "name": "Hal szósz", "quantity": 2, "unitOfMeasurement": "ek", "allergens": ["FISH"] },
+      { "name": "Szójaszósz", "quantity": 1, "unitOfMeasurement": "ek", "allergens": ["SOYBEANS"] },
+      {
+        "name": "Szezámmag",
+        "quantity": 1,
+        "unitOfMeasurement": "ek",
+        "allergens": ["SESAMESEEDS"]
+      }
+    ]
+  },
+  {
+    "title": "Sushi tál",
+    "description": "Vegyes sushi tál lazaccal, avokádóval és szójaszósszal.",
+    "steps": [
+      "A sushi rizst megfőzzük és rizsecettel fűszerezzük.",
+      "A hozzávalókat előkészítjük (lazac, avokádó, nori).",
+      "Tálra rendezzük, szójaszósszal és szezámmaggal tálaljuk."
+    ],
+    "ingredients": [
+      { "name": "Sushi rizs", "quantity": 300, "unitOfMeasurement": "g", "allergens": [] },
+      { "name": "Lazac", "quantity": 200, "unitOfMeasurement": "g", "allergens": ["FISH"] },
+      { "name": "Nori lapok", "quantity": 5, "unitOfMeasurement": "db", "allergens": [] },
+      {
+        "name": "Szójaszósz",
+        "quantity": 50,
+        "unitOfMeasurement": "ml",
+        "allergens": ["SOYBEANS"]
+      },
+      {
+        "name": "Szezámmag",
+        "quantity": 1,
+        "unitOfMeasurement": "ek",
+        "allergens": ["SESAMESEEDS"]
+      }
+    ]
+  },
+  {
+    "title": "Spagetti bolognai",
+    "description": "Hagyományos húsos paradicsomos ragu spagettivel.",
+    "steps": [
+      "A darált húst megpirítjuk, hozzáadjuk a vöröshagymát és fokhagymát.",
+      "Belekeverjük a paradicsomot és fűszereket, lassan főzzük legalább 30 percig.",
+      "A raguval tálaljuk a főtt spagettit, parmezánnal megszórjuk."
+    ],
+    "ingredients": [
+      { "name": "Darált marhahús", "quantity": 500, "unitOfMeasurement": "g", "allergens": [] },
+      { "name": "Spagetti", "quantity": 400, "unitOfMeasurement": "g", "allergens": ["GLUTEN"] },
+      { "name": "Parmezán", "quantity": 50, "unitOfMeasurement": "g", "allergens": ["MILK"] }
+    ]
+  },
+  {
+    "title": "Hummus és piták",
+    "description": "Krémes hummus tahinivel, meleg pitakenyérrel.",
+    "steps": [
+      "A csicseriborsót és tahinit turmixoljuk olívaolajjal, citromlével és fokhagymával.",
+      "A pitákat megmelegítjük és tálaljuk a humusszal.",
+      "Frissen elkészítve a legfinomabb."
+    ],
+    "ingredients": [
+      {
+        "name": "Csicseriborsó (konzerv)",
+        "quantity": 400,
+        "unitOfMeasurement": "g",
+        "allergens": []
+      },
+      { "name": "Tahini", "quantity": 50, "unitOfMeasurement": "g", "allergens": ["SESAMESEEDS"] },
+      { "name": "Pitakenyér", "quantity": 4, "unitOfMeasurement": "db", "allergens": ["GLUTEN"] },
+      { "name": "Olívaolaj", "quantity": 30, "unitOfMeasurement": "ml", "allergens": [] }
+    ]
+  },
+  {
+    "title": "Csokoládétorta dióval",
+    "description": "Szaftos csokoládétorta darabolt dióval a tetején.",
+    "steps": [
+      "A tésztát elkészítjük: liszt, tojás, cukor, vaj és csokoládé.",
+      "Sütőben megsütjük, majd kihűtjük.",
+      "Megszórjuk durvára vágott dióval és tálaljuk."
+    ],
+    "ingredients": [
+      { "name": "Liszt", "quantity": 200, "unitOfMeasurement": "g", "allergens": ["GLUTEN"] },
+      { "name": "Tojás", "quantity": 4, "unitOfMeasurement": "db", "allergens": ["EGGS"] },
+      { "name": "Vaj", "quantity": 150, "unitOfMeasurement": "g", "allergens": ["MILK"] },
+      { "name": "Dió", "quantity": 100, "unitOfMeasurement": "g", "allergens": ["NUTS"] },
+      { "name": "Étcsokoládé", "quantity": 150, "unitOfMeasurement": "g", "allergens": [] }
+    ]
+  }
+]

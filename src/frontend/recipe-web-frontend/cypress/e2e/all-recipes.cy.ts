@@ -1,10 +1,10 @@
 describe('All Recipes Page [U03A, U03B]', () => {
-    context('U03A - Recept keresése találatokkal', () => {
+    context('U03A - Recipe search with results', () => {
         beforeEach(() => {
             cy.visit('/recipes')
         })
 
-        it('displays the "Receptek" page heading', () => {
+        it('displays the "Recipes" page heading', () => {
             cy.contains('h1', 'Receptek').should('be.visible')
         })
 
@@ -55,7 +55,7 @@ describe('All Recipes Page [U03A, U03B]', () => {
             cy.url().should('include', 'title=guly%C3%A1s')
         })
 
-        it('clears the title field and disables the Clear button after clicking "Szűrők törlése"', () => {
+        it('clears the title field and disables the Clear button after clicking "Clear filters"', () => {
             cy.get('[data-cy="recipe-title-filter"]').type('gulyás')
             cy.get('[data-cy="clear-filters"]').click()
             cy.get('[data-cy="recipe-title-filter"]').should('have.value', '')
@@ -101,7 +101,7 @@ describe('All Recipes Page [U03A, U03B]', () => {
         })
     })
 
-    context('U03B - Recept keresése találat nélkül', () => {
+    context('U03B - Recipe search without results', () => {
         beforeEach(() => {
             cy.visit('/recipes')
         })
@@ -130,7 +130,7 @@ describe('All Recipes Page [U03A, U03B]', () => {
             })
         })
 
-        it('disables the Előző button on the first page', () => {
+        it('disables the Previous button on the first page', () => {
             cy.get('body').then(($body) => {
                 if ($body.find('button:contains("Előző")').length > 0) {
                     cy.contains('button', 'Előző').should('be.disabled')

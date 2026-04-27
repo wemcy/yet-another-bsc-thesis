@@ -8,6 +8,7 @@
                 type="text"
                 class="w-full border rounded px-4 py-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
+            <p v-if="errors.title" class="text-red-600 text-sm mt-1">{{ errors.title }}</p>
         </div>
 
         <!-- Description -->
@@ -17,6 +18,9 @@
                 v-model="description"
                 class="w-full border rounded px-4 py-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
             ></textarea>
+            <p v-if="errors.description" class="text-red-600 text-sm mt-1">
+                {{ errors.description }}
+            </p>
         </div>
 
         <div>
@@ -27,7 +31,11 @@
         <!-- Ingredients -->
         <div>
             <label class="block font-semibold mb-2">Hozzávalók</label>
-            <div v-for="(ingredient, index) in ingredients" :key="index" class="flex gap-2 mb-2">
+            <div
+                v-for="(ingredient, index) in ingredients"
+                :key="ingredientKeys[index]"
+                class="flex gap-2 mb-2"
+            >
                 <input
                     v-model.number="ingredient.quantity"
                     type="number"
@@ -168,15 +176,28 @@ const errors = ref<RecipeFormErrors>({})
 
 const allergenOptions = allergenList
 
+const genUid = () => `ing-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`
+const ingredientKeys = ref<string[]>(ingredients.value.map(() => genUid()))
+
 watch(
     () => recipe,
     (newRecipe: Recipe) => {
         if (newRecipe) {
             title.value = newRecipe.title
             description.value = newRecipe.description
-            ingredients.value = [...newRecipe.ingredients]
-            steps.value = [...newRecipe.steps]
-            selectedAllergens.value = [...newRecipe.allergens]
+            ingredients.value = (
+                Array.isArray(newRecipe.ingredients) ? newRecipe.ingredients : []
+            ).map((i) => ({
+                quantity: i.quantity ?? 0,
+                unitOfMeasurement: i.unitOfMeasurement ?? '',
+                name: i.name ?? '',
+                allergens: Array.isArray(i.allergens) ? [...i.allergens] : [],
+            }))
+            ingredientKeys.value = ingredients.value.map(() => genUid())
+            steps.value = Array.isArray(newRecipe.steps) ? [...newRecipe.steps] : ['']
+            selectedAllergens.value = Array.isArray(newRecipe.allergens)
+                ? [...newRecipe.allergens]
+                : []
             if (!imageFile.value) {
                 imageUrl.value = buildRecipeImageUrl(
                     newRecipe.image,

@@ -16,7 +16,7 @@ describe('Admin Ingredients Page [U12A, U12B, U12C]', () => {
         })
     })
 
-    context('U12A - Összetevő keresése és betöltése', () => {
+    context('U12A - Ingredient search and load', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/admin/ingredients')
@@ -43,7 +43,7 @@ describe('Admin Ingredients Page [U12A, U12B, U12C]', () => {
         })
     })
 
-    context('U12B - Üres összetevő keresés kezelése', () => {
+    context('U12B - Empty ingredient search handling', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/admin/ingredients')
@@ -58,7 +58,7 @@ describe('Admin Ingredients Page [U12A, U12B, U12C]', () => {
         })
     })
 
-    context('U12C - Összetevő allergén információinak módosítása', () => {
+    context('U12C - Modify ingredient allergen information', () => {
         beforeEach(() => {
             cy.login()
             cy.visit('/admin/ingredients')

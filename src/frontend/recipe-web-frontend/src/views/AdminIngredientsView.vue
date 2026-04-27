@@ -48,8 +48,7 @@ const canAccessPage = computed(() => auth.isAdmin)
                 </p>
                 <h1 class="mt-2 text-3xl font-bold text-slate-900">Hozzávalók kezelése</h1>
                 <p class="mt-3 max-w-3xl text-slate-600">
-                    Itt külön tudod kezelni a javaslatokhoz használt hozzávalókat. A meglévő keresős
-                    komponenseket ez az oldal nem módosítja.
+                    Itt külön tudod kezelni a javaslatokhoz használt hozzávalókat.
                 </p>
             </header>
 

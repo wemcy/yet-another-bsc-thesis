@@ -34,7 +34,7 @@ describe('Public Profile Page [U08B]', () => {
         cy.url().should('include', `/profile/${userId}`)
     }
 
-    context('U08B - Másik felhasználó profiljának megtekintése', () => {
+    context("U08B - View another user's profile", () => {
         let testUserId: string
 
         before(() => {
@@ -52,7 +52,7 @@ describe('Public Profile Page [U08B]', () => {
             cy.contains(Cypress.env('testUserDisplayName')).should('be.visible')
         })
 
-        it('displays the "Receptjei" heading', () => {
+        it('displays the "Recipes" heading', () => {
             cy.contains('h3', 'Receptjei').should('be.visible')
         })
 
@@ -107,7 +107,7 @@ describe('Public Profile Page [U08B]', () => {
             })
         })
 
-        it('shows "Profil törlése" and "Adminná tétel" buttons for admin', () => {
+        it('shows "Delete Profile" and "Make Admin" buttons for admin', () => {
             cy.login()
             // Use in-app navigation to preserve Pinia admin roles
             navigateToPublicProfile(testUserId)
@@ -115,7 +115,7 @@ describe('Public Profile Page [U08B]', () => {
             cy.contains('button', 'Adminná tétel').should('be.visible')
         })
 
-        it('opens the delete profile dialog when clicking "Profil törlése"', () => {
+        it('opens the delete profile dialog when clicking "Delete profile"', () => {
             cy.login()
             navigateToPublicProfile(testUserId)
             cy.contains('button', 'Profil törlése').click()
@@ -123,7 +123,7 @@ describe('Public Profile Page [U08B]', () => {
             cy.contains('Biztosan törölni szeretnéd ezt a profilt?').should('be.visible')
         })
 
-        it('closes the delete dialog when Mégse is clicked', () => {
+        it('closes the delete dialog when Cancel is clicked', () => {
             cy.login()
             navigateToPublicProfile(testUserId)
             cy.contains('button', 'Profil törlése').click()
@@ -131,7 +131,7 @@ describe('Public Profile Page [U08B]', () => {
             cy.contains('Biztosan törölni szeretnéd ezt a profilt?').should('not.exist')
         })
 
-        it('opens the make-admin dialog when clicking "Adminná tétel"', () => {
+        it('opens the make-admin dialog when clicking "Make Admin"', () => {
             cy.login()
             navigateToPublicProfile(testUserId)
             cy.contains('button', 'Adminná tétel').click()
@@ -139,7 +139,7 @@ describe('Public Profile Page [U08B]', () => {
             cy.contains('Biztosan admin jogosultságot szeretnél adni').should('be.visible')
         })
 
-        it('closes the make-admin dialog when Mégse is clicked', () => {
+        it('closes the make-admin dialog when Cancel is clicked', () => {
             cy.login()
             navigateToPublicProfile(testUserId)
             cy.contains('button', 'Adminná tétel').click()

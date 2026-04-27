@@ -40,13 +40,12 @@ function normalizeName(name) {
 function parseArgs(argv) {
     const options = {
         dryRun: false,
-        insecure: false,
+        insecure: true,
         exportPath: null,
         limit: null,
-        apiBaseUrl: process.env.API_BASE_URL ?? 'http://localhost:5173/api',
-        adminEmail: process.env.ADMIN_EMAIL ?? process.env.userEmail ?? null,
-        adminPassword: process.env.ADMIN_PASSWORD ?? process.env.userPassword ?? null,
-        authCookie: process.env.AUTH_COOKIE ?? null,
+        apiBaseUrl: process.env.API_BASE_URL ?? 'https://localhost:9393/api',
+        adminEmail: process.env.ADMIN_EMAIL ?? "recipe@example.com" ?? null,
+        adminPassword: process.env.ADMIN_PASSWORD ?? "Admin123!" ?? null,
     }
 
     for (let index = 0; index < argv.length; index += 1) {

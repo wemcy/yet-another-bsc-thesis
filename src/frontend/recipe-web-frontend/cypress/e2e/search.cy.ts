@@ -3,7 +3,7 @@ describe('Search Autocomplete [U03A, U03B]', () => {
         cy.visit('/')
     })
 
-    context('U03A - Recept keresése találatokkal', () => {
+    context('U03A - Recipe search with results', () => {
         it('shows the search input with the correct placeholder', () => {
             cy.get('[data-cy="recipe-search-input"]').should('be.visible')
         })
@@ -18,7 +18,7 @@ describe('Search Autocomplete [U03A, U03B]', () => {
             cy.get('[class*="absolute"][class*="z-50"]', { timeout: 3000 }).should('be.visible')
         })
 
-        it('shows search results or "Nincs találat" message', () => {
+        it('shows search results or "No results" message', () => {
             cy.get('[data-cy="recipe-search-input"]').type('re')
             cy.get('[class*="absolute"][class*="z-50"]', { timeout: 3000 }).should('be.visible')
             cy.get('[class*="absolute"][class*="z-50"]').then(($dropdown) => {
@@ -44,8 +44,8 @@ describe('Search Autocomplete [U03A, U03B]', () => {
         })
     })
 
-    context('U03B - Recept keresése találat nélkül', () => {
-        it('shows "Nincs találat." for a nonsensical search term', () => {
+    context('U03B - Recipe search without results', () => {
+        it('shows "No results" for a nonsensical search term', () => {
             cy.get('[data-cy="recipe-search-input"]').type('xyzzyplugh999')
             cy.get('[class*="absolute"][class*="z-50"]', { timeout: 3000 }).should('be.visible')
             cy.contains('Nincs találat.').should('be.visible')
