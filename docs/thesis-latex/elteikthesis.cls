@@ -514,30 +514,30 @@
 
 				\begin{tabular}{ l c l }
 					{\it \large \intsuplabel:} &
-					\hspace{4.0cm} &
+					\hspace{2.5cm} &
 					{\it \large \extsuplabel:}\\
 
 					{\large \supname} &
-					\hspace{4.0cm} &
+					\hspace{2.5cm} &
 					{\large \extsupname}\\
 
 					\supaff &
-					\hspace{4.0cm} &
+					\hspace{2.5cm} &
 					\extsupaff\\
 				\end{tabular}
 			\else
 				\vspace{1.0cm}
 				\begin{tabular}{ l c l }
 					{\it \large \suplabel:} &
-					\hspace{4.0cm} &
+					\hspace{2.5cm} &
 					{\it \large \authorlabel:}\\
 
 					{\large \supname} &
-					\hspace{4.0cm} &
+					\hspace{2.5cm} &
 					{\large \authorname}\\
 
 					\supaff &
-					\hspace{4.0cm} &
+					\hspace{2.5cm} &
 					\degreename\\
 				\end{tabular}
 			\fi

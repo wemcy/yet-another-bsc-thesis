@@ -18,7 +18,7 @@ A REST API specifikáció alapján OpenAPI CLI Generator\footnote{\url{https://o
 
 Az adatbázis megtekintéséhez Adminer\footnote{\url{https://www.adminer.org/}. Utolsó elérés: 2026.04.22.} van bekötve a konténeres környezetbe, amely egy könnyen használható webes adatbázis-kezelő eszköz.
 
-A könnyű fejlesztés érdekében a legtöbb gyakran használt parancs, mint például a build\footnote{ forráskód gépi nyelvre való átalakítása}, tesztelés vagy a konténeres futtatás, PowerShell szkriptek segítségével van automatizálva.
+A könnyű fejlesztés érdekében a legtöbb gyakran használt parancs, mint például a build\footnote{ forráskód gépi nyelvre való átalakítása}, tesztelés vagy a konténeres futtatás, PowerShell scriptek segítségével van automatizálva.
 \subsection{Backend}
 
 Az ASP.NET Core alapú rendszer erősen kihasználja a függőségi injektálást. Lehetővé teszi, hogy ne kelljen manuálisan példányosítani a szolgáltatásokat, ehelyett a keretrendszer automatikusan kezeli azokat. A függőségi injektálás az ASP.NET Core beépített szolgáltatásain keresztül történik. Emellett könnyen kicserélhetővé teszi a különböző implementációkat, például a repository rétegben, ahol az adatbázis műveletek történnek. Később például egy új adatbázis bevezetése esetén csak a repository réteg implementációját kell megváltoztatni, a szolgáltatás réteg és a kontroller réteg változatlan maradhat. A legtöbb ábrán ennek köszönhetően nem a valós implementációk vannak megjelenítve, hanem az osztályok általános interfészei.
@@ -65,7 +65,7 @@ Az adatbázisban reprezentált adatok struktúráját az entitások határozzák
 	\caption{Modell réteg UML diagramja}\label{fig:entities-diagram}
 \end{figure}
 
-Az ábrán jól láthatóak a különböző entitások közötti kapcsolatok. Például a User és a Recipe közötti kapcsolat mutatja, hogy a felhasználó több receptet is létrehozhat. A Recipe és a Comment közötti kapcsolat azt jelzi, hogy egy recepthez több komment is tartozhat. Az Entity Framework automatikusan létrehozza a kapcsolatok kezeléséhez szükséges segédtáblákat (pl. több-több kapcsolat esetén).
+Az ábrán jól láthatóak a különböző entitások közötti kapcsolatok. Például a User és a Recipe közötti kapcsolat mutatja, hogy a felhasználó több receptet is létrehozhat. A Recipe és a Comment közötti kapcsolat azt jelzi, hogy egy recepthez több komment is tartozhat. Az Entity Framework automatikusan létrehozza a kapcsolatok kezeléséhez szükséges segédtáblákat, például több-több kapcsolat esetén.
 
 \subsubsection{Keresés és szűrés}
 
@@ -80,11 +80,11 @@ public IQueryable<Recipe> ApplyFilters(IQueryable<Recipe> query)
 }
 \end{lstlisting}
 
-A kódban is jól látható, hogy a szűrést a bit műveleteket végzik el. Ennek köszönhetően a kód gyorsan hajtódik végre, még nagy adatmennyiség esetén is. Ezt még az adatbázis lekérdezés struktúrájával is tovább lehet optimalizálni azzal, hogy elsőként csak a szűrés feltételeit hajtjuk végre. Ez a megközelítés lehetővé teszi, hogy a szűrés SQL szinten kerüljön végrehajtásra, elkerülve a felesleges adatok memóriába töltését. Ez a megközelítés lehetővé teszi, hogy egyetlen egész szám reprezentálja az összes allergént, ami jelentősen csökkenti a lekérdezések komplexitását és növeli a teljesítményt.
+A kódban is jól látható, hogy a szűrést a bit műveletek végzik el. Ennek köszönhetően a kód gyorsan hajtódik végre, még nagy adatmennyiség esetén is. Ezt még az adatbázis lekérdezés struktúrájával is tovább lehet optimalizálni azzal, hogy elsőként csak a szűrés feltételeit hajtjuk végre. Ez a megközelítés lehetővé teszi, hogy a szűrés SQL szinten kerüljön végrehajtásra, elkerülve a felesleges adatok memóriába töltését. Ez a megközelítés lehetővé teszi, hogy egyetlen egész szám reprezentálja az összes allergént, ami jelentősen csökkenti a lekérdezések komplexitását és növeli a teljesítményt.
 
 A keresések megvalósításához indexek vannak használva az adatbázisban, amelyek lehetővé teszik a gyors keresést. Az indexek elsősorban a gyakran lekérdezett mezőkre, például a recept nevére kerültek létrehozásra. Ennek köszönhetően a keresési műveletek nagy adatmennyiség esetén is hatékonyan hajthatóak végre.
 
-\subsubsection{Felhasználó kezelés}
+\subsubsection{Felhasználókezelés}
 
 A felhasználókezelés megvalósításához a Microsoft Identity platformot használja a backend. Ez egy beépített megoldás, amely lehetővé teszi a felhasználók regisztrációját, bejelentkezését, valamint a jogosultságok kezelését. Ez jól integrálható az ASP.NET Core és EF rendszerrel, és lehetővé teszi a biztonságos autentikáció és autorizáció megvalósítását. 
 
@@ -101,7 +101,7 @@ A frontend két fajta komponensből épül fel: a nézetkomponensek, amelyek az 
 
 \subsubsection{Routing}
 
-A frontend routingját a Vue Router\footnote{\url{https://router.vuejs.org/}. Utolsó elérés: 2026.04.22.} könyvtár kezeli. Ez lehetővé teszi az egyes oldalak közötti navigációt, valamint a dinamikus útvonalak kezelését. A router konfigurációja meghatározza, hogy melyik nézetkomponens jelenjen meg ad adott útvonalon. Emellett a router segítségével megvalósítható a jogosultság alapú útvonalvédelem is, amely biztosítja, hogy csak a megfelelő jogosultságokkal rendelkező felhasználók férjenek hozzá bizonyos oldalakhoz.
+A frontend routingját a Vue Router\footnote{\url{https://router.vuejs.org/}. Utolsó elérés: 2026.04.22.} könyvtár kezeli. Ez lehetővé teszi az egyes oldalak közötti navigációt, valamint a dinamikus útvonalak kezelését. A router konfigurációja meghatározza, hogy melyik nézetkomponens jelenjen meg az adott útvonalon. Emellett a router segítségével megvalósítható a jogosultság alapú útvonalvédelem is, amely biztosítja, hogy csak a megfelelő jogosultságokkal rendelkező felhasználók férjenek hozzá bizonyos oldalakhoz.
 
 Az oldalon a következő útvonalak vannak megvalósítva:
 
@@ -124,12 +124,13 @@ Pár kiemelendő komponens a következő:
 \begin{itemize}
     \item \texttt{RecipeCard} — egy recept kisebb nézetét jeleníti meg, annak képét, nevét és felhasználóját. Ez a komponens az oldal sok pontján megjelenik, például a kezdőlapon, vagy a recept listázó oldalakon.
     \item \texttt{RecipeForm} — egy recept létrehozásáért és szerkesztéséért felelős komponens, amely egy űrlapot jelenít meg a recept adataival. A frontendhez tartozó logika nagy része ebben a komponensben van megvalósítva.
-    \item \texttt{ProfileCard} — egy felhasználó kisebb nézetét jeleníti meg, annak képét és nevét. Ez a komponens a kezdőlapon és a profil oldalakon jelenik meg.
+    \item \texttt{ProfileCard} — egy felhasználó képét és nevét jeleníti meg. Ez a komponens a kezdőlapon és a profil oldalakon jelenik meg.
     \item \texttt{IngredientList} — egy összetevő listát jelenít meg, amely a recepthez tartozó összetevőket mutatja. Ez a komponens a recept részletező oldalán jelenik meg.
     \item \texttt{CommentSection} — egy komment szekciót jelenít meg, amely a recepthez tartozó kommenteket mutatja. 
 \end{itemize}
 
-Ezek mellett számos kisebb-nagyobb komponens van. Jól szemlélteti mennyire fontos a komponens alapú megközelítés, hogy a kód újrafelhasználható és karbantartható legyen.
+Ezek mellett is számos kisebb-nagyobb komponens van, ami jól szemlélteti, mennyire
+fontos a komponens alapú megközelítés a kód újrafelhasználhatósága és karbantarthatósága szempontjából.
 
 \subsection{API szerződés és generálás}
 
@@ -148,7 +149,7 @@ Ezek közül néhány:
 
 \subsection{Hibakezelés}
 
-Ha hiba történik a frontend felülete egyértelműen jelzi ezt a felhasználó számára. Ennek formája lehet egy felugró ablak, vagy egy üzenet a képernyőn, amely leírja a hibát és esetleg javaslatot tesz a megoldásra. A backendben a hibák megfelelő HTTP státuszkódokkal vannak visszaadva, és a hibaüzenetek is informatívak, hogy a frontend könnyen kezelni tudja azokat.
+Ha hiba történik, a frontend felülete egyértelműen jelzi ezt a felhasználó számára. Ennek formája lehet egy felugró ablak vagy egy üzenet a képernyőn, amely leírja a hibát és esetleg javaslatot tesz a megoldásra. A backendben a hibák megfelelő HTTP státuszkódokkal vannak visszaadva, és a hibaüzenetek is informatívak, hogy a frontend könnyen kezelni tudja azokat.
 
 Backenden több saját kivételosztály is segíti a hibák kezelését. Ezek különböző logikai hibák jelzésére szolgálnak, amelyek nem a programozási nyelv által dobott kivételek, hanem a rendszer logikájából adódó hibák. Például egy \texttt{EntityNotFoundException} jelzi, hogy egy adott erőforrás nem található, míg egy \texttt{UnauthorizedAccessException} jelzi, hogy a felhasználónak nincs megfelelő jogosultsága egy művelet végrehajtásához. Ezen kivételek kezelése applikáció szintjén történik, ahol a megfelelő HTTP státuszkódokkal és hibaüzenetekkel válaszol a kliensnek. Ez a megközelítés lehetővé teszi, hogy a hibák kezelése egységes és könnyen karbantartható legyen a teljes alkalmazásban.
 
@@ -159,13 +160,13 @@ A DevOps megoldások célja a rendszer egyszerű indíthatóságának és reprod
 
 \subsubsection{Docker és konténeres futtatás}
 
-Docker használata lehetővé teszi, hogy a fejlesztési és éles környezetek között konzisztens legyen a futtatási környezet. A Docker Compose segítségével könnyedén definiálható és futtatható a teljes alkalmazás, beleértve a backend szolgáltatást, a frontend alkalmazást, valamint az adatbázist és az Adminer-t is.
+Docker használata lehetővé teszi, hogy a fejlesztési és éles környezetek között konzisztens legyen a futtatási környezet. A Docker Compose segítségével könnyedén definiálható és futtatható a teljes alkalmazás, beleértve a backend szolgáltatást, a frontend alkalmazást, valamint az adatbázist és az Adminert is.
 
-Emellett a szoftver ún.\ volume-kat használ, amelyek lehetővé teszik, hogy két indítás között ne vesszen el adat. Ezekben vannak tárolva az adatbázis fájlok illetve a képek.
+Emellett a szoftver úgynevezett volume-kat használ, amelyek lehetővé teszik, hogy két indítás között ne vesszen el adat. Ezekben vannak tárolva az adatbázis fájlok, illetve a képek.
 
 \subsubsection{Nginx}
 
-Az Nginx egy könnyű és nagy teljesítményű web szerver, amelyet a frontend alkalmazás kiszolgálására használunk. Az Nginx konfigurációja lehetővé teszi a statikus fájlok gyors kiszolgálását, valamint a backend API-k felé történő proxyzást, így a frontend és backend közötti kommunikáció zökkenőmentes.
+Az Nginx egy könnyű és nagy teljesítményű webszerver, amelyet a frontend alkalmazás kiszolgálására használunk. Az Nginx konfigurációja lehetővé teszi a statikus fájlok gyors kiszolgálását, valamint a backend API-k felé történő proxyzást, így a frontend és backend közötti kommunikáció zökkenőmentes.
 
 \subsection{CI/CD}
 
