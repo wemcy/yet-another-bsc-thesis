@@ -16,7 +16,7 @@ A szerver futtatásához szükséges egy olyan környezet, amin futtatható a Do
 	\item Docker Compose v2.35 vagy frissebb verzió
 \end{itemize}
 
-Kliensoldalon egy modern webböngészőre van szükség, ami támogatja a HTML5-öt és a JavaScriptet:
+Kliensoldalon egy modern webböngészőre van szükség, ami támogatja a HTML5-öt és az ECMAScript 6-ot:
 \begin{itemize}
 	\item Mozilla Firefox legfrissebb verziója
 	\item Google Chrome legfrissebb verziója
@@ -25,10 +25,10 @@ Kliensoldalon egy modern webböngészőre van szükség, ami támogatja a HTML5-
 \end{itemize}
 
 \section{Telepítés}
-Az alkalmazást a korábban említett Docker, illetve Docker Compose\footnote{\url{https://docs.docker.com/compose/install/}. Utolsó elérés: 2026.04.22.} segítségével lehet telepíteni. Ennek köszönhetően egyetlen parancs kiadásával a teljes rendszer elindítható komplexebb beállítások elvégzése nélkül.
+Az alkalmazást a korábban említett Docker, illetve Docker Compose\footnote{\url{https://docs.docker.com/compose/install/}. Utolsó elérés: 2026.04.22.} segítségével lehet telepíteni és futtatni. Ennek köszönhetően egyetlen parancs kiadásával a teljes rendszer elindítható komplexebb beállítások elvégzése nélkül.
 
 \subsection{Telepítési útmutató}
-Miután a Docker és a Docker Compose telepítésre került, a projekt mappájába kell navigálni. Az itt található \texttt{docker-compose.yml} fájl segítségével indítható el a rendszer. Ez a fájl négy konténerből áll: egy PostgreSQL adatbázisból, a backend REST API-ból, a frontend szerverből és egy Nginx fordított proxyból.
+Miután a Docker és a Docker Compose telepítésre került, a projekt mappájába kell navigálni. Az itt található \texttt{docker-compose.yml} fájl segítségével indítható el a rendszer. Ez a fájl négy szolgáltatást definiál: egy PostgreSQL adatbázist, a backend REST API-t, a frontend szervert és egy Nginx fordított proxyt.
 
 A rendszer konfigurációja egy környezeti változókat tartalmazó fájlon keresztül történik, amelyben a működéshez szükséges beállítások adhatóak meg. Az elérhető konfigurációs opciókat a \ref{tab:config-required}. és \ref{tab:config-optional}. táblázatok tartalmazzák.
 
@@ -113,7 +113,7 @@ Kötelező megadni a címet; leírást; legalább egy darab összetevőt, annak 
 	\caption{A recept létrehozására és szerkesztésére szolgáló felület}\label{fig:recipe-editor}
 \end{figure}
 
-A~\ref{fig:recipe-editor}. ábrán jól látható, hogyan jelölhetőek ki egyes összetevőkhöz az allergének. Összetevőket adminisztrátori joggal rendelkezők hozhatnak létre. Az összetevő nevének első pár karakterének megadásakor a rendszer egy gyors keresés alapján potenciális összetevőket jelenít meg. A keresési találatokból a felhasználók választhatnak. Minden hozzávalóhoz allergének vannak rendelve, amelyek kijelölődnek, amikor a felhasználók elfogadják az összetevő keresőjének találatát.
+A~\ref{fig:recipe-editor}. ábrán jól látható, hogyan jelölhetőek ki egyes összetevőkhöz az allergének. Összetevő ajánlásokat adminisztrátori joggal rendelkezők hozhatnak létre. Az összetevő nevének első pár karakterének megadásakor a rendszer egy gyors keresés alapján potenciális összetevőket jelenít meg. A keresési találatokból a felhasználók választhatnak. Minden hozzávalóhoz allergének vannak rendelve, amelyek kijelölődnek, amikor a felhasználók elfogadják az összetevő keresőjének találatát.
 A hozzávalókhoz megadott allergének alapján áll össze a recept allergénlistája.
 
 \subsection{Keresés és szűrés}
@@ -148,7 +148,7 @@ A másik, összetettebb keresőnél a recept címe mellett allergének alapján 
 
 \subsection{Bejelentkezés és regisztráció}
 
-A navigációs sávban található a bejelentkezés gomb, ami átirányít a bejelentkezési és regisztrációs felületre. Itt a már regisztrált felhasználók jelentkezhetnek be email cím és jelszó megadásával. Az oldal felső részén szereplő regisztrációs fül megnyomásával lehet a regisztrációs űrlapot megjeleníteni. A regisztrációhoz meg kell adni a nevet, az email címet, a jelszót és a jelszó megerősítését. Sikeres regisztráció után a felület azonnal be is jelentkeztet minket. Bármilyen hiba esetén az űrlap jelzi, hogy mely mezőkben megadott adattal van probléma. Bejelentkezés után lehet létrehozni recepteket. A már meglévő receptekhez lehet kommentet írni, értékelni őket és mások profilját megtekinteni. A bejelentkezési és regisztrációs felület a következő ábrán található:
+A navigációs sávban található a bejelentkezés gomb, ami átirányít a bejelentkezési és regisztrációs felületre. Itt a már regisztrált felhasználók jelentkezhetnek be email cím és jelszó megadásával. Az oldal felső részén szereplő regisztrációs fül megnyomásával lehet a regisztrációs űrlapot megjeleníteni. A regisztrációhoz meg kell adni a nevet, az email címet, a jelszót és a jelszó megerősítését. Sikeres regisztráció után a felület azonnal be is jelentkezteti a felhasználót. Bármilyen hiba esetén az űrlap jelzi, hogy mely mezőkben megadott adattal van probléma. Bejelentkezés után lehet létrehozni recepteket. A már meglévő receptekhez lehet kommentet írni, értékelni őket és mások profilját megtekinteni. A bejelentkezési és regisztrációs felület a következő ábrán található:
 
 
 \begin{figure}[H]

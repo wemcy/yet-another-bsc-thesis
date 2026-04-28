@@ -119,7 +119,7 @@ A frontend architektúra komponensalapú felépítést követ. A Vue 3 keretrend
 
 Az alkalmazás tervezésénél fontos szempont volt, hogy a backend és a frontend önmagukban is teljes értékű, jól működő komponensek legyenek. Ennek eléréséhez elengedhetetlen, hogy a két rendszer jól dokumentált legyen és következetes kommunikációt folytasson egymással. Ez lehetővé teszi a frontend és a backend párhuzamos fejlesztését, valamint azt, hogy a komponensek külön-külön is könnyen tesztelhetők legyenek.
 
-Erre a problémára a Representational State Transfer (REST)\cite{rest} API tervezési megközelítés nyújt megoldást, amely egy széles körben alkalmazott szabvány a webes szolgáltatások kialakításában. A REST API-k használata biztosítja a frontend és a backend közötti egyszerű, egységes és hatékony kommunikációt.
+Erre a problémára a Representational State Transfer (REST)\cite{rest} API tervezési megközelítés nyújt megoldást, amely egy de facto szabvány a webes szolgáltatások kialakításában. A REST API-k használata biztosítja a frontend és a backend közötti egyszerű, egységes és hatékony kommunikációt.
 
 A megközelítés alkalmazása számos előnnyel jár: támogatja a rendszer skálázhatóságát, megkönnyíti a tesztelést, valamint lehetővé teszi a komponensek egymástól független fejlesztését és karbantartását. A backend szolgáltatás nem függ közvetlenül a frontend implementációjától, így a két réteg lazán csatolt módon működik együtt.
 
@@ -156,7 +156,7 @@ Az API leírása az OpenAPI\cite{openapi} specifikációval lett megvalósítva.
 
 \subsection{Adatbázis}
 
-Az adatbázis tervezése során a fő szempont az volt, hogy minél kevesebb interakció történjen az adatbázissal natív SQL nyelven írt lekérdezésekkel.  Ennek megoldására az Entity Framework (továbbiakban EF)\cite{ef} keretrendszert használja a backend. Az EF egy objektum-relációs leképező (ORM) eszköz, amely lehetővé teszi, hogy a fejlesztők C\# osztályokkal dolgozzanak, miközben az adatok relációs adatbázisban tárolódnak. Ennek köszönhetően az adatok kapcsolatait és a lekérdezéseket is a C\# kódon keresztül lehet kezelni, anélkül, hogy közvetlenül SQL-t kellene írni. Ennek köszönhetően az adatbázis struktúrája típusos, jól karbantartható. A kapcsolatokat a nyelv megszokott kulcsszavaival lehet kezelni. A rendszer első indításakor üres állapotban, receptek és összetevők nélkül indul el.
+Az adatbázis tervezése során a fő szempont az volt, hogy minél kevesebb interakció történjen az adatbázissal natív\footnote{Structured Query Language} nyelven írt lekérdezésekkel.  Ennek megoldására az Entity Framework (továbbiakban EF)\cite{ef} keretrendszert használja a backend. Az EF egy objektum-relációs leképező (ORM) eszköz, amely lehetővé teszi, hogy a fejlesztők C\#\footnote{C Sharp programozási nyelv} osztályokkal dolgozzanak, miközben az adatok relációs adatbázisban tárolódnak. Ennek köszönhetően az adatok kapcsolatait és a lekérdezéseket is a C\# kódon keresztül lehet kezelni, anélkül, hogy közvetlenül SQL-t kellene írni. Ennek köszönhetően az adatbázis struktúrája típusos, jól karbantartható. A kapcsolatokat a nyelv megszokott kulcsszavaival lehet kezelni. A rendszer első indításakor üres állapotban, receptek és összetevők nélkül indul el.
 
 \begin{figure}[H]
 	\centering
@@ -164,4 +164,4 @@ Az adatbázis tervezése során a fő szempont az volt, hogy minél kevesebb int
 	\caption{Adatbázis kontextus UML diagramja}\label{fig:database-context-diagram}
 \end{figure}
 
-A fenti ábrán látható a DatabaseContext osztály UML diagramja, amely az adatbázisban tárolt entitásokat írja le. Az osztályban definiált DbSet-ek reprezentálják a különböző táblákat az adatbázisban. Ezek mellett helyet kapott néhány függvény, amely minden egyes entitás módosításánál vagy létrehozásánál meghívásra kerül, így biztosítva az adatok konzisztenciáját. Az adatbázis model részletes leírása a \ref{sec:adatbazis} fejezetben található meg.
+A fenti ábrán látható a DatabaseContext osztály UML\footnote{Unified Modeling Language} diagramja, amely az adatbázisban tárolt entitásokat írja le. Az osztályban definiált DbSet-ek reprezentálják a különböző táblákat az adatbázisban. Ezek mellett helyet kapott néhány függvény, amely minden egyes entitás módosításánál vagy létrehozásánál meghívásra kerül, így biztosítva az adatok konzisztenciáját. Az adatbázis model részletes leírása a \ref{sec:adatbazis} fejezetben található meg.
