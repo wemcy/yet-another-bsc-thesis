@@ -3,7 +3,7 @@
 
 \subsection{Feladat részletes leírása}
 
-Az alkalmazás kettő fő részből áll: egy ASP.NET Core alapú backend szolgáltatásból, és egy Vue és TypeScript alapú frontend egyoldalas alkalmazásból. Fontos, hogy ezen komponensek önállóan is működőképesek legyenek, de együtt egy teljes funkcionalitást nyújtó rendszert alkossanak. Ennek megvalósítása során a stabil API-kapcsolat, a jól definiált adatmodell, valamint a felhasználói élményre fókuszáló frontend kialakítása a fő célok közé tartozik. 
+Az alkalmazás két fő részből áll: egy ASP.NET Core alapú backend szolgáltatásból, és egy Vue és TypeScript alapú frontend egyoldalas alkalmazásból. Fontos, hogy ezen komponensek önállóan is működőképesek legyenek, de együtt egy teljes funkcionalitást nyújtó rendszert alkossanak. Ennek megvalósítása során a stabil API-kapcsolat, a jól definiált adatmodell, valamint a felhasználói élményre fókuszáló frontend kialakítása a fő célok közé tartozik. 
 
 \subsection{Funkcionális követelmények}\label{ch:requirements}
 
@@ -18,7 +18,7 @@ Funkcionális követelmények tekintetében a projekt fő területei a következ
 
 \subsection{Nem funkcionális követelmények}
 
-A rendszerrel szemben a nem funkcionális követelmények a következőek:
+A nem funkcionális követelmények a következőek:
 
 \begin{itemize}
 	\item átlátható és modern böngészőkben megfelelő megjelenés
@@ -31,7 +31,7 @@ A rendszerrel szemben a nem funkcionális követelmények a következőek:
 
 \subsection{Felhasználói esetek}
 
-Az alábbi ábrán jól láthatóak a rendszer főbb funkciói és azok kapcsolatai. A diagramon a főbb szereplők (felhasználó, adminisztrátor) és azok interakciói jelennek meg a rendszer különböző részeivel. Minden adminisztrátor az alap felhasználó funkcióival is rendelkezik, ez külön nincs feltüntetve a diagramon a könnyebb átláthatóság érdekében.
+A lenti ábrán jól láthatóak a rendszer főbb funkciói és azok kapcsolatai. A diagramon a főbb szereplők (felhasználó, adminisztrátor) és azok interakciói jelennek meg a rendszer különböző részeivel. Minden adminisztrátor az alap felhasználó funkcióival is rendelkezik, ez külön nincs feltüntetve a diagramon a könnyebb átláthatóság érdekében.
 
 \begin{figure}[H]
 	\centering
@@ -88,7 +88,7 @@ A profil oldal vázlata a~\ref{fig:profile-wireframe}. ábrán, míg a kiemelt r
 
 \subsection{Architekturális áttekintés}
 
-A projekt réteges, webalkalmazás-jellegű architektúrára épül. A felhasználó egy böngészőben futó kliensalkalmazással lép kapcsolatba, amely HTTP hívásokon keresztül éri el a backend szolgáltatást. A backend végzi az üzleti logika, az adatelérés, a hitelesítéshez kapcsolódó folyamatok, valamint az API-dokumentáció kiszolgálásának fő részét. Az adatok perzisztálását egy relációs adatbázis biztosítja.
+A projekt réteges, webalkalmazás-jellegű architektúrára épül. A felhasználó egy böngészőben futó kliensalkalmazással lép kapcsolatba, amely HTTP hívásokon keresztül éri el a backend szolgáltatást. A backend végzi az üzleti logika, az adatelérés, a hitelesítéshez kapcsolódó folyamatok, valamint az API-dokumentáció kiszolgálásának jelentős részét. Az adatok perzisztálását egy relációs adatbázis biztosítja.
 
 \begin{figure}[H]
 	\centering
@@ -102,14 +102,14 @@ A fő komponensek:
 	\item Frontend: Vue 3 alapú egyoldalas alkalmazás, amely a felhasználói folyamatokat és az oldalak közti navigációt kezeli
 	\item API kliens: OpenAPI alapján generálható klienscsomag, amely a frontend és a backend közötti szerződést teszi követhetővé
 	\item Backend: ASP.NET Core Web API, amely kontroller-, szolgáltatás- és repository-szintű felelősségekre tagolódik
-	\item Adatbázis: PostgreSQL adatbázis, amely a receptek, kommentek, felhasználói adatok és egyéb kapcsolódó információk tárolásáért felelős.
-	\item Proxy: Nginx alapú reverse proxy, amely a frontend és a backend szolgáltatásokat egyetlen végpont alá helyezi
+	\item Adatbázis: PostgreSQL adatbázis, amely a receptek, kommentek, felhasználói adatok és egyéb kapcsolódó információk tárolásáért felelős
+	\item Proxy: Nginx alapú fordított proxy, amely a frontend és a backend szolgáltatásokat egyetlen végpont alá helyezi
 	\item Docker volumes: az adatbázis adatai és a képek egy-egy megosztott kötetben vannak tárolva 
 \end{itemize}
 
 \subsection{Backend architekturális döntések}
 
-A backend architektúra réteges felépítésű. A kontroller réteg felelős a HTTP kérések fogadásáért, a válaszok visszaküldéséért, valamint a bemeneti adatok validálásáért. A szolgáltatásréteg tartalmazza az üzleti logikát, és a kontroller által meghívott műveleteket hajtja végre. A repository réteg az adatbázis-műveletekért felel, elválasztva az adatkezelést az üzleti logikától. Az adatok egy entitásmodell segítségével kerülnek reprezentálásra, amelyeket relációs adatbázisban vannak tárolva. Ez a megközelítés elősegíti a kód tisztaságát, a felelősségek elkülönítését és a rendszer karbantarthatóságát.
+A backend architektúra réteges felépítésű. A kontroller réteg felelős a HTTP kérések fogadásáért, a válaszok visszaküldéséért, valamint a bemeneti adatok validálásáért. A szolgáltatásréteg tartalmazza az üzleti logikát, és a kontroller által meghívott műveleteket hajtja végre. A repository réteg az adatbázis-műveletekért felel, elválasztva az adatkezelést az üzleti logikától. Az adatok egy entitásmodell segítségével kerülnek reprezentálásra, amelyek relációs adatbázisban vannak tárolva. Ez a megközelítés elősegíti a kód tisztaságát, a felelősségek elkülönítését és a rendszer karbantarthatóságát.
 
 \subsection{Frontend architekturális döntések}
 
@@ -117,15 +117,15 @@ A frontend architektúra komponensalapú felépítést követ. A Vue 3 keretrend
 
 \subsection{REST API tervezés}
 
-Az alkalmazás tervezésénél fontos szempont volt, hogy a backend és a frontend önmagukban is teljes értékű, jól működő komponensek legyenek. Ennek eléréséhez elengedhetetlen, hogy a két rendszer jól dokumentált és következetes kommunikációt folytasson egymással. Ez lehetővé teszi a frontend és a backend párhuzamos fejlesztését, valamint azt, hogy a komponensek külön-külön is könnyen tesztelhetők legyenek.
+Az alkalmazás tervezésénél fontos szempont volt, hogy a backend és a frontend önmagukban is teljes értékű, jól működő komponensek legyenek. Ennek eléréséhez elengedhetetlen, hogy a két rendszer jól dokumentált legyen és következetes kommunikációt folytasson egymással. Ez lehetővé teszi a frontend és a backend párhuzamos fejlesztését, valamint azt, hogy a komponensek külön-külön is könnyen tesztelhetők legyenek.
 
-Erre a problémára a Representational State Transfer (REST)\cite{rest} API tervezési megközelítés nyújt megoldást, amely egy széles körben alkalmazott szabvány a webes szolgáltatások kialakításában. A REST API-k használata biztosítja a frontend és a backend közötti egyszerű, egységes és hatékony kommunikációt.
+Erre a problémára a Representational State Transfer (REST) API tervezési megközelítés nyújt megoldást, amely egy de facto szabvány a webes szolgáltatások kialakításában. A REST API-k használata biztosítja a frontend és a backend közötti egyszerű, egységes és hatékony kommunikációt.
 
 A megközelítés alkalmazása számos előnnyel jár: támogatja a rendszer skálázhatóságát, megkönnyíti a tesztelést, valamint lehetővé teszi a komponensek egymástól független fejlesztését és karbantartását. A backend szolgáltatás nem függ közvetlenül a frontend implementációjától, így a két réteg lazán csatolt módon működik együtt.
 
 További előny, hogy a rendszer könnyen kiterjeszthető más platformokra is. Amennyiben a jövőben mobilalkalmazás vagy egyéb kliens kerül bevezetésre, ezek ugyanazt az API-t használhatják, így elegendő csupán a megjelenítési réteget az adott platformhoz igazítani.
 
-Előnyök mellett sajnos hátrányokkal is jár. A REST API-k tervezése időigényes lehet, különösen összetett üzleti logika esetén. Emellett növeli a komplexitást, mivel több eszközt kell használni fejlesztéshez és több programozási nyelvet kell ismerni.
+Ugyanakkor a REST API alkalmazása hátrányokkal is jár. Az API-k tervezése időigényes lehet, különösen összetett üzleti logika esetén. Emellett növeli a komplexitást, mivel több eszközt kell használni fejlesztéshez és több programozási nyelvet kell ismerni.
 
 Az API leírása az OpenAPI\cite{openapi} specifikációval lett megvalósítva. Ez egy széles körben használt szabvány, amely lehetővé teszi a REST API-k részletes dokumentálását. A HTTP végpontok leírása a követekezőképpen néz ki:
 
@@ -156,7 +156,7 @@ Az API leírása az OpenAPI\cite{openapi} specifikációval lett megvalósítva.
 
 \subsection{Adatbázis}
 
-Az adatbázis tervezése során a fő szempont az volt, hogy minél kevesebb interakció történjen az adatbázissal natív SQL nyelven írt lekérdezésekkel.  Ennek megoldására az Entity Framework (továbbiakban EF)\cite{ef} keretrendszert használja a backend. Az EF egy objektum-relációs leképező (ORM) eszköz, amely lehetővé teszi, hogy a fejlesztők C\# osztályokkal dolgozzanak, miközben az adatok relációs adatbázisban tárolódnak. Ennek köszönhetően az adatok kapcsolatait és a lekérdezéseket is a C\# kódon keresztül lehet kezelni, anélkül, hogy közvetlenül SQL-t kellene írni. Ennek köszönhetően az adatbázis struktúrája típusos, jól karbantartható. A kapcsolatokat a nyelv megszokott kulcsszavaival lehet kezelni. A rendszer első indításakor üres állapotban, receptek és összetevők nélkül indul el.
+Az adatbázis tervezése során a fő szempont az volt, hogy minél kevesebb interakció történjen az adatbázissal natív\footnote{Structured Query Language} nyelven írt lekérdezésekkel.  Ennek megoldására az Entity Framework (továbbiakban EF)\cite{ef} keretrendszert használja a backend. Az EF egy objektum-relációs leképező (ORM) eszköz, amely lehetővé teszi, hogy a fejlesztők C\#\footnote{C Sharp programozási nyelv} osztályokkal dolgozzanak, miközben az adatok relációs adatbázisban tárolódnak. Ennek köszönhetően az adatok kapcsolatait és a lekérdezéseket is a C\# kódon keresztül lehet kezelni, anélkül, hogy közvetlenül SQL-t kellene írni. Ennek köszönhetően az adatbázis struktúrája típusos, jól karbantartható. A kapcsolatokat a nyelv megszokott kulcsszavaival lehet kezelni. A rendszer első indításakor üres állapotban, receptek és összetevők nélkül indul el.
 
 \begin{figure}[H]
 	\centering
@@ -164,4 +164,4 @@ Az adatbázis tervezése során a fő szempont az volt, hogy minél kevesebb int
 	\caption{Adatbázis kontextus UML diagramja}\label{fig:database-context-diagram}
 \end{figure}
 
-A fenti ábrán látható a DatabaseContext osztály UML diagramja, amely az adatbázisban tárolt entitásokat írja le. Az osztályban definiált DbSet-ek reprezentálják a különböző táblákat az adatbázisban. Ezek mellett helyet kapott itt pár függvény, amely minden egyes entitás módosításánál vagy létrehozásánál meghívásra kerül, így biztosítva az adatok konzisztenciáját. Az adatbázis model részletes leírása \ref{sec:adatbazis} fejezetben található meg.
+A fenti ábrán látható a DatabaseContext osztály UML\footnote{Unified Modeling Language} diagramja, amely az adatbázisban tárolt entitásokat írja le. Az osztályban definiált DbSet-ek reprezentálják a különböző táblákat az adatbázisban. Ezek mellett helyet kapott néhány függvény, amely minden egyes entitás módosításánál vagy létrehozásánál meghívásra kerül, így biztosítva az adatok konzisztenciáját. Az adatbázis model részletes leírása a \ref{sec:adatbazis} fejezetben található meg.

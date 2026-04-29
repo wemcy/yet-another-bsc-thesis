@@ -5,7 +5,7 @@ A tesztelési stratégia kialakításánál a teljes rendszer működésének el
 A tesztelés a felhasználói esetek alapján történt, amelyek lefedik a rendszer fő funkcióit.
 Példák tesztesetekre:
 \begin{itemize}
-	\item felhasználói regisztráció (érvényes adatokkal sikereres regisztráció)
+	\item felhasználói regisztráció (érvényes adatokkal sikeres regisztráció)
 	\item hibás jelszó (validációs hiba)
 	\item recept létrehozása (teljes adatkészlettel sikeres a mentés)
 	\item recept törlése (törlés után nem jelenik meg a listában)
@@ -16,7 +16,7 @@ Ez a megközelítés különösen előnyös olyan webalkalmazások esetében, ah
 
 \subsection{E2E tesztelés}
 
-Az end-to-end tesztek a Cypress keretrendszer segítségével lettek megvalósítva. A Cypress egy modern, JavaScript-alapú tesztelési eszköz, amely lehetővé teszi a fejlesztők számára, hogy könnyedén írjanak és futtassanak teszteket a webalkalmazások működésének ellenőrzésére. A Cypress használata során a tesztek TypeScript-ben íródtak, ami biztosítja a típusosságot és a jobb fejlesztői élményt. 
+Az E2E tesztek a Cypress keretrendszer segítségével lettek megvalósítva. A Cypress egy modern, JavaScript-alapú tesztelési eszköz, amely lehetővé teszi a fejlesztők számára, hogy könnyedén írjanak és futtassanak teszteket a webalkalmazások működésének ellenőrzésére. A Cypress használata során a tesztek TypeScriptben íródtak, ami biztosítja a típusosságot és a jobb fejlesztői élményt. 
 
 
 Az E2E tesztelés célja, hogy a teljes alkalmazás működését tesztelje, úgy, hogy a tesztek valódi felhasználói interakciókat szimulálnak, például gombnyomásokat, űrlapkitöltéseket vagy navigációt. Ez lehetővé teszi a fejlesztők számára, hogy biztosak legyenek abban, hogy az alkalmazás minden része megfelelően működik együtt, és hogy a felhasználói élmény zökkenőmentes legyen. Egy példa egy ilyen tesztre az alkalmazásban a következő:
@@ -24,7 +24,7 @@ Az E2E tesztelés célja, hogy a teljes alkalmazás működését tesztelje, úg
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{home-test.png}
-	\caption{Példa E2E teszt a kezdőlapon}\label{fig:hometest}
+	\caption{Példa E2E tesztre a kezdőlapon}\label{fig:hometest}
 \end{figure}
 
 A teljes alkalmazásra vonatkozó E2E tesztek lefedik a legfontosabb funkciókat, mint például regisztráció, bejelentkezés, receptek megtekintése, létrehozása, szerkesztése, hozzávalók szerekesztése és adminisztrációs műveletek. Minden teszt megkapta a felhasználói eset kódját, így könnyedén visszaellenőrizhető, hogy mely folyamatokkal van probléma hiba esetén. Ezek a~\ref{ch:stories} függelékben találhatóak.
@@ -35,4 +35,4 @@ A teljes alkalmazásra vonatkozó E2E tesztek lefedik a legfontosabb funkciókat
 	\caption{Az E2E teszt futtatásának eredményei}\label{fig:all-test-run}
 \end{figure}
 
-A Cypress lehetőséget ad egy interaktív félületen keresztül megtekinteni a tesztek futását, ahol részletesen láthatjuk, hogy mely tesztek futottak le sikeresen, melyek nem, és ha egy teszt nem sikerült, akkor a hiba okát is megmutatja. Egyben ez a felület több böngészőben lehetővé teszi a tesztelést, így biztosítva a kompatibilitást különböző környezetekben. Ez különösen fontos egy webalkalmazás esetében, ahol a felhasználók különböző böngészőket és eszközöket használhatnak. 
+A Cypress lehetőséget ad egy interaktív felületen keresztül megtekinteni a tesztek futását, ahol részletesen láthatjuk, hogy mely tesztek futottak le sikeresen, melyek nem, és ha egy teszt nem sikerült, akkor a hiba okát is megmutatja. Egyben ez a felület több böngészőben lehetővé teszi a tesztelést, így biztosítva a kompatibilitást különböző környezetekben. Ez különösen fontos egy webalkalmazás esetében, ahol a felhasználók különböző böngészőket és eszközöket használhatnak. 
