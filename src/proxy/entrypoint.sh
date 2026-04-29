@@ -19,12 +19,11 @@ case "$tls_enabled" in
       echo "TLS is enabled but certificate key file was not found: $key_path" >&2
       exit 1
     fi
-
-    rm -f /etc/nginx/templates/http.conf.template /etc/nginx/templates/default.conf.template
-    mv /etc/nginx/templates/https.conf.template /etc/nginx/templates/default.conf.template
+    mkdir -p /etc/nginx/templates
+    cp /config/https.conf.template /etc/nginx/templates/default.conf.template
     ;;
   *)
-    rm -f /etc/nginx/templates/https.conf.template /etc/nginx/templates/default.conf.template
-    mv /etc/nginx/templates/http.conf.template /etc/nginx/templates/default.conf.template
+    mkdir -p /etc/nginx/templates
+    cp /config/http.conf.template /etc/nginx/templates/default.conf.template
     ;;
 esac

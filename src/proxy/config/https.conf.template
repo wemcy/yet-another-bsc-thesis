@@ -5,11 +5,11 @@ map $http_connection $connection_upgrade {
 
 server {
     listen ${PUBLIC_PORT} ssl;
-    http2 on;
     server_name ${PUBLIC_HOST};
     client_max_body_size 8M;
 
 
+    http2 on;
     ssl_certificate /etc/nginx/certs/${PROXY_TLS_CERTIFICATE_FILE};
     ssl_certificate_key /etc/nginx/certs/${PROXY_TLS_CERTIFICATE_KEY_FILE};
     ssl_protocols TLSv1.2 TLSv1.3;
