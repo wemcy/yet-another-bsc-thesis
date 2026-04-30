@@ -43,3 +43,30 @@ describe('Home Page [U05A support]', () => {
         })
     })
 })
+
+describe('Home Page empty states', () => {
+    it('shows a fallback when there is no featured recipe', () => {
+        cy.intercept('GET', '/api/recipes/featured', {
+            statusCode: 404,
+            body: { message: 'No featured recipe' },
+        })
+
+        cy.visit('/')
+
+        cy.get('[data-cy="featured-recipe-error"]')
+            .should('be.visible')
+            .and('contain', '☹')
+            .and('contain', 'A nap receptjét most nem sikerült betölteni.')
+    })
+
+    it('shows a fallback when there are no showcase recipes', () => {
+        cy.intercept('GET', '/api/recipes/showcase', [])
+
+        cy.visit('/')
+
+        cy.get('[data-cy="showcase-recipes-error"]')
+            .should('be.visible')
+            .and('contain', '☹')
+            .and('contain', 'Jelenleg nincs elérhető kiemelt recept.')
+    })
+})

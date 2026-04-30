@@ -23,15 +23,9 @@ describe('Public Profile Page [U08B]', () => {
             .then((resp) => resp.body.id as string)
     }
 
-    // Navigate to a public profile via Vue Router (no full page reload)
-    // so the Pinia store retains the admin roles from the login response.
+
     function navigateToPublicProfile(userId: string) {
-        cy.get('[data-cy="app-root"]').then(($el) => {
-            const app = ($el[0] as any).__vue_app__
-            const router = app.config.globalProperties.$router
-            router.push(`/profile/${userId}`)
-        })
-        cy.url().should('include', `/profile/${userId}`)
+        cy.visit(`/profile/${userId}`)
     }
 
     context("U08B - View another user's profile", () => {

@@ -38,6 +38,22 @@ pnpm build
 pnpm test:unit
 ```
 
+### Recipe Filter Stress Test
+
+Seeds deterministic recipe datasets and compares allergen filtering with 100 and 10,000 recipes:
+
+```sh
+pnpm stress:recipes
+```
+
+Useful options:
+
+```sh
+pnpm stress:recipes -- --counts 100,10000 --iterations 10 --output stress-results.json
+pnpm stress:recipes -- --skip-seed --tag allergen
+pnpm stress:recipes -- --api-base-url https://localhost:9393/api --email recipe@example.com --password Admin123!
+```
+
 ### Lint with [ESLint](https://eslint.org/)
 
 ```sh

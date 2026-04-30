@@ -21,7 +21,7 @@ public class RecipeFilter(AllergenType? includeAllergens, AllergenType? excludeA
     public IQueryable<Recipe> ApplyFilters(IQueryable<Recipe> query)
     {
         return query
-            .ConditionalWhere(HasIncludeFilter, x => (x.Allergens & IncludeAllergens) != AllergenType.None)
+            .ConditionalWhere(HasIncludeFilter, x => (x.Allergens & IncludeAllergens) == IncludeAllergens)
             .ConditionalWhere(HasExcludeFilter, x => (x.Allergens & ExcludeAllergens) == AllergenType.None);
     }
 }

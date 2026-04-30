@@ -36,7 +36,11 @@ export interface RecipeState {
     ownRecipeIds: Recipe.id[]
     newRecipeDraft: NewRecipeDraft
     showcaseRecipesLoading: boolean
+    showcaseRecipesLoaded: boolean
+    showcaseRecipesError: string | null
     featuredRecipeLoading: boolean
+    featuredRecipeLoaded: boolean
+    featuredRecipeError: string | null
     commentsByRecipeId: Record<string, Comment[]>
     commentsPaginationByRecipeId: Record<string, PaginationState>
     commentsLoadingByRecipeId: Record<string, boolean>

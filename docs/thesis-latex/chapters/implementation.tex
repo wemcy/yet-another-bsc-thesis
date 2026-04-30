@@ -75,7 +75,7 @@ Az egyik legfontosabb tényező a fejlesztés során azt volt, hogy a keresés m
 public IQueryable<Recipe> ApplyFilters(IQueryable<Recipe> query)
 {
     return query
-        .ConditionalWhere(HasIncludeFilter, x => (x.Allergens & IncludeAllergens) != AllergenType.None)
+        .ConditionalWhere(HasIncludeFilter, x => (x.Allergens & IncludeAllergens) == AllergenType.None)
         .ConditionalWhere(HasExcludeFilter, x => (x.Allergens & ExcludeAllergens) == AllergenType.None);
 }
 \end{lstlisting}
