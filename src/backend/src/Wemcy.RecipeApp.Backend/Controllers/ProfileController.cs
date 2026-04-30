@@ -69,6 +69,7 @@ public class ProfileController(IMapper mapper, IUserService userService) : Profi
         {
             return File(DefaultImages.DefaultProfileSvg, "image/svg+xml");
         }
+
     }
 
     public override async Task<IActionResult> UpdateOwnProfile([FromForm(Name = "displayName")] string? displayName, [FromForm(Name = "password"), MinLength(6)] string? password, IFormFile? profileImage, [FromForm(Name = "email")] string? email)

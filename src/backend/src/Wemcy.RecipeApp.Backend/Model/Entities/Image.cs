@@ -6,4 +6,5 @@ public class Image : Entity
 
     public required string Extenstion { get; set; }
 
+    public required byte[] HashCode { get; set; }
 }
