@@ -48,7 +48,11 @@ export const useRecipeStore = defineStore('recipe', {
         ownRecipeIds: [],
         newRecipeDraft: createEmptyNewRecipeDraft(),
         showcaseRecipesLoading: false,
+        showcaseRecipesLoaded: false,
+        showcaseRecipesError: null,
         featuredRecipeLoading: false,
+        featuredRecipeLoaded: false,
+        featuredRecipeError: null,
         commentsByRecipeId: {},
         commentsPaginationByRecipeId: {},
         commentsLoadingByRecipeId: {},
@@ -176,6 +180,8 @@ export const useRecipeStore = defineStore('recipe', {
         },
         async fetchShowcaseRecipes() {
             this.showcaseRecipesLoading = true
+            this.showcaseRecipesError = null
+            this.showcaseRecipesLoaded = false
             try {
                 await api.listShowcaseRecipes().then((response) => {
                     this.showcaseRecipesIds = response.map((r) => r.id)
@@ -184,19 +190,29 @@ export const useRecipeStore = defineStore('recipe', {
                         this.updateRecipe(recipe)
                     })
                 })
+            } catch {
+                this.showcaseRecipesIds = []
+                this.showcaseRecipesError = 'A kiemelt receptek betöltése nem sikerült.'
             } finally {
+                this.showcaseRecipesLoaded = true
                 this.showcaseRecipesLoading = false
             }
         },
         async fetchFeaturedRecipe() {
             this.featuredRecipeLoading = true
+            this.featuredRecipeError = null
+            this.featuredRecipeLoaded = false
             try {
                 await api.getFeaturedRecipe().then((response) => {
                     this.featuredRecipeId = response.id
                     const recipe = MapApiRecipeToRecipe(response)
                     this.updateRecipe(recipe)
                 })
+            } catch {
+                this.featuredRecipeId = null
+                this.featuredRecipeError = 'A nap receptjét most nem sikerült betölteni.'
             } finally {
+                this.featuredRecipeLoaded = true
                 this.featuredRecipeLoading = false
             }
         },

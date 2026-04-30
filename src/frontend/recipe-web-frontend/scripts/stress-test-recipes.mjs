@@ -358,6 +358,12 @@ function benchmarkCases(apiBaseUrl, tag, count) {
             }),
         },
         {
+            name: 'search title only',
+            url: createRecipeUrl(apiBaseUrl, '/search', {
+                title: prefix,
+            }),
+        },
+        {
             name: 'search exclude PEANUTS',
             url: createRecipeUrl(apiBaseUrl, '/search', {
                 title: prefix,

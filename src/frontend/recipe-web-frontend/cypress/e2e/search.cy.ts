@@ -27,6 +27,28 @@ describe('Search Autocomplete [U03A, U03B]', () => {
             })
         })
 
+        it('uses simple navbar search without allergen filters', () => {
+            cy.intercept('GET', '/api/search*', (req) => {
+                expect(req.query).to.have.property('title', 'simple')
+                expect(req.query).not.to.have.property('includeAllergens')
+                expect(req.query).not.to.have.property('excludeAllergens')
+
+                req.reply({
+                    statusCode: 200,
+                    body: [
+                        {
+                            id: '00000000-0000-0000-0000-000000000001',
+                            title: 'Simple search result',
+                        },
+                    ],
+                })
+            }).as('simpleNavbarSearch')
+
+            cy.get('[data-cy="recipe-search-input"]').type('simple')
+            cy.wait('@simpleNavbarSearch')
+            cy.contains('Simple search result').should('be.visible')
+        })
+
         it('navigates to the recipe page when a result is selected', () => {
             cy.get('[data-cy="recipe-search-input"]').type('re')
             cy.get('[class*="absolute"][class*="z-50"]', { timeout: 3000 }).should('be.visible')
