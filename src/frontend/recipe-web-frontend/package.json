@@ -15,6 +15,7 @@
     "type-check": "vue-tsc --build",
     "seed:ingredients": "node scripts/seed-common-ingredients.mjs",
     "seed:recipes": "node scripts/seed-recipes.mjs",
+    "stress:recipes": "node scripts/stress-test-recipes.mjs",
     "lint": "eslint . --fix",
     "format": "prettier --write src/"
   },
