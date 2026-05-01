@@ -2,6 +2,7 @@ describe('Edit Recipe Page [U06A, U06B]', () => {
     context('U06A - Edit recipe with valid data', () => {
         beforeEach(() => {
             cy.login()
+            cy.seedRecipes()
             cy.visit('/profile')
             cy.get('a[href*="/recipe/"]').first().click()
             cy.url().should('include', '/recipe/')
