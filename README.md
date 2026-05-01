@@ -116,19 +116,12 @@ Once enabled, use `https://localhost:9393` or `https://<APP_HOST>:<APP_PORT>`.
 ./scripts/generate_versions.ps1
 ```
 
-## Development setup
-
-See full prerequisite and setup guide in:
-
-- [DEVELOPMENT_SETUP.md](DEVELOPMENT_SETUP.md)
-
 ## Repository structure
 
 - `src/backend`: backend solution and API projects
 - `src/frontend`: frontend app and generated API client workspace
 - `src/proxy`: reverse proxy (Nginx)
 - `docs/api`: OpenAPI spec and generator configs
-- `docs/bruno`: API call collections
 - `docs/usecases`: use case documentation
 - `docs/wireframes`: UI wireframes
 - `docs/thesis-latex`: thesis sources and build script
@@ -136,6 +129,5 @@ See full prerequisite and setup guide in:
 ## Notes
 
 - Backend startup runs EF Core migration at app boot.
-- Backend expects a `ConnectionStrings__Default` value (provided in compose configs).
 - `scripts/generate_api.ps1` installs OpenAPI Generator CLI globally with pnpm.
 - `build.ps1` currently prints Docker buildx bake output, it does not execute the image build.
