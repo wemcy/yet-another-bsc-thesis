@@ -138,6 +138,7 @@ async function saveEdit() {
             displayName: profile.value.name,
             password: profile.value.password || null,
             profileImage: imageFile.value,
+            email: profile.value.email,
         })
         editing.value = false
         passwordConfirm.value = ''

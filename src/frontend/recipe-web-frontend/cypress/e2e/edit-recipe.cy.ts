@@ -2,11 +2,15 @@ describe('Edit Recipe Page [U06A, U06B]', () => {
     context('U06A - Edit recipe with valid data', () => {
         beforeEach(() => {
             cy.login()
+            cy.seedRecipes()
             cy.visit('/profile')
             cy.get('a[href*="/recipe/"]').first().click()
             cy.url().should('include', '/recipe/')
             cy.contains('a', 'Szerkesztés').click()
             cy.url().should('include', '/edit/')
+        })
+        afterEach(() => {
+            cy.cleanupSeededRecipes()
         })
 
         it('navigates to the edit page from a recipe the user owns', () => {
@@ -152,13 +156,16 @@ describe('Edit Recipe Page [U06A, U06B]', () => {
     context('U06B - Edit recipe with invalid data', () => {
         beforeEach(() => {
             cy.login()
+            cy.seedRecipes()
             cy.visit('/profile')
             cy.get('a[href*="/recipe/"]').first().click()
             cy.url().should('include', '/recipe/')
             cy.contains('a', 'Szerkesztés').click()
             cy.url().should('include', '/edit/')
         })
-
+        afterEach(() => {
+            cy.cleanupSeededRecipes()
+        })
         it('shows validation error when the title is cleared and form is submitted', () => {
             cy.contains('label', 'Recept neve').parent().find('input').clear()
             cy.contains('button[type="submit"]', 'Mentés').click()
