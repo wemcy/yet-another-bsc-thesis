@@ -7,6 +7,7 @@ import {
     type LoginResponse,
     type Profile,
     UserRole,
+    type UpdateOwnProfileRequest,
 } from 'recipe-api-client'
 import { toErrorMessage } from '../utils/identityErrors'
 
@@ -167,11 +168,7 @@ export const useAuthStore = defineStore('auth', {
                 this.authLoading = false
             }
         },
-        async updateOwnProfile(params: {
-            displayName?: string
-            password?: string | null
-            profileImage?: File | null
-        }) {
+        async updateOwnProfile(params: UpdateOwnProfileRequest) {
             this.authLoading = true
             try {
                 this.authError = null

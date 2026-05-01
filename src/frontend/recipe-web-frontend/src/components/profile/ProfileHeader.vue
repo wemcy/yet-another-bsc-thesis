@@ -58,15 +58,12 @@
             <p v-if="errors?.passwordConfirm" class="text-red-600 text-sm">
                 {{ errors.passwordConfirm }}
             </p>
-            <!-- Csak NEM szerkesztő módban mutass csillagot -->
             <p v-else-if="!editing">********</p>
         </div>
-        <!-- Regisztráció -->
         <div class="w-full">
             <label class="block font-semibold">Regisztráció dátuma</label>
             <p>{{ profile.registered }}</p>
         </div>
-        <!-- Gombok -->
         <div class="flex gap-2 mt-4 w-full justify-end">
             <button
                 v-if="!editing"
