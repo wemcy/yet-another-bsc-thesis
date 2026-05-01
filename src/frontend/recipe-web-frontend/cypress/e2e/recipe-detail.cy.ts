@@ -10,6 +10,8 @@ describe('Recipe Detail Page [U04A, U04B, U05A, U05B, U07A, U07B, U10A, U10B]', 
     context('U05A - View recipe details', () => {
         beforeEach(() => {
             cy.login()
+            cy.seedRecipes()
+
             // Navigate to the first available recipe from the listing page
             cy.visit('/recipes')
             cy.get('a[href*="/recipe/"]').first().click()
@@ -23,7 +25,6 @@ describe('Recipe Detail Page [U04A, U04B, U05A, U05B, U07A, U07B, U10A, U10B]', 
         })
 
         it('displays an author name with a link to their profile', () => {
-            cy.seedRecipes()
             cy.get('a[href*="/profile/"]')
                 .filter(':not(nav a)')
                 .first()
@@ -128,9 +129,13 @@ describe('Recipe Detail Page [U04A, U04B, U05A, U05B, U07A, U07B, U10A, U10B]', 
     context('U07A - Delete recipe with confirmation', () => {
         beforeEach(() => {
             cy.login()
+            cy.seedRecipes()
             cy.visit('/profile')
             cy.get('a[href*="/recipe/"]').first().click()
             cy.url().should('include', '/recipe/')
+        })
+        afterEach(() => {
+            cy.cleanupSeededRecipes()
         })
 
         it('shows the edit button for the recipe owner', () => {
@@ -151,10 +156,14 @@ describe('Recipe Detail Page [U04A, U04B, U05A, U05B, U07A, U07B, U10A, U10B]', 
     context('U07B - Abort recipe deletion', () => {
         beforeEach(() => {
             cy.login()
+            cy.seedRecipes()
             cy.visit('/profile')
             cy.get('a[href*="/recipe/"]').first().click()
             cy.url().should('include', '/recipe/')
         })
+        afterEach(() => {
+            cy.cleanupSeededRecipes()
+    })
 
         it('closes the delete dialog when "Cancel" is clicked', () => {
             cy.contains('button', 'Törlés').click()
