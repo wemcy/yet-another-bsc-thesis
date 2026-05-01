@@ -15,12 +15,15 @@ describe('Recipe Detail Page [U04A, U04B, U05A, U05B, U07A, U07B, U10A, U10B]', 
             cy.get('a[href*="/recipe/"]').first().click()
             cy.url().should('include', '/recipe/')
         })
-
+        afterEach(() => {
+            cy.cleanupSeededRecipes()
+         })
         it('displays a recipe title', () => {
             cy.get('h1, h2').first().invoke('text').should('have.length.at.least', 1)
         })
 
         it('displays an author name with a link to their profile', () => {
+            cy.seedRecipes()
             cy.get('a[href*="/profile/"]')
                 .filter(':not(nav a)')
                 .first()

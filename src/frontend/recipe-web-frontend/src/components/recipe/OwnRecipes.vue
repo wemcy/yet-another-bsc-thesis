@@ -16,12 +16,12 @@ const props = defineProps<{
 }>()
 
 const skeletonCards = computed(() =>
-    Array.from({ length: props.pagination.pageSize || 27 }, (_, i) => i),
+    Array.from({ length: props.pagination.pageSize || 12 }, (_, i) => i),
 )
 </script>
 
 <template>
-    <div class="mt-10">
+    <div class="mt-10" data-cy="own-recipes-section">
         <h3 class="text-xl font-bold mb-4">Saját receptjeim</h3>
         <div v-if="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <RecipeCardSkeleton v-for="skeleton in skeletonCards" :key="skeleton" />

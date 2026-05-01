@@ -161,21 +161,20 @@ describe('Profile Page [U08A, U09A, U09B]', () => {
 
     context('Support - own recipes section', () => {
         beforeEach(() => {
-            cy.login()
+            cy.loginAsTestUser()
+            cy.seedRecipes()
             cy.visit('/profile')
         })
-
+        afterEach(() => {
+            cy.cleanupSeededRecipes()
+        })
         it('displays the "My Recipes" heading', () => {
             cy.contains('h3', 'Saját receptjeim').should('be.visible')
         })
 
-        it('shows recipe cards or the empty state message', () => {
-            cy.get('body').then(($body) => {
-                if ($body.text().includes('Még nincs saját recepted.')) {
-                    cy.contains('Még nincs saját recepted.').should('be.visible')
-                } else {
+        it('shows recipe cards', () => {
+            cy.get('[data-cy="own-recipes-section"]').then(() => {
                     cy.get('a[href*="/recipe/"]').should('have.length.at.least', 1)
-                }
             })
         })
     })
