@@ -51,11 +51,14 @@ describe('Admin Features [U07A, U07B, U11A, U11B]', () => {
     context('Support - featured recipe dialog', () => {
         beforeEach(() => {
             cy.login()
-            // Navigate to a recipe that is NOT already featured so the button is clickable
+            cy.seedRecipes()
             cy.contains('nav a', 'Receptek').click()
             cy.url().should('include', '/recipes')
             cy.get('a[href*="/recipe/"]').eq(1).click()
             cy.url().should('include', '/recipe/')
+        })
+        afterEach(() => {
+            cy.cleanupSeededRecipes()
         })
 
         it('opens the featured recipe dialog when clicking the feature button', () => {

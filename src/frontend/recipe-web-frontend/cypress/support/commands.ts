@@ -17,6 +17,8 @@ declare global {
              * then log in as that user through the UI.
              */
             loginAsTestUser(): Chainable<void>
+            seedRecipes(): Chainable<void>
+            cleanupSeededRecipes(): Chainable<void>
         }
     }
 }
@@ -53,6 +55,56 @@ Cypress.Commands.add('loginAsTestUser', () => {
     })
 
     cy.login(email, password)
+})
+
+
+let seededRecipeIds: string[] = []
+
+Cypress.Commands.add('seedRecipes', () => {
+    seededRecipeIds = []
+    // Use the correct ingredient object format
+    const recipes = Array.from({ length: 6 }).map((_, i) => ({
+        title: `Seeded Recipe ${i + 1}`,
+        description: `Description for seeded recipe ${i + 1}`,
+        ingredients: [
+            {
+                name: `Ingredient ${i + 1}a`,
+                quantity: 1 + i,
+                unitOfMeasurement: 'g',
+                allergens: [],
+            },
+            {
+                name: `Ingredient ${i + 1}b`,
+                quantity: 2 + i,
+                unitOfMeasurement: 'ml',
+                allergens: [],
+            },
+        ],
+        steps: [`Step 1 for recipe ${i + 1}`, `Step 2 for recipe ${i + 1}`],
+    }))
+    cy.wrap(recipes).each((recipe) => {
+        cy.request({
+            method: 'POST',
+            url: '/api/recipes',
+            body: recipe,
+        }).then((resp) => {
+            if (resp.body && resp.body.id) {
+                seededRecipeIds.push(resp.body.id)
+            }
+        })
+    })
+})
+
+Cypress.Commands.add('cleanupSeededRecipes', () => {
+    if (!seededRecipeIds.length) return
+    cy.wrap(seededRecipeIds).each((id) => {
+        cy.request({
+            method: 'DELETE',
+            url: `/api/recipes/${id}`,
+            failOnStatusCode: false,
+        })
+    })
+    seededRecipeIds = []
 })
 
 export {}
