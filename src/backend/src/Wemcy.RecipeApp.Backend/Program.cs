@@ -60,7 +60,7 @@ builder.Services.AddScoped<IRecipeService, RecipeService>()
                 .AddScoped<IRecipeShowcaseRepository, RecipeShowcaseRepository>()
                 .AddSingleton<IAuthorizationHandler, RecipeAuthorizationHandler>()
                 .AddSingleton<IAuthorizationHandler, CommentAuthorizationCrudHandler>()
-                .AddSingleton<RecipeCache>()
+                .AddSingleton<IRecipeCache, RecipeCache>()
                 .AddSingleton<IAuthorizationHandler, UserAuthorizationHandler>();
 
 builder.Services.AddHostedService<ShowcaseRefreshService>();

@@ -7,7 +7,7 @@ using Wemcy.RecipeApp.Backend.Utils;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
-public class ShowcaseRecipeService(IRecipeService recipeService, IRecipeShowcaseRepository recipeShowcaseRepository, RecipeCache recipeCache) : IShowcaseRecipeService
+public class ShowcaseRecipeService(IRecipeService recipeService, IRecipeShowcaseRepository recipeShowcaseRepository, IRecipeCache recipeCache) : IShowcaseRecipeService
 {
 
     public async Task<IList<Api.Models.Recipe>> GetShowcaseRecipesAsync()

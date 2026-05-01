@@ -1,0 +1,1 @@
+﻿using Wemcy.RecipeApp.Backend.Api.Models;namespace Wemcy.RecipeApp.Backend.Utils;public interface IRecipeCache{    Recipe? GetRecipeFromCache(Guid recipeId);    bool GetRecipesFromCache(IEnumerable<Guid> recipeIds, out IList<Recipe> recipes);    void InvalidateCache();    void StoreCache(Recipe recipe);}

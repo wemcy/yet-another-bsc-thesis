@@ -8,7 +8,7 @@ This repository contains:
 
 - a running full-stack web application (frontend + backend + proxy + PostgreSQL),
 - API specification and generated client/server artifacts,
-- project documentation (DocFX, use cases, wireframes, Bruno collections),
+- project documentation (DocFX, use cases, wireframes)
 - thesis LaTeX sources.
 
 ## Architecture
