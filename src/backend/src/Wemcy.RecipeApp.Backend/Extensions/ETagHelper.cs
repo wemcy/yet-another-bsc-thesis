@@ -9,8 +9,8 @@ namespace Wemcy.RecipeApp.Backend.Extensions
         public static bool CheckETagMatch(this ControllerBase controller, string etag)
         {
             controller.Response.Headers[HeaderNames.ETag] = etag;
-            controller.Response.Headers[HeaderNames.CacheControl] = "public, max-age=86400"; // Cache for 1 day
-            controller.Response.Headers[HeaderNames.Expires] = DateTime.UtcNow.AddDays(1).ToString("R"); 
+            controller.Response.Headers[HeaderNames.CacheControl] = "public, max-age=3600"; // Cache for 1 hour
+            controller.Response.Headers[HeaderNames.Expires] = DateTime.UtcNow.AddHours(1).ToString("R"); 
             if (controller.Request.Headers.TryGetValue(HeaderNames.IfNoneMatch, out var ifNoneMatchHeader))
             {
                 var ifNoneMatch = new EntityTagHeaderValue(ifNoneMatchHeader.ToString());

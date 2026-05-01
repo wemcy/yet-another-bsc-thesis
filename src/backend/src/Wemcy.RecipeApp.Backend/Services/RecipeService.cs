@@ -60,7 +60,6 @@ public class RecipeService(IRecipeRepository recipeRepository, IImageService ima
     {
         var image = await this._recipeRepository.GetImageByIdAsync(id);
         return new ImageResult(_imageService, image.Id) { ImageSize = imageSize, ImageHash = BitConverter.ToString(image.HashCode) };
-
     }
 
     public async Task RateRecipeAsync(Guid id, int rating)
