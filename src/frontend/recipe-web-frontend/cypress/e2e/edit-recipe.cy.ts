@@ -9,6 +9,9 @@ describe('Edit Recipe Page [U06A, U06B]', () => {
             cy.contains('a', 'Szerkesztés').click()
             cy.url().should('include', '/edit/')
         })
+        afterEach(() => {
+            cy.cleanupSeededRecipes()
+        })
 
         it('navigates to the edit page from a recipe the user owns', () => {
             cy.url().should('include', '/edit/')
