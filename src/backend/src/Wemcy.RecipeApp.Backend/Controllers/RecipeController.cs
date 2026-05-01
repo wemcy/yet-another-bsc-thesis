@@ -33,7 +33,7 @@ public class RecipeController(IRecipeService recipeService, IMapper mapper, ISho
 
     public override async Task<IActionResult> ListShowcaseRecipes()
     {
-        var dtos = await showcaseRecipeService.GetShowcaseRecipesAsync<Api.Models.Recipe>();
+        var dtos = await showcaseRecipeService.GetShowcaseRecipesAsync();
         return Ok(dtos);
     }
 
