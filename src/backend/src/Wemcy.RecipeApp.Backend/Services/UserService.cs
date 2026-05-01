@@ -9,6 +9,7 @@ using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Model.Entities;
 using Wemcy.RecipeApp.Backend.Security;
+using Wemcy.RecipeApp.Backend.Utils;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
@@ -120,11 +121,11 @@ public class UserService(IHttpContextAccessor httpContextAccessor, UserManager<U
     {
         return await _userManager.FindByEmailAsync(email);
     }
-    public async Task<Stream> GetProfileImageByIdAsync(Guid id, ImageSize imageSize)
+    public async Task<ImageResult> GetProfileImageByIdAsync(Guid id, ImageSize imageSize)
     {
         var user = await GetUserByIdAsync(id);
         var image = user.Image ?? throw new ImageNotFoundException("User does not have profile picture");
-        return await _imageService.GetImageById(image.Id, imageSize);
+        return new ImageResult(_imageService, image.Id) { ImageSize = imageSize, ImageHash = BitConverter.ToString(image.HashCode) };
     }
 
 

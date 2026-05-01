@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Model;
 using Wemcy.RecipeApp.Backend.Model.Entities;
+using Wemcy.RecipeApp.Backend.Utils;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
@@ -15,7 +16,7 @@ public interface IUserService
     Task EnsureCurrentUserCanAsync<T>(OperationAuthorizationRequirement operation, T resource);
     Task<User?> FindUserByEmailAsync(string email);
     Task<User> GetCurrentUserAsync();
-    Task<Stream> GetProfileImageByIdAsync(Guid id, ImageSize size);
+    Task<ImageResult> GetProfileImageByIdAsync(Guid id, ImageSize size);
     Task<User> GetUserByIdAsync(Guid id);
     Task<IList<string>> GetUserRolesAsync(User user);
     Task UpdateProfileByIdAsync(Guid id, UserProfileUpdateRequest request);

@@ -130,7 +130,7 @@ watch(
                     @rate="updateRating"
                 />
                 <img
-                    :src="buildRecipeImageUrl(recipe.image, recipe.imageRevision, ImageSize.Large)"
+                    :src="buildRecipeImageUrl(recipe.image, ImageSize.Large)"
                     alt="Image of the recipe"
                     class="w-full h-56 sm:h-64 object-cover rounded shadow"
                 />

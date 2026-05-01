@@ -1,5 +1,6 @@
 ﻿using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
+using System.Security.Cryptography;
 using Wemcy.RecipeApp.Backend.Exceptions;
 
 namespace Wemcy.RecipeApp.Backend.Services;
@@ -22,7 +23,7 @@ public class ImageStorageService : IImageStorageService
         }
         catch (FileNotFoundException)
         {
-            throw new ImageNotFoundException(); //TODO : Add image ID to exception message, and other details if needed
+            throw new ImageNotFoundException(); 
         }
     }
 
@@ -49,6 +50,13 @@ public class ImageStorageService : IImageStorageService
         foreach (var file in GetAllImageWithId(imageId))
             File.Delete(file);
         return Task.CompletedTask;
+    }
+
+    public async ValueTask<byte[]> GetImageHashAsync(Guid id)
+    {
+        using var imageStream = ReadImage(id);
+        return await MD5.HashDataAsync(imageStream);
+
     }
 
     private async Task Resize(Guid imageId, Size size)

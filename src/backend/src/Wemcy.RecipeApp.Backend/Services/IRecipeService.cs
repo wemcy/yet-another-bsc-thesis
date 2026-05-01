@@ -1,6 +1,7 @@
 ﻿using Wemcy.RecipeApp.Backend.Model.Entities;
 using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Search;
+using Wemcy.RecipeApp.Backend.Utils;
 
 namespace Wemcy.RecipeApp.Backend.Services;
 
@@ -12,7 +13,7 @@ public interface IRecipeService
     Task DeleteRecipeByIdAsync(Guid recipeId);
     Task<PaginatedResult<T>> GetAllRecipeByAuthorIdAs<T>(Guid id, PaginationOptions options);
     Task<PaginatedResult<T>> GetCommentsByRecipeIdAs<T>(Guid id, PaginationOptions options);
-    Task<Stream> GetImageByIdAsync(Guid recipeId, Api.Models.ImageSize imageSize);
+    Task<ImageResult> GetImageByIdAsync(Guid recipeId, Api.Models.ImageSize imageSize);
     Task<List<Guid>> GetRandomRecipesGuids(int count);
     Task<Recipe> GetRecipeByIdAsync(Guid recipeId);
     Task<IList<Recipe>> GetRecipesByIdsAsync(Guid[] recipeIds);

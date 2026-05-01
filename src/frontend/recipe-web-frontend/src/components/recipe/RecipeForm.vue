@@ -243,7 +243,6 @@ async function submit() {
         steps: normalizedSteps,
         allergens: selectedAllergens.value,
         image: imageUrl.value || '',
-        imageRevision: '',
         rating: 0,
     }
 

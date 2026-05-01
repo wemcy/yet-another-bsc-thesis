@@ -2,7 +2,7 @@
     <section class="max-w-6xl mx-auto px-4 py-10">
         <div class="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row">
             <img
-                :src="buildRecipeImageUrl(recipe.image, recipe.imageRevision, ImageSize.Large)"
+                :src="buildRecipeImageUrl(recipe.image, ImageSize.Large)"
                 :alt="recipe.title"
                 class="w-full md:w-1/2 h-64 object-cover"
             />

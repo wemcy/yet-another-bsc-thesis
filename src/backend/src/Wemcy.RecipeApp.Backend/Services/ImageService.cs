@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using SixLabors.ImageSharp;
+using System.Security.Cryptography;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Configuration;
 using Wemcy.RecipeApp.Backend.Repository;
@@ -13,15 +14,19 @@ public class ImageService(IImageStorageService imageStorageService, IImageReposi
     private readonly ImageSizeSettings _imageSizeSettings = imageSizeSettings.Value;
     public async Task<Model.Entities.Image> CreateImage(Stream imageStream, string name)
     {
+        var imageId = Guid.NewGuid();
+        await imageStorageService.SaveImage(imageId, imageStream);
+        var hashCode = await imageStorageService.GetImageHashAsync(imageId);
         var image = new Model.Entities.Image
         {
-            Id = Guid.NewGuid(),
+            Id = imageId,
             Name = name,
-            Extenstion = Path.GetExtension(name)
+            Extenstion = Path.GetExtension(name),
+            HashCode = hashCode
         };
-        await imageStorageService.SaveImage(image.Id, imageStream);
         return imageRepository.SaveImage(image);
     }
+
     public Stream GetImageById(Guid id)
     {
         return imageStorageService.ReadImage(id);

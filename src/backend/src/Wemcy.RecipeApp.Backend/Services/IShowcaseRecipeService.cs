@@ -6,7 +6,7 @@ namespace Wemcy.RecipeApp.Backend.Services
     {
         Task CreateDeafaultShowcaseAndFeaturedRecipeAsync();
         Task<Recipe> GetFeaturedRecipeAsync();
-        Task<IList<T>> GetShowcaseRecipesAsync<T>();
+        Task<IList<Api.Models.Recipe>> GetShowcaseRecipesAsync();
         Task SetFeaturedRecipeAsync(Guid featuredRecipeId);
         Task UpdateShowcaseRecipesAsync();
     }

@@ -63,11 +63,20 @@ public class ProfileController(IMapper mapper, IUserService userService) : Profi
     {
         try
         {
-            return new FileStreamResult(await userService.GetProfileImageByIdAsync(id, size ?? ImageSize.LargeEnum), "image/jpeg");
+            var image = await userService.GetProfileImageByIdAsync(id, size ?? ImageSize.LargeEnum);
+            if (this.CheckETagMatch($"\"{image.ImageHash}{image.ImageSize}\""))
+            {
+                return StatusCode(StatusCodes.Status304NotModified);
+            }
+            var imageStream = new FileStreamResult(await image.OpenImageStream(), "image/jpeg");
+            return imageStream;
         }
         catch (ImageNotFoundException)
         {
-            return File(DefaultImages.DefaultProfileSvg, "image/svg+xml");
+            if (this.CheckETagMatch($"\"default{size}\""))
+                return StatusCode(StatusCodes.Status304NotModified);
+            var file = File(DefaultImages.DefaultProfileSvg, "image/svg+xml");
+            return file;
         }
     }
 

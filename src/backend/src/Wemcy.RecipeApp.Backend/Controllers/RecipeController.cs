@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 using Wemcy.RecipeApp.Backend.Api.Controllers;
 using Wemcy.RecipeApp.Backend.Api.Models;
 using Wemcy.RecipeApp.Backend.Configuration;
-using Wemcy.RecipeApp.Backend.Controllers.ErrorHandler;
 using Wemcy.RecipeApp.Backend.Exceptions;
 using Wemcy.RecipeApp.Backend.Extensions;
 using Wemcy.RecipeApp.Backend.Model.Entities;
@@ -33,7 +33,7 @@ public class RecipeController(IRecipeService recipeService, IMapper mapper, ISho
 
     public override async Task<IActionResult> ListShowcaseRecipes()
     {
-        var dtos = await showcaseRecipeService.GetShowcaseRecipesAsync<Api.Models.Recipe>();
+        var dtos = await showcaseRecipeService.GetShowcaseRecipesAsync();
         return Ok(dtos);
     }
 
@@ -126,11 +126,19 @@ public class RecipeController(IRecipeService recipeService, IMapper mapper, ISho
     {
         try
         {
-            return new FileStreamResult(await recipeService.GetImageByIdAsync(id, size ?? ImageSize.LargeEnum), "image/jpeg");
+            var image = await recipeService.GetImageByIdAsync(id, size ?? ImageSize.LargeEnum);
+            if (this.CheckETagMatch($"\"{image.ImageHash}{image.ImageSize}\""))
+            {
+                return StatusCode(StatusCodes.Status304NotModified);
+            }
+            var imageStream = new FileStreamResult(await image.OpenImageStream(), "image/jpeg");
+            return imageStream;
         }
         catch (ImageNotFoundException)
         {
-            return File(DefaultImages.DefaultImageSvg, "image/svg+xml");
+            if (this.CheckETagMatch($"\"default{size}\"")) return StatusCode(StatusCodes.Status304NotModified);
+            var file = File(DefaultImages.DefaultImageSvg, "image/svg+xml");
+            return file;
         }
     }
 }

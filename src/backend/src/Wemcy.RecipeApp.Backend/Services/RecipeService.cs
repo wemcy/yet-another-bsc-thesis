@@ -56,11 +56,10 @@ public class RecipeService(IRecipeRepository recipeRepository, IImageService ima
 
     }
 
-    public async Task<Stream> GetImageByIdAsync(Guid id, ImageSize imageSize)
+    public async Task<ImageResult> GetImageByIdAsync(Guid id, ImageSize imageSize)
     {
         var image = await this._recipeRepository.GetImageByIdAsync(id);
-        return await _imageService.GetImageById(image.Id, imageSize);
-
+        return new ImageResult(_imageService, image.Id) { ImageSize = imageSize, ImageHash = BitConverter.ToString(image.HashCode) };
     }
 
     public async Task RateRecipeAsync(Guid id, int rating)
@@ -135,3 +134,4 @@ public class RecipeService(IRecipeRepository recipeRepository, IImageService ima
         return await this._recipeRepository.GetRecipesByIdsAsync(ids);
     }
 }
+

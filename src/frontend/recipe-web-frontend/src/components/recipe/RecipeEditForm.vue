@@ -199,11 +199,7 @@ watch(
                 ? [...newRecipe.allergens]
                 : []
             if (!imageFile.value) {
-                imageUrl.value = buildRecipeImageUrl(
-                    newRecipe.image,
-                    newRecipe.imageRevision,
-                    ImageSize.Large,
-                )
+                imageUrl.value = buildRecipeImageUrl(newRecipe.image, ImageSize.Large)
             }
         }
     },
@@ -264,11 +260,10 @@ async function submit() {
             {
                 title: title.value.trim(),
                 description: description.value.trim(),
-                ingredients: normalizedIngredients, // TODO REMOVE THIS CAST
+                ingredients: normalizedIngredients,
                 steps: normalizedSteps,
                 allergens: selectedAllergens.value,
                 image: recipe.image,
-                imageRevision: recipe.imageRevision,
                 authorId: recipe.authorId,
                 authorName: recipe.authorName,
                 rating: recipe.rating,

@@ -8,6 +8,7 @@ using Wemcy.RecipeApp.Backend.Pagination;
 using Wemcy.RecipeApp.Backend.Repository;
 using Wemcy.RecipeApp.Backend.Security;
 using Wemcy.RecipeApp.Backend.Services;
+using Wemcy.RecipeApp.Backend.Utils;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,6 +60,7 @@ builder.Services.AddScoped<IRecipeService, RecipeService>()
                 .AddScoped<IRecipeShowcaseRepository, RecipeShowcaseRepository>()
                 .AddSingleton<IAuthorizationHandler, RecipeAuthorizationHandler>()
                 .AddSingleton<IAuthorizationHandler, CommentAuthorizationCrudHandler>()
+                .AddSingleton<RecipeCache>()
                 .AddSingleton<IAuthorizationHandler, UserAuthorizationHandler>();
 
 builder.Services.AddHostedService<ShowcaseRefreshService>();
